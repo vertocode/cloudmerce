@@ -12,6 +12,12 @@
 .main_container {
   min-height: 80vh;
 }
+
+.v-row {
+  margin: 0 !important;
+}
+
+.v-col {
+  padding: 0 !important;
+}
 </style>
-<script setup lang="ts">
-</script>
