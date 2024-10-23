@@ -10,9 +10,9 @@
           />
         </VCol>
 
-        <VRow cols="6" class="action_container">
+        <VCol cols="6" class="action_container">
           <UserButton />
-        </VRow>
+        </VCol>
       </VRow>
     </MdContainer>
   </header>

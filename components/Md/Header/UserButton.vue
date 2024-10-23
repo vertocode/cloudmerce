@@ -18,11 +18,19 @@
     </VList>
   </VMenu>
 
-  <MdLoginModal v-else>
-    <VBtn prepend-icon="mdi-account">
-      Login
-    </VBtn>
-  </MdLoginModal>
+  <div v-else class="unlogged_actions">
+    <MdLoginModal>
+      <VBtn prepend-icon="mdi-account">
+        Login
+      </VBtn>
+    </MdLoginModal>
+
+    <MdRegisterModal>
+      <VBtn prepend-icon="mdi-account-plus">
+        Register
+      </VBtn>
+    </MdRegisterModal>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -35,3 +43,10 @@ const logout = () => {
   // logout
 }
 </script>
+
+<style lang="scss">
+.unlogged_actions {
+  display: flex;
+  gap: 8px;
+}
+</style>

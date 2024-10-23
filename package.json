@@ -12,6 +12,7 @@
   "dependencies": {
     "@mdi/font": "^7.4.47",
     "nuxt": "^3.13.2",
+    "vee-validate": "^4.14.4",
     "vue": "latest",
     "vue-router": "latest"
   },
