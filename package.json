@@ -1,0 +1,23 @@
+{
+  "name": "nuxt-app",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare"
+  },
+  "dependencies": {
+    "@mdi/font": "^7.4.47",
+    "nuxt": "^3.13.2",
+    "vue": "latest",
+    "vue-router": "latest"
+  },
+  "devDependencies": {
+    "sass-embedded": "^1.80.3",
+    "vite-plugin-vuetify": "^2.0.4",
+    "vuetify": "^3.7.3"
+  }
+}
