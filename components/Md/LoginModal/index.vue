@@ -12,16 +12,16 @@
       </div>
     </template>
 
-    <VForm @submit.prevent="handleConfirm">
-      <VTextField
-          v-model="email"
+    <VForm fast-fail @submit.prevent="submit">
+      <VeeTextField
+          :value="email"
           label="Email"
           outlined
           required
       />
 
-      <VTextField
-          v-model="password"
+      <VeeTextField
+          :value="password"
           label="Password"
           outlined
           required
@@ -32,12 +32,12 @@
 
       <VRow class="ga-2" justify="end" align-content="end" no-gutters>
         <VCol cols="4">
-          <VBtn variant="outlined" @click="onClose">
+          <VBtn variant="text" @click="onClose">
             Cancelar
           </VBtn>
         </VCol>
         <VCol cols="4">
-          <VBtn variant="outlined" color="primary" width="100%" type="submit" :loading="isLoading">
+          <VBtn variant="tonal" color="primary" width="100%" type="submit" :loading="isLoading">
             Login
           </VBtn>
         </VCol>
@@ -48,19 +48,34 @@
 
 <script setup lang="ts">
 import Modal from '~/components/El/Modal/index.vue'
+import VeeTextField from "~/components/El/VeeTextField/index.vue";
+import {useField, useForm} from "vee-validate";
+import {validateEmail, validatePassword} from "~/utils/Validators";
+
+const { handleSubmit } = useForm({
+  validationSchema: {
+    email (value: string) {
+      return validateEmail(value)
+    },
+    password: (value: string) => {
+      return validatePassword(value)
+    }
+  }
+})
 
 const isLoading = ref(false)
 const showLoginModal = ref(false)
-const email = ref('')
-const password = ref('')
+const email = useField('email')
+const password = useField('password')
 
 const onClose = () => {
   showLoginModal.value = false
 }
-const handleConfirm = async () => {
+
+const submit = handleSubmit(async values => {
   isLoading.value = true
-  console.log('Login', email.value, password.value)
+  console.log('Login', values)
   showLoginModal.value = false
   isLoading.value = false
-}
+})
 </script>

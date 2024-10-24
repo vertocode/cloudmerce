@@ -12,7 +12,7 @@
       </div>
     </template>
 
-    <VForm fast-fail @submit.prevent="submit">
+    <VForm fast-fail @submit.prevent="submit" aria-autocomplete="off">
       <VeeTextField
           :value="name"
           label="Name"
@@ -47,13 +47,13 @@
 
       <VRow class="ga-2" justify="end" align-content="end" no-gutters>
         <VCol cols="4">
-          <VBtn variant="outlined" @click="onClose">
+          <VBtn variant="text" @click="onClose">
             Cancelar
           </VBtn>
         </VCol>
         <VCol cols="4">
           <VBtn
-              variant="outlined"
+              variant="tonal"
               color="primary"
               width="100%"
               type="submit"
@@ -86,7 +86,7 @@ const { handleSubmit } = useForm({
     },
     repeatPassword: (value: string) => {
       return validatePasswordConfirmation(value, password?.value?.value as string)
-    },
+    }
   }
 })
 
@@ -101,7 +101,10 @@ const repeatPassword = useField('repeatPassword')
 const onClose = () => {
   showRegisterModal.value = false
 }
-const submit = handleSubmit(values => {
+const submit = handleSubmit(async values => {
+  isLoading.value = true
   alert(JSON.stringify(values, null, 2))
+  showRegisterModal.value = false
+  isLoading.value = false
 })
 </script>
