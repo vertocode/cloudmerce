@@ -136,7 +136,10 @@ const removeItem = (index: number) => {
 
         .remove-btn {
           margin-top: 8px;
-          color: #e53935;
+
+          .v-icon {
+            color: $danger-color-500;
+          }
         }
       }
     }

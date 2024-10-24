@@ -14,6 +14,13 @@ export default defineNuxtConfig({
     },
   ],
   vite: {
+    css: {
+      preprocessorOptions: {
+        scss: {
+          additionalData: '@import "@/assets/styles/variables.scss";'
+        }
+      }
+    },
     vue: {
       template: {
         transformAssetUrls,
