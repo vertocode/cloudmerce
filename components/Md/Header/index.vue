@@ -12,6 +12,7 @@
 
         <VCol cols="6" class="action_container">
           <UserButton />
+          <CartButton />
         </VCol>
       </VRow>
     </MdContainer>
@@ -20,6 +21,7 @@
 
 <script setup lang="ts">
 import UserButton from '~/components/Md/Header/UserButton.vue'
+import CartButton from "~/components/Md/Header/CartButton.vue";
 
 const links = [
   { name: 'Home', to: '/' },
@@ -50,6 +52,7 @@ header {
     display: flex;
     justify-content: flex-end;
     align-items: center;
+    gap: 8px;
   }
 }
 </style>
