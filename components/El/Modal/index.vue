@@ -1,7 +1,7 @@
 <template>
   <VDialog
       :model-value="isOpened"
-      max-width="400"
+      :max-width="maxWidth || '400'"
       persistent
   >
     <template v-slot:activator="{ props: activatorProps }">
@@ -18,9 +18,10 @@
 
 <script setup lang="ts">
 
-defineProps({
-  isOpened: Boolean,
-  cardProps: Object,
-})
+defineProps<{
+  maxWidth?: string
+  isOpened: boolean
+  cardProps: object
+}>()
 
 </script>

@@ -19,17 +19,28 @@
   </VMenu>
 
   <div v-else class="unlogged_actions">
-    <MdLoginModal>
-      <VBtn prepend-icon="mdi-account">
-        Login
-      </VBtn>
-    </MdLoginModal>
+    <div class="desktop">
+      <MdLoginModal>
+        <VBtn prepend-icon="mdi-account">
+          Login
+        </VBtn>
+      </MdLoginModal>
 
-    <MdRegisterModal>
-      <VBtn prepend-icon="mdi-account-plus">
-        Register
-      </VBtn>
-    </MdRegisterModal>
+      <MdRegisterModal>
+        <VBtn prepend-icon="mdi-account-plus">
+          Cadastro
+        </VBtn>
+      </MdRegisterModal>
+    </div>
+    <div class="mobile">
+      <MdLoginModal>
+        <VBtn icon="mdi-account-arrow-right" />
+      </MdLoginModal>
+
+      <MdRegisterModal>
+        <VBtn icon="mdi-account-plus" />
+      </MdRegisterModal>
+    </div>
   </div>
 </template>
 
@@ -48,5 +59,25 @@ const logout = () => {
 .unlogged_actions {
   display: flex;
   gap: 8px;
+
+  .desktop {
+    display: none;
+  }
+
+  .mobile {
+    display: flex;
+    gap: 8px;
+  }
+
+  @media (min-width: 600px) {
+    .desktop {
+      display: flex;
+      gap: 8px;
+    }
+
+    .mobile {
+      display: none;
+    }
+  }
 }
 </style>

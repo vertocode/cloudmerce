@@ -3,7 +3,7 @@
       :is-opened="showRegisterModal"
       :card-props="{
         prependIcon: 'mdi-account-plus',
-        title: 'Register'
+        title: 'Cadastro'
       }"
   >
     <template #trigger>
@@ -15,21 +15,21 @@
     <VForm fast-fail @submit.prevent="submit" aria-autocomplete="off">
       <VeeTextField
           :value="name"
-          label="Name"
+          label="Nome"
           outlined
           required
       />
 
       <VeeTextField
           :value="email"
-          label="Email"
+          label="E-mail"
           outlined
           required
       />
 
       <VeeTextField
           :value="password"
-          label="Password"
+          label="Senha"
           outlined
           required
           type="password"
@@ -37,7 +37,7 @@
 
       <VeeTextField
           :value="repeatPassword"
-          label="Repeat Password"
+          label="Repetir Senha"
           outlined
           required
           type="password"

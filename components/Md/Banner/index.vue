@@ -29,7 +29,7 @@
   flex-wrap: wrap;
   width: 100%;
   padding: 40px;
-  background: linear-gradient(135deg, $primary-color-500, $primary-color-700);
+  background: linear-gradient(135deg, var(--primary-color-500), var(--primary-color-700));
   color: white;
   border-radius: 12px;
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
@@ -54,7 +54,7 @@
 }
 
 .highlight {
-  color: $secondary-color-300;
+  color: var(--secondary-color-300);
   font-weight: bold;
 }
 
@@ -82,5 +82,43 @@
   background: rgba(0, 0, 0, 0.2);
   padding: 16px;
   border-radius: 50%;
+}
+
+@media (max-width: 768px) {
+  .banner-icon {
+    font-size: 80px;
+  }
+
+  .banner-title {
+    font-size: 32px;
+  }
+
+  .option span {
+    font-size: 16px;
+  }
+
+  .pix-icon, .credit-card-icon {
+    font-size: 24px;
+    padding: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .banner-icon {
+    font-size: 60px;
+  }
+
+  .banner-title {
+    font-size: 28px;
+  }
+
+  .option span {
+    font-size: 14px;
+  }
+
+  .pix-icon, .credit-card-icon {
+    font-size: 20px;
+    padding: 8px;
+  }
 }
 </style>

@@ -15,14 +15,14 @@
     <VForm fast-fail @submit.prevent="submit">
       <VeeTextField
           :value="email"
-          label="Email"
+          label="E-mail"
           outlined
           required
       />
 
       <VeeTextField
           :value="password"
-          label="Password"
+          label="Senha"
           outlined
           required
           type="password"

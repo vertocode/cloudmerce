@@ -138,7 +138,7 @@ const removeItem = (index: number) => {
           margin-top: 8px;
 
           .v-icon {
-            color: $danger-color-500;
+            color: var(--secondary-color-500);
           }
         }
       }

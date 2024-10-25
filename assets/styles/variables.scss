@@ -23,7 +23,7 @@ $danger-color-600: #b82c2a;
 $danger-color-700: #8a2220;
 
 .v-icon {
-  color: $primary-color-500;
+  color: var(--primary-color-500);
 }
 
 .v-row {
