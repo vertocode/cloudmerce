@@ -38,8 +38,6 @@ import PaletteModal from '~/components/Md/PaletteModal/index.vue'
 
 const isDrawerOpen = ref(false)
 const showPaletteModal = ref(false)
-console.log(showPaletteModal.value)
-const whatsappLink = 'https://api.whatsapp.com/send?phone=5511999999999'
 </script>
 
 <style scoped>

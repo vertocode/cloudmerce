@@ -11,8 +11,9 @@
 
       <div class="footer-links">
         <VBtn variant="text" @click="$router.push('/about')">Sobre Nós</VBtn>
-        <VBtn variant="text" @click="$router.push('/contact')">Contato</VBtn>
         <VBtn variant="text" @click="$router.push('/privacy')">Política de Privacidade</VBtn>
+        <VBtn variant="text" @click="$router.push('/contact')">Contato</VBtn>
+        <VBtn variant="text" @click="showPaletteModal = true">Configurações de Paleta</VBtn>
       </div>
 
       <div class="footer-contact">
@@ -30,11 +31,16 @@
       <p>&copy; {{ new Date().getFullYear() }} {{ storeName }}. Todos os direitos reservados.</p>
     </div>
   </footer>
+  <PaletteModal :show-palette-modal="showPaletteModal" :on-close="() => showPaletteModal = false"/>
 </template>
 
 <script setup lang="ts">
+import PaletteModal from "~/components/Md/PaletteModal/index.vue";
+import {ref} from "vue";
+
 const { techEmail, formattedWhatsappNumber, whatsappLink } = useContact()
 const { storeLogo, storeName } = useStoreData()
+const showPaletteModal = ref(false)
 </script>
 
 <style scoped lang="scss">
