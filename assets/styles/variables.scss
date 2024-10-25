@@ -1,29 +1,35 @@
-$primary-color-100: #e6f4ff;
-$primary-color-200: #cce9ff;
-$primary-color-300: #99d4ff;
-$primary-color-400: #66bfff;
-$primary-color-500: #3498db;
-$primary-color-600: #2a7cb7;
-$primary-color-700: #215f93;
+:root {
+  --primary-color-100: #333333;
+  --primary-color-200: #4d4d4d;
+  --primary-color-300: #666666;
+  --primary-color-400: #808080;
+  --primary-color-500: #000000;
+  --primary-color-600: #000000;
+  --primary-color-700: #000000;
 
-$secondary-color-100: #eaffef;
-$secondary-color-200: #c6ffd8;
-$secondary-color-300: #91ffb3;
-$secondary-color-400: #5bff8d;
-$secondary-color-500: #2ecc71;
-$secondary-color-600: #26a65b;
-$secondary-color-700: #1f8147;
+  --secondary-color-100: #ffe6b3;
+  --secondary-color-200: #ffdb4d;
+  --secondary-color-300: #ffd600;
+  --secondary-color-400: #ffcc00;
+  --secondary-color-500: #ffcc00;
+  --secondary-color-600: #e6b800;
+  --secondary-color-700: #cc9c00;
 
-$danger-color-100: #fdecea;
-$danger-color-200: #f9c1be;
-$danger-color-300: #f49792;
-$danger-color-400: #f06d66;
-$danger-color-500: #e53935;
-$danger-color-600: #b82c2a;
-$danger-color-700: #8a2220;
+  --danger-color-100: #fdecea;
+  --danger-color-200: #f9c1be;
+  --danger-color-300: #f49792;
+  --danger-color-400: #f06d66;
+  --danger-color-500: #e53935;
+  --danger-color-600: #b82c2a;
+  --danger-color-700: #8a2220;
+}
 
 .v-icon {
   color: var(--primary-color-500);
+}
+
+.v-btn {
+    color: var(--primary-color-500);
 }
 
 .v-row {

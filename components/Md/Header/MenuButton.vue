@@ -20,7 +20,7 @@
         <VListItem @click="$router.push('/privacy')" class="navigation-item">
           <VListItemTitle>Política de Privacidade</VListItemTitle>
         </VListItem>
-        <VListItem :href="whatsappLink" target="_blank" rel="noopener noreferrer" class="navigation-item">
+        <VListItem @click="$router.push('/contact')" class="navigation-item">
           <VListItemTitle>Contato</VListItemTitle>
         </VListItem>
         <VListItem @click="showPaletteModal = true" class="navigation-item">

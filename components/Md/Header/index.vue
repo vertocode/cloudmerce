@@ -4,7 +4,7 @@
       <VRow>
         <VCol cols="6" class="logo_container">
           <img
-              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTHl61Sy02jzSLGguydQ4lNQvMlYGJn1tOSRQ&s"
+              :src="storeLogo"
               alt="Logo"
               @click="$router.push('/')"
           />
@@ -25,6 +25,8 @@ import UserButton from '~/components/Md/Header/UserButton.vue'
 import CartButton from "~/components/Md/Header/CartButton.vue"
 import MenuButton from "~/components/Md/Header/MenuButton.vue"
 
+const { storeLogo } = useStoreData()
+
 </script>
 
 <style scoped lang="scss">
@@ -39,8 +41,7 @@ header {
     .logo_container {
       img {
         cursor: pointer;
-        max-width: 52px;
-        max-height: 52px;
+        height: 59px;
       }
     }
   }

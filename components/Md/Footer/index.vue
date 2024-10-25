@@ -11,9 +11,7 @@
 
       <div class="footer-links">
         <VBtn variant="text" @click="$router.push('/about')">Sobre Nós</VBtn>
-        <VBtn variant="text" :href="whatsappLink" target="_blank" rel="noopener noreferrer">
-          Contato
-        </VBtn>
+        <VBtn variant="text" @click="$router.push('/contact')">Contato</VBtn>
         <VBtn variant="text" @click="$router.push('/privacy')">Política de Privacidade</VBtn>
       </div>
 
@@ -55,7 +53,7 @@ const { storeLogo, storeName } = useStoreData()
     margin-bottom: 24px;
 
     .footer-logo img {
-      max-width: 64px;
+      max-width: 100px;
       cursor: pointer;
     }
 

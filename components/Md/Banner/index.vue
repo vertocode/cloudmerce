@@ -54,7 +54,7 @@
 }
 
 .highlight {
-  color: var(--secondary-color-300);
+  color: var(--secondary-color-500);
   font-weight: bold;
 }
 

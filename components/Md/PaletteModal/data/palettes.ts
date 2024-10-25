@@ -1,104 +1,109 @@
-import type {IPalette} from "~/components/Md/PaletteModal/type/palette";
+import type { IPalette } from "~/components/Md/PaletteModal/type/palette";
 
 export const palettes: IPalette[] = [
     {
-        name: 'Paleta 1',
-        primaryColor: '#3498db',
-        secondaryColor: '#2ecc71',
+        name: 'Apple Blue & Grey',
+        primaryColor: '#007aff',
+        secondaryColor: '#8e8e93',
     },
     {
-        name: 'Paleta 2',
-        primaryColor: '#e74c3c',
-        secondaryColor: '#8e44ad',
+        name: 'Microsoft Blue & Green',
+        primaryColor: '#00a4ef',
+        secondaryColor: '#5cb85c',
     },
     {
-        name: 'Paleta 3',
-        primaryColor: '#f39c12',
-        secondaryColor: '#d35400',
+        name: 'Facebook Blue',
+        primaryColor: '#3b5998',
+        secondaryColor: '#8b9dc3',
     },
     {
-        name: 'Paleta 4',
-        primaryColor: '#2c3e50',
-        secondaryColor: '#e67e22',
+        name: 'Google Red & Blue',
+        primaryColor: '#db4437',
+        secondaryColor: '#4285f4',
     },
     {
-        name: 'Paleta 5',
-        primaryColor: '#8e44ad',
-        secondaryColor: '#3498db',
+        name: 'Slack Purple & Green',
+        primaryColor: '#4a154b',
+        secondaryColor: '#2eb67d',
     },
     {
-        name: 'Paleta 6',
-        primaryColor: '#1abc9c',
-        secondaryColor: '#16a085',
+        name: 'Spotify Green & Black',
+        primaryColor: '#1db954',
+        secondaryColor: '#191414',
     },
     {
-        name: 'Paleta 7',
-        primaryColor: '#2ecc71',
-        secondaryColor: '#27ae60',
+        name: 'Amazon Orange & Grey',
+        primaryColor: '#ff9900',
+        secondaryColor: '#555555',
     },
     {
-        name: 'Paleta 8',
-        primaryColor: '#f1c40f',
-        secondaryColor: '#f39c12',
+        name: 'IBM Blue & Grey',
+        primaryColor: '#0066cc',
+        secondaryColor: '#a6a6a6',
     },
     {
-        name: 'Paleta 9',
-        primaryColor: '#e67e22',
-        secondaryColor: '#d35400',
+        name: 'Twitter Blue & Dark Grey',
+        primaryColor: '#1da1f2',
+        secondaryColor: '#14171a',
     },
     {
-        name: 'Paleta 10',
-        primaryColor: '#e74c3c',
-        secondaryColor: '#c0392b',
+        name: 'Adobe Red & Grey',
+        primaryColor: '#ff0000',
+        secondaryColor: '#333333',
     },
     {
-        name: 'Paleta 11',
-        primaryColor: '#9b59b6',
-        secondaryColor: '#8e44ad',
+        name: 'LinkedIn Blue & Grey',
+        primaryColor: '#0077b5',
+        secondaryColor: '#8c9dc3',
     },
     {
-        name: 'Paleta 12',
-        primaryColor: '#34495e',
+        name: 'Salesforce Blue & White',
+        primaryColor: '#00a1e0',
+        secondaryColor: '#f3f3f3',
+    },
+    {
+        name: 'Airbnb Coral & Blue',
+        primaryColor: '#ff5a5f',
+        secondaryColor: '#00a699',
+    },
+    {
+        name: 'Netflix Red & Black',
+        primaryColor: '#e50914',
+        secondaryColor: '#141414',
+    },
+    {
+        name: 'Dropbox Blue & Grey',
+        primaryColor: '#0061ff',
+        secondaryColor: '#7d7d7d',
+    },
+    {
+        name: 'Salesforce Blue & Dark Grey',
+        primaryColor: '#00a1e0',
+        secondaryColor: '#37474f',
+    },
+    {
+        name: 'Uber Black & Yellow',
+        primaryColor: '#000000',
+        secondaryColor: '#ffcc00',
+    },
+    {
+        name: 'YouTube Red & Dark Grey',
+        primaryColor: '#ff0000',
+        secondaryColor: '#282828',
+    },
+    {
+        name: 'Telegram Blue & Dark Blue',
+        primaryColor: '#0088cc',
+        secondaryColor: '#005a8b',
+    },
+    {
+        name: 'PayPal Blue & Grey',
+        primaryColor: '#003087',
+        secondaryColor: '#7a7b7d',
+    },
+    {
+        name: 'Shopify Green & Dark Grey',
+        primaryColor: '#7ab55c',
         secondaryColor: '#2c3e50',
     },
-    {
-        name: 'Paleta 13',
-        primaryColor: '#2980b9',
-        secondaryColor: '#3498db',
-    },
-    {
-        name: 'Paleta 14',
-        primaryColor: '#27ae60',
-        secondaryColor: '#2ecc71',
-    },
-    {
-        name: 'Paleta 15',
-        primaryColor: '#f39c12',
-        secondaryColor: '#e67e22',
-    },
-    {
-        name: 'Paleta 16',
-        primaryColor: '#c0392b',
-        secondaryColor: '#e74c3c',
-    },
-    {
-        name: 'Paleta 17',
-        primaryColor: '#8e44ad',
-        secondaryColor: '#9b59b6',
-    },
-    {
-        name: 'Paleta 18',
-        primaryColor: '#1abc9c',
-        secondaryColor: '#16a085',
-    },
-    {
-        name: 'Paleta 19',
-        primaryColor: '#f1c40f',
-        secondaryColor: '#e67e22',
-    },
-    {
-        name: 'Paleta 20',
-        primaryColor: '#95a5a6',
-        secondaryColor: '#7f8c8d',
-    }
-]
+];

@@ -8,9 +8,10 @@
             <v-row justify="center" align="center">
               <v-col v-for="(palette, index) in palettes" :key="index" cols="12" md="4" class="palette-col">
                 <v-card
-                    :style="{ backgroundColor: palette.primaryColor, color: palette.secondaryColor }"
-                    class="palette-card"
-                    @click="selectPalette(palette)"
+                  :style="{ backgroundColor: palette.primaryColor, color: palette.secondaryColor }"
+                  class="palette-card"
+                  :class="{ 'selected': selectedPalette?.primaryColor === palette.primaryColor }"
+                  @click="selectPalette(palette, index)"
                 >
                   <v-card-title>{{ palette.name }}</v-card-title>
                   <v-card-subtitle>Cor Primária: {{ palette.primaryColor }}</v-card-subtitle>
@@ -27,13 +28,19 @@
       <v-card-actions>
         <v-spacer></v-spacer>
         <v-btn @click="onClose" color="grey darken-1">Fechar</v-btn>
-        <v-btn variant="tonal" @click="applyPalette" :disabled="!selectedPalette">Aplicar Paleta</v-btn>
+        <v-btn
+            variant="flat"
+            @click="applyPalette"
+            :disabled="!selectedPalette"
+            :color="selectedPalette ? selectedPalette.primaryColor : ''"
+        >Aplicar Paleta {{ selectedPalette ? selectedPalette.index + 1 : null }}</v-btn>
       </v-card-actions>
     </template>
   </Modal>
 </template>
 
 <script setup lang="ts">
+import tinycolor from 'tinycolor2';
 import Modal from '~/components/El/Modal/index.vue';
 import { palettes } from './data/palettes';
 import type { IPalette } from './type/palette';
@@ -43,31 +50,43 @@ const props = defineProps<{
   onClose: () => void;
 }>();
 
-const selectedPalette = ref<IPalette | null>(null); // Armazenar a paleta selecionada
+const selectedPalette = ref<IPalette & { index: number } | null>(null);
 
-const selectPalette = (palette: IPalette) => {
-  selectedPalette.value = palette; // Armazena a paleta selecionada
+const selectPalette = (palette: IPalette, index: number) => {
+  selectedPalette.value = {...palette, index};
 };
 
 const applyPalette = () => {
   if (selectedPalette.value) {
-    document.documentElement.style.setProperty('--primary-color-100', selectedPalette.value.primaryColor);
-    document.documentElement.style.setProperty('--primary-color-200', selectedPalette.value.primaryColor);
-    document.documentElement.style.setProperty('--primary-color-300', selectedPalette.value.primaryColor);
-    document.documentElement.style.setProperty('--primary-color-400', selectedPalette.value.primaryColor);
-    document.documentElement.style.setProperty('--primary-color-500', selectedPalette.value.primaryColor);
-    document.documentElement.style.setProperty('--primary-color-600', selectedPalette.value.primaryColor);
-    document.documentElement.style.setProperty('--primary-color-700', selectedPalette.value.primaryColor);
+    const primaryColor = tinycolor(selectedPalette.value.primaryColor);
+    const secondaryColor = tinycolor(selectedPalette.value.secondaryColor);
 
-    document.documentElement.style.setProperty('--secondary-color-100', selectedPalette.value.secondaryColor);
-    document.documentElement.style.setProperty('--secondary-color-200', selectedPalette.value.secondaryColor);
-    document.documentElement.style.setProperty('--secondary-color-300', selectedPalette.value.secondaryColor);
-    document.documentElement.style.setProperty('--secondary-color-400', selectedPalette.value.secondaryColor);
-    document.documentElement.style.setProperty('--secondary-color-500', selectedPalette.value.secondaryColor);
-    document.documentElement.style.setProperty('--secondary-color-600', selectedPalette.value.secondaryColor);
-    document.documentElement.style.setProperty('--secondary-color-700', selectedPalette.value.secondaryColor);
+    const intensities = [100, 200, 300, 400, 500, 600, 700];
+    const adjustAmount = 10;
 
-    if (props.onClose) props.onClose()
+    intensities.forEach((intensity) => {
+      let adjustedPrimaryColor;
+      let adjustedSecondaryColor;
+
+      if (intensity === 500) {
+        adjustedPrimaryColor = primaryColor
+        adjustedSecondaryColor = secondaryColor
+      } else if (intensity < 500) {
+        // Lighten colors for intensities less than 500
+        adjustedPrimaryColor = primaryColor.clone().lighten(adjustAmount * (500 - intensity) / 100).toString();
+        adjustedSecondaryColor = secondaryColor.clone().lighten(adjustAmount * (500 - intensity) / 100).toString();
+      } else {
+        // Darken colors for intensities greater than 500
+        adjustedPrimaryColor = primaryColor.clone().darken(adjustAmount * (intensity - 500) / 100).toString();
+        adjustedSecondaryColor = secondaryColor.clone().darken(adjustAmount * (intensity - 500) / 100).toString();
+      }
+
+      document.documentElement.style.setProperty(`--primary-color-${intensity}`, adjustedPrimaryColor);
+      document.documentElement.style.setProperty(`--secondary-color-${intensity}`, adjustedSecondaryColor);
+    });
+
+    if (props.onClose) props.onClose();
+    selectedPalette.value = null;
   }
 };
 </script>
@@ -99,6 +118,13 @@ const applyPalette = () => {
     &:hover {
       transform: translateY(-5px);
       box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    &.selected {
+      border: 2px solid rgba(255, 255, 255, 0.8);
+      box-shadow: 0 4px 20px rgba(255, 255, 255, 0.7);
+      transform: scale(1.05);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
     }
 
     .v-card-title {
