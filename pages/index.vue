@@ -1,3 +1,4 @@
 <template>
   <MdBanner />
+  <MdSearchBar />
 </template>
