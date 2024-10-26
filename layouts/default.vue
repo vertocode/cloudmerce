@@ -1,6 +1,7 @@
 <template>
   <VApp>
     <MdHeader />
+    <MdSubHeader />
     <MdContainer class="main_container">
       <slot />
     </MdContainer>
@@ -10,6 +11,6 @@
 
 <style>
 .main_container {
-  min-height: 80vh;
+  min-height: 60vh;
 }
 </style>
