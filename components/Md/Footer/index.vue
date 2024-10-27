@@ -22,9 +22,13 @@
       </div>
 
       <div class="footer-social">
-        <VIcon class="social-icon">mdi-facebook</VIcon>
-        <VIcon class="social-icon">mdi-instagram</VIcon>
-        <VIcon class="social-icon">mdi-twitter</VIcon>
+        <VIcon
+            v-for="socialMedia in storeSocialMedia"
+            :key="socialMedia.name"
+            class="social-icon"
+            :title="`Abrir ${socialMedia.name}`"
+            @click="openSocialMedia(socialMedia.url)"
+        >{{ socialMedia.icon }}</VIcon>
       </div>
     </div>
     <div class="footer-bottom">
@@ -38,9 +42,13 @@
 import PaletteModal from "~/components/Md/PaletteModal/index.vue";
 import {ref} from "vue";
 
-const { techEmail, formattedWhatsappNumber, whatsappLink } = useContact()
-const { storeLogo, storeName } = useStoreData()
+const { techEmail, formattedWhatsappNumber } = useContact()
+const { storeLogo, storeName, storeSocialMedia } = useStoreData()
 const showPaletteModal = ref(false)
+
+const openSocialMedia = (url: string) => {
+  window.open(url)
+}
 </script>
 
 <style scoped lang="scss">
