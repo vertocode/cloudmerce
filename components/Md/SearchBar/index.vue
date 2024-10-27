@@ -5,7 +5,7 @@
           variant="outlined"
           class="vee-text-field"
           :value="search"
-          label="Pesquisar produtos pelo nome"
+          :label="`Pesquisar ${productType} pelo nome`"
           required
       />
       <VBtn
@@ -23,9 +23,18 @@
 import VeeTextField from "~/components/El/VeeTextField/index.vue";
 import { useField, useForm } from "vee-validate";
 
+const route = useRoute()
 const { handleSubmit } = useForm()
 
 const search = useField('search')
+
+const productType = computed(() => {
+  const defaultProductType = 'produtos'
+  const { productType } = route.params || {}
+  if (!productType || Array.isArray(productType)) return defaultProductType
+
+  return productType.toLowerCase()
+})
 
 const handleSearch = handleSubmit((values) => {
   if (!values.search) return

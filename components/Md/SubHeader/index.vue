@@ -32,49 +32,49 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from "vue";
-import { useStoreData } from "@/composables/useStoreData";
-import { useRouter } from "vue-router";
+import { useStoreData } from "@/composables/useStoreData"
+import { useRouter } from "vue-router"
 
-const { productTypes } = useStoreData();
-const router = useRouter();
+const { productTypes } = useStoreData()
+const router = useRouter()
 
-const scrollContainer = ref(null);
+const scrollContainer = ref<null | HTMLDivElement>(null)
 
-const canScrollLeft = ref(false);
-const canScrollRight = ref(true);
+const canScrollLeft = ref(false)
+const canScrollRight = ref(true)
 
 const checkScrollButtons = () => {
-  const container = scrollContainer.value;
+  const container = scrollContainer.value
   if (container) {
-    canScrollLeft.value = container.scrollLeft > 0;
+    canScrollLeft.value = container.scrollLeft > 0
     canScrollRight.value =
-        container.scrollLeft < container.scrollWidth - container.clientWidth;
+        container.scrollLeft < container.scrollWidth - container.clientWidth
   }
 };
 
 const scrollLeft = () => {
   const container = scrollContainer.value;
   if (container) {
-    container.scrollBy({ left: -200, behavior: "smooth" });
+    container.scrollBy({ left: -200, behavior: "smooth" })
   }
 };
 
 const scrollRight = () => {
-  const container = scrollContainer.value;
+  const container = scrollContainer.value
   if (container) {
-    container.scrollBy({ left: 200, behavior: "smooth" });
+    container.scrollBy({ left: 200, behavior: "smooth" })
   }
-};
+}
 
 const redirectTo = (type: string) => {
-  router.push({ name: "ProductList", query: { type } });
-};
+  router.push(`/product/${type}`)
+}
 
 onMounted(() => {
-  checkScrollButtons();
-  scrollContainer.value.addEventListener("scroll", checkScrollButtons);
-});
+  checkScrollButtons()
+
+  if (scrollContainer.value) scrollContainer.value.addEventListener("scroll", checkScrollButtons)
+})
 </script>
 
 <style scoped lang="scss">
