@@ -8,7 +8,7 @@
 
     <VCardActions class="card-actions">
       <VBtn color="primary" @click="addToCart" class="add-to-cart-btn">Adicionar ao Carrinho</VBtn>
-      <VBtn color="secondary" @click="viewDetails" class="view-details-btn">Ver Detalhes</VBtn>
+      <VBtn @click="viewDetails" class="view-details-btn">Ver Detalhes</VBtn>
     </VCardActions>
   </VCard>
 </template>
@@ -74,7 +74,7 @@ const viewDetails = () => {
 
     .add-to-cart-btn {
       width: 100%;
-      background-color: #2196f3;
+      background-color: var(--primary-color-500);
       color: #fff !important;
 
       &:hover {
@@ -84,12 +84,6 @@ const viewDetails = () => {
 
     .view-details-btn {
       width: 100%;
-      background-color: #424242;
-      color: #fff !important;
-
-      &:hover {
-        background-color: #333333;
-      }
     }
   }
 }

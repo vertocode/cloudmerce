@@ -1,11 +1,6 @@
 <template>
   <div class="subheader">
-    <VBtn
-        icon
-        v-if="canScrollLeft"
-        @click="scrollLeft"
-        class="scroll-btn scroll-left"
-    >
+    <VBtn icon v-if="canScrollLeft" @click="scrollLeft" class="scroll-btn scroll-left">
       <v-icon>mdi-chevron-left</v-icon>
     </VBtn>
 
@@ -13,33 +8,29 @@
       <div
           v-for="type in productTypes"
           :key="type"
-          class="product-type"
+          :class="['product-type', { active: isActiveType(type) }]"
           @click="redirectTo(type)"
       >
         {{ type }}
       </div>
     </div>
 
-    <VBtn
-        icon
-        v-if="canScrollRight"
-        @click="scrollRight"
-        class="scroll-btn scroll-right"
-    >
+    <VBtn icon v-if="canScrollRight" @click="scrollRight" class="scroll-btn scroll-right">
       <v-icon>mdi-chevron-right</v-icon>
     </VBtn>
   </div>
 </template>
 
 <script setup lang="ts">
+import { onMounted, ref, computed } from 'vue'
 import { useStoreData } from "@/composables/useStoreData"
-import { useRouter } from "vue-router"
+import { useRouter, useRoute } from "vue-router"
 
 const { productTypes } = useStoreData()
 const router = useRouter()
+const route = useRoute()
 
 const scrollContainer = ref<null | HTMLDivElement>(null)
-
 const canScrollLeft = ref(false)
 const canScrollRight = ref(true)
 
@@ -47,8 +38,7 @@ const checkScrollButtons = () => {
   const container = scrollContainer.value
   if (container) {
     canScrollLeft.value = container.scrollLeft > 0
-    canScrollRight.value =
-        container.scrollLeft < container.scrollWidth - container.clientWidth
+    canScrollRight.value = container.scrollLeft < container.scrollWidth - container.clientWidth
   }
 };
 
@@ -70,9 +60,11 @@ const redirectTo = (type: string) => {
   router.push(`/product/${type}`)
 }
 
+// Determine if a type is active based on the URL
+const isActiveType = (type: string) => route.params.productType === type
+
 onMounted(() => {
   checkScrollButtons()
-
   if (scrollContainer.value) scrollContainer.value.addEventListener("scroll", checkScrollButtons)
 })
 </script>
@@ -103,11 +95,21 @@ onMounted(() => {
     .product-type {
       padding: 0.5rem 1rem;
       background-color: var(--primary-color-500);
-      color: var(--secondary-color-100);
+      color: #fff;
       border-radius: 25px;
       cursor: pointer;
       white-space: nowrap;
-      transition: background-color 0.3s;
+      transition: background-color 0.3s, color 0.3s;
+
+      &.active {
+        background-color: var(--secondary-color-500);
+        color: var(--primary-color-500);
+        font-weight: bold;
+      }
+
+      &:hover {
+        background-color: #d1d1d1;
+      }
     }
   }
 }

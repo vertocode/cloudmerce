@@ -47,6 +47,16 @@ export const palettes: IPalette[] = [
         secondaryColor: '#14171a',
     },
     {
+        name: 'Rosewood & Champagne',
+        primaryColor: '#b84a62', // rosewood
+        secondaryColor: '#d89d9a', // soft champagne
+    },
+    {
+        name: 'Crimson & Blush',
+        primaryColor: '#a23e48', // crimson
+        secondaryColor: '#d8a1a7', // blush
+    },
+    {
         name: 'Adobe Red & Grey',
         primaryColor: '#ff0000',
         secondaryColor: '#333333',
