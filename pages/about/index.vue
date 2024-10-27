@@ -11,7 +11,7 @@
           </p>
         </VCol>
         <VCol cols="12" md="6" class="video-container">
-          <iframe width="560" height="315" src="https://www.youtube.com/embed/xNJql5M38N8?si=OrZyVCXIYmvveypT" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+          <iframe width="100%" height="315" src="https://www.youtube.com/embed/xNJql5M38N8?si=OrZyVCXIYmvveypT" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
         </VCol>
       </VRow>
 

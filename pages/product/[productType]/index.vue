@@ -1,6 +1,6 @@
 <template>
   <MdSearchBar />
-  <h2 class="product-type-title">{{ productType }} Exclusivos</h2>
+  <h2 class="product-type-title">{{ productType }}</h2>
   <MdProductList />
 </template>
 

@@ -22,7 +22,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref, computed } from 'vue'
+import { onMounted, ref } from 'vue'
 import { useStoreData } from "@/composables/useStoreData"
 import { useRouter, useRoute } from "vue-router"
 
@@ -73,7 +73,7 @@ onMounted(() => {
 .subheader {
   display: flex;
   align-items: center;
-  padding: 1rem;
+  padding: 4px 24px;
   background-color: #f4f4f6;
 
   .scroll-btn {
@@ -81,12 +81,13 @@ onMounted(() => {
   }
 
   .scroll-container {
+    margin: auto;
     display: flex;
-    gap: 1rem;
+    gap: 8px;
     overflow-x: auto;
     scroll-behavior: smooth;
     white-space: nowrap;
-    padding: 0.5rem;
+    padding: 4px;
 
     &::-webkit-scrollbar {
       display: none;

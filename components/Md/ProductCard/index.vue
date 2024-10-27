@@ -78,7 +78,7 @@ const viewDetails = () => {
       color: #fff !important;
 
       &:hover {
-        background-color: #1976d2;
+        background-color: var(--primary-color-600);
       }
     }
 
