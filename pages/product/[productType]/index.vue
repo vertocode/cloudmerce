@@ -1,8 +1,7 @@
 <template>
   <MdSearchBar />
-  <div>
-    <h1>{{ productType }} <<</h1>
-  </div>
+  <h1>{{ productType }}:</h1>
+  <MdProductList />
 </template>
 
 <script setup lang="ts">
