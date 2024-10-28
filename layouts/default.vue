@@ -1,7 +1,8 @@
 <template>
   <VApp>
-    <MdHeader />
+    <MdHeader  />
     <MdSubHeader />
+    <MdScrollToTop />
     <MdContainer class="main_container">
       <slot />
     </MdContainer>
