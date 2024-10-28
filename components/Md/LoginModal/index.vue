@@ -51,8 +51,6 @@ import Modal from '~/components/El/Modal/index.vue'
 import VeeTextField from "~/components/El/VeeTextField/index.vue";
 import { useField, useForm } from "vee-validate";
 
-const { get } = useApi()
-
 const { handleSubmit } = useForm({
   validationSchema: {
     email (value: string) {
@@ -73,10 +71,19 @@ const onClose = () => {
   showLoginModal.value = false
 }
 
+const { login } = useUser()
+
 const submit = handleSubmit(async values => {
   isLoading.value = true
-  console.log('Login', values)
-  showLoginModal.value = false
+
+  const { code } = await login({
+    email: values.email,
+    password: values.password
+  })
   isLoading.value = false
+
+  if (code === 'success') {
+    showLoginModal.value = false
+  }
 })
 </script>

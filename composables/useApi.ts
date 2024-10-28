@@ -2,8 +2,15 @@ export const useApi = () => {
     const config = useRuntimeConfig()
     const apiUrl = config.public?.apiUrl || console.error('API URL not found in runtime config.')
 
-    const get = async (path: string) => {
-        return $fetch(`${apiUrl}${path}`)
+    const get = async (path: string, data: Record<string, any>) => {
+        const query = new URLSearchParams(data).toString()
+
+        return $fetch(`${apiUrl}${path}?${query}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
     }
 
     const post = async (path: string, data: any) => {

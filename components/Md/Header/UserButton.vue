@@ -10,7 +10,7 @@
           <VIcon>mdi-account</VIcon> Profile
         </VListItemTitle>
       </VListItem>
-      <VListItem @click="showLoginModal = true">
+      <VListItem @click="logout">
         <VListItemTitle>
           <VIcon>mdi-logout</VIcon> Logout
         </VListItemTitle>
@@ -20,39 +20,50 @@
 
   <div v-else class="unlogged_actions">
     <div class="desktop">
-      <MdLoginModal>
-        <VBtn prepend-icon="mdi-account">
-          Login
+      <template v-if="isLoading">
+        <VBtn :loading="true" disabled>
+          <VProgressCircular indeterminate size="24" />
         </VBtn>
-      </MdLoginModal>
+      </template>
+      <template v-else>
+        <MdLoginModal>
+          <VBtn prepend-icon="mdi-account">Login</VBtn>
+        </MdLoginModal>
 
-      <MdRegisterModal>
-        <VBtn prepend-icon="mdi-account-plus">
-          Cadastro
-        </VBtn>
-      </MdRegisterModal>
+        <MdRegisterModal>
+          <VBtn prepend-icon="mdi-account-plus">Cadastro</VBtn>
+        </MdRegisterModal>
+      </template>
     </div>
     <div class="mobile">
-      <MdLoginModal>
-        <VBtn icon="mdi-account-arrow-right" />
-      </MdLoginModal>
+      <template v-if="isLoading">
+        <VBtn :loading="true" disabled>
+          <VProgressCircular indeterminate size="24" />
+        </VBtn>
+      </template>
+      <template v-else>
+        <MdLoginModal>
+          <VBtn icon="mdi-account-arrow-right" />
+        </MdLoginModal>
 
-      <MdRegisterModal>
-        <VBtn icon="mdi-account-plus" />
-      </MdRegisterModal>
+        <MdRegisterModal>
+          <VBtn icon="mdi-account-plus" />
+        </MdRegisterModal>
+      </template>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-const user = useState('user')
+import { ref, computed, onMounted } from 'vue'
+const { logout, userData } = useUser()
 
-const showLoginModal = ref(false)
-const isLogged = computed(() => !!user.value)
+const isLogged = computed(() => !!userData.value)
+const isLoading = ref(true)
 
-const logout = () => {
-  // logout
-}
+onMounted(() => {
+  isLoading.value = false;
+})
 </script>
 
 <style lang="scss">

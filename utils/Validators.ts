@@ -5,10 +5,10 @@ export const validateName = (name: string): boolean | string => {
 }
 
 export const validateEmail = (email: string): boolean | string => {
-    if (/^[a-z.-]+@[a-z.-]+\.[a-z]+$/i.test(email)) return true
+    if (/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/i.test(email)) return true;
 
-    return 'O e-mail precisa ser válido.'
-}
+    return 'O e-mail precisa ser válido.';
+};
 
 export const validatePassword = (password: string): boolean | string => {
     if (password?.length >= 8) return true

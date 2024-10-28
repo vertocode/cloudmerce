@@ -101,9 +101,16 @@ const repeatPassword = useField('repeatPassword')
 const onClose = () => {
   showRegisterModal.value = false
 }
+
+const { register, login } = useUser()
+
 const submit = handleSubmit(async values => {
   isLoading.value = true
-  alert(JSON.stringify(values, null, 2))
+  await register({
+    name: values.name,
+    email: values.email,
+    password: values.password
+  })
   showRegisterModal.value = false
   isLoading.value = false
 })

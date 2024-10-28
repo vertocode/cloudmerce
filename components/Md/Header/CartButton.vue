@@ -10,6 +10,7 @@
         temporary
         location="right"
         class="cart-drawer"
+        v-if="isLoaded"
     >
       <v-toolbar flat dense>
         <v-toolbar-title>Carrinho de Compras</v-toolbar-title>
@@ -53,6 +54,9 @@
 import { ref } from 'vue'
 
 const isDrawerOpen = ref(false)
+const isLoaded = ref(false)
+
+onMounted(() => isLoaded.value = true)
 
 interface CartItem {
   name: string
