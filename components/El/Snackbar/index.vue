@@ -1,7 +1,7 @@
 <template>
   <v-snackbar
       v-model="snackbar.open"
-      color="#D3D3D3"
+      :color="bgColor"
       location="top right"
       variant="flat"
       :timeout="timeout"
@@ -18,12 +18,27 @@ import { computed } from 'vue';
 
 const { snackbar, timeout } = useSnackbar();
 
+const bgColor = computed(() => {
+  switch (snackbar.variant) {
+    case 'error':
+      return '#fdb3ad';
+    case 'warning':
+      return '#efe086';
+    case 'info':
+      return '#a8c9e7';
+    case 'success':
+      return '#c0efc2';
+    default:
+      return '';
+  }
+});
+
 const computedColor = computed(() => {
   switch (snackbar.variant) {
     case 'error':
       return '#f44336';
     case 'warning':
-      return '#ffeb3b';
+      return '#9a8b29';
     case 'info':
       return '#2196f3';
     case 'success':

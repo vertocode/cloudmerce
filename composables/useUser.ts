@@ -32,11 +32,10 @@ export const useUser = () => {
     const login = async (authParams: AuthParams) => {
         try {
             const response = await get('/auth/login', authParams) as User | { errorCode: string }
-            console.log(response)
 
             if ((response as { errorCode: string })?.errorCode === 'user_not_found') {
                 handleWarning('Usuário não encontrado')
-                return
+                return { code: 'user_not_found' }
             }
 
             if (!(response as User)?._id) {
