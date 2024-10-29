@@ -1,4 +1,4 @@
-export default function (error: unknown) {
-    console.error(error)
-    return error
+export default function (errorMessage: string) {
+    const { openSnackbar } = useSnackbar()
+    openSnackbar(errorMessage || 'Houve um erro inesperado.', 'error')
 }

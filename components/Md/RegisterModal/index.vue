@@ -106,12 +106,14 @@ const { register, login } = useUser()
 
 const submit = handleSubmit(async values => {
   isLoading.value = true
-  await register({
+  const { code } = await register({
     name: values.name,
     email: values.email,
     password: values.password
   })
-  showRegisterModal.value = false
+  if (code === 'success') {
+    showRegisterModal.value = false
+  }
   isLoading.value = false
 })
 </script>

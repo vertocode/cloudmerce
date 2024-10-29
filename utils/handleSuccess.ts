@@ -1,4 +1,4 @@
 export default function (successMessage: string) {
-    console.log(successMessage)
-    return successMessage
+    const { openSnackbar } = useSnackbar()
+    openSnackbar(successMessage, 'success')
 }

@@ -31,16 +31,22 @@ export const useUser = () => {
 
     const login = async (authParams: AuthParams) => {
         try {
-            const response = await get('/auth/login', authParams);
+            const response = await get('/auth/login', authParams) as User
+            console.log(response)
+            if (response?.errorCode === 'user_not_found') {
+                handleWarning('Usuário não encontrado')
+                return
+            }
             if (!response?._id) {
                 throw new Error('Response without user id')
             }
             userData.value = response as User
             storage.setItem('userData', response)
             handleSuccess('Login efetuado com sucesso!')
-            return { code:'success' }
+            return { code: 'success' }
         } catch (error) {
-            handleError(error)
+            console.log(error)
+            handleError('Erro ao efetuar login')
             return { code: 'error' }
         }
     };
@@ -59,8 +65,10 @@ export const useUser = () => {
             userData.value = response as User;
             storage.setItem('userData', response);
             handleSuccess('Usuário cadastrado com sucesso!');
+            return { code: 'success' };
         } catch (e) {
-            handleError(e);
+            handleError('Erro ao cadastrar usuário');
+            return { code: 'error' }
         }
     };
 

@@ -1,5 +1,6 @@
 <template>
   <VApp>
+    <ElSnackbar />
     <MdHeader  />
     <MdSubHeader />
     <MdScrollToTop />
