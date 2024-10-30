@@ -1,0 +1,31 @@
+<template>
+  <VSelect
+      :variant="variant"
+      class="vee-select"
+      v-model="value.value.value"
+      :error-messages="value.errorMessage.value"
+      :items="items"
+      v-bind="$attrs"
+      autocomplete="off"
+      label="Selecionar Opção"
+  />
+</template>
+
+<script setup lang="ts">
+import type { FieldContext } from 'vee-validate';
+import { defineProps } from 'vue';
+
+const props = defineProps<{
+  value: FieldContext<any>;
+  items: string[];
+  variant?: 'outlined' | 'plain' | 'filled' | 'underlined' | 'solo' | 'solo-inverted' | 'solo-filled';
+}>();
+
+const { value, items } = props;
+</script>
+
+<style scoped lang="scss">
+.vee-select {
+
+}
+</style>
