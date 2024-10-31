@@ -2,7 +2,17 @@
   <VCard class="product-card">
     <VImg :src="product.image" :alt="product.name" aspect-ratio="1" class="product-image" />
 
-    <VCardTitle class="product-name">{{ product.name }}</VCardTitle>
+    <div class="product-name-container">
+      <VCardTitle class="product-name">{{ product.name }}</VCardTitle>
+
+      <VTooltip v-if="product.description" :text="product.description">
+        <template v-slot:activator="{ props }">
+          <VBtn class="info-button" v-bind="props" icon>
+            <VIcon>mdi-information</VIcon>
+          </VBtn>
+        </template>
+      </VTooltip>
+    </div>
 
     <VCardSubtitle class="product-price">{{ formattedPrice }}</VCardSubtitle>
 
@@ -15,13 +25,13 @@
 
 <script setup lang="ts">
 import { computed, defineProps } from 'vue';
+import type { IProduct } from "~/types/product";
 
-const props = defineProps({
-  product: {
-    type: Object,
-    required: true,
-  }
-})
+const props = defineProps<{
+  product: IProduct
+}>();
+
+console.log(props.product)
 
 const formattedPrice = computed(() => {
   return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(props.product.price);
@@ -54,9 +64,21 @@ const viewDetails = () => {
     border-top-right-radius: 8px;
   }
 
-  .product-name {
-    font-weight: bold;
-    color: #333333;
+  .product-name-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+
+    .product-name {
+      font-weight: bold;
+      color: #333333;
+    }
+
+    .info-button {
+      margin-top: 8px;
+      margin-right: 8px;
+    }
   }
 
   .product-price {

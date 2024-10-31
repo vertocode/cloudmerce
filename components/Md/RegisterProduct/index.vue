@@ -41,6 +41,12 @@
           required
       />
 
+      <VeeTextField
+          :value="imageUrl"
+          label="URL da Imagem"
+          outlined
+      />
+
       <VSpacer />
 
       <VRow class="ga-2" justify="end" align-content="end" no-gutters>
@@ -67,6 +73,7 @@ import VeeSelect from "~/components/El/VeeSelect/index.vue";
 import { useField, useForm } from 'vee-validate';
 import { useApi } from '~/composables/useApi';
 import {type IProductType, useStoreData} from "~/composables/useStoreData";
+import {useProductList} from "~/composables/useProductList";
 
 const props = defineProps<{
   showRegisterModal: boolean;
@@ -77,6 +84,7 @@ const isLoading = ref(false);
 const { post } = useApi();
 
 const { productTypes, ecommerceId } = useStoreData()
+const { products, update: updateProductList } = useProductList()
 
 const { handleSubmit } = useForm({
   initialValues: {
@@ -84,6 +92,7 @@ const { handleSubmit } = useForm({
     productPrice: 0,
     productDescription: '',
     productType: '',
+    imageUrl: ''
   },
   validationSchema: {
     productName: (value: string) => value.length > 0 || 'O nome é obrigatório',
@@ -93,10 +102,11 @@ const { handleSubmit } = useForm({
   },
 });
 
-const productName = useField('productName');
-const productPrice = useField('productPrice');
-const productDescription = useField('productDescription');
-const productType = useField('productType');
+const productName = useField('productName')
+const productPrice = useField('productPrice')
+const productDescription = useField('productDescription')
+const productType = useField('productType')
+const imageUrl = useField('imageUrl')
 
 const submit = handleSubmit(async (values) => {
   isLoading.value = true;
@@ -108,9 +118,15 @@ const submit = handleSubmit(async (values) => {
       price: values.productPrice,
       description: values.productDescription,
       productType: productTypes.value.find((type: IProductType) => type.name === values.productType)?.id,
+      image: values.imageUrl
     })
     props.onClose();
-    handleSuccess('Produto adicionado com sucesso!');
+    handleSuccess('Produto adicionado com sucesso!')
+
+    // If the list has less than 20 products, update to show in the homepage
+    if (products.value.length < 20) {
+      updateProductList()
+    }
   } catch (error) {
     if (error instanceof Error && error.message.includes('PRODUCT_EXISTS')) {
       handleError(`Erro: ${error.message}`);

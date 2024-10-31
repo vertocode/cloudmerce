@@ -1,5 +1,9 @@
 <template>
   <MdBanner />
   <MdSearchBar />
-  <MdProductList />
+  <MdProductList :products />
 </template>
+
+<script setup lang="ts">
+const { products } = useProductList()
+</script>
