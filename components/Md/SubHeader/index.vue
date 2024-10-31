@@ -7,11 +7,11 @@
     <div ref="scrollContainer" class="scroll-container">
       <div
           v-for="type in productTypes"
-          :key="type"
-          :class="['product-type', { active: isActiveType(type) }]"
-          @click="redirectTo(type)"
+          :key="type.id"
+          :class="['product-type', { active: isActiveType(type.id) }]"
+          @click="redirectTo(type.id)"
       >
-        {{ type }}
+        {{ type.name }}
       </div>
     </div>
 

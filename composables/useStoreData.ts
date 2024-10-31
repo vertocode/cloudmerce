@@ -1,11 +1,34 @@
+export interface IProductType {
+    id: string
+    name: string
+}
+
+interface IProductTypeResponse {
+    _id: string
+    name: string
+    createdAt: string
+    updatedAt: string
+    ecommerceId: string
+}
+
 export const useStoreData = () => {
+    const { get } = useApi()
+    const ecommerceId = 1
+    const productTypes = ref<IProductType[]>([])
+
+    onMounted(async () => {
+        try {
+            const response = await get(`/product-types/ecommerce/${ecommerceId}`, {}) as IProductTypeResponse[]
+            productTypes.value = response.map((productType: IProductTypeResponse) => ({
+                id: productType?._id,
+                name: productType.name
+            }))
+        } catch (e) {
+            console.error(e)
+        }
+    })
+
     const storeName = 'Cloudmerce'
-    const productTypes = [
-        'Camisetas', 'Blusas', 'Calças', 'Calçados', 'Acessórios',
-        'Vestidos', 'Saias', 'Shorts', 'Jaquetas', 'Casacos',
-        'Moletons', 'Roupas íntimas', 'Meias', 'Óculos', 'Bolsas',
-        'Chapéus', 'Luvas', 'Cachecóis', 'Bijuterias', 'Relógios'
-    ]
     const storeLogo = 'https://i.imgur.com/wtfyizY.png'
     const storeDescription = "Aqui na nossa loja, você encontrará uma seleção cuidadosa de produtos que refletem qualidade, estilo e inovação. Trabalhamos diariamente para trazer o que há de melhor no mercado, oferecendo um atendimento dedicado e uma experiência de compra que prioriza a sua satisfação."
     const storeSocialMedia = [
@@ -32,6 +55,7 @@ export const useStoreData = () => {
     ]
 
     return {
+        ecommerceId,
         productTypes,
         storeName,
         storeDescription,

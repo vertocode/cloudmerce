@@ -12,20 +12,14 @@
 </template>
 
 <script setup lang="ts">
-import type { FieldContext } from 'vee-validate';
-import { defineProps } from 'vue';
+import type { FieldContext } from 'vee-validate'
+import { defineProps } from 'vue'
 
 const props = defineProps<{
-  value: FieldContext<any>;
-  items: string[];
-  variant?: 'outlined' | 'plain' | 'filled' | 'underlined' | 'solo' | 'solo-inverted' | 'solo-filled';
-}>();
+  value: FieldContext<any>
+  items: string[]
+  variant?: 'outlined' | 'plain' | 'filled' | 'underlined' | 'solo' | 'solo-inverted' | 'solo-filled'
+}>()
 
-const { value, items } = props;
+const { value, items } = props
 </script>
-
-<style scoped lang="scss">
-.vee-select {
-
-}
-</style>

@@ -19,6 +19,7 @@
 
       <VeeTextField
           :value="productPrice"
+          prefix="R$"
           label="Preço do Produto"
           outlined
           type="number"
@@ -34,7 +35,7 @@
 
       <VeeSelect
           :value="productType"
-          :items="productTypes"
+          :items="productTypes.map(type => type.name)"
           label="Tipo de Produto"
           outlined
           required
@@ -65,6 +66,7 @@ import VeeTextField from "~/components/El/VeeTextField/index.vue";
 import VeeSelect from "~/components/El/VeeSelect/index.vue";
 import { useField, useForm } from 'vee-validate';
 import { useApi } from '~/composables/useApi';
+import {type IProductType, useStoreData} from "~/composables/useStoreData";
 
 const props = defineProps<{
   showRegisterModal: boolean;
@@ -74,7 +76,7 @@ const props = defineProps<{
 const isLoading = ref(false);
 const { post } = useApi();
 
-const productTypes = ref(['Tipo A', 'Tipo B', 'Tipo C']);
+const { productTypes, ecommerceId } = useStoreData()
 
 const { handleSubmit } = useForm({
   initialValues: {
@@ -101,10 +103,11 @@ const submit = handleSubmit(async (values) => {
 
   try {
     await post('/products', {
+      ecommerceId,
       name: values.productName,
       price: values.productPrice,
       description: values.productDescription,
-      type: values.productType
+      productType: productTypes.value.find((type: IProductType) => type.name === values.productType)?.id,
     })
     props.onClose();
     handleSuccess('Produto adicionado com sucesso!');
