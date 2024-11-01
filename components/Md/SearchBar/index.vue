@@ -22,18 +22,23 @@
 <script setup lang="ts">
 import VeeTextField from "~/components/El/VeeTextField/index.vue";
 import { useField, useForm } from "vee-validate";
+import {useStoreData} from "~/composables/useStoreData";
 
 const route = useRoute()
 const { handleSubmit } = useForm()
 
 const search = useField('search')
 
+const { getProductTypeById } = useStoreData()
+
 const productType = computed(() => {
   const defaultProductType = 'produtos'
   const { productType } = route.params || {}
   if (!productType || Array.isArray(productType)) return defaultProductType
 
-  return productType.toLowerCase()
+  const name = getProductTypeById(productType)?.name
+
+  return name?.toLowerCase() || defaultProductType
 })
 
 const handleSearch = handleSubmit((values) => {
@@ -44,9 +49,11 @@ const handleSearch = handleSubmit((values) => {
 
 <style scoped lang="scss">
 .search-bar {
+  max-width: 800px;
+  margin: auto;
   display: flex;
   justify-content: center;
-  border-radius: 0 0 16px 16px;
+  border-radius: 16px;
   align-items: center;
   padding: 24px 12px 12px 12px;
   background-color: #f0f4f8;

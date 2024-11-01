@@ -7,5 +7,6 @@ export interface IProduct {
 }
 
 export interface IProductFilters {
+    search?: string
     productType?: string
 }

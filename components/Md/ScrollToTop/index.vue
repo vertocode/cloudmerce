@@ -4,7 +4,6 @@
       class="scroll-to-top"
       icon
       @click="scrollToTop"
-      color="primary"
       elevation="4"
   >
     <v-icon>mdi-arrow-up</v-icon>
@@ -17,15 +16,11 @@
   top: 30px;
   right: 30px;
   z-index: 1000;
-  border-radius: 50%; /* Botão circular */
-  width: 56px; /* Largura do botão */
-  height: 56px; /* Altura do botão */
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3); /* Sombra do botão */
-  transition: background-color 0.3s ease; /* Transição suave para hover */
-}
-
-.scroll-to-top:hover {
-  background-color: rgba(0, 123, 255, 0.8); /* Efeito de hover */
+  border-radius: 50%;
+  width: 56px;
+  height: 56px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+  transition: background-color 0.3s ease;
 }
 </style>
 

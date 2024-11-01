@@ -1,6 +1,6 @@
 <template>
   <MdBanner />
-  <MdSearchBar />
+  <MdSearchBar style="margin-top: -24px" />
   <MdProductList :products />
 </template>
 
