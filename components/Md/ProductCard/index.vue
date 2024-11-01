@@ -62,6 +62,7 @@ const viewDetails = () => {
   .product-image {
     border-top-left-radius: 8px;
     border-top-right-radius: 8px;
+    mix-blend-mode: darken;
   }
 
   .product-name-container {
