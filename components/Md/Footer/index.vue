@@ -13,7 +13,9 @@
         <VBtn variant="text" @click="$router.push('/about')">Sobre Nós</VBtn>
         <VBtn variant="text" @click="$router.push('/privacy')">Política de Privacidade</VBtn>
         <VBtn variant="text" @click="$router.push('/contact')">Contato</VBtn>
-        <VBtn variant="text" @click="showPaletteModal = true">Configurações de Paleta</VBtn>
+        <VBtn v-if="isAdmin" variant="text" @click="showProductTypeModal = true">Cadastrar Tipo de Produto</VBtn>
+        <VBtn v-if="isAdmin" variant="text" @click="showProductModal = true">Cadastrar Produto</VBtn>
+        <VBtn v-if="isAdmin" variant="text" @click="showPaletteModal = true">Configurações de Paleta</VBtn>
       </div>
 
       <div class="footer-contact">
@@ -36,15 +38,33 @@
     </div>
   </footer>
   <PaletteModal :show-palette-modal="showPaletteModal" :on-close="() => showPaletteModal = false"/>
+  <RegisterProductType :showRegisterModal="showProductTypeModal" :onClose="() => showProductTypeModal = false" />
+  <RegisterProduct
+      :showRegisterModal="showProductModal"
+      :onClose="() => showProductModal = false"
+      :on-register-new-product-type="onRegisterNewProductType"
+  />
 </template>
 
 <script setup lang="ts">
 import PaletteModal from "~/components/Md/PaletteModal/index.vue";
 import {ref} from "vue";
+import RegisterProductType from "~/components/Md/RegisterProductType/index.vue";
+import RegisterProduct from "~/components/Md/RegisterProduct/index.vue";
 
 const { techEmail, formattedWhatsappNumber } = useContact()
 const { storeLogo, storeName, storeSocialMedia } = useStoreData()
+
 const showPaletteModal = ref(false)
+const showProductTypeModal = ref(false)
+const showProductModal = ref(false)
+
+const onRegisterNewProductType = () => {
+  showProductModal.value = false
+  showProductTypeModal.value = true
+}
+
+const { isAdmin } = useUser()
 
 const openSocialMedia = (url: string) => {
   window.open(url)

@@ -2,13 +2,18 @@ export const useApi = () => {
     const config = useRuntimeConfig()
     const apiUrl = config.public?.apiUrl || console.error('API URL not found in runtime config.')
 
+    const commonHeaders = {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*'
+    }
+
     const get = async (path: string, data: Record<string, any>, options?: { cache?: 'no-cache' | 'force-cache' }) => {
         const query = new URLSearchParams(data).toString()
 
         return $fetch(`${apiUrl}${path}?${query}`, {
             method: 'GET',
             headers: {
-                'Content-Type': 'application/json'
+                ...commonHeaders
             },
             ...options
         })
@@ -19,7 +24,7 @@ export const useApi = () => {
             method: 'POST',
             body: JSON.stringify(data),
             headers: {
-                'Content-Type': 'application/json'
+               ...commonHeaders
             }
         })
     }
@@ -29,7 +34,7 @@ export const useApi = () => {
             method: 'PATCH',
             body: JSON.stringify(data),
             headers: {
-                'Content-Type': 'application/json'
+                ...commonHeaders
             }
         })
     }

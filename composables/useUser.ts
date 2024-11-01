@@ -1,3 +1,5 @@
+import {computed} from "vue";
+
 interface AuthParams {
     email: string;
     password: string;
@@ -9,10 +11,13 @@ interface RegisterParams {
     password: string;
 }
 
+export type Role = 'user' | 'admin'
+
 interface User {
     createdAt: string;
     email: string;
     name: string;
+    role: Role
     password: string;
     _id: string;
 }
@@ -22,6 +27,8 @@ export const useUser = () => {
 
     const userData = useState<User | null>('userData', () => null);
     const { get, post } = useApi();
+
+    const isAdmin = computed(() => userData.value?.role === 'admin')
 
     onMounted(() => {
         if (process.client) {
@@ -75,6 +82,7 @@ export const useUser = () => {
 
     return {
         userData,
+        isAdmin,
         login,
         logout,
         register,

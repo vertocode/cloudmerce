@@ -60,8 +60,7 @@ const showPaletteModal = ref(false)
 const showProductTypeModal = ref(false)
 const showProductModal = ref(false)
 
-const userRole = 'admin'
-const isAdmin = computed(() => userRole === 'admin')
+const { isAdmin } = useUser()
 
 const onRegisterNewProductType = () => {
   showProductModal.value = false
