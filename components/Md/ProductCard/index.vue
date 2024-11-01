@@ -1,38 +1,6 @@
 <template>
   <VCard class="product-card">
-    <!-- Check if product image is a string (single image) -->
-    <VImg
-        v-if="isString(product.image)"
-        :src="product.image"
-        :alt="product.name"
-        aspect-ratio="1"
-        class="product-image"
-    />
-
-    <!-- Check if product image is an array with one image -->
-    <VImg
-        v-else-if="product.image?.length === 1"
-        :src="product.image[0]"
-        :alt="product.name"
-        aspect-ratio="1"
-        class="product-image"
-    />
-
-    <!-- Carousel for multiple images -->
-    <VCarousel v-else-if="product.image?.length > 1" class="product-image-carousel">
-      <VCarouselItem v-for="(img, index) in product.image" :key="index">
-        <VImg :src="img" :alt="product.name" aspect-ratio="1" class="product-image" />
-      </VCarouselItem>
-    </VCarousel>
-
-    <!-- Default image if no product image is available -->
-    <VImg
-        v-else
-        src="~/assets/productWithoutImage.webp"
-        :alt="product.name"
-        aspect-ratio="1"
-        class="product-image"
-    />
+    <ProductImage :product />
 
     <div class="product-name-container">
       <VCardTitle class="product-name">{{ product.name }}</VCardTitle>
@@ -57,8 +25,8 @@
 
 <script setup lang="ts">
 import { computed, defineProps } from 'vue';
-import { isString } from 'lodash'
 import type { IProduct } from "~/types/product";
+import ProductImage from "~/components/Md/ProductCard/components/ProductImage.vue";
 
 const props = defineProps<{
   product: IProduct

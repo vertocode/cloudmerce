@@ -42,15 +42,19 @@
             />
           </VCol>
 
-          <VCol cols="12">
+          <VCol cols="12" class="product-type-container">
             <VeeSelect
                 :value="productType"
                 :items="productTypes.map(type => type.name)"
                 placeholder="Selecione o tipo de produto"
                 label="Tipo de Produto"
+                no-data-text="Sem opções, clique para cadastrar um novo tipo de produto abaixo deste input."
                 outlined
                 required
             />
+            <span class="product-type-message" @click="onRegisterNewProductType">
+              Cadastrar novo tipo de produto <VIcon color="var(--secondary-700)">mdi-link</VIcon>
+            </span>
           </VCol>
 
           <VCol
@@ -107,6 +111,7 @@ import { type IProductType, useStoreData } from "~/composables/useStoreData";
 import { useProductList } from "~/composables/useProductList";
 
 const props = defineProps<{
+  onRegisterNewProductType: () => void
   showRegisterModal: boolean;
   onClose: () => void;
 }>();
@@ -188,6 +193,21 @@ const removeImageField = (index: number) => {
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
   }
 }
+
+.product-type-container {
+  position: relative;
+
+  .product-type-message {
+    cursor: pointer;
+    position: absolute;
+    top: 58px;
+    right: 8px;
+    color: var(--secondary-color-700);
+    font-size: .9rem;
+  }
+}
+
+
 
 .field-container {
   max-height: 70vh;

@@ -7,6 +7,7 @@
       :items="items"
       v-bind="$attrs"
       autocomplete="off"
+      :no-data-text="noDataText || 'Sem opções'"
       :placeholder="placeholder"
       label="Selecionar Opção"
   />
@@ -20,7 +21,8 @@ const props = defineProps<{
   value: FieldContext<any>
   items: string[]
   placeholder?: string
-  variant?: 'outlined' | 'plain' | 'filled' | 'underlined' | 'solo' | 'solo-inverted' | 'solo-filled'
+  variant?: 'outlined' | 'plain' | 'filled' | 'underlined' | 'solo' | 'solo-inverted' | 'solo-filled',
+  noDataText?: string
 }>()
 
 const { value, items } = props

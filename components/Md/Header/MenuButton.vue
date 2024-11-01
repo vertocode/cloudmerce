@@ -37,7 +37,11 @@
   </div>
   <PaletteModal :show-palette-modal="showPaletteModal" :on-close="() => showPaletteModal = false"/>
   <RegisterProductType :showRegisterModal="showProductTypeModal" :onClose="() => showProductTypeModal = false" />
-  <RegisterProduct :showRegisterModal="showProductModal" :onClose="() => showProductModal = false" />
+  <RegisterProduct
+      :showRegisterModal="showProductModal"
+      :onClose="() => showProductModal = false"
+      :on-register-new-product-type="onRegisterNewProductType"
+  />
 </template>
 
 <script setup lang="ts">
@@ -50,6 +54,11 @@ const isDrawerOpen = ref(false)
 const showPaletteModal = ref(false)
 const showProductTypeModal = ref(false)
 const showProductModal = ref(false)
+
+const onRegisterNewProductType = () => {
+  showProductModal.value = false
+  showProductTypeModal.value = true
+}
 </script>
 
 <style scoped>
