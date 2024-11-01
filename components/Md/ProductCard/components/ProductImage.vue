@@ -36,7 +36,6 @@
 
 
 <script setup lang="ts">
-import {isArray, isString} from "lodash";
 import type {IProduct} from "~/types/product";
 
 const props = defineProps<{
@@ -44,7 +43,7 @@ const props = defineProps<{
 }>();
 
 const images = computed(() => {
-  if (isArray(props.product.image)) {
+  if (Array.isArray(props.product.image)) {
     return props.product.image.filter(img => img?.includes('https')) as string[]
   }
 
@@ -52,6 +51,6 @@ const images = computed(() => {
 })
 
 const isStringImage = computed(() => {
-  return isString(images.value)
+  return typeof images.value === 'string'
 })
 </script>

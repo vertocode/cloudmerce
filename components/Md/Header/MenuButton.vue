@@ -23,18 +23,23 @@
         <VListItem @click="$router.push('/contact')" class="navigation-item">
           <VListItemTitle>Contato</VListItemTitle>
         </VListItem>
-        <VListItem @click="showProductTypeModal = true" class="navigation-item">
-          <VListItemTitle>Cadastrar Tipo de Produto</VListItemTitle>
-        </VListItem>
-        <VListItem @click="showProductModal = true" class="navigation-item">
-          <VListItemTitle>Cadastrar Produto</VListItemTitle>
-        </VListItem>
-        <VListItem @click="showPaletteModal = true" class="navigation-item">
-          <VListItemTitle>Configurações de Paleta</VListItemTitle>
-        </VListItem>
+
+        <template v-if="isAdmin">
+          <h3 class="admin-subtitle">Ações de Administrador</h3>
+          <VListItem @click="showProductTypeModal = true" class="navigation-item admin-item">
+            <VListItemTitle>Cadastrar Tipo de Produto</VListItemTitle>
+          </VListItem>
+          <VListItem @click="showProductModal = true" class="navigation-item admin-item">
+            <VListItemTitle>Cadastrar Produto</VListItemTitle>
+          </VListItem>
+          <VListItem @click="showPaletteModal = true" class="navigation-item admin-item">
+            <VListItemTitle>Configurações de Paleta</VListItemTitle>
+          </VListItem>
+        </template>
       </VList>
     </VMenu>
   </div>
+
   <PaletteModal :show-palette-modal="showPaletteModal" :on-close="() => showPaletteModal = false"/>
   <RegisterProductType :showRegisterModal="showProductTypeModal" :onClose="() => showProductTypeModal = false" />
   <RegisterProduct
@@ -45,7 +50,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import PaletteModal from '~/components/Md/PaletteModal/index.vue'
 import RegisterProductType from '~/components/Md/RegisterProductType/index.vue'
 import RegisterProduct from '~/components/Md/RegisterProduct/index.vue'
@@ -54,6 +59,9 @@ const isDrawerOpen = ref(false)
 const showPaletteModal = ref(false)
 const showProductTypeModal = ref(false)
 const showProductModal = ref(false)
+
+const userRole = 'admin'
+const isAdmin = computed(() => userRole === 'admin')
 
 const onRegisterNewProductType = () => {
   showProductModal.value = false
@@ -75,6 +83,17 @@ const onRegisterNewProductType = () => {
 
 .navigation-list {
   padding: 8px 0;
+}
+
+.admin-subtitle {
+  padding: 8px 16px;
+  font-size: 1rem;
+  background-color: var(--secondary-color-700);
+  color: #fff;
+}
+
+.admin-item {
+  color: var(--secondary-color-700);
 }
 
 .navigation-item {
