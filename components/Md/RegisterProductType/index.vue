@@ -50,6 +50,7 @@ import { ref } from 'vue';
 import Modal from '~/components/El/Modal/index.vue';
 import VeeTextField from "~/components/El/VeeTextField/index.vue";
 import { useField, useForm } from 'vee-validate';
+import {useStoreData} from "~/composables/useStoreData";
 
 const props = defineProps<{
   showRegisterModal: boolean;
@@ -64,6 +65,7 @@ const isUserEverton = computed(() => {
 })
 
 const { post } = useApi()
+const { updateProductTypes } = useStoreData()
 
 const { handleSubmit } = useForm({
   initialValues: {
@@ -90,8 +92,9 @@ const submit = handleSubmit(async (values) => {
     await post('/product-types', {
       name: values.productTypeName,
       ecommerceId: values.ecommerceId,
-    });
+    })
     props.onClose()
+    await updateProductTypes({ cache: 'no-cache' })
     handleSuccess('Tipo de produto cadastrado com sucesso!')
   } catch (error) {
     if (error instanceof Error && error.message.includes('PRODUCT_TYPE_EXISTS')) {

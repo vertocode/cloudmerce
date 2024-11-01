@@ -22,7 +22,7 @@ export const useStoreData = () => {
 
     const updateProductTypes = async ({ cache }: IUpdateProductTypes) => {
         try {
-            if (productTypes.value.length && cache !== 'force-cache') return
+            if (productTypes.value.length && cache !== 'no-cache') return
 
             const response = await get(`/product-types/ecommerce/${ecommerceId}`, {}, {
                 cache: cache || 'force-cache'
@@ -78,6 +78,6 @@ export const useStoreData = () => {
         storeLogo,
         storeSocialMedia,
         getProductTypeById,
-        update: updateProductTypes({ cache: 'no-cache' })
+        updateProductTypes: updateProductTypes
     }
 }

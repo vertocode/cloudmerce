@@ -10,7 +10,7 @@ export const useProductList = (filters?: IProductFilters) => {
     interface IFetchProducts {
         cache?: 'force-cache' | 'no-cache'
     }
-    const fetchProducts = async ({ cache }: IFetchProducts) => {
+    const fetchProducts = async ({ cache }: IFetchProducts = {}) => {
         const prevFilters = lastFilters.value
 
         // If we already have the products, and don't have the filters or the filters are the same as the previous ones, we don't need to fetch the products again
@@ -29,6 +29,6 @@ export const useProductList = (filters?: IProductFilters) => {
 
     return {
         products,
-        update: fetchProducts({ cache: 'no-cache' })
+        update: fetchProducts
     }
 }

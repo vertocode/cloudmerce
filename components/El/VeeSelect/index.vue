@@ -7,6 +7,7 @@
       :items="items"
       v-bind="$attrs"
       autocomplete="off"
+      :placeholder="placeholder"
       label="Selecionar Opção"
   />
 </template>
@@ -18,6 +19,7 @@ import { defineProps } from 'vue'
 const props = defineProps<{
   value: FieldContext<any>
   items: string[]
+  placeholder?: string
   variant?: 'outlined' | 'plain' | 'filled' | 'underlined' | 'solo' | 'solo-inverted' | 'solo-filled'
 }>()
 
