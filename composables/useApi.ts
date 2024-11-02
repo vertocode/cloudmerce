@@ -39,6 +39,16 @@ export const useApi = () => {
         })
     }
 
+    const put = async (path: string, data: any) => {
+        return $fetch(`${apiUrl}${path}`, {
+            method: 'PUT',
+            body: JSON.stringify(data),
+            headers: {
+                ...commonHeaders
+            }
+        })
+    }
+
     const remove = async (path: string) => {
         return $fetch(`${apiUrl}${path}`, {
             method: 'DELETE',
@@ -52,6 +62,7 @@ export const useApi = () => {
         get,
         post,
         patch,
-        remove
+        remove,
+        put
     }
 }

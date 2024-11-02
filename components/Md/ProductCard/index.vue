@@ -19,7 +19,9 @@
     <VCardActions class="card-actions">
       <VBtn color="primary" @click="addToCart" class="add-to-cart-btn">Adicionar ao Carrinho</VBtn>
       <VBtn @click="viewDetails" class="view-details-btn">Ver Detalhes</VBtn>
-      <VBtn v-if="isAdmin" @click="viewDetails" class="edit-btn">Editar (ADM)</VBtn>
+      <MdEditProductModal :initial-values="product" :updateProductList>
+        <VBtn v-if="isAdmin" class="edit-btn">Editar (ADM)</VBtn>
+      </MdEditProductModal>
       <MdDeleteProductModal :on-confirm="handleDelete" :product-name="product.name">
         <VBtn v-if="isAdmin" class="delete-btn">Deletar (ADM)</VBtn>
       </MdDeleteProductModal>

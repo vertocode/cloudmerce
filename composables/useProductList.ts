@@ -1,7 +1,7 @@
 import type {IProduct, IProductFilters, IProductResponse} from "~/types/product";
 
 export const useProductList = (filters?: IProductFilters) => {
-    const products = useState<IProduct[]>(() => [])
+    const products = useState<IProduct[]>('products', () => [])
     const lastFilters = useState<IProductFilters | null>(() => null)
     const loading = useState<boolean>(() => false)
     const search = useState('filterSearchProducts')
@@ -13,7 +13,6 @@ export const useProductList = (filters?: IProductFilters) => {
         cache?: 'force-cache' | 'no-cache'
     }
     const fetchProducts = async ({ cache }: IFetchProducts = {}) => {
-        loading.value = true
         const prevFilters = lastFilters.value
 
         // If we already have the products, and don't have the filters or the filters are the same as the previous ones, we don't need to fetch the products again
@@ -39,7 +38,8 @@ export const useProductList = (filters?: IProductFilters) => {
             name: product.name,
             image: product.image,
             description: product.description,
-            price: product.price
+            price: product.price,
+            productType: product.productType
         }))
         lastFilters.value = filters || null
 

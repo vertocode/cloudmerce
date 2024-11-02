@@ -53,7 +53,6 @@ export const useUser = () => {
             handleSuccess('Login efetuado com sucesso!')
             return { code: 'success' }
         } catch (error) {
-            console.log(error)
             handleError('Erro ao efetuar login')
             return { code: 'error' }
         }

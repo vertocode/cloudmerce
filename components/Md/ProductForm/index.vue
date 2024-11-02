@@ -41,7 +41,7 @@
               outlined
               required
           />
-          <span class="product-type-message" @click="onRegisterNewProductType">
+          <span v-if="onRegisterNewProductType" class="product-type-message" @click="onRegisterNewProductType">
               Cadastrar novo tipo de produto <VIcon color="var(--secondary-700)">mdi-link</VIcon>
             </span>
         </VCol>
@@ -81,7 +81,7 @@
       </VCol>
       <VCol cols="6">
         <VBtn size="large" variant="tonal" color="primary" width="100%" type="submit" :loading="isLoading">
-          Adicionar Produto
+          {{ isEdition ? 'Editar' : 'Adicionar' }} Produto
         </VBtn>
       </VCol>
     </VRow>
@@ -91,10 +91,17 @@
 import VeeSelect from "~/components/El/VeeSelect/index.vue";
 import VeeTextField from "~/components/El/VeeTextField/index.vue";
 import {useStoreData} from "~/composables/useStoreData";
-import {useProductList} from "~/composables/useProductList";
 import {useField, useForm} from "vee-validate";
 import {ref} from "vue";
 import type {IProductType} from "~/composables/useStoreData";
+
+export interface InitialValues {
+  productName: string
+  productPrice: number
+  productDescription: string
+  productType: string
+  imageUrls: string[]
+}
 
 interface Fields {
   productName: string;
@@ -112,27 +119,31 @@ export interface ActionParams extends Fields {
 const props = defineProps<{
   action: (values: ActionParams) => Promise<void>
   onClose: () => void
-  onRegisterNewProductType: () => void
+  onRegisterNewProductType?: () => void
+  updateProductList?: (params: { cache: 'no-cache' | 'force-cache' }) => Promise<void>
+  initialValues?: InitialValues
 }>()
 
+const products = useState('products', () => [])
 const { productTypes, ecommerceId } = useStoreData();
-const { products, update: updateProductList } = useProductList();
+
+const isEdition = !!props.initialValues
 
 const isLoading = ref(false);
-const imageUrls = ref(['']);
+const imageUrls = ref(props?.initialValues?.imageUrls || [''])
 
 const { handleSubmit } = useForm<Fields>({
   initialValues: {
-    productName: '',
-    productPrice: 0,
-    productDescription: '',
-    productType: ''
+    productName: props?.initialValues?.productName || '',
+    productPrice: props?.initialValues?.productPrice || 0,
+    productDescription: props?.initialValues?.productDescription || '',
+    productType: props?.initialValues?.productType || ''
   },
   validationSchema: {
-    productName: (value: string) => value.length > 0 || 'O nome é obrigatório',
-    productPrice: (value: number) => value > 0 || 'O preço deve ser maior que zero',
-    productDescription: (value: string) => value.length > 0 || 'A descrição é obrigatória',
-    productType: (value: string) => value.length > 0 || 'O tipo de produto é obrigatório'
+    productName: (value: string) => value && value.length > 0 || 'O nome é obrigatório',
+    productPrice: (value: number) => value && value > 0 || 'O preço deve ser maior que zero',
+    productDescription: (value: string) => value && value.length > 0 || 'A descrição é obrigatória',
+    productType: (value: string) => value && value.length > 0 || 'O tipo de produto é obrigatório'
   },
 });
 
@@ -164,17 +175,17 @@ const submit = handleSubmit(async (values: Fields) => {
       productType: productTypes.value.find((type: IProductType) => type.name === values.productType)?.id || ''
     })
     onClose();
-    handleSuccess('Produto adicionado com sucesso!');
+    handleSuccess(`Produto ${isEdition ? 'editado' : 'adicionado'} com sucesso!`);
 
     // If the list has less than 20 products, update to show in the homepage
-    if (products.value.length < 20) {
-      await updateProductList({ cache: 'no-cache' })
+    if (products.value.length < 20 && props.updateProductList) {
+      await props.updateProductList({ cache: 'no-cache' })
     }
   } catch (error) {
     if (error instanceof Error && error.message.includes('PRODUCT_EXISTS')) {
       handleError(`Erro: ${error.message}`);
     } else {
-      handleError('Erro ao adicionar produto');
+      handleError(`Erro ao ${isEdition ? 'editar' : 'adicionar'} produto`);
     }
   } finally {
     isLoading.value = false;
