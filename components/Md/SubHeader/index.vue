@@ -1,5 +1,5 @@
 <template>
-  <div class="subheader">
+  <div class="subheader" v-if="productTypes.length">
     <VBtn icon v-if="canScrollLeft" @click="scrollLeft" class="scroll-btn scroll-left">
       <v-icon>mdi-chevron-left</v-icon>
     </VBtn>

@@ -1,9 +1,9 @@
 <template>
   <MdBanner />
   <MdSearchBar style="margin-top: -24px" />
-  <MdProductList :products />
+  <MdProductList :products :loading />
 </template>
 
 <script setup lang="ts">
-const { products } = useProductList()
+const { products, loading } = useProductList()
 </script>

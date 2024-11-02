@@ -1,5 +1,8 @@
 <template>
-  <VRow>
+  <div v-if="loading" class="spinner">
+    <VProgressCircular indeterminate color="primary" size="50" />
+  </div>
+  <VRow v-else>
     <VCol
         cols="12"
         xl="3"
@@ -19,5 +22,17 @@ import type { IProduct } from "~/types/product"
 
 defineProps<{
   products: IProduct[]
+  loading?: boolean
 }>()
 </script>
+
+<style lang="scss">
+.spinner {
+  margin: auto;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 300px;
+}
+</style>
