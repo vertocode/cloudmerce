@@ -4,6 +4,7 @@
       <VeeTextField
           variant="outlined"
           class="vee-text-field"
+          :disabled="filterSearchProducts.length"
           :value="search"
           :label="`Pesquisar ${productType} pelo nome`"
           required
@@ -16,6 +17,9 @@
         <v-icon>mdi-magnify</v-icon>
       </VBtn>
     </VForm>
+    <span v-if="filterSearchProducts.length" class="filter-message">
+      Filtrando por: <strong>{{ filterSearchProducts }}</strong>. <span class="clean-btn" @click="cleanFilter">Clique aqui para limpar.</span>
+    </span>
   </div>
 </template>
 
@@ -25,11 +29,17 @@ import { useField, useForm } from "vee-validate";
 import {useStoreData} from "~/composables/useStoreData";
 
 const route = useRoute()
-const { handleSubmit } = useForm()
+const { handleSubmit, setValues } = useForm()
 
+const filterSearchProducts = useState('filterSearchProducts', () => '')
 const search = useField('search')
 
 const { getProductTypeById } = useStoreData()
+
+const cleanFilter = () => {
+  filterSearchProducts.value = ''
+  setValues({ search: '' })
+}
 
 const productType = computed(() => {
   const defaultProductType = 'produtos'
@@ -43,7 +53,7 @@ const productType = computed(() => {
 
 const handleSearch = handleSubmit((values) => {
   if (!values.search) return
-  alert(`Pesquisando por: ${values.search}`)
+  filterSearchProducts.value = values.search
 })
 </script>
 
@@ -57,6 +67,14 @@ const handleSearch = handleSubmit((values) => {
   align-items: center;
   padding: 24px 12px 12px 12px;
   background-color: #f0f4f8;
+  flex-direction: column;
+  gap: 4px;
+
+  .clean-btn {
+    color: var(--secondary-color-700);
+    cursor: pointer;
+    text-decoration: underline;
+  }
 
   form {
     display: flex;

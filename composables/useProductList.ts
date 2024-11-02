@@ -4,6 +4,7 @@ export const useProductList = (filters?: IProductFilters) => {
     const products = useState<IProduct[]>(() => [])
     const lastFilters = useState<IProductFilters | null>(() => null)
     const loading = useState<boolean>(() => false)
+    const search = useState('filterSearchProducts')
 
     const { ecommerceId } = useStoreData()
     const { get } = useApi()
@@ -26,13 +27,18 @@ export const useProductList = (filters?: IProductFilters) => {
         }
 
         loading.value = true
-        products.value = await get(`/products/ecommerce/${ecommerceId}`, filters || {}, {
+        products.value = await get(`/products/ecommerce/${ecommerceId}`, {
+            ...filters,
+            search: search.value
+        }, {
             cache: cache || 'force-cache'
         }) as IProduct[]
         lastFilters.value = filters || null
 
         loading.value = false
     }
+
+    watch(search, () => fetchProducts({ cache: 'no-cache' }))
 
     onMounted(() => fetchProducts({ cache: 'no-cache' }))
 
