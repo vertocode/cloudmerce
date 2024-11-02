@@ -27,7 +27,7 @@
         <template v-if="isAdmin">
           <h3 class="admin-subtitle">Ações de Administrador</h3>
           <VListItem @click="showProductTypeModal = true" class="navigation-item admin-item">
-            <VListItemTitle>Cadastrar Tipo de Produto</VListItemTitle>
+            <VListItemTitle>Tipos de Produto</VListItemTitle>
           </VListItem>
           <VListItem @click="showProductModal = true" class="navigation-item admin-item">
             <VListItemTitle>Cadastrar Produto</VListItemTitle>
@@ -41,7 +41,7 @@
   </div>
 
   <PaletteModal :show-palette-modal="showPaletteModal" :on-close="() => showPaletteModal = false"/>
-  <RegisterProductType :showRegisterModal="showProductTypeModal" :onClose="() => showProductTypeModal = false" />
+  <ManageProductType :showProductTypeModal="showProductTypeModal" :onClose="() => showProductTypeModal = false" />
   <RegisterProduct
       :showRegisterModal="showProductModal"
       :onClose="() => showProductModal = false"
@@ -50,9 +50,9 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { ref } from 'vue'
 import PaletteModal from '~/components/Md/PaletteModal/index.vue'
-import RegisterProductType from '~/components/Md/RegisterProductType/index.vue'
+import ManageProductType from '~/components/Md/ManageProductType/index.vue'
 import RegisterProduct from '~/components/Md/RegisterProduct/index.vue'
 
 const isDrawerOpen = ref(false)

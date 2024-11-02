@@ -38,7 +38,7 @@
     </div>
   </footer>
   <PaletteModal :show-palette-modal="showPaletteModal" :on-close="() => showPaletteModal = false"/>
-  <RegisterProductType :showRegisterModal="showProductTypeModal" :onClose="() => showProductTypeModal = false" />
+  <ManageProductType :showProductTypeModal="showProductTypeModal" :onClose="() => showProductTypeModal = false" />
   <RegisterProduct
       :showRegisterModal="showProductModal"
       :onClose="() => showProductModal = false"
@@ -49,7 +49,7 @@
 <script setup lang="ts">
 import PaletteModal from "~/components/Md/PaletteModal/index.vue";
 import {ref} from "vue";
-import RegisterProductType from "~/components/Md/RegisterProductType/index.vue";
+import ManageProductType from "~/components/Md/ManageProductType/index.vue";
 import RegisterProduct from "~/components/Md/RegisterProduct/index.vue";
 
 const { techEmail, formattedWhatsappNumber } = useContact()
