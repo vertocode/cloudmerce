@@ -25,7 +25,7 @@ export const useProductList = (filters?: IProductFilters) => {
         lastFilters.value = filters || null
     }
 
-    onMounted(fetchProducts)
+    onMounted(() => fetchProducts({ cache: 'no-cache' }))
 
     return {
         products,

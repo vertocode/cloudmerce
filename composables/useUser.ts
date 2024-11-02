@@ -67,11 +67,12 @@ export const useUser = () => {
     const register = async (registerParams: RegisterParams) => {
         try {
             const response = await post('/users', registerParams);
-            if (!response?._id) {
+            const userResponse = response as User
+            if (!userResponse?._id) {
                 throw new Error('Response without user id');
             }
-            userData.value = response as User;
-            storage.setItem('userData', response);
+            userData.value = userResponse;
+            storage.setItem('userData', userResponse);
             handleSuccess('Usuário cadastrado com sucesso!');
             return { code: 'success' };
         } catch (e) {

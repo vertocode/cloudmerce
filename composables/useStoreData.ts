@@ -16,6 +16,8 @@ export const useStoreData = () => {
     const ecommerceId = 1
     const productTypes = useState<IProductType[]>(() => [])
 
+    console.log(productTypes.value)
+
     interface IUpdateProductTypes {
         cache?: 'no-cache' | 'force-cache'
     }
@@ -27,6 +29,7 @@ export const useStoreData = () => {
             const response = await get(`/product-types/ecommerce/${ecommerceId}`, {}, {
                 cache: cache || 'force-cache'
             }) as IProductTypeResponse[]
+            console.log(response)
             productTypes.value = response.map((productType: IProductTypeResponse) => ({
                 id: productType?._id,
                 name: productType.name
@@ -37,7 +40,7 @@ export const useStoreData = () => {
     }
 
     onMounted( async () => {
-        await updateProductTypes({ cache: 'force-cache' })
+        await updateProductTypes({ cache: 'no-cache' })
     })
 
     const storeName = 'Cloudmerce'
