@@ -1,6 +1,6 @@
 <template>
   <div v-if="loading" class="spinner">
-    <VProgressCircular indeterminate color="primary" size="50" />
+    <VProgressCircular indeterminate color="var(--primary-color-500)" size="50" />
   </div>
   <VRow v-else>
     <VCol
@@ -12,7 +12,7 @@
         v-for="product in products"
         :key="product.id"
     >
-      <MdProductCard :product="product" />
+      <MdProductCard :product :updateProductList />
     </VCol>
   </VRow>
 </template>
@@ -22,6 +22,7 @@ import type { IProduct } from "~/types/product"
 
 defineProps<{
   products: IProduct[]
+  updateProductList: (param: { cache: 'no-cache' | 'force-cache' }) => Promise<void>
   loading?: boolean
 }>()
 </script>

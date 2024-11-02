@@ -39,9 +39,19 @@ export const useApi = () => {
         })
     }
 
+    const remove = async (path: string) => {
+        return $fetch(`${apiUrl}${path}`, {
+            method: 'DELETE',
+            headers: {
+                ...commonHeaders
+            }
+        })
+    }
+
     return {
         get,
         post,
-        patch
+        patch,
+        remove
     }
 }

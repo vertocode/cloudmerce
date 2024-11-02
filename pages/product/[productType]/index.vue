@@ -3,7 +3,7 @@
     <h2 class="product-type-title">{{ productTypeData?.name }}</h2>
     <MdSearchBar class="mt-3" />
 
-    <MdProductList :products :loading />
+    <MdProductList :products :loading :updateProductList />
   </div>
 </template>
 
@@ -16,7 +16,7 @@ import { useStoreData } from "~/composables/useStoreData";
 const route = useRoute()
 const productType = computed(() => route.params.productType as string)
 const { getProductTypeById } = useStoreData()
-const { products, loading } = useProductList({
+const { products, loading, update: updateProductList } = useProductList({
   productType: productType.value
 })
 

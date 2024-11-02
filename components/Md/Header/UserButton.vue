@@ -100,7 +100,7 @@ onMounted(() => {
 
 .admin-btn {
   color: #fff;
-  background-color: var(--secondary-color-700);
+  background-color: var(--secondary-color-500);
   border-radius: 8px;
   transition: background-color 0.3s ease;
 

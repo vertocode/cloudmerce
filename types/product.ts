@@ -3,7 +3,19 @@ export interface IProduct {
     name: string
     price: number
     description: string
-    image: string
+    image: string | string[]
+}
+
+export interface IProductResponse {
+    createdAt: string
+    ecommerceId: string
+    name: string
+    description: string
+    _id: string
+    productType: string
+    image: string[] | string
+    price: number
+    updatedAt: string
 }
 
 export interface IProductFilters {

@@ -1,4 +1,4 @@
-import type { IProduct, IProductFilters } from "~/types/product";
+import type {IProduct, IProductFilters, IProductResponse} from "~/types/product";
 
 export const useProductList = (filters?: IProductFilters) => {
     const products = useState<IProduct[]>(() => [])
@@ -27,12 +27,20 @@ export const useProductList = (filters?: IProductFilters) => {
         }
 
         loading.value = true
-        products.value = await get(`/products/ecommerce/${ecommerceId}`, {
+        const response = await get(`/products/ecommerce/${ecommerceId}`, {
             ...filters,
             search: search.value
         }, {
             cache: cache || 'force-cache'
-        }) as IProduct[]
+        }) as IProductResponse[]
+
+        products.value = response.map((product: IProductResponse): IProduct => ({
+            id: product._id,
+            name: product.name,
+            image: product.image,
+            description: product.description,
+            price: product.price
+        }))
         lastFilters.value = filters || null
 
         loading.value = false

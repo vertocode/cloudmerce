@@ -19,6 +19,10 @@
     <VCardActions class="card-actions">
       <VBtn color="primary" @click="addToCart" class="add-to-cart-btn">Adicionar ao Carrinho</VBtn>
       <VBtn @click="viewDetails" class="view-details-btn">Ver Detalhes</VBtn>
+      <VBtn v-if="isAdmin" @click="viewDetails" class="edit-btn">Editar (ADM)</VBtn>
+      <MdDeleteProductModal :on-confirm="handleDelete" :product-name="product.name">
+        <VBtn v-if="isAdmin" class="delete-btn">Deletar (ADM)</VBtn>
+      </MdDeleteProductModal>
     </VCardActions>
   </VCard>
 </template>
@@ -30,9 +34,12 @@ import ProductImage from "~/components/Md/ProductCard/components/ProductImage.vu
 
 const props = defineProps<{
   product: IProduct
+  updateProductList: (param: { cache: 'no-cache' | 'force-cache' }) => Promise<void>
 }>();
 
-console.log(props.product)
+const { handleDelete } = useProduct({ product: props.product, updateProductList: props.updateProductList });
+
+const { isAdmin } = useUser()
 
 const formattedPrice = computed(() => {
   return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(props.product.price);
@@ -114,6 +121,26 @@ const viewDetails = () => {
 
     .view-details-btn {
       width: 100%;
+    }
+
+    .edit-btn {
+      width: 100%;
+      color: var(--primary-color-500);
+      background-color: var(--secondary-color-500) !important;
+
+      &:hover {
+        background-color: var(--secondary-color-700) !important;
+      }
+    }
+
+    .delete-btn {
+      width: 100%;
+      color: #fff;
+      background-color: var(--danger-color-500) !important;
+
+      &:hover {
+        background-color: var(--danger-color-700) !important;
+      }
     }
   }
 }
