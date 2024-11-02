@@ -35,12 +35,14 @@ const props = defineProps<{
 
 const { put } = useApi()
 
+const { getProductTypeById } = useStoreData()
+
 const initialValues = computed((): InitialValues => {
   const product = props.initialValues
 
   return {
     productName: product.name || '',
-    productType: product.productType || '',
+    productType: getProductTypeById(product.productType)?.name || '',
     imageUrls: Array.isArray(product.image) ? (product.image || '') : [product.image || ''],
     productDescription: product.description || '',
     productPrice: product.price || 0
