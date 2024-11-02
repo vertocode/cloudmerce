@@ -1,15 +1,21 @@
 <template>
   <VMenu v-if="isLogged">
     <template v-slot:activator="{ props }">
-      <VBtn icon="mdi-account" v-bind="props" />
+      <VBtn
+          :class="{ 'admin-btn': isAdmin }"
+          v-bind="props"
+      >
+        <VIcon>{{ isAdmin ? 'mdi-account-check' : 'mdi-account' }}</VIcon>
+        {{ userData?.name?.split(' ')?.at(0) }}
+      </VBtn>
     </template>
 
     <VList>
-      <VListItem @click="$router.push('/profile')">
-        <VListItemTitle>
-          <VIcon>mdi-account</VIcon> Profile
-        </VListItemTitle>
-      </VListItem>
+<!--      <VListItem @click="$router.push('/profile')">-->
+<!--        <VListItemTitle>-->
+<!--          <VIcon>mdi-account</VIcon> Profile-->
+<!--        </VListItemTitle>-->
+<!--      </VListItem>-->
       <VListItem @click="logout">
         <VListItemTitle>
           <VIcon>mdi-logout</VIcon> Logout
@@ -56,7 +62,7 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
-const { logout, userData } = useUser()
+const { logout, userData, isAdmin } = useUser()
 
 const isLogged = computed(() => !!userData.value)
 const isLoading = ref(true)
@@ -89,6 +95,17 @@ onMounted(() => {
     .mobile {
       display: none;
     }
+  }
+}
+
+.admin-btn {
+  color: #fff;
+  background-color: var(--secondary-color-700);
+  border-radius: 8px;
+  transition: background-color 0.3s ease;
+
+  .v-icon {
+    color: white;
   }
 }
 </style>
