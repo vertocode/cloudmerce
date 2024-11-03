@@ -1,7 +1,7 @@
 import { useState } from 'nuxt/app'
 
 export const useSnackbar = () => {
-    const timeout = 3000
+    const timeout = 5000
     const snackbar = useState('snackbar', () => ({
         open: false,
         message: '',

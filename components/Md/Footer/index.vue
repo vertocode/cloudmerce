@@ -13,8 +13,8 @@
         <VBtn variant="text" @click="$router.push('/about')">Sobre Nós</VBtn>
         <VBtn variant="text" @click="$router.push('/privacy')">Política de Privacidade</VBtn>
         <VBtn variant="text" @click="$router.push('/contact')">Contato</VBtn>
-        <VBtn v-if="isAdmin" variant="text" @click="showProductTypeModal = true">Cadastrar Tipo de Produto</VBtn>
-        <VBtn v-if="isAdmin" variant="text" @click="showProductModal = true">Cadastrar Produto</VBtn>
+        <VBtn v-if="isAdmin" variant="text" @click="showProductTypeModal = true">Tipos de Produto</VBtn>
+        <VBtn v-if="isAdmin" variant="text" @click="showProductModal = true">Cadastrar Novo Produto</VBtn>
         <VBtn v-if="isAdmin" variant="text" @click="showPaletteModal = true">Configurações de Paleta</VBtn>
       </div>
 

@@ -30,7 +30,7 @@
             <VListItemTitle>Tipos de Produto</VListItemTitle>
           </VListItem>
           <VListItem @click="showProductModal = true" class="navigation-item admin-item">
-            <VListItemTitle>Cadastrar Produto</VListItemTitle>
+            <VListItemTitle>Cadastrar Novo Produto</VListItemTitle>
           </VListItem>
           <VListItem @click="showPaletteModal = true" class="navigation-item admin-item">
             <VListItemTitle>Configurações de Paleta</VListItemTitle>

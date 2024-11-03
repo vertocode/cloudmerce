@@ -61,7 +61,8 @@ const props = defineProps<{
 
 const isLoading = ref(false);
 
-const { productTypes } = useStoreData();
+const { productTypes, ecommerceId, updateProductTypes } = useStoreData()
+const { put } = useApi()
 
 const rules =  [
     (v: string | null) => !!v || 'Nome do tipo de produto é obrigatório',
@@ -69,10 +70,12 @@ const rules =  [
     (v: string | null) => !!v && v.length >= 3 || 'Nome do tipo de produto deve ter no mínimo 3 caracteres'
 ]
 
+const oldProductTypes = ref<IProductType[]>(cloneArray(productTypes.value))
 const newProductTypes = ref<IProductType[]>(cloneArray(productTypes.value))
 
 watch(productTypes, () => {
   newProductTypes.value = cloneArray(productTypes.value)
+  oldProductTypes.value = cloneArray(productTypes.value)
 })
 
 const validateFields = () => {
@@ -88,13 +91,39 @@ const validateFields = () => {
   })
 }
 
+
 const submit = async () => {
   if (!validateFields()) return
 
   isLoading.value = true;
   try {
-    // logic
+    const productTypesToDelete = oldProductTypes.value.filter((type) => !newProductTypes.value.some((newType) => newType.id === type.id))
+    const productTypesToAdd = newProductTypes.value.filter((type) => !oldProductTypes.value.some((oldType) => oldType.id === type.id))
+    const productTypesToUpdate = newProductTypes.value.filter((type) => {
+      const oldProductType = oldProductTypes.value.find((oldType) => oldType.id === type.id)
+      return oldProductType && oldProductType.name !== type.name
+    })
+
+    const productTypes = [
+        ...productTypesToUpdate.map((type) => ({ ecommerceId, id: type.id, name: type.name, action: 'update' })),
+        ...productTypesToAdd.map((type) => ({ ecommerceId, name: type.name, action: 'add' })),
+        ...productTypesToDelete.map((type) => ({ ecommerceId, id: type.id, action: 'delete' }))
+    ]
+
+    if (!productTypes.length) {
+      onClose()
+      handleWarning('Nenhuma alteração foi feita, os tipos de produto estão iguais aos anteriores e o modal apenas foi fechado')
+      return
+    }
+
+    await put('/product-types/multiple-update', {
+      productTypes
+    })
+
+    await updateProductTypes({ cache: 'no-cache' })
+    onClose()
   } catch (error) {
+    console.error(error)
     handleError('Erro ao salvar tipo de produto');
   } finally {
     isLoading.value = false;
