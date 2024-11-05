@@ -18,7 +18,9 @@
 
     <VCardActions class="card-actions">
       <VBtn color="primary" @click="addToCart" class="add-to-cart-btn">Adicionar ao Carrinho</VBtn>
-      <VBtn @click="viewDetails" class="view-details-btn">Ver Detalhes</VBtn>
+      <MdProductDetailModal :product>
+        <VBtn class="view-details-btn">Ver Detalhes</VBtn>
+      </MdProductDetailModal>
       <MdEditProductModal :initial-values="product" :updateProductList>
         <VBtn v-if="isAdmin" class="edit-btn">Editar (ADM)</VBtn>
       </MdEditProductModal>
@@ -32,7 +34,7 @@
 <script setup lang="ts">
 import { computed, defineProps } from 'vue';
 import type { IProduct } from "~/types/product";
-import ProductImage from "~/components/Md/ProductCard/components/ProductImage.vue";
+import ProductImage from "~/components/Md/ProductImage/index.vue";
 
 const props = defineProps<{
   product: IProduct
@@ -49,10 +51,6 @@ const formattedPrice = computed(() => {
 
 const addToCart = () => {
   alert(`Produto ${props.product.name} adicionado ao carrinho!`);
-};
-
-const viewDetails = () => {
-  alert(`Detalhes do produto: ${props.product.name}`);
 };
 </script>
 
