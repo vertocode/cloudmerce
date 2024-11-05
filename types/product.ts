@@ -1,3 +1,17 @@
+export enum UserFieldTypeLabel {
+    text = 'Texto',
+    number = 'Número',
+    options = 'Opções'
+}
+
+export type UserFieldType = keyof typeof UserFieldTypeLabel
+
+export interface UserField {
+    label: string
+    type: UserFieldType | UserFieldTypeLabel
+    options?: string[]
+}
+
 export interface IProduct {
     id: string
     name: string
@@ -5,6 +19,7 @@ export interface IProduct {
     description: string
     productType: string
     image: string | string[]
+    fields: UserField[]
 }
 
 export interface IProductResponse {
@@ -15,6 +30,7 @@ export interface IProductResponse {
     _id: string
     productType: string
     image: string[] | string
+    fields: UserField[]
     price: number
     updatedAt: string
 }

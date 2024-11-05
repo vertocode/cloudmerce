@@ -157,20 +157,7 @@ import {useStoreData} from "~/composables/useStoreData";
 import {useField, useForm} from "vee-validate";
 import {ref} from "vue";
 import type {IProductType} from "~/composables/useStoreData";
-
-enum UserFieldTypeLabel {
-  text = 'Texto',
-  number = 'Número',
-  options = 'Opções'
-}
-
-type UserFieldType = keyof typeof UserFieldTypeLabel
-
-interface UserField {
-  label: string
-  type: UserFieldTypeLabel | UserFieldType
-  options?: string[]
-}
+import {type UserField, type UserFieldType, UserFieldTypeLabel} from "~/types/product";
 
 export interface InitialValues {
   productName: string
@@ -202,6 +189,8 @@ const props = defineProps<{
   updateProductList?: (params: { cache: 'no-cache' | 'force-cache' }) => Promise<void>
   initialValues?: InitialValues
 }>()
+
+console.log(props.initialValues, 'initial')
 
 const products = useState('products', () => [])
 const { productTypes, ecommerceId } = useStoreData();

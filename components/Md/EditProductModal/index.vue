@@ -45,7 +45,20 @@ const initialValues = computed((): InitialValues => {
     productType: getProductTypeById(product.productType)?.name || '',
     imageUrls: Array.isArray(product.image) ? (product.image || '') : [product.image || ''],
     productDescription: product.description || '',
-    productPrice: product.price || 0
+    productPrice: product.price || 0,
+    userFields: product.fields.map(field => ({
+      ...field,
+      type: (() => {
+        switch (field.type) {
+          case 'text':
+            return 'Texto'
+          case 'number':
+            return 'Número'
+          case 'options':
+            return 'Opções'
+        }
+      })()
+    })) || [],
   }
 })
 
@@ -57,6 +70,7 @@ const updateProduct = async (values: ActionParams) => {
     description: values.productDescription,
     productType: values.productType,
     image: values.imageUrls,
-  });
+    fields: values.userFields
+  })
 }
 </script>

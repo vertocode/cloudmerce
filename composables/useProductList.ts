@@ -39,7 +39,8 @@ export const useProductList = (filters?: IProductFilters) => {
             image: product.image,
             description: product.description,
             price: product.price,
-            productType: product.productType
+            productType: product.productType,
+            fields: product.fields
         }))
         lastFilters.value = filters || null
 
