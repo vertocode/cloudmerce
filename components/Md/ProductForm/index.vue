@@ -46,6 +46,10 @@
             </span>
         </VCol>
 
+        <h5 class="mt-5">
+          Você deve colocar o link da imagem aqui. É possível usar qualquer serviço de armazenamento em nuvem, como
+          <a href="https://imgur.com/">Imgur</a> ou outro de sua preferência. (Opcional, mas recomendado.)
+        </h5>
         <VCol
             cols="12"
             :md="imageUrls.length === 1 ? 12 : 6"
@@ -68,6 +72,65 @@
           </VBtn>
         </VCol>
       </VRow>
+      <h5>Adicione perguntas para o usuário responder, como tamanho de uma roupa, cor ou qualquer outra pergunta necessária para este produto.</h5>
+      <VRow v-if="userFields.length > 0" v-for="(_, index) in userFields" :key="index">
+        <VCol
+            cols="10"
+            md="6"
+            class="user-field mt-0 pl-0"
+        >
+          <VTextField
+              v-model="userFields[index].label"
+              :label="`Nome do campo ${index + 1}`"
+              :items="['Texto', 'Número', 'Opções']"
+              outlined
+          />
+        </VCol>
+
+        <VCol
+            cols="10"
+            md="4"
+            class="user-field mt-0 pl-0"
+        >
+          <VSelect
+              v-model="userFields[index].type"
+              :label="`Tipo do campo ${index + 1}`"
+              :items="['Texto', 'Número', 'Opções']"
+              outlined
+          />
+        </VCol>
+        <VCol cols="2">
+          <VBtn color="var(--danger-color-500)" class="mt-4" icon="mdi-delete" @click="removeUserField(index)" />
+        </VCol>
+        <h5 class="w-100 mb-3" v-if="userFields[index].type === UserFieldType.options">Opções para o campo {{ index + 1 }}:</h5>
+        <VCol
+            cols="6"
+            v-if="userFields[index].type === UserFieldType.options"
+            v-for="(option, optionIndex) in userFields[index].options"
+            :key="optionIndex"
+            class="image-field mt-0"
+        >
+          <VTextField
+              v-model="userFields[index].options[optionIndex]"
+              :label="`Opção ${optionIndex + 1}`"
+              outlined
+              required
+          />
+          <VBtn color="var(--danger-color-500)" class="mb-6" icon="mdi-delete" @click="removeUserFieldOption(index, optionIndex)" />
+        </VCol>
+        <VCol cols="12">
+          <VBtn v-if="userFields[index].type === UserFieldType.options" @click="addUserFieldOption(index)" variant="outlined" class="mb-8 float-end">
+             Adicionar opção para o campo {{ index + 1 }}
+          </VBtn>
+        </VCol>
+      </VRow>
+      <VRow>
+        <VCol cols="12">
+          <VBtn  @click="addUserField" color="primary" class="mb-8 float-end mt-3">
+            <VIcon color="white">mdi-plus</VIcon> Adicionar pergunta de usuário
+          </VBtn>
+        </VCol>
+      </VRow>
     </div>
 
 
@@ -81,7 +144,7 @@
       </VCol>
       <VCol cols="6">
         <VBtn size="large" variant="tonal" color="primary" width="100%" type="submit" :loading="isLoading">
-          {{ isEdition ? 'Editar' : 'Adicionar' }} Produto
+          {{ isEdition ? 'Editar' : 'Adicionar' }}
         </VBtn>
       </VCol>
     </VRow>
@@ -95,12 +158,25 @@ import {useField, useForm} from "vee-validate";
 import {ref} from "vue";
 import type {IProductType} from "~/composables/useStoreData";
 
+enum UserFieldType {
+  text = 'Texto',
+  number = 'Número',
+  options = 'Opções'
+}
+
+interface UserField {
+  label: string
+  type: UserFieldType
+  options?: string[]
+}
+
 export interface InitialValues {
   productName: string
   productPrice: number
   productDescription: string
   productType: string
   imageUrls: string[]
+  userFields: UserField[]
 }
 
 interface Fields {
@@ -114,6 +190,7 @@ export interface ActionParams extends Fields {
   imageUrls: string[]
   productType: string
   ecommerceId: number
+  userFields: UserField[]
 }
 
 const props = defineProps<{
@@ -131,6 +208,7 @@ const isEdition = !!props.initialValues
 
 const isLoading = ref(false);
 const imageUrls = ref(props?.initialValues?.imageUrls || [''])
+const userFields = ref<UserField[]>(props?.initialValues?.userFields || [])
 
 const { handleSubmit } = useForm<Fields>({
   initialValues: {
@@ -164,6 +242,30 @@ const removeImageField = (index: number) => {
   imageUrls.value.splice(index, 1);
 };
 
+const addUserField = () => {
+  userFields.value.push({
+    label: '',
+    type: UserFieldType.options,
+    options: ['']
+  });
+};
+
+const removeUserField = (index: number) => {
+  userFields.value.splice(index, 1);
+};
+
+const addUserFieldOption = (index: number) => {
+  userFields.value[index].options?.push('');
+}
+
+const removeUserFieldOption = (fieldIndex: number, optionIndex: number) => {
+  if (userFields.value[fieldIndex].type === UserFieldType.options && userFields.value[fieldIndex].options?.length === 1) {
+    // If there is only one option and the type is options, don't remove it
+    return
+  }
+  userFields.value[fieldIndex].options?.splice(optionIndex, 1);
+}
+
 const submit = handleSubmit(async (values: Fields) => {
   isLoading.value = true;
 
@@ -172,7 +274,8 @@ const submit = handleSubmit(async (values: Fields) => {
       ...values,
       imageUrls: imageUrls.value,
       ecommerceId: ecommerceId,
-      productType: productTypes.value.find((type: IProductType) => type.name === values.productType)?.id || ''
+      productType: productTypes.value.find((type: IProductType) => type.name === values.productType)?.id || '',
+      userFields: userFields.value
     })
     onClose();
     handleSuccess(`Produto ${isEdition ? 'editado' : 'adicionado'} com sucesso!`);
