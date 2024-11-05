@@ -56,6 +56,9 @@ const initialValues = computed((): InitialValues => {
             return 'Número'
           case 'options':
             return 'Opções'
+          default:
+            console.error(`dynamic field not registered: ${field.type}`)
+            return 'Texto'
         }
       })()
     })) || [],
