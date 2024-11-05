@@ -46,22 +46,7 @@ const initialValues = computed((): InitialValues => {
     imageUrls: Array.isArray(product.image) ? (product.image || '') : [product.image || ''],
     productDescription: product.description || '',
     productPrice: product.price || 0,
-    userFields: product.fields.map(field => ({
-      ...field,
-      type: (() => {
-        switch (field.type) {
-          case 'text':
-            return 'Texto'
-          case 'number':
-            return 'Número'
-          case 'options':
-            return 'Opções'
-          default:
-            console.error(`dynamic field not registered: ${field.type}`)
-            return 'Texto'
-        }
-      })()
-    })) || [],
+    userFields: product.fields || [],
   }
 })
 

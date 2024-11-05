@@ -197,9 +197,18 @@ const { productTypes, ecommerceId } = useStoreData();
 
 const isEdition = !!props.initialValues
 
+interface UserFieldWithLabel {
+  label: string
+  type: UserFieldTypeLabel
+  options?: string[]
+}
+
 const isLoading = ref(false);
 const imageUrls = ref(props?.initialValues?.imageUrls || [''])
-const userFields = ref<UserField[]>(props?.initialValues?.userFields || [])
+const userFields = ref<UserFieldWithLabel[]>(props?.initialValues?.userFields.map(field => ({
+  ...field,
+  type: getFieldLabel(field.type)
+})) || [])
 
 const { handleSubmit } = useForm<Fields>({
   initialValues: {
@@ -269,18 +278,20 @@ const submit = handleSubmit(async (values: Fields) => {
       userFields: userFields.value.map(field => {
         const type = (() => {
           switch (field.type) {
-            case 'Texto':
+            case UserFieldTypeLabel.text:
               return 'text'
-            case 'Número':
+            case UserFieldTypeLabel.number:
               return 'number'
-            case 'Opções':
+            case UserFieldTypeLabel.options:
               return 'options'
+            default:
+              return 'text'
           }
-        })() as UserFieldType
+        })()
         return { ...field, type }
       })
     })
-    // onClose();
+    onClose()
     handleSuccess(`Produto ${isEdition ? 'editado' : 'adicionado'} com sucesso!`);
 
     // If the list has less than 20 products, update to show in the homepage

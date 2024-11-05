@@ -8,7 +8,7 @@ export type UserFieldType = keyof typeof UserFieldTypeLabel
 
 export interface UserField {
     label: string
-    type: UserFieldType | UserFieldTypeLabel
+    type: UserFieldType
     options?: string[]
 }
 
