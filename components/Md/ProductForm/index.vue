@@ -102,16 +102,16 @@
         <VCol cols="2">
           <VBtn color="var(--danger-color-500)" class="mt-4" icon="mdi-delete" @click="removeUserField(index)" />
         </VCol>
-        <h5 class="w-100 mb-3" v-if="userFields[index].type === UserFieldType.options">Opções para o campo {{ index + 1 }}:</h5>
+        <h5 class="w-100 mb-3" v-if="userFields[index].type === UserFieldTypeLabel.options">Opções para o campo {{ index + 1 }}:</h5>
         <VCol
             cols="6"
-            v-if="userFields[index].type === UserFieldType.options"
-            v-for="(option, optionIndex) in userFields[index].options"
+            v-if="userFields[index].type === UserFieldTypeLabel.options"
+            v-for="(_, optionIndex) in userFields[index].options"
             :key="optionIndex"
             class="image-field mt-0"
         >
           <VTextField
-              v-model="userFields[index].options[optionIndex]"
+              v-model="(userFields[index].options || [])[optionIndex] as string"
               :label="`Opção ${optionIndex + 1}`"
               outlined
               required
@@ -119,7 +119,7 @@
           <VBtn color="var(--danger-color-500)" class="mb-6" icon="mdi-delete" @click="removeUserFieldOption(index, optionIndex)" />
         </VCol>
         <VCol cols="12">
-          <VBtn v-if="userFields[index].type === UserFieldType.options" @click="addUserFieldOption(index)" variant="outlined" class="mb-8 float-end">
+          <VBtn v-if="userFields[index].type === UserFieldTypeLabel.options" @click="addUserFieldOption(index)" variant="outlined" class="mb-8 float-end">
              Adicionar opção para o campo {{ index + 1 }}
           </VBtn>
         </VCol>
@@ -158,15 +158,17 @@ import {useField, useForm} from "vee-validate";
 import {ref} from "vue";
 import type {IProductType} from "~/composables/useStoreData";
 
-enum UserFieldType {
+enum UserFieldTypeLabel {
   text = 'Texto',
   number = 'Número',
   options = 'Opções'
 }
 
+type UserFieldType = keyof typeof UserFieldTypeLabel
+
 interface UserField {
   label: string
-  type: UserFieldType
+  type: UserFieldTypeLabel | UserFieldType
   options?: string[]
 }
 
@@ -245,7 +247,7 @@ const removeImageField = (index: number) => {
 const addUserField = () => {
   userFields.value.push({
     label: '',
-    type: UserFieldType.options,
+    type: UserFieldTypeLabel.options,
     options: ['']
   });
 };
@@ -259,7 +261,7 @@ const addUserFieldOption = (index: number) => {
 }
 
 const removeUserFieldOption = (fieldIndex: number, optionIndex: number) => {
-  if (userFields.value[fieldIndex].type === UserFieldType.options && userFields.value[fieldIndex].options?.length === 1) {
+  if (userFields.value[fieldIndex].type === UserFieldTypeLabel.options && userFields.value[fieldIndex].options?.length === 1) {
     // If there is only one option and the type is options, don't remove it
     return
   }
@@ -275,9 +277,21 @@ const submit = handleSubmit(async (values: Fields) => {
       imageUrls: imageUrls.value,
       ecommerceId: ecommerceId,
       productType: productTypes.value.find((type: IProductType) => type.name === values.productType)?.id || '',
-      userFields: userFields.value
+      userFields: userFields.value.map(field => {
+        const type = (() => {
+          switch (field.type) {
+            case 'Texto':
+              return 'text'
+            case 'Número':
+              return 'number'
+            case 'Opções':
+              return 'options'
+          }
+        })() as UserFieldType
+        return { ...field, type }
+      })
     })
-    onClose();
+    // onClose();
     handleSuccess(`Produto ${isEdition ? 'editado' : 'adicionado'} com sucesso!`);
 
     // If the list has less than 20 products, update to show in the homepage

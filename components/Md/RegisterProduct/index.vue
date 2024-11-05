@@ -37,6 +37,7 @@ const register = async (values: ActionParams) => {
     price: values.productPrice,
     description: values.productDescription,
     productType: values.productType,
+    fields: values.userFields,
     image: values.imageUrls,
   });
 }
