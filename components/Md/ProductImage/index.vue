@@ -54,3 +54,9 @@ const isStringImage = computed(() => {
   return typeof images.value === 'string'
 })
 </script>
+
+<style lang="scss" scoped>
+.product-image-carousel {
+  height: max-content !important;
+}
+</style>

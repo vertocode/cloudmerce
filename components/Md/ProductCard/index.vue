@@ -5,21 +5,21 @@
     <div class="product-name-container">
       <VCardTitle class="product-name">{{ product.name }}</VCardTitle>
 
-      <VTooltip v-if="product.description" :text="product.description">
-        <template v-slot:activator="{ props }">
-          <VBtn class="info-button" v-bind="props" icon>
-            <VIcon>mdi-information</VIcon>
-          </VBtn>
-        </template>
-      </VTooltip>
+<!--      <VTooltip v-if="product.description" :text="product.description">-->
+<!--        <template v-slot:activator="{ props }">-->
+<!--          <VBtn class="info-button" v-bind="props" icon>-->
+<!--            <VIcon>mdi-information</VIcon>-->
+<!--          </VBtn>-->
+<!--        </template>-->
+<!--      </VTooltip>-->
     </div>
 
     <VCardSubtitle class="product-price">{{ formattedPrice }}</VCardSubtitle>
 
     <VCardActions class="card-actions">
-      <VBtn color="primary" @click="addToCart" class="add-to-cart-btn">Adicionar ao Carrinho</VBtn>
+      <VBtn color="primary" variant="flat" @click="addToCart" class="add-to-cart-btn">Adicionar ao Carrinho</VBtn>
       <MdProductDetailModal :product>
-        <VBtn class="view-details-btn">Ver Detalhes</VBtn>
+        <VBtn class="view-details-btn" variant="outlined">Ver Detalhes</VBtn>
       </MdProductDetailModal>
       <MdEditProductModal :initial-values="product" :updateProductList>
         <VBtn v-if="isAdmin" class="edit-btn">Editar (ADM)</VBtn>
@@ -109,17 +109,7 @@ const addToCart = () => {
     justify-content: space-between;
     padding: 16px;
 
-    .add-to-cart-btn {
-      width: 100%;
-      background-color: var(--primary-color-500);
-      color: #fff !important;
-
-      &:hover {
-        background-color: var(--primary-color-600);
-      }
-    }
-
-    .view-details-btn {
+    .view-details-btn, .add-to-cart-btn {
       width: 100%;
     }
 

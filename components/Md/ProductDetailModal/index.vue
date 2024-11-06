@@ -87,6 +87,10 @@ const addToCart = () => {
       color: #333;
     }
 
+    :deep(.product-image-carousel) {
+      height: max-content !important;
+    }
+
     .product-description {
       font-size: 1rem;
       color: #616161;
