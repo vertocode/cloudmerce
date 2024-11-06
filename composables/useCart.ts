@@ -1,12 +1,15 @@
-export const useCart = () => {
-    const cart = ref([])
+import type {IProduct} from "~/types/product";
 
-    const addToCart = (item) => {
+export const useCart = () => {
+    const cart = useState<IProduct[]>('cartProducts', () => [])
+    const loading = ref<boolean>(false)
+
+    const addToCart = async (item: IProduct) => {
         cart.value.push(item)
     }
-    const removeFromCart = (index) => {
-        cart.value.splice(index, 1)
+    const removeFromCart = (id: string) => {
+        cart.value = cart.value.filter((item) => item.id !== id)
     }
 
-    return { cart, addToCart, removeFromCart }
+    return { cart, loading, addToCart, removeFromCart }
 }

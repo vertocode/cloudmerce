@@ -29,6 +29,7 @@
       </MdDeleteProductModal>
     </VCardActions>
   </VCard>
+  <MdAddItemQuestionModal :product="showQuestionAddModal ? product : null" @close="showQuestionAddModal = false"/>
 </template>
 
 <script setup lang="ts">
@@ -45,13 +46,21 @@ const { handleDelete } = useProduct({ product: props.product, updateProductList:
 
 const { isAdmin } = useUser()
 
+const showQuestionAddModal = ref<boolean>(false)
+
 const formattedPrice = computed(() => {
   return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(props.product.price);
 });
 
 const addToCart = () => {
-  alert(`Produto ${props.product.name} adicionado ao carrinho!`);
-};
+  if (props.product.fields.length > 0) {
+    showQuestionAddModal.value = true
+    return
+  }
+
+  window.alert(`Produto ${props.product.name} adicionado ao carrinho!`);
+  // TODO: Add product to cart without opening modal
+}
 </script>
 
 <style lang="scss" scoped>

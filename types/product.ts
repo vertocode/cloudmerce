@@ -10,6 +10,7 @@ export interface UserField {
     label: string
     type: UserFieldType
     options?: string[]
+    value?: string
 }
 
 export interface IProduct {
