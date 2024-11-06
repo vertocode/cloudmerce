@@ -1,4 +1,4 @@
-# 🛍️ Nuxt e-Commerce Platform
+# 🛍️ Nuxt e-Commerce White-Label Platform
 
 Welcome to our e-commerce system—a modern, secure platform for managing stores of any segment with ease. This repository contains the structure of our system, providing a high-performance shopping experience for end-users and an intuitive interface for merchants.
 
