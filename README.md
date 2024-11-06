@@ -86,4 +86,4 @@ Here’s an overview of the main project folders and files:
 
 ## 📜 License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under a custom license restricting commercial use to the author, Everton Vanoni Fernandes. See the LICENSE file for details.
