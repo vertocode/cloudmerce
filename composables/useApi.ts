@@ -7,8 +7,8 @@ export const useApi = () => {
         'Access-Control-Allow-Origin': '*'
     }
 
-    const get = async (path: string, data: Record<string, any>, options?: { cache?: 'no-cache' | 'force-cache' }) => {
-        const query = new URLSearchParams(data).toString()
+    const get = async (path: string, data?: Record<string, any>, options?: { cache?: 'no-cache' | 'force-cache' }) => {
+        const query = data ? new URLSearchParams(data).toString() : ''
 
         return $fetch(`${apiUrl}${path}?${query}`, {
             method: 'GET',

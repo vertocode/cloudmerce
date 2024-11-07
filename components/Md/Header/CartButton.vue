@@ -16,12 +16,12 @@
         <v-toolbar-title>Carrinho de Compras</v-toolbar-title>
       </v-toolbar>
 
-      <div v-if="cartItems.length" class="cart-items-list">
+      <div v-if="cartProducts.length" class="cart-items-list">
         <div class="list">
           <VList>
-            <div v-for="(item, index) in cartItems" :key="index" class="cart-item">
+            <div v-for="(item, index) in cartProducts" :key="index" class="cart-item">
               <div class="product-image-container">
-                <img :src="item.image" alt="Product Image" class="product-image" />
+                <MdProductImage :product="item" />
               </div>
               <div class="product-info">
                 <VListItemTitle>{{ item.name }}</VListItemTitle>
@@ -58,22 +58,16 @@ const isLoaded = ref(false)
 
 onMounted(() => isLoaded.value = true)
 
+const { cartProducts } = useCart()
+
 interface CartItem {
   name: string
   price: number
   image: string
 }
 
-const cartItems = ref<CartItem[]>([
-  {
-    name: 'Product 1',
-    price: 100,
-    image: 'https://via.placeholder.com/150',
-  }
-])
-
 const removeItem = (index: number) => {
-  cartItems.value.splice(index, 1)
+  // cartItems.value.splice(index, 1)
 }
 </script>
 
