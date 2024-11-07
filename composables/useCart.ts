@@ -29,7 +29,8 @@ export const useCart = () => {
             const response = await put(`/add-cart-item/${ecommerceId}`, {
                 cartId: cartId.value,
                 productId: item.id,
-                quantity: 1
+                quantity: 1,
+                fields: item.fields.map(field => ({ fieldLabel: field.label, value: field?.value }))
             }) as ICartResponse
 
             if (!response?._id) {
