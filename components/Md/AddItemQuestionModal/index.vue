@@ -45,8 +45,10 @@ const { addToCart, loading } = useCart()
 
 const props = defineProps<{
   product: IProduct | null;
-  onConfirm: (fields: Record<string, string>) => void;
+  onConfirm?: (fields: Record<string, string>) => void;
 }>();
+
+const emit = defineEmits()
 
 const values = ref<Record<string, string>>(props.product?.fields.reduce((acc, field) => {
   acc[field.label] = '';
@@ -73,14 +75,18 @@ const handleConfirm = async () => {
   }
 
   const { product } = props
-  await addToCart({
+  const { code } = await addToCart({
     ...product,
     fields: product?.fields?.map(field => ({
       ...field,
       value: values.value[field.label]
     })) || []
   })
-};
+
+  if (code === 'success') {
+    emit('close')
+  }
+}
 </script>
 
 <style scoped>
