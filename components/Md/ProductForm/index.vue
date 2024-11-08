@@ -64,7 +64,14 @@
               outlined
               required
           />
-          <VBtn v-if="imageUrls.length > 1" color="var(--danger-color-500)" class="mb-6" icon="mdi-delete" @click="removeImageField(index)" />
+          <VBtn
+              v-if="imageUrls.length > 1"
+              icon
+              class="remove-btn mb-6"
+              @click="removeImageField(index)"
+          >
+            <VIcon>mdi-delete</VIcon>
+          </VBtn>
         </VCol>
         <VCol cols="12">
           <VBtn  @click="addImageField" color="primary" class="mb-8 float-end">
@@ -100,7 +107,13 @@
           />
         </VCol>
         <VCol cols="2">
-          <VBtn color="var(--danger-color-500)" class="mt-4" icon="mdi-delete" @click="removeUserField(index)" />
+          <VBtn
+              icon
+              class="remove-btn mt-4"
+              @click="removeUserField(index)"
+          >
+            <VIcon>mdi-delete</VIcon>
+          </VBtn>
         </VCol>
         <h5 class="w-100 mb-3" v-if="userFields[index].type === UserFieldTypeLabel.options">Opções para o campo {{ index + 1 }}:</h5>
         <VCol
@@ -116,7 +129,14 @@
               outlined
               required
           />
-          <VBtn color="var(--danger-color-500)" class="mb-6" icon="mdi-delete" @click="removeUserFieldOption(index, optionIndex)" />
+          <VBtn
+              v-if="userFields[index].options.length > 1"
+              icon
+              class="remove-btn mb-6"
+              @click="removeUserFieldOption(index, optionIndex)"
+          >
+            <VIcon>mdi-delete</VIcon>
+          </VBtn>
         </VCol>
         <VCol cols="12">
           <VBtn v-if="userFields[index].type === UserFieldTypeLabel.options" @click="addUserFieldOption(index)" variant="outlined" class="mb-8 float-end">
@@ -334,6 +354,12 @@ const submit = handleSubmit(async (values: Fields) => {
 .field-container {
   max-height: 70vh;
   overflow-y: auto;
+}
+
+.remove-btn {
+  .v-icon {
+    color: var(--danger-color-500);
+  }
 }
 
 .image-field {

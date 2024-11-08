@@ -1,8 +1,8 @@
 <template>
   <!-- Check if product image is a string (single image) -->
   <VImg
-      v-if="isStringImage"
-      :src="images as string"
+      v-if="isStringImage || (images?.length && asImage)"
+      :src="images?.length ? images[0] : images as string"
       :alt="product.name"
       aspect-ratio="1"
       class="product-image"
@@ -40,7 +40,8 @@ import type {IProduct} from "~/types/product";
 
 const props = defineProps<{
   product: IProduct
-}>();
+  asImage: boolean
+}>()
 
 const images = computed(() => {
   if (Array.isArray(props.product.image)) {

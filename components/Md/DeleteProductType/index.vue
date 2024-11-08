@@ -11,7 +11,7 @@
 
     <div class="modal-content">
       <p>
-        Esta ação irá excluir o tipo de produto, e <strong>todos os produtos</strong> com o tipo <strong>{{ productType }}</strong> de forma permanente e é irreversível.
+        Esta ação irá excluir o <strong>tipo de produto</strong>, de forma permanente e é <strong>irreversível</strong>. Todos os produtos associados a este tipo ficarão sem categoria.
       </p>
 
       <p>

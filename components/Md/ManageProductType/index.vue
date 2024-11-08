@@ -16,7 +16,9 @@
               @input="() => editProductTypeName(index, type.name)"
           />
           <DeleteProductType :product-type="type.name" :on-confirm="() => deleteProductType(type.id)">
-            <VBtn icon="mdi-delete" color="error" />
+            <VBtn icon class="remove-btn">
+              <VIcon>mdi-delete</VIcon>
+            </VBtn>
           </DeleteProductType>
         </div>
       </div>
@@ -155,6 +157,14 @@ const onClose = () => {
   align-items: center;
   gap: 8px;
   margin-bottom: 8px;
+
+  .remove-btn {
+    margin-bottom: 24px;
+
+    .v-icon {
+      color: var(--danger-color-500);
+    }
+  }
 }
 
 .product-type-fields {

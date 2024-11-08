@@ -8,39 +8,33 @@
         v-model="isDrawerOpen"
         app
         temporary
+        width="310"
         location="right"
         class="cart-drawer"
         v-if="isLoaded"
     >
       <v-toolbar flat dense>
-        <v-toolbar-title>Carrinho de Compras</v-toolbar-title>
+        <div class="title">
+          <v-toolbar-title class="flex justify-space-between">Carrinho de Compras</v-toolbar-title>
+          <VIcon @click="isDrawerOpen = false">mdi-close</VIcon>
+        </div>
+
       </v-toolbar>
 
       <div v-if="cartProducts.length" class="cart-items-list">
         <div class="list">
           <VList>
-            <div v-for="(item, index) in cartProducts" :key="index" class="cart-item">
-              <div class="product-image-container">
-                <MdProductImage :product="item" />
-              </div>
-              <div class="product-info">
-                <VListItemTitle>{{ item.name }}</VListItemTitle>
-                <VListItemSubtitle>R${{ item.price }}</VListItemSubtitle>
-                <VBtn
-                    icon
-                    class="remove-btn"
-                    @click="removeItem(index)"
-                >
-                  <VIcon>mdi-delete</VIcon>
-                </VBtn>
-              </div>
-            </div>
+            <CartItem v-for="(item, index) in cartProducts" :key="index" :item="item" />
           </VList>
+        </div>
+
+        <div class="cart-total">
+          <span>Total:</span>
+          <span class="cart-total-value">R${{ total }}</span>
         </div>
 
         <VBtn block color="primary">Comprar</VBtn>
       </div>
-
 
       <div v-else class="empty-cart">
         <VIcon class="empty-cart-icon">mdi-cart-off</VIcon>
@@ -51,31 +45,27 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { computed, ref, onMounted } from 'vue'
+import CartItem from "~/components/Md/Header/CartItem.vue"
+import { useCart } from "~/composables/useCart"
 
 const isDrawerOpen = ref(false)
 const isLoaded = ref(false)
 
 onMounted(() => isLoaded.value = true)
 
-const { cartProducts } = useCart()
+const { cartProducts, getCart } = useCart()
 
-interface CartItem {
-  name: string
-  price: number
-  image: string
-}
+onMounted(() => {
+  getCart()
+})
 
-const removeItem = (index: number) => {
-  // cartItems.value.splice(index, 1)
-}
+const total = computed(() => {
+  return cartProducts.value.reduce((sum, product) => sum + (product.price * product.quantity), 0).toFixed(2)
+})
 </script>
 
 <style lang="scss" scoped>
-.cart-drawer {
-  width: 300px;
-}
-
 .empty-cart {
   display: flex;
   flex-direction: column;
@@ -96,51 +86,39 @@ const removeItem = (index: number) => {
   }
 }
 
+.title {
+  margin: 0 12px;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
 .cart-items-list {
   padding: 16px;
 
   .list {
-    max-height: 80vh;
+    border-bottom: 1px solid #e0e0e0;
+    max-height: 75vh;
     overflow-y: auto;
-    margin-bottom: 24px;
 
-    .cart-item {
-      margin: 16px auto;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding-bottom: 16px;
+    .cart-item:not(:last-child) {
       border-bottom: 1px solid #e0e0e0;
-
-      .product-image-container {
-        min-width: 100px;
-        min-height: 100px;
-        margin-right: 16px;
-      }
-
-      .product-image {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        border-radius: 8px;
-        border: 1px solid #ddd;
-      }
-
-      .product-info {
-        width: 100%;
-        flex-grow: 1;
-        gap: 16px;
-        justify-content: space-between;
-
-        .remove-btn {
-          margin-top: 8px;
-
-          .v-icon {
-            color: var(--danger-color-500);
-          }
-        }
-      }
     }
+  }
+}
+
+.cart-total {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 16px 0;
+  font-weight: bold;
+  font-size: 1.2rem;
+  color: #212121;
+
+  .cart-total-value {
+    color: var(--primary-color);
   }
 }
 </style>

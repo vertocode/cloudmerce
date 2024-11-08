@@ -1,4 +1,8 @@
-import type {IProductResponse} from "~/types/product";
+import type {IProduct, IProductResponse} from "~/types/product";
+
+export interface ICartItem extends IProduct {
+    quantity: number
+}
 
 interface ICartResponse {
     _id: string

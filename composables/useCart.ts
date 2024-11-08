@@ -1,20 +1,24 @@
 import type {IProduct} from "~/types/product";
-import type {IAddItemToCartResponse, IGetCartResponse} from "~/types/cart";
-
-
+import type {IAddItemToCartResponse, ICartItem, IGetCartResponse} from "~/types/cart";
 
 export const useCart = () => {
-    const cartProducts = useState<IProduct[]>('cartProducts', () => [])
+    const cartProducts = useState<ICartItem[]>('cartProducts', () => [])
     const loading = ref<boolean>(false)
 
     const { put, get } = useApi()
     const { ecommerceId } = useStoreData()
 
     const cartId = computed(() => {
-        return localStorage.getItem('cartId')
+        if (import.meta.client) {
+            return localStorage.getItem('cartId')
+        }
+        return null
     })
 
     const getCart = async () => {
+        if (!cartId.value) {
+            return
+        }
         try {
             loading.value = true
             const response = await get(`/get-cart/${ecommerceId}`, { cartId: cartId.value }) as IGetCartResponse
@@ -31,6 +35,7 @@ export const useCart = () => {
                     name: productDetails.name,
                     price: productDetails.price,
                     image: productDetails.image,
+                    quantity: item.quantity,
                     description: productDetails.description,
                     productType: productDetails.productType,
                     fields: productDetails?.fields?.map(field => {
@@ -83,10 +88,6 @@ export const useCart = () => {
     const removeFromCart = (id: string) => {
         cartProducts.value = cartProducts.value.filter((item) => item.id !== id)
     }
-
-    callOnce(() => {
-        getCart()
-    })
 
     return { cartProducts, loading, addToCart, removeFromCart, getCart }
 }
