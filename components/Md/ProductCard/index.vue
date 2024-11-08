@@ -1,6 +1,6 @@
 <template>
   <VCard class="product-card">
-    <ProductImage :product />
+    <ProductImage :image="product.image" />
 
     <div class="product-name-container">
       <VCardTitle class="product-name">{{ product.name }}</VCardTitle>

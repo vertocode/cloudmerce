@@ -12,7 +12,7 @@
     </template>
 
     <div class="product-detail-modal">
-      <MdProductImage :product />
+      <MdProductImage :image="product.image" />
 
       <div class="product-info">
         <h2 class="product-price">{{ formattedPrice }}</h2>

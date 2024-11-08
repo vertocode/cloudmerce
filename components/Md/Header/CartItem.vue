@@ -1,7 +1,7 @@
 <template>
   <div class="cart-item">
     <div class="product-image-container">
-      <MdProductImage :product="item" as-image />
+      <MdProductImage :image="item.image" as-image />
       <VBtn
           icon
           class="remove-btn"

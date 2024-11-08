@@ -3,7 +3,7 @@
   <VImg
       v-if="isStringImage || (images?.length && asImage)"
       :src="images?.length ? images[0] : images as string"
-      :alt="product.name"
+      alt=""
       aspect-ratio="1"
       class="product-image"
   />
@@ -12,7 +12,7 @@
   <VImg
       v-else-if="images?.length === 1"
       :src="images[0]"
-      :alt="product.name"
+      alt=""
       aspect-ratio="1"
       class="product-image"
   />
@@ -20,7 +20,7 @@
   <!-- Carousel for multiple images -->
   <VCarousel v-else-if="images?.length > 1" class="product-image-carousel">
     <VCarouselItem v-for="(img, index) in images" :key="index">
-      <VImg :src="img" :alt="product.name" aspect-ratio="1" class="product-image" />
+      <VImg :src="img" alt="" aspect-ratio="1" class="product-image" />
     </VCarouselItem>
   </VCarousel>
 
@@ -28,7 +28,7 @@
   <VImg
       v-else
       src="~/assets/productWithoutImage.webp"
-      :alt="product.name"
+      alt=""
       aspect-ratio="1"
       class="product-image"
   />
@@ -36,19 +36,17 @@
 
 
 <script setup lang="ts">
-import type {IProduct} from "~/types/product";
-
 const props = defineProps<{
-  product: IProduct
-  asImage: boolean
+  image: string | string[]
+  asImage?: boolean
 }>()
 
 const images = computed(() => {
-  if (Array.isArray(props.product.image)) {
-    return props.product.image.filter(img => img?.includes('https')) as string[]
+  if (Array.isArray(props.image)) {
+    return props.image.filter(img => img?.includes('https')) as string[]
   }
 
-  return props.product.image as string
+  return props.image as string
 })
 
 const isStringImage = computed(() => {
