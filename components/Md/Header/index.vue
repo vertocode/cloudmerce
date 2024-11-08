@@ -39,9 +39,15 @@ header {
     justify-content: space-between;
 
     .logo_container {
+      display: flex;
+      align-items: center;
       img {
         cursor: pointer;
         height: 59px;
+
+        @media screen and (max-width: $mobile-breakpoint) {
+          height: 40px;
+        }
       }
     }
   }

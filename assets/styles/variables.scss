@@ -24,6 +24,11 @@
   --danger-color-700: #8a2220;
 }
 
+$sm-mobile-breakpoint: 490px;
+$md-mobile-breakpoint: 623px;
+$mobile-breakpoint: 768px;
+$tablet-breakpoint: 992px;
+
 .v-icon {
   color: var(--primary-color-500);
 }

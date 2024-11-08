@@ -26,7 +26,6 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  flex-wrap: wrap;
   width: 100%;
   padding: 40px;
   background: linear-gradient(135deg, var(--primary-color-500), var(--primary-color-700));
@@ -48,8 +47,8 @@
 }
 
 .banner-title {
-  font-size: 42px;
-  font-weight: 600;
+  font-size: 2rem;
+  font-weight: 700;
   margin-bottom: 20px;
 }
 
@@ -69,6 +68,7 @@
   display: flex;
   align-items: center;
   gap: 12px;
+  margin-bottom: 16px;
 }
 
 .option span {
@@ -84,41 +84,71 @@
   border-radius: 50%;
 }
 
-@media (max-width: 768px) {
+@media (max-width: $tablet-breakpoint) {
   .banner-icon {
     font-size: 80px;
   }
 
   .banner-title {
-    font-size: 32px;
+    font-size: 1.7rem;
   }
 
   .option span {
-    font-size: 16px;
+    font-size: .8rem;
   }
 
   .pix-icon, .credit-card-icon {
-    font-size: 24px;
+    font-size: 16px;
     padding: 12px;
   }
 }
 
-@media (max-width: 480px) {
+@media (max-width: $mobile-breakpoint) {
   .banner-icon {
     font-size: 60px;
   }
 
   .banner-title {
-    font-size: 28px;
+    font-size: 1.5rem;
   }
 
   .option span {
-    font-size: 14px;
+    font-size: .7rem;
   }
 
   .pix-icon, .credit-card-icon {
-    font-size: 20px;
+    font-size: 14px;
     padding: 8px;
+  }
+}
+
+@media (max-width: $md-mobile-breakpoint) {
+  .banner {
+    padding: 24px;
+  }
+
+  .banner-icon {
+    font-size: 36px;
+  }
+
+  .banner-title {
+    font-size: 1.2rem;
+  }
+
+  .option span {
+    font-size: .6rem;
+  }
+
+  .pix-icon, .credit-card-icon {
+    font-size: 12px;
+    padding: 6px;
+  }
+}
+
+@media (max-width: $sm-mobile-breakpoint) {
+  .banner {
+    flex-wrap: wrap;
+    gap: 16px;
   }
 }
 </style>

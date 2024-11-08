@@ -32,7 +32,7 @@ const route = useRoute()
 
 const scrollContainer = ref<null | HTMLDivElement>(null)
 const canScrollLeft = ref(false)
-const canScrollRight = ref(true)
+const canScrollRight = ref(false)
 
 const checkScrollButtons = () => {
   const container = scrollContainer.value
@@ -76,6 +76,10 @@ onMounted(() => {
   padding: 4px 24px;
   background-color: #f4f4f6;
 
+  @media screen and (max-width: $mobile-breakpoint) {
+    padding: 4px 16px;
+  }
+
   .scroll-btn {
     color: #3498db;
   }
@@ -101,6 +105,11 @@ onMounted(() => {
       cursor: pointer;
       white-space: nowrap;
       transition: background-color 0.3s, color 0.3s;
+
+      @media screen and (max-width: $mobile-breakpoint) {
+        padding: 0.5rem 0.75rem;
+        font-size: .9rem;
+      }
 
       &.active {
         background-color: var(--secondary-color-500);

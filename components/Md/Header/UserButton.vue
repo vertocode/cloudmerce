@@ -2,6 +2,7 @@
   <VMenu v-if="isLogged">
     <template v-slot:activator="{ props }">
       <VBtn
+          class="user-button"
           :class="{ 'admin-btn': isAdmin }"
           v-bind="props"
       >
@@ -95,6 +96,13 @@ onMounted(() => {
     .mobile {
       display: none;
     }
+  }
+}
+
+@media screen and (max-width: $mobile-breakpoint) {
+  .user-button {
+    max-width: 100px;
+    font-size: .8rem;
   }
 }
 
