@@ -56,7 +56,7 @@ export const useCart = () => {
         }
     }
 
-    const addToCart = async (item: IProduct): Promise<{ code: string }> => {
+    const addToCart = async (item: ICartItem): Promise<{ code: string }> => {
         try {
             loading.value = true
             const response = await put(`/add-cart-item/${ecommerceId}`, {
@@ -72,7 +72,8 @@ export const useCart = () => {
 
             localStorage.setItem('cartId', response._id)
 
-            cartProducts.value.push(item)
+            await getCart()
+
             handleSuccess(`${item.name} adicionado ao carrinho.`)
 
             return { code: 'success' }

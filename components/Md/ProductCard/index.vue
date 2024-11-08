@@ -17,7 +17,7 @@
     <VCardSubtitle class="product-price">{{ formattedPrice }}</VCardSubtitle>
 
     <VCardActions class="card-actions">
-      <VBtn color="primary" variant="flat" @click="addToCart" class="add-to-cart-btn">Adicionar ao Carrinho</VBtn>
+      <VBtn color="primary" variant="flat" :loading="addingToCart" class="add-to-cart-btn" @click="addToCart">Adicionar ao Carrinho</VBtn>
       <MdProductDetailModal :product>
         <VBtn class="view-details-btn" variant="outlined">Ver Detalhes</VBtn>
       </MdProductDetailModal>
@@ -45,6 +45,7 @@ const props = defineProps<{
 const { handleDelete } = useProduct({ product: props.product, updateProductList: props.updateProductList });
 
 const { isAdmin } = useUser()
+const { addToCart: handleAddToCart, loading: addingToCart } = useCart()
 
 const showQuestionAddModal = ref<boolean>(false)
 
@@ -52,14 +53,16 @@ const formattedPrice = computed(() => {
   return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(props.product.price);
 });
 
-const addToCart = () => {
+const addToCart = async () => {
   if (props.product.fields.length > 0) {
     showQuestionAddModal.value = true
     return
   }
 
-  window.alert(`Produto ${props.product.name} adicionado ao carrinho!`);
-  // TODO: Add product to cart without opening modal
+  await handleAddToCart({
+    ...props.product,
+    quantity: 1
+  })
 }
 </script>
 

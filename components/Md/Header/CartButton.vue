@@ -8,7 +8,7 @@
         v-model="isDrawerOpen"
         app
         temporary
-        width="310"
+        width="320"
         location="right"
         class="cart-drawer"
         v-if="isLoaded"
