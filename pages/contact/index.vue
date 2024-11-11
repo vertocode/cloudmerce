@@ -40,38 +40,24 @@
       </v-col>
     </v-row>
 
-    <v-row justify="center" class="footer-social">
-      <v-col class="text-center">
-        <v-icon class="social-icon">mdi-whatsapp</v-icon>
-        <v-icon class="social-icon">mdi-facebook</v-icon>
-        <v-icon class="social-icon">mdi-instagram</v-icon>
-        <v-icon class="social-icon">mdi-twitter</v-icon>
-      </v-col>
-    </v-row>
+    <MdSocialMediaIcons color="black" />
   </v-container>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
-import { useContact } from '~/composables/useContact';
-import { useStoreData } from '~/composables/useStoreData';
+const { techEmail, formattedWhatsappNumber } = useContact()
 
-const { techEmail, formattedWhatsappNumber, whatsappLink } = useContact();
-const { storeLogo, storeName } = useStoreData();
-
-const name = ref('');
-const email = ref('');
-const message = ref('');
+const name = ref('')
+const email = ref('')
+const message = ref('')
 
 const submitContact = () => {
-  // Lógica para enviar a mensagem
-  alert(`Mensagem enviada por: ${name.value} - ${email.value}`);
-};
+  alert(`Mensagem enviada por: ${name.value} - ${email.value}`)
+}
 </script>
 
 <style scoped lang="scss">
 .contact-page {
-  background-color: #f5f5f5;
   padding: 20px;
 
   .v-card {
@@ -88,20 +74,6 @@ const submitContact = () => {
 
     p {
       margin: 0;
-    }
-  }
-
-  .footer-social {
-    margin-top: 20px;
-
-    .social-icon {
-      font-size: 32px;
-      margin: 0 10px;
-      cursor: pointer;
-
-      &:hover {
-        color: var(--secondary-color-300);
-      }
     }
   }
 }

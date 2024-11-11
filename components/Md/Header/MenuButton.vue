@@ -40,9 +40,9 @@
     </VMenu>
   </div>
 
-  <PaletteModal :show-palette-modal="showPaletteModal" :on-close="() => showPaletteModal = false"/>
-  <ManageProductType :showProductTypeModal="showProductTypeModal" :onClose="() => showProductTypeModal = false" />
-  <RegisterProduct
+  <MdPaletteModal :show-palette-modal="showPaletteModal" :on-close="() => showPaletteModal = false"/>
+  <MdManageProductType :showProductTypeModal="showProductTypeModal" :onClose="() => showProductTypeModal = false" />
+  <MdRegisterProductModal
       :showRegisterModal="showProductModal"
       :onClose="() => showProductModal = false"
       :on-register-new-product-type="onRegisterNewProductType"
@@ -51,9 +51,6 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import PaletteModal from '~/components/Md/PaletteModal/index.vue'
-import ManageProductType from '~/components/Md/ManageProductType/index.vue'
-import RegisterProduct from '~/components/Md/RegisterProduct/index.vue'
 
 const isDrawerOpen = ref(false)
 const showPaletteModal = ref(false)

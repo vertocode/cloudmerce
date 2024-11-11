@@ -2,13 +2,22 @@
   <VDialog
       :model-value="isOpened"
       :max-width="maxWidth || '400'"
-      persistent
+      :persistent="persistent"
   >
     <template v-slot:activator="{ props: activatorProps }">
       <slot name="trigger" v-bind="activatorProps" />
     </template>
 
-    <VCard v-bind="cardProps">
+    <VCard v-bind="cardProps" class="modal-card">
+      <VBtn
+          variant="text"
+          icon
+          class="close-btn"
+          @click="$emit('close')"
+      >
+        <VIcon>mdi-close</VIcon>
+      </VBtn>
+
       <VContainer>
         <slot></slot>
       </VContainer>
@@ -17,11 +26,24 @@
 </template>
 
 <script setup lang="ts">
-
 defineProps<{
-  maxWidth?: string
   isOpened: boolean
   cardProps: object
+  maxWidth?: string
+  persistent?: boolean
 }>()
-
 </script>
+
+<style scoped>
+.modal-card {
+  position: relative;
+}
+
+.close-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  color: var(--primary-color-500);
+  z-index: 1;
+}
+</style>

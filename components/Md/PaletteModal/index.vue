@@ -1,5 +1,5 @@
 <template>
-  <Modal max-width="max-content" :isOpened="showPaletteModal" :cardProps="{ class: 'palette-modal' }">
+  <Modal max-width="max-content" :isOpened="showPaletteModal" persistent @close="onClose" :cardProps="{ class: 'palette-modal' }">
     <template #default>
       <v-card-title class="headline">Escolha sua Paleta de Cores</v-card-title>
       <v-card-text>
@@ -40,55 +40,55 @@
 </template>
 
 <script setup lang="ts">
-import tinycolor from 'tinycolor2';
-import Modal from '~/components/El/Modal/index.vue';
-import { palettes } from './data/palettes';
-import type { IPalette } from './type/palette';
+import tinycolor from 'tinycolor2'
+import Modal from '~/components/El/Modal/index.vue'
+import { palettes } from './data/palettes'
+import type { IPalette } from './type/palette'
 
 const props = defineProps<{
-  showPaletteModal: boolean;
-  onClose: () => void;
-}>();
+  showPaletteModal: boolean
+  onClose: () => void
+}>()
 
-const selectedPalette = ref<IPalette & { index: number } | null>(null);
+const selectedPalette = ref<IPalette & { index: number } | null>(null)
 
 const selectPalette = (palette: IPalette, index: number) => {
-  selectedPalette.value = {...palette, index};
-};
+  selectedPalette.value = {...palette, index}
+}
 
 const applyPalette = () => {
   if (selectedPalette.value) {
-    const primaryColor = tinycolor(selectedPalette.value.primaryColor);
-    const secondaryColor = tinycolor(selectedPalette.value.secondaryColor);
+    const primaryColor = tinycolor(selectedPalette.value.primaryColor)
+    const secondaryColor = tinycolor(selectedPalette.value.secondaryColor)
 
-    const intensities = [100, 200, 300, 400, 500, 600, 700];
-    const adjustAmount = 10;
+    const intensities = [100, 200, 300, 400, 500, 600, 700]
+    const adjustAmount = 10
 
     intensities.forEach((intensity) => {
-      let adjustedPrimaryColor;
-      let adjustedSecondaryColor;
+      let adjustedPrimaryColor
+      let adjustedSecondaryColor
 
       if (intensity === 500) {
         adjustedPrimaryColor = primaryColor
         adjustedSecondaryColor = secondaryColor
       } else if (intensity < 500) {
         // Lighten colors for intensities less than 500
-        adjustedPrimaryColor = primaryColor.clone().lighten(adjustAmount * (500 - intensity) / 100).toString();
-        adjustedSecondaryColor = secondaryColor.clone().lighten(adjustAmount * (500 - intensity) / 100).toString();
+        adjustedPrimaryColor = primaryColor.clone().lighten(adjustAmount * (500 - intensity) / 100).toString()
+        adjustedSecondaryColor = secondaryColor.clone().lighten(adjustAmount * (500 - intensity) / 100).toString()
       } else {
         // Darken colors for intensities greater than 500
-        adjustedPrimaryColor = primaryColor.clone().darken(adjustAmount * (intensity - 500) / 100).toString();
-        adjustedSecondaryColor = secondaryColor.clone().darken(adjustAmount * (intensity - 500) / 100).toString();
+        adjustedPrimaryColor = primaryColor.clone().darken(adjustAmount * (intensity - 500) / 100).toString()
+        adjustedSecondaryColor = secondaryColor.clone().darken(adjustAmount * (intensity - 500) / 100).toString()
       }
 
-      document.documentElement.style.setProperty(`--primary-color-${intensity}`, adjustedPrimaryColor);
-      document.documentElement.style.setProperty(`--secondary-color-${intensity}`, adjustedSecondaryColor);
-    });
+      document.documentElement.style.setProperty(`--primary-color-${intensity}`, adjustedPrimaryColor as string)
+      document.documentElement.style.setProperty(`--secondary-color-${intensity}`, adjustedSecondaryColor as string)
+    })
 
-    if (props.onClose) props.onClose();
-    selectedPalette.value = null;
+    if (props.onClose) props.onClose()
+    selectedPalette.value = null
   }
-};
+}
 </script>
 
 <style scoped lang="scss">

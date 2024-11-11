@@ -23,23 +23,15 @@
         <p>Telefone: {{ formattedWhatsappNumber }}</p>
       </div>
 
-      <div class="footer-social">
-        <VIcon
-            v-for="socialMedia in storeSocialMedia"
-            :key="socialMedia.name"
-            class="social-icon"
-            :title="`Abrir ${socialMedia.name}`"
-            @click="openSocialMedia(socialMedia.url)"
-        >{{ socialMedia.icon }}</VIcon>
-      </div>
+      <MdSocialMediaIcons />
     </div>
     <div class="footer-bottom">
       <p>&copy; {{ new Date().getFullYear() }} {{ storeName }}. Todos os direitos reservados.</p>
     </div>
   </footer>
-  <PaletteModal :show-palette-modal="showPaletteModal" :on-close="() => showPaletteModal = false"/>
-  <ManageProductType :showProductTypeModal="showProductTypeModal" :onClose="() => showProductTypeModal = false" />
-  <RegisterProduct
+  <MdPaletteModal :show-palette-modal="showPaletteModal" :on-close="() => showPaletteModal = false"/>
+  <MdManageProductType :showProductTypeModal="showProductTypeModal" :onClose="() => showProductTypeModal = false" />
+  <MdRegisterProductModal
       :showRegisterModal="showProductModal"
       :onClose="() => showProductModal = false"
       :on-register-new-product-type="onRegisterNewProductType"
@@ -47,13 +39,9 @@
 </template>
 
 <script setup lang="ts">
-import PaletteModal from "~/components/Md/PaletteModal/index.vue";
-import {ref} from "vue";
-import ManageProductType from "~/components/Md/ManageProductType/index.vue";
-import RegisterProduct from "~/components/Md/RegisterProduct/index.vue";
-
 const { techEmail, formattedWhatsappNumber } = useContact()
-const { storeLogo, storeName, storeSocialMedia } = useStoreData()
+const { storeLogo, storeName } = useStoreData()
+const { isAdmin } = useUser()
 
 const showPaletteModal = ref(false)
 const showProductTypeModal = ref(false)
@@ -62,12 +50,6 @@ const showProductModal = ref(false)
 const onRegisterNewProductType = () => {
   showProductModal.value = false
   showProductTypeModal.value = true
-}
-
-const { isAdmin } = useUser()
-
-const openSocialMedia = (url: string) => {
-  window.open(url)
 }
 </script>
 
@@ -111,24 +93,6 @@ const openSocialMedia = (url: string) => {
       font-size: 16px;
       line-height: 1.6;
     }
-
-    .footer-social {
-      display: flex;
-      gap: 16px;
-
-      .social-icon {
-        font-size: 32px;
-        color: white;
-        cursor: pointer;
-        background: rgba(255, 255, 255, 0.15);
-        border-radius: 50%;
-        padding: 8px;
-
-        &:hover {
-          color: var(--secondary-color-300);
-        }
-      }
-    }
   }
 
   .footer-bottom {
@@ -150,12 +114,6 @@ const openSocialMedia = (url: string) => {
 
   .footer-contact {
     font-size: 14px;
-  }
-
-  .footer-social {
-    .social-icon {
-      font-size: 24px;
-    }
   }
 }
 

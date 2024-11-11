@@ -3,6 +3,7 @@
       :is-opened="showProductDetailModal"
       :card-props="{ title: product.name }"
       max-width="550"
+      @click:outside="onClose"
       @close="onClose"
   >
     <template #trigger>
@@ -30,21 +31,14 @@
         </ul>
       </div>
 
-      <VRow>
-        <VCol cols="12" md="6">
-          <v-btn class="w-100" @click="onClose">Fechar</v-btn>
-        </VCol>
-        <VCol cols="12" md="6">
-          <v-btn
-              :loading
-              class="w-100"
-              color="primary"
-              @click="handleAddToCart"
-          >
-            Adicionar ao Carrinho
-          </v-btn>
-        </VCol>
-      </VRow>
+      <v-btn
+          :loading
+          class="w-100"
+          color="primary"
+          @click="handleAddToCart"
+      >
+        Adicionar ao Carrinho
+      </v-btn>
     </div>
   </Modal>
 </template>

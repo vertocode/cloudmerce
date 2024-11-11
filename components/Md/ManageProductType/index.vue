@@ -1,6 +1,8 @@
 <template>
   <Modal
       :is-opened="showProductTypeModal"
+      persistent
+      @close="onClose"
       :card-props="{ title: 'Tipos de Produto' }"
   >
     <VForm fast-fail @submit.prevent="submit">

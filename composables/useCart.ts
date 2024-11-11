@@ -23,7 +23,6 @@ export const useCart = () => {
             loading.value = true
             const response = await get(`/get-cart/${ecommerceId}`, { cartId: cartId.value }) as IGetCartResponse
 
-            console.log(response, '<<<')
             if (!response?._id) {
                 throw new Error('Response without _id.')
             }

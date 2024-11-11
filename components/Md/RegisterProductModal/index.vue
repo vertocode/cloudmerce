@@ -1,6 +1,8 @@
 <template>
   <Modal
       max-width="800"
+      persistent
+      @close="onClose"
       :is-opened="showRegisterModal"
       :card-props="{ title: 'Adicionar Produto' }"
   >

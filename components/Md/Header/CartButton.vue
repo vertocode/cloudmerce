@@ -22,7 +22,7 @@
 
       </v-toolbar>
 
-      <div v-if="true" class="loading">
+      <div v-if="loading" class="loading">
         <VProgressLinear indeterminate color="primary" />
       </div>
 

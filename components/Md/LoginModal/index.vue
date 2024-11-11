@@ -1,6 +1,8 @@
 <template>
   <Modal
       :is-opened="showLoginModal"
+      persistent
+      @close="onClose"
       :card-props="{
         prependIcon: 'mdi-account',
         title: 'Login'
