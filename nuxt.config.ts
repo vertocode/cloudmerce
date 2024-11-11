@@ -15,7 +15,10 @@ export default defineNuxtConfig({
   ],
   runtimeConfig: {
     public: {
-        apiUrl: process.env.API_URL
+      apiUrl: process.env.API_URL,
+      emailjsServiceId: process.env.EMAILJS_SERVICE_ID,
+      emailjstemplateId: process.env.EMAILJS_TEMPLATE_ID,
+      emailjsuserId: process.env.EMAILJS_USER_ID,
     }
   },
   vite: {

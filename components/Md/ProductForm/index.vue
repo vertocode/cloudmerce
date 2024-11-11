@@ -171,13 +171,11 @@
   </VForm>
 </template>
 <script setup lang="ts">
-import VeeSelect from "~/components/El/VeeSelect/index.vue";
-import VeeTextField from "~/components/El/VeeTextField/index.vue";
 import {useStoreData} from "~/composables/useStoreData";
 import {useField, useForm} from "vee-validate";
 import {ref} from "vue";
 import type {IProductType} from "~/composables/useStoreData";
-import {type UserField, type UserFieldType, UserFieldTypeLabel} from "~/types/product";
+import type {UserField, UserFieldTypeLabel} from "~/types/product";
 
 export interface InitialValues {
   productName: string
@@ -209,8 +207,6 @@ const props = defineProps<{
   updateProductList?: (params: { cache: 'no-cache' | 'force-cache' }) => Promise<void>
   initialValues?: InitialValues
 }>()
-
-console.log(props.initialValues, 'initial')
 
 const products = useState('products', () => [])
 const { productTypes, ecommerceId } = useStoreData();

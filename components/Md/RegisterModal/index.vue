@@ -59,7 +59,7 @@
               type="submit"
               :loading="isLoading"
           >
-            Register
+            Cadastrar
           </VBtn>
         </VCol>
       </VRow>
@@ -69,7 +69,6 @@
 
 <script setup lang="ts">
 import Modal from '~/components/El/Modal/index.vue'
-import VeeTextField from '~/components/El/VeeTextField/index.vue'
 import { useField, useForm } from 'vee-validate'
 import {validateEmail, validateName, validatePassword, validatePasswordConfirmation} from "~/utils/Validators";
 
@@ -102,7 +101,7 @@ const onClose = () => {
   showRegisterModal.value = false
 }
 
-const { register, login } = useUser()
+const { register } = useUser()
 
 const submit = handleSubmit(async values => {
   isLoading.value = true

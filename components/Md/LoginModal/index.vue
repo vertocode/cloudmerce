@@ -50,7 +50,6 @@
 
 <script setup lang="ts">
 import Modal from '~/components/El/Modal/index.vue'
-import VeeTextField from "~/components/El/VeeTextField/index.vue";
 import { useField, useForm } from "vee-validate";
 
 const { handleSubmit } = useForm({

@@ -24,7 +24,6 @@
 </template>
 
 <script setup lang="ts">
-import VeeTextField from "~/components/El/VeeTextField/index.vue";
 import { useField, useForm } from "vee-validate";
 import {useStoreData} from "~/composables/useStoreData";
 
