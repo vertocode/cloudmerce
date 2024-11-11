@@ -14,6 +14,15 @@
     <div class="product-info">
       <VListItemTitle>{{ item.name }}</VListItemTitle>
       <VListItemSubtitle>R${{ item.price }}</VListItemSubtitle>
+
+      <VProgressCircular
+          v-if="loading"
+          indeterminate
+          color="primary"
+          size="24"
+          class="loading-spinner"
+      />
+
       <div class="quantity">
         <span>Quantidade:</span>
         <div class="quantity-controls">
@@ -151,7 +160,7 @@ const decreaseQuantity = () => changeQuantity(props.item, props.item.quantity - 
       color: var(--primary-color-500);
       border-color: var(--primary-color-500);
       font-size: 0.75rem;
-      padding: 4px 8px;
+      padding: 2.5px 8px 4px 8px;
     }
 
     .small-btn {
