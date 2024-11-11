@@ -5,6 +5,7 @@
       <VBtn
           icon
           class="remove-btn"
+          :disabled="loading"
           @click="removeItem"
       >
         <VIcon>mdi-delete</VIcon>
@@ -20,6 +21,7 @@
               icon
               size="small"
               class="quantity-btn"
+              :disabled="loading"
               @click="decreaseQuantity"
           >
             <VIcon>mdi-minus</VIcon>
@@ -29,6 +31,7 @@
               icon
               size="small"
               class="quantity-btn"
+              :disabled="loading"
               @click="increaseQuantity"
           >
             <VIcon>mdi-plus</VIcon>
@@ -54,23 +57,19 @@
 </template>
 
 <script setup lang="ts">
-import type { ICartItem } from "~/types/cart";
+import type { ICartItem } from "~/types/cart"
 
-const removeItem = () => {
-  // Função para remover o item
-};
-
-const increaseQuantity = () => {
-  // Lógica para aumentar a quantidade
-};
-
-const decreaseQuantity = () => {
-  // Lógica para diminuir a quantidade
-};
-
-defineProps<{
+const props = defineProps<{
   item: ICartItem;
-}>();
+}>()
+
+const { changeQuantity, loading } = useCart()
+
+const removeItem = () => changeQuantity(props.item, 0)
+
+const increaseQuantity = () => changeQuantity(props.item, props.item.quantity + 1)
+
+const decreaseQuantity = () => changeQuantity(props.item, props.item.quantity - 1)
 </script>
 
 <style lang="scss" scoped>

@@ -86,9 +86,41 @@ export const useCart = () => {
             loading.value = false
         }
     }
-    const removeFromCart = (id: string) => {
-        cartProducts.value = cartProducts.value.filter((item) => item.id !== id)
+    const changeQuantity = async (item: ICartItem, newQuantity: number): Promise<{ code: string }> => {
+        try {
+            loading.value = true
+            const response = await put(`/change-cart-item-quantity/${ecommerceId}`, {
+                cartId: cartId.value,
+                productId: item.id,
+                quantity: newQuantity,
+                fields: item.fields.map(field => ({ fieldLabel: field.label, value: field?.value }))
+            }) as IAddItemToCartResponse
+
+            if (!response?._id) {
+                throw new Error('Response without _id.')
+            }
+
+            await getCart()
+
+            if (newQuantity === 0) {
+                handleSuccess(`${item.name} removido do carrinho.`)
+            }
+
+            return { code: 'success' }
+        } catch (error) {
+            console.error(error)
+
+            if (newQuantity === 0) {
+                handleError(`Erro ao remover ${item.name} do carrinho.`)
+            } else {
+                handleError(`Erro ao mudar quantidade de ${item.name} no carrinho para ${newQuantity}.`)
+            }
+
+            return { code: 'error' }
+        } finally {
+            loading.value = false
+        }
     }
 
-    return { cartProducts, loading, addToCart, removeFromCart, getCart }
+    return { cartProducts, loading, addToCart, changeQuantity, getCart }
 }
