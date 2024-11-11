@@ -35,7 +35,14 @@
           <v-btn class="w-100" @click="onClose">Fechar</v-btn>
         </VCol>
         <VCol cols="12" md="6">
-          <v-btn class="w-100" color="primary" @click="addToCart">Adicionar ao Carrinho</v-btn>
+          <v-btn
+              :loading
+              class="w-100"
+              color="primary"
+              @click="handleAddToCart"
+          >
+            Adicionar ao Carrinho
+          </v-btn>
         </VCol>
       </VRow>
     </div>
@@ -43,25 +50,29 @@
 </template>
 
 <script setup lang="ts">
-import { computed, defineProps, ref } from 'vue';
-import Modal from '~/components/El/Modal/index.vue';
-import type { IProduct } from "~/types/product";
+import { computed, defineProps, ref } from 'vue'
+import Modal from '~/components/El/Modal/index.vue'
+import type { IProduct } from "~/types/product"
 
-const showProductDetailModal = ref(false);
+const showProductDetailModal = ref(false)
 
 const onClose = () => {
-  showProductDetailModal.value = false;
-};
+  showProductDetailModal.value = false
+}
 
-const props = defineProps<{ product: IProduct }>();
+const props = defineProps<{ product: IProduct }>()
+
+const { addToCart, loading } = useCart()
 
 const formattedPrice = computed(() => {
-  return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(props.product.price);
-});
+  return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(props.product.price)
+})
 
-const addToCart = () => {
-  alert(`Produto ${props.product.name} adicionado ao carrinho!`);
-};
+const handleAddToCart = () => {
+  addToCart({ ...props.product, quantity: 1 })
+  onClose()
+}
+
 </script>
 
 <style scoped lang="scss">
