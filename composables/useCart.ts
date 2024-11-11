@@ -1,7 +1,7 @@
-import type {IProduct} from "~/types/product";
 import type {IAddItemToCartResponse, ICartItem, IGetCartResponse} from "~/types/cart";
 
 export const useCart = () => {
+    const isCartDrawerOpened = useState('isCartDrawerOpened', () => false)
     const cartProducts = useState<ICartItem[]>('cartProducts', () => [])
     const loading = ref<boolean>(false)
 
@@ -74,7 +74,7 @@ export const useCart = () => {
 
             await getCart()
 
-            handleSuccess(`${item.name} adicionado ao carrinho.`)
+            isCartDrawerOpened.value = true
 
             return { code: 'success' }
         } catch (error) {
@@ -122,5 +122,5 @@ export const useCart = () => {
         }
     }
 
-    return { cartProducts, loading, addToCart, changeQuantity, getCart }
+    return { cartProducts, loading, isCartDrawerOpened, addToCart, changeQuantity, getCart }
 }

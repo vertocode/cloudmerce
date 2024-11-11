@@ -1,14 +1,15 @@
 <template>
   <div>
-    <VBtn icon @click="isDrawerOpen = !isDrawerOpen">
+    <VBtn icon @click="isCartDrawerOpened = !isCartDrawerOpened">
       <VIcon>mdi-cart</VIcon>
     </VBtn>
 
     <VNavigationDrawer
-        v-model="isDrawerOpen"
+        v-model="isCartDrawerOpened"
         app
         temporary
         width="320"
+        height="100%"
         location="right"
         class="cart-drawer"
         v-if="isLoaded"
@@ -16,7 +17,7 @@
       <v-toolbar flat dense>
         <div class="title">
           <v-toolbar-title class="flex justify-space-between">Carrinho de Compras</v-toolbar-title>
-          <VIcon @click="isDrawerOpen = false">mdi-close</VIcon>
+          <VIcon @click="isCartDrawerOpened = false">mdi-close</VIcon>
         </div>
 
       </v-toolbar>
@@ -28,12 +29,14 @@
           </VList>
         </div>
 
-        <div class="cart-total">
-          <span>Total:</span>
-          <span class="cart-total-value">R${{ total }}</span>
-        </div>
+        <div>
+          <div class="cart-total">
+            <span>Total:</span>
+            <span class="cart-total-value">R${{ total }}</span>
+          </div>
 
-        <VBtn block color="primary">Comprar</VBtn>
+          <VBtn block color="primary">Comprar</VBtn>
+        </div>
       </div>
 
       <div v-else class="empty-cart">
@@ -49,12 +52,12 @@ import { computed, ref, onMounted } from 'vue'
 import CartItem from "~/components/Md/Header/CartItem.vue"
 import { useCart } from "~/composables/useCart"
 
-const isDrawerOpen = ref(false)
+
 const isLoaded = ref(false)
 
 onMounted(() => isLoaded.value = true)
 
-const { cartProducts, getCart } = useCart()
+const { cartProducts, getCart, isCartDrawerOpened } = useCart()
 
 onMounted(() => {
   getCart()
@@ -96,6 +99,10 @@ const total = computed(() => {
 
 .cart-items-list {
   padding: 16px;
+  height: 90%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 
   .list {
     border-bottom: 1px solid #e0e0e0;
