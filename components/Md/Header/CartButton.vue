@@ -22,7 +22,11 @@
 
       </v-toolbar>
 
-      <div v-if="cartProducts.length" class="cart-items-list">
+      <div v-if="true" class="loading">
+        <VProgressLinear indeterminate color="primary" />
+      </div>
+
+      <div v-else-if="cartProducts.length" class="cart-items-list">
         <div class="list">
           <VList>
             <CartItem v-for="(item, index) in cartProducts" :key="index" :item="item" />
@@ -57,7 +61,7 @@ const isLoaded = ref(false)
 
 onMounted(() => isLoaded.value = true)
 
-const { cartProducts, getCart, isCartDrawerOpened } = useCart()
+const { cartProducts, getCart, isCartDrawerOpened, loading } = useCart()
 
 onMounted(() => {
   getCart()
