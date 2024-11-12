@@ -53,6 +53,10 @@
 </template>
 
 <script setup lang="ts">
+definePageMeta({
+  layout: 'container'
+})
+
 import emailjs from 'emailjs-com'
 import {useField, useForm} from "vee-validate";
 import {validateEmail, validateName} from "~/utils/Validators";

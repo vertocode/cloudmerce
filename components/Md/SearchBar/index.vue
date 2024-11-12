@@ -6,7 +6,7 @@
           class="vee-text-field"
           :disabled="filterSearchProducts.length"
           :value="search"
-          :label="`Pesquisar ${productType} pelo nome`"
+          :label="`Buscar ${productType}`"
           required
       />
       <VBtn
@@ -18,7 +18,8 @@
       </VBtn>
     </VForm>
     <span v-if="filterSearchProducts.length" class="filter-message">
-      Filtrando por: <strong>{{ filterSearchProducts }}</strong>. <span class="clean-btn" @click="cleanFilter">Clique aqui para limpar.</span>
+      Filtrando por: <strong>{{ filterSearchProducts }}</strong>
+      <span class="clean-btn" @click="cleanFilter">Limpar filtro</span>
     </span>
   </div>
 </template>
@@ -58,78 +59,93 @@ const handleSearch = handleSubmit((values) => {
 
 <style scoped lang="scss">
 .search-bar {
-  max-width: 800px;
+  width: 90%;
+  max-width: 700px;
   margin: auto;
   display: flex;
-  justify-content: center;
-  border-radius: 16px;
-  align-items: center;
-  padding: 24px 12px 12px 12px;
-  background-color: #f0f4f8;
   flex-direction: column;
-  gap: 4px;
+  align-items: center;
+  padding: 12px 24px 0 12px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(10px);
 
-  .clean-btn {
-    color: var(--secondary-color-700);
-    cursor: pointer;
-    text-decoration: underline;
+  .filter-message {
+    color: #6c757d;
+    margin-top: 8px;
+    font-size: 0.9rem;
+
+    .clean-btn {
+      margin-left: 4px;
+      color: #007aff;
+      cursor: pointer;
+      text-decoration: underline;
+    }
   }
 
   form {
     display: flex;
-    align-items: flex-start;
-    position: relative;
+    align-items: center;
     width: 100%;
-    max-width: 700px;
 
     .vee-text-field {
       flex-grow: 1;
+      input {
+        font-size: 1.1rem;
+        padding: 12px 20px;
+        border-radius: 8px;
+        border: 1px solid #e0e0e0;
+        transition: border-color 0.3s;
+
+        &:focus {
+          border-color: #007aff;
+          outline: none;
+        }
+      }
     }
 
     .search-btn {
-      background-color: var(--primary-color-500);
+      background-color: #007aff;
+      color: white;
       border-radius: 50%;
-      height: 50px;
+      margin-bottom: 20px;
       width: 50px;
-      margin-top: 4px;
-      margin-left: 1rem;
+      height: 50px;
+      margin-left: 12px;
       display: flex;
       justify-content: center;
       align-items: center;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
       transition: background-color 0.3s ease, transform 0.3s ease;
-      box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
 
       &:hover {
-        transform: scale(1.1);
-        box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.3);
+        background-color: #005bb5;
+        transform: scale(1.05);
       }
 
       .v-icon {
-        color: var(--secondary-color-500);
-        font-size: 1.5rem;
+        font-size: 1.6rem;
+        color: #fff;
       }
     }
   }
 }
 
-@media (max-width: $tablet-breakpoint) {
+@media (max-width: 768px) {
   .search-bar {
-    padding: 16px 8px 0 8px;
+    padding: 20px;
 
     form {
-      gap: 8px;
-      align-items: center;
-
       .vee-text-field {
-        width: 100%;
+        input {
+          font-size: 1rem;
+        }
       }
 
       .search-btn {
-        margin-bottom: 24px;
-        margin-left: 0;
         width: 45px;
         height: 45px;
-
         .v-icon {
           font-size: 1.4rem;
         }
@@ -138,75 +154,27 @@ const handleSearch = handleSubmit((values) => {
   }
 }
 
-@media (max-width: $mobile-breakpoint) {
+@media (max-width: 480px) {
   .search-bar {
-    padding: 12px 12px 0 12px;
-    gap: 6px;
+    padding: 16px;
 
-    .clean-btn {
+    .filter-message {
       font-size: 0.85rem;
     }
 
     form {
       .vee-text-field {
-        font-size: 0.9rem;
+        input {
+          font-size: 0.9rem;
+          padding: 10px 16px;
+        }
       }
 
       .search-btn {
         width: 40px;
         height: 40px;
-
         .v-icon {
           font-size: 1.2rem;
-        }
-      }
-    }
-  }
-}
-
-@media (max-width: $md-mobile-breakpoint) {
-  .search-bar {
-    padding: 12px 12px 0 12px;
-    gap: 4px;
-
-    .clean-btn {
-      font-size: 0.75rem;
-    }
-
-    form {
-      .vee-text-field {
-        font-size: 0.8rem;
-      }
-
-      .search-btn {
-        width: 35px;
-        height: 35px;
-
-        .v-icon {
-          font-size: 1.1rem;
-        }
-      }
-    }
-  }
-}
-
-@media (max-width: $sm-mobile-breakpoint) {
-  .search-bar {
-    justify-content: center;
-    gap: 8px;
-
-    form {
-      .vee-text-field {
-        font-size: 0.75rem;
-        width: 100%;
-      }
-
-      .search-btn {
-        width: 30px;
-        height: 30px;
-
-        .v-icon {
-          font-size: 1rem;
         }
       }
     }

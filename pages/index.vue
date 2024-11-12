@@ -1,7 +1,9 @@
 <template>
   <MdBanner />
   <MdSearchBar style="margin-top: -24px" />
-  <MdProductList :products :loading :updateProductList />
+  <MdContainer class="main_container">
+     <MdProductList :products :loading :updateProductList />
+  </MdContainer>
 </template>
 
 <script setup lang="ts">

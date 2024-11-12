@@ -72,9 +72,9 @@ onMounted(() => {
 <style scoped lang="scss">
 .subheader {
   display: flex;
+  background-color: var(--primary-color-700);
   align-items: center;
   padding: 4px 24px;
-  background-color: #f4f4f6;
 
   @media screen and (max-width: $mobile-breakpoint) {
     padding: 4px 16px;
@@ -99,7 +99,6 @@ onMounted(() => {
 
     .product-type {
       padding: 0.5rem 1rem;
-      background-color: var(--primary-color-500);
       color: #fff;
       border-radius: 25px;
       cursor: pointer;
@@ -118,7 +117,7 @@ onMounted(() => {
       }
 
       &:hover {
-        background-color: #d1d1d1;
+        text-decoration: underline;
       }
     }
   }

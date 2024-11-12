@@ -68,9 +68,8 @@ const addToCart = async () => {
 
 <style lang="scss" scoped>
 .product-card {
-  background-color: #f5f5f5;
   color: #424242;
-  border-radius: 8px;
+  border-radius: 16px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 

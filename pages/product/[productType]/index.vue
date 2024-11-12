@@ -8,6 +8,10 @@
 </template>
 
 <script setup lang="ts">
+definePageMeta({
+  layout: 'container'
+})
+
 import { useRoute } from 'vue-router'
 import { computed } from 'vue'
 import { useProductList } from "~/composables/useProductList";

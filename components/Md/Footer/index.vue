@@ -55,7 +55,7 @@ const onRegisterNewProductType = () => {
 
 <style scoped lang="scss">
 .footer {
-  background: linear-gradient(135deg, var(--primary-color-700), var(--primary-color-500));
+  background: var(--primary-color-700);
   color: white;
   padding: 32px 0;
   text-align: center;
