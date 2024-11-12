@@ -4,14 +4,6 @@
 
     <div class="product-name-container">
       <VCardTitle class="product-name">{{ product.name }}</VCardTitle>
-
-<!--      <VTooltip v-if="product.description" :text="product.description">-->
-<!--        <template v-slot:activator="{ props }">-->
-<!--          <VBtn class="info-button" v-bind="props" icon>-->
-<!--            <VIcon>mdi-information</VIcon>-->
-<!--          </VBtn>-->
-<!--        </template>-->
-<!--      </VTooltip>-->
     </div>
 
     <VCardSubtitle class="product-price">{{ formattedPrice }}</VCardSubtitle>
@@ -68,79 +60,91 @@ const addToCart = async () => {
 
 <style lang="scss" scoped>
 .product-card {
-  color: #424242;
-  border-radius: 16px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  color: #333;
+  border-radius: 14px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  background: #fff;
+  overflow: hidden;
 
   &:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-  }
-
-  .product-image-carousel {
-    height: max-content !important;
-    max-width: 100%;
-    border-radius: 8px;
-  }
-
-  .product-image {
-    border-top-left-radius: 8px;
-    border-top-right-radius: 8px;
-    mix-blend-mode: darken;
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
   }
 
   .product-name-container {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    gap: 8px;
+    padding: 16px 0;
+    font-weight: bold;
+    color: #111;
 
     .product-name {
-      font-weight: bold;
-      color: #333333;
-    }
-
-    .info-button {
-      margin-top: 8px;
-      margin-right: 8px;
+      font-size: 1.5rem;
+      color: #007aff;
     }
   }
 
   .product-price {
-    color: #616161;
+    color: #6c757d;
     font-size: 1.1rem;
-    margin-bottom: 10px;
+    padding: 0 16px 16px;
   }
 
   .card-actions {
-    width: 100%;
+    padding: 16px;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    padding: 16px;
+    gap: 8px;
 
-    .view-details-btn, .add-to-cart-btn {
+    .add-to-cart-btn,
+    .view-details-btn,
+    .edit-btn,
+    .delete-btn {
       width: 100%;
+      padding: 12px;
+      transition: background-color 0.3s, transform 0.3s;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+
+      &:hover {
+        transform: translateY(-2px);
+      }
+    }
+
+    .add-to-cart-btn {
+      background-color: #007aff;
+      color: #fff;
+
+      &:hover {
+        background-color: #005bb5;
+      }
+    }
+
+    .view-details-btn {
+      background-color: #f4f4f4;
+      color: #007aff;
+
+      &:hover {
+        background-color: #e0e0e0;
+      }
     }
 
     .edit-btn {
-      width: 100%;
-      color: var(--primary-color-500);
-      background-color: var(--secondary-color-500) !important;
+      background-color: #28a745;
+      color: #fff;
 
       &:hover {
-        background-color: var(--secondary-color-700) !important;
+        background-color: #218838;
       }
     }
 
     .delete-btn {
-      width: 100%;
+      background-color: #dc3545;
       color: #fff;
-      background-color: var(--danger-color-500) !important;
 
       &:hover {
-        background-color: var(--danger-color-700) !important;
+        background-color: #c82333;
       }
     }
   }
