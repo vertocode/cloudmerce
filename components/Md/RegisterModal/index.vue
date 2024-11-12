@@ -1,6 +1,8 @@
 <template>
   <Modal
       :is-opened="showRegisterModal"
+      persistent
+      @close="onClose"
       :card-props="{
         prependIcon: 'mdi-account-plus',
         title: 'Cadastro'
