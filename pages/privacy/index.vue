@@ -45,10 +45,6 @@
 </template>
 
 <script setup lang="ts">
-definePageMeta({
-  layout: 'container'
-})
-
 const { techEmail } = useContact()
 </script>
 

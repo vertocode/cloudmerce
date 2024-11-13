@@ -34,10 +34,6 @@
 <script setup lang="ts">
 import { useStoreData } from "~/composables/useStoreData"
 
-definePageMeta({
-  layout: 'container'
-})
-
 const youtubeVideo = 'https://www.youtube.com/watch?v=xNJql5M38N8&t=18s'
 const { storeDescription, storeName, storeLogo } = useStoreData()
 </script>

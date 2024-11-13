@@ -7,5 +7,8 @@
 </template>
 
 <script setup lang="ts">
+definePageMeta({
+  layout: 'no-container'
+})
 const { products, loading, update: updateProductList } = useProductList()
 </script>
