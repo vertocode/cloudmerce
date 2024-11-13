@@ -1,19 +1,21 @@
 <template>
-  <VTextField
-      :variant="variant"
-      class="vee-text-field"
-      v-model="value.value.value"
-      :error-messages="value.errorMessage.value"
-      v-bind="$attrs"
-      autocomplete="off"
-  />
+  <Field :name v-slot="{ field, errorMessage }">
+    <VTextField
+        :variant="variant"
+        class="vee-text-field"
+        autocomplete="off"
+        :error-messages="errorMessage"
+        v-bind="{ ...$attrs, ...field }"
+    />
+  </Field>
 </template>
 
 <script setup lang="ts">
-import type { FieldContext } from "vee-validate"
+import { Field } from "vee-validate"
 
 defineProps<{
-  value: FieldContext<any>
+  name: string
   variant?: "outlined" | "plain" | "filled" | "underlined" | "solo" | "solo-inverted" | "solo-filled"
+  required?: boolean
 }>()
 </script>
