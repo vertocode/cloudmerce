@@ -1,6 +1,8 @@
 <template>
-  <Form :validation-schema="schema" fast-fail as="" v-slot="{ values, ...attrs }">
-    <VForm @submit.prevent="$emit('submit', values)">
+  <Form :validation-schema="schema" fast-fail as="" v-slot="{ values, errors, ...attrs }">
+    <VForm
+        @submit.prevent="getHasErrors(errors) ? null : $emit('submit', values)"
+    >
       <slot v-bind="attrs"></slot>
     </VForm>
   </Form>
@@ -16,4 +18,5 @@ const props = defineProps<{
 }>()
 
 const schema = props.validationSchema ? toTypedSchema(props.validationSchema) : {}
+const getHasErrors = (errors: Record<string, (string | undefined)>) => Object.keys(errors).length > 0
 </script>
