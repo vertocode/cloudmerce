@@ -1,7 +1,7 @@
 <template>
-  <Form :validation-schema="schema" fast-fail as="" v-slot="{ values, errors, ...attrs }">
+  <Form :validation-schema="schema" fast-fail as="" v-slot="{ ...attrs }">
     <VForm
-        @submit.prevent="getHasErrors(errors) ? null : $emit('submit', values)"
+        @submit.prevent="getHasErrors(attrs.errors) ? null : $emit('submit', attrs.values)"
     >
       <slot v-bind="attrs"></slot>
     </VForm>
