@@ -1,5 +1,6 @@
 <template>
-  <VeeForm :validationSchema="validationSchema" @submit="submit" v-slot="{ isSubmitting }">
+  <VeeForm :validationSchema="validationSchema" @submit="submit" v-slot="{ isSubmitting, values }">
+    {{ values }}
     <div class="field-container">
       <VRow>
         <VCol cols="12" md="6" class="pl-0 pb-0">
@@ -26,7 +27,6 @@
               label="Descrição do Produto"
               variant="outlined"
               rows="4"
-              required
           />
         </VCol>
 
@@ -38,7 +38,6 @@
               label="Tipo de Produto"
               variant="outlined"
               no-data-text="Sem opções, clique para cadastrar um novo tipo de produto abaixo deste input."
-              required
           />
           <span v-if="onRegisterNewProductType" class="product-type-message" @click="onRegisterNewProductType">
               Cadastrar novo tipo de produto <VIcon color="var(--secondary-700)">mdi-link</VIcon>
@@ -49,34 +48,35 @@
           Você deve colocar o link da imagem aqui. É possível usar qualquer serviço de armazenamento em nuvem, como
           <a href="https://imgur.com/">Imgur</a> ou outro de sua preferência. (Opcional, mas recomendado.)
         </h5>
-        <VCol
-            cols="12"
-            :md="imageUrls.length === 1 ? 12 : 6"
-            v-for="(_, index) in imageUrls"
-            :key="index"
-            class="image-field mt-0"
-            :class="index % 2 === 0 ? 'pl-0' : 'pr-0'"
-        >
-          <VeeTextField
-              name="imageUrls"
-              v-model="imageUrls[index]"
-              :label="`URL da imagem ${index + 1}`"
-              variant="outlined"
-          />
-          <VBtn
-              v-if="imageUrls.length > 1"
-              icon
-              class="remove-btn mb-6"
-              @click="removeImageField(index)"
+        <FieldArray name="imageUrls" v-slot="{ fields, push, remove }">
+          <VCol
+              cols="12"
+              :md="fields.length === 1 ? 12 : 6"
+              v-for="(_, index) in fields"
+              :key="index"
+              class="image-field mt-0"
+              :class="index % 2 === 0 ? 'pl-0' : 'pr-0'"
           >
-            <VIcon>mdi-delete</VIcon>
-          </VBtn>
-        </VCol>
-        <VCol cols="12">
-          <VBtn @click="addImageField" color="primary" class="mb-8 float-end">
-            <VIcon color="white">mdi-plus</VIcon> Adicionar imagem
-          </VBtn>
-        </VCol>
+            <VeeTextField
+                :name="`imageUrls[${index}]`"
+                :label="`URL da imagem ${index + 1}`"
+                variant="outlined"
+            />
+            <VBtn
+                v-if="fields.length > 1"
+                icon
+                class="remove-btn mb-6"
+                @click="remove(index)"
+            >
+              <VIcon>mdi-delete</VIcon>
+            </VBtn>
+          </VCol>
+          <VCol cols="12">
+            <VBtn @click="push('')" color="primary" class="mb-8 float-end">
+              <VIcon color="white">mdi-plus</VIcon> Adicionar imagem
+            </VBtn>
+          </VCol>
+        </FieldArray>
       </VRow>
       <h5>Adicione perguntas para o usuário responder, como tamanho de uma roupa, cor ou qualquer outra pergunta necessária para este produto.</h5>
       <VRow v-if="userFields.length > 0" v-for="(_, index) in userFields" :key="index">
@@ -127,7 +127,6 @@
               v-model="(userFields[index].options || [])[optionIndex] as string"
               :label="`Opção ${optionIndex + 1}`"
               variant="outlined"
-              required
           />
           <VBtn
               v-if="userFields[index] && userFields[index]?.options?.length > 1"
@@ -176,6 +175,7 @@ import { z } from 'zod'
 import { useStoreData } from '~/composables/useStoreData'
 import type { IProductType } from '~/composables/useStoreData'
 import { UserFieldTypeLabel } from '~/types/product'
+import {FieldArray} from "vee-validate";
 
 interface UserFieldWithLabel {
   label: string
@@ -197,19 +197,10 @@ const { productTypes, ecommerceId } = useStoreData()
 const isEdition = !!props.initialValues
 
 const isLoading = ref(false)
-const imageUrls = ref(props?.initialValues?.imageUrls || [''])
 const userFields = ref<UserFieldWithLabel[]>(props?.initialValues?.userFields.map((field: UserFieldWithLabel) => ({
   ...field,
   type: getFieldLabel(field.type)
 })) || [])
-
-const addImageField = () => {
-  imageUrls.value.push('')
-}
-
-const removeImageField = (index: number) => {
-  imageUrls.value.splice(index, 1)
-}
 
 const addUserField = () => {
   userFields.value.push({
@@ -240,7 +231,6 @@ const submit = async (values: Record<string, any>) => {
   try {
     await props.action({
       ...values,
-      imageUrls: imageUrls.value,
       ecommerceId: ecommerceId,
       productType: productTypes.value.find((type: IProductType) => type.name === values.productType)?.id || '',
       userFields: userFields.value.map(field => {

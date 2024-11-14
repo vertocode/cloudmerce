@@ -4,13 +4,12 @@
         :variant="variant"
         class="vee-select"
         v-model="field.value"
-        :error-messages="errorMessage"
+        :error-messages="errorMessage === 'Required' ? 'Campo obrigatório' : errorMessage"
         :items="items"
         v-bind="{ ...$attrs, ...field }"
         autocomplete="off"
         :no-data-text="noDataText || 'Sem opções'"
         :placeholder="placeholder"
-        label="Selecionar Opção"
     />
   </Field>
 </template>

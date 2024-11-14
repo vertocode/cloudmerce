@@ -4,7 +4,7 @@
         :variant="variant"
         class="vee-text-area"
         v-model="field.value"
-        :error-messages="errorMessage"
+        :error-messages="errorMessage === 'Required' ? 'Campo obrigatório' : errorMessage"
         v-bind="{ ...$attrs, ...field }"
         rows="4"
         autocomplete="off"
