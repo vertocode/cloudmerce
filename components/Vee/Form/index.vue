@@ -2,7 +2,7 @@
   <Form class="vee-form" :validation-schema="schema" fast-fail as="" v-slot="{ ...attrs }">
     <VForm
         :class="formClass"
-        @submit.prevent="getHasErrors(attrs.errors) ? null : $emit('submit', attrs.values)"
+        @submit.prevent="handleSubmit(attrs.values, attrs.validate)"
     >
       <slot v-bind="attrs"></slot>
     </VForm>
@@ -20,5 +20,14 @@ const props = defineProps<{
 }>()
 
 const schema = props.validationSchema ? toTypedSchema(props.validationSchema) : {}
-const getHasErrors = (errors: Record<string, (string | undefined)>) => Object.keys(errors).length > 0
+
+const emit = defineEmits()
+
+const handleSubmit = async (values: Record<string, any>, validate: () => Promise<{ valid: boolean }>) => {
+  const res = await validate()
+
+  if (!res?.valid) return
+
+  emit('submit', values)
+}
 </script>

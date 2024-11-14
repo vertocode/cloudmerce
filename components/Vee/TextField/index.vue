@@ -1,7 +1,7 @@
 <template>
   <Field v-if="name" :name v-slot="{ field, errorMessage }">
     <VTextField
-        :variant="variant"
+        :variant="variant || 'outlined'"
         class="vee-text-field"
         autocomplete="off"
         :error-messages="errorMessage"

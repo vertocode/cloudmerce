@@ -65,19 +65,19 @@
               :label="`URL da imagem ${index + 1}`"
               variant="outlined"
           />
-          <VeeButton
+          <VBtn
               v-if="imageUrls.length > 1"
               icon
               class="remove-btn mb-6"
               @click="removeImageField(index)"
           >
             <VIcon>mdi-delete</VIcon>
-          </VeeButton>
+          </VBtn>
         </VCol>
         <VCol cols="12">
-          <VeeButton @click="addImageField" color="primary" class="mb-8 float-end">
+          <VBtn @click="addImageField" color="primary" class="mb-8 float-end">
             <VIcon color="white">mdi-plus</VIcon> Adicionar imagem
-          </VeeButton>
+          </VBtn>
         </VCol>
       </VRow>
       <h5>Adicione perguntas para o usuário responder, como tamanho de uma roupa, cor ou qualquer outra pergunta necessária para este produto.</h5>
@@ -108,13 +108,13 @@
           />
         </VCol>
         <VCol cols="2">
-          <VeeButton
+          <VBtn
               icon
               class="remove-btn mt-4"
               @click="removeUserField(index)"
           >
             <VIcon>mdi-delete</VIcon>
-          </VeeButton>
+          </VBtn>
         </VCol>
         <h5 class="w-100 mb-3" v-if="userFields[index].type === UserFieldTypeLabel.options">Opções para o campo {{ index + 1 }}:</h5>
         <VCol
@@ -131,26 +131,26 @@
               variant="outlined"
               required
           />
-          <VeeButton
+          <VBtn
               v-if="userFields[index] && userFields[index]?.options?.length > 1"
               icon
               class="remove-btn mb-6"
               @click="removeUserFieldOption(index, optionIndex)"
           >
             <VIcon>mdi-delete</VIcon>
-          </VeeButton>
+          </VBtn>
         </VCol>
         <VCol cols="12">
-          <VeeButton v-if="userFields[index].type === UserFieldTypeLabel.options" @click="addUserFieldOption(index)" variant="outlined" class="mb-8 float-end">
+          <VBtn v-if="userFields[index].type === UserFieldTypeLabel.options" @click="addUserFieldOption(index)" variant="outlined" class="mb-8 float-end">
             Adicionar opção para o campo {{ index + 1 }}
-          </VeeButton>
+          </VBtn>
         </VCol>
       </VRow>
       <VRow>
         <VCol cols="12">
-          <VeeButton @click="addUserField" color="primary" class="mb-8 float-end mt-3">
+          <VBtn @click="addUserField" color="primary" class="mb-8 float-end mt-3">
             <VIcon color="white">mdi-plus</VIcon> Adicionar pergunta de usuário
-          </VeeButton>
+          </VBtn>
         </VCol>
       </VRow>
     </div>
@@ -159,12 +159,12 @@
 
     <VRow justify="end" align-content="end" no-gutters>
       <VCol cols="6">
-        <VeeButton size="large" variant="text" width="100%" @click="onClose">
+        <VBtn size="large" variant="text" width="100%" @click="onClose">
           Cancelar
-        </VeeButton>
+        </VBtn>
       </VCol>
       <VCol cols="6">
-        <VeeButton size="large" variant="tonal" color="primary" width="100%" type="submit" :loading="isSubmitting">
+        <VeeButton size="large" variant="tonal" color="primary" width="100%" :loading="isSubmitting">
           {{ isEdition ? 'Editar' : 'Adicionar' }}
         </VeeButton>
       </VCol>
@@ -280,7 +280,7 @@ const submit = async (values: Record<string, any>) => {
 
 const validationSchema = z.object({
   productName: z.string().min(3, { message: 'Nome do produto deve ter pelo menos 3 caracteres' }),
-  productPrice: z.number().min(0, { message: 'Preço do produto deve ser maior ou igual a 0' }),
+  productPrice: z.number().min(10, { message: 'Preço do produto deve ser maior ou igual a R$10,00' }),
   productDescription: z.string().min(10, { message: 'Descrição deve ter pelo menos 10 caracteres' }),
   productType: z.string().nonempty({ message: 'O tipo de produto é obrigatório' }),
   imageUrls: z.array(z.string().url({ message: 'Deve ser uma URL válida' })).optional(),
