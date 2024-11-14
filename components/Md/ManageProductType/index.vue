@@ -5,11 +5,11 @@
       @close="onClose"
       :card-props="{ title: 'Tipos de Produto' }"
   >
-    <VForm fast-fail @submit.prevent="submit">
+    <VeeForm @submit="submit" v-slot="{ isSubmitting }">
       <div v-if="newProductTypes.length" class="product-type-fields">
         <div v-for="(type, index) in newProductTypes" :key="type.id" class="product-type-item">
-          <VTextField
-              class="w-100"
+          <VeeTextField
+              :name="'productType' + index"
               v-model="type.name"
               :rules="rules"
               label="Nome do Tipo de Produto"
@@ -37,110 +37,104 @@
           </VBtn>
         </VCol>
         <VCol cols="4">
-          <VBtn
-              variant="tonal"
+          <VeeButton
               color="primary"
               width="100%"
               type="submit"
-              :loading="isLoading"
+              :loading="isSubmitting"
           >
-            {{ 'Salvar' }}
-          </VBtn>
+            Salvar
+          </VeeButton>
         </VCol>
       </VRow>
-    </VForm>
+    </VeeForm>
   </Modal>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import Modal from '~/components/El/Modal/index.vue';
 import DeleteProductType from '~/components/Md/DeleteProductType/index.vue';
-import {type IProductType, useStoreData} from "~/composables/useStoreData";
+import { useStoreData } from '~/composables/useStoreData';
 
 const props = defineProps<{
   showProductTypeModal: boolean;
   onClose: () => void;
-}>()
+}>();
 
 const isLoading = ref(false);
+const { productTypes, ecommerceId, updateProductTypes } = useStoreData();
+const { put } = useApi();
 
-const { productTypes, ecommerceId, updateProductTypes } = useStoreData()
-const { put } = useApi()
+const rules = [
+  (v: string | null) => !!v || 'Nome do tipo de produto é obrigatório',
+  (v: string | null) => !!v && v.length <= 25 || 'Nome do tipo de produto deve ter no máximo 25 caracteres',
+  (v: string | null) => !!v && v.length >= 3 || 'Nome do tipo de produto deve ter no mínimo 3 caracteres',
+];
 
-const rules =  [
-    (v: string | null) => !!v || 'Nome do tipo de produto é obrigatório',
-    (v: string | null) => !!v && v.length <= 25 || 'Nome do tipo de produto deve ter no máximo 25 caracteres',
-    (v: string | null) => !!v && v.length >= 3 || 'Nome do tipo de produto deve ter no mínimo 3 caracteres'
-]
-
-const oldProductTypes = ref<IProductType[]>(cloneArray(productTypes.value))
-const newProductTypes = ref<IProductType[]>(cloneArray(productTypes.value))
+const oldProductTypes = ref(cloneArray(productTypes.value));
+const newProductTypes = ref(cloneArray(productTypes.value));
 
 watch(productTypes, () => {
-  newProductTypes.value = cloneArray(productTypes.value)
-  oldProductTypes.value = cloneArray(productTypes.value)
-})
+  newProductTypes.value = cloneArray(productTypes.value);
+  oldProductTypes.value = cloneArray(productTypes.value);
+});
 
 const validateFields = () => {
   return newProductTypes.value.every((productType) => {
-    return rules.every(rule => {
-      const value = productType.name
+    return rules.every((rule) => {
+      const value = productType.name;
       if (typeof rule(value) === 'boolean') {
-        return true
+        return true;
       }
-      console.warn(`field ${value} is not valid for rule: ${rule(value)}`)
-      return false
-    })
-  })
-}
-
+      console.warn(`field ${value} is not valid for rule: ${rule(value)}`);
+      return false;
+    });
+  });
+};
 
 const submit = async () => {
-  if (!validateFields()) return
+  if (!validateFields()) return;
 
   isLoading.value = true;
   try {
-    const productTypesToDelete = oldProductTypes.value.filter((type) => !newProductTypes.value.some((newType) => newType.id === type.id))
-    const productTypesToAdd = newProductTypes.value.filter((type) => !oldProductTypes.value.some((oldType) => oldType.id === type.id))
+    const productTypesToDelete = oldProductTypes.value.filter((type) => !newProductTypes.value.some((newType) => newType.id === type.id));
+    const productTypesToAdd = newProductTypes.value.filter((type) => !oldProductTypes.value.some((oldType) => oldType.id === type.id));
     const productTypesToUpdate = newProductTypes.value.filter((type) => {
-      const oldProductType = oldProductTypes.value.find((oldType) => oldType.id === type.id)
-      return oldProductType && oldProductType.name !== type.name
-    })
+      const oldProductType = oldProductTypes.value.find((oldType) => oldType.id === type.id);
+      return oldProductType && oldProductType.name !== type.name;
+    });
 
     const productTypes = [
-        ...productTypesToUpdate.map((type) => ({ ecommerceId, id: type.id, name: type.name, action: 'update' })),
-        ...productTypesToAdd.map((type) => ({ ecommerceId, name: type.name, action: 'add' })),
-        ...productTypesToDelete.map((type) => ({ ecommerceId, id: type.id, action: 'delete' }))
-    ]
+      ...productTypesToUpdate.map((type) => ({ ecommerceId, id: type.id, name: type.name, action: 'update' })),
+      ...productTypesToAdd.map((type) => ({ ecommerceId, name: type.name, action: 'add' })),
+      ...productTypesToDelete.map((type) => ({ ecommerceId, id: type.id, action: 'delete' })),
+    ];
 
     if (!productTypes.length) {
-      onClose()
-      handleWarning('Nenhuma alteração foi feita, os tipos de produto estão iguais aos anteriores e o modal apenas foi fechado')
-      return
+      onClose();
+      handleWarning('Nenhuma alteração foi feita, os tipos de produto estão iguais aos anteriores e o modal apenas foi fechado');
+      return;
     }
 
-    await put('/product-types/multiple-update', {
-      productTypes
-    })
-
-    await updateProductTypes({ cache: 'no-cache' })
-    onClose()
+    await put('/product-types/multiple-update', { productTypes });
+    await updateProductTypes({ cache: 'no-cache' });
+    onClose();
   } catch (error) {
-    console.error(error)
+    console.error(error);
     handleError('Erro ao salvar tipo de produto');
   } finally {
     isLoading.value = false;
   }
-}
+};
 
 const deleteProductType = async (id: string) => {
-  newProductTypes.value = newProductTypes.value.filter((type) => type.id !== id)
+  newProductTypes.value = newProductTypes.value.filter((type) => type.id !== id);
 };
 
 const editProductTypeName = (index: number, value: string) => {
-  newProductTypes.value[index].name = value
-}
+  newProductTypes.value[index].name = value;
+};
 
 const onClose = () => {
   props.onClose();

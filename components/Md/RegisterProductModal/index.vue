@@ -22,7 +22,6 @@
 <script setup lang="ts">
 import Modal from '~/components/El/Modal/index.vue'
 import ProductForm from '~/components/Md/ProductForm/index.vue'
-import type { ActionParams } from '~/components/Md/ProductForm/index.vue'
 
 defineProps<{
   onRegisterNewProductType: () => void
@@ -32,7 +31,7 @@ defineProps<{
 
 const { post } = useApi()
 
-const register = async (values: ActionParams) => {
+const register = async (values: any) => {
   await post('/products', {
     ecommerceId: values.ecommerceId,
     name: values.productName,

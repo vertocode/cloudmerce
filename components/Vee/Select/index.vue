@@ -1,29 +1,32 @@
 <template>
-  <VSelect
-      :variant="variant"
-      class="vee-select"
-      v-model="value.value.value"
-      :error-messages="value.errorMessage.value"
-      :items="items"
-      v-bind="$attrs"
-      autocomplete="off"
-      :no-data-text="noDataText || 'Sem opções'"
-      :placeholder="placeholder"
-      label="Selecionar Opção"
-  />
+  <Field v-if="name" :name v-slot="{ field, errorMessage }">
+    <VSelect
+        :variant="variant"
+        class="vee-select"
+        v-model="field.value"
+        :error-messages="errorMessage"
+        :items="items"
+        v-bind="{ ...$attrs, ...field }"
+        autocomplete="off"
+        :no-data-text="noDataText || 'Sem opções'"
+        :placeholder="placeholder"
+        label="Selecionar Opção"
+    />
+  </Field>
 </template>
 
 <script setup lang="ts">
-import type { FieldContext } from 'vee-validate'
+import { Field } from 'vee-validate'
 import { defineProps } from 'vue'
 
 const props = defineProps<{
-  value: FieldContext<any>
+  name: string
   items: string[]
   placeholder?: string
-  variant?: 'outlined' | 'plain' | 'filled' | 'underlined' | 'solo' | 'solo-inverted' | 'solo-filled',
+  variant?: 'outlined' | 'plain' | 'filled' | 'underlined' | 'solo' | 'solo-inverted' | 'solo-filled'
   noDataText?: string
+  required?: boolean
 }>()
 
-const { value, items } = props
+const { items, placeholder, variant, noDataText } = props
 </script>

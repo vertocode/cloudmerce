@@ -1,5 +1,5 @@
 <template>
-  <Field :name v-slot="{ field, errorMessage }">
+  <Field v-if="name" :name v-slot="{ field, errorMessage }">
     <VTextField
         :variant="variant"
         class="vee-text-field"

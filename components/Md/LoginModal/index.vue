@@ -4,9 +4,9 @@
       persistent
       @close="onClose"
       :card-props="{
-        prependIcon: 'mdi-account',
-        title: 'Login'
-      }"
+      prependIcon: 'mdi-account',
+      title: 'Login'
+    }"
   >
     <template #trigger>
       <div @click="showLoginModal = true">
@@ -14,20 +14,22 @@
       </div>
     </template>
 
-    <VForm fast-fail @submit.prevent="submit">
+    <VeeForm :validation-schema="validationSchema" @submit="submit" v-slot="{ errors, isSubmitting }">
       <VeeTextField
-          :value="email"
+          name="email"
           label="E-mail"
           outlined
           required
+          :error-messages="errors.email"
       />
 
       <VeeTextField
-          :value="password"
+          name="password"
           label="Senha"
           outlined
           required
           type="password"
+          :error-messages="errors.password"
       />
 
       <VSpacer></VSpacer>
@@ -39,52 +41,52 @@
           </VBtn>
         </VCol>
         <VCol cols="4">
-          <VBtn variant="tonal" color="primary" width="100%" type="submit" :loading="isLoading">
+          <VeeButton color="primary" width="100%" type="submit" :loading="isSubmitting">
             Login
-          </VBtn>
+          </VeeButton>
         </VCol>
       </VRow>
-    </VForm>
+    </VeeForm>
   </Modal>
 </template>
 
 <script setup lang="ts">
 import Modal from '~/components/El/Modal/index.vue'
-import { useField, useForm } from "vee-validate";
+import { z } from 'zod'
+import { ref } from 'vue'
+import { useUser } from '~/composables/useUser'
 
-const { handleSubmit } = useForm({
-  validationSchema: {
-    email (value: string) {
-      return validateEmail(value)
-    },
-    password: (value: string) => {
-      return validatePassword(value)
-    }
-  }
+const validationSchema = z.object({
+  email: z
+      .string()
+      .min(1, { message: 'E-mail é obrigatório' })
+      .email({ message: 'E-mail inválido' }),
+  password: z
+      .string()
+      .min(1, { message: 'Senha é obrigatória' })
+      .min(6, { message: 'Senha deve ter pelo menos 6 caracteres' }),
 })
 
 const isLoading = ref(false)
 const showLoginModal = ref(false)
-const email = useField('email')
-const password = useField('password')
+const { login } = useUser()
 
 const onClose = () => {
   showLoginModal.value = false
 }
 
-const { login } = useUser()
-
-const submit = handleSubmit(async values => {
+const submit = async (values: { email: string, password: string }) => {
   isLoading.value = true
 
   const { code } = await login({
     email: values.email,
-    password: values.password
+    password: values.password,
   })
+
   isLoading.value = false
 
   if (code === 'success') {
     showLoginModal.value = false
   }
-})
+}
 </script>

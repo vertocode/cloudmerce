@@ -1,20 +1,26 @@
 <template>
-  <VTextarea
-      :variant="variant"
-      class="vee-text-area"
-      v-model="value.value.value"
-      :error-messages="value.errorMessage.value"
-      v-bind="$attrs"
-      rows="4"
-      autocomplete="off"
-  />
+  <Field v-if="name" :name v-slot="{ field, errorMessage }">
+    <VTextarea
+        :variant="variant"
+        class="vee-text-area"
+        v-model="field.value"
+        :error-messages="errorMessage"
+        v-bind="{ ...$attrs, ...field }"
+        rows="4"
+        autocomplete="off"
+    />
+  </Field>
 </template>
 
 <script setup lang="ts">
-import type { FieldContext } from "vee-validate"
+import { Field } from 'vee-validate'
+import { defineProps } from 'vue'
 
-defineProps<{
-  value: FieldContext<any>
-  variant?: "outlined" | "plain" | "filled" | "underlined" | "solo" | "solo-inverted" | "solo-filled"
+const props = defineProps<{
+  name: string
+  variant?: 'outlined' | 'plain' | 'filled' | 'underlined' | 'solo' | 'solo-inverted' | 'solo-filled'
+  required?: boolean
 }>()
+
+const { variant } = props
 </script>

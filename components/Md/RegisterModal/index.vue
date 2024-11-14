@@ -14,23 +14,23 @@
       </div>
     </template>
 
-    <VForm fast-fail @submit.prevent="submit" aria-autocomplete="off">
+    <VeeForm :validationSchema="validationSchema" @submit="submit" v-slot="{ isSubmitting }">
       <VeeTextField
-          :value="name"
+          name="name"
           label="Nome"
           outlined
           required
       />
 
       <VeeTextField
-          :value="email"
+          name="email"
           label="E-mail"
           outlined
           required
       />
 
       <VeeTextField
-          :value="password"
+          name="password"
           label="Senha"
           outlined
           required
@@ -38,14 +38,14 @@
       />
 
       <VeeTextField
-          :value="repeatPassword"
+          name="repeatPassword"
           label="Repetir Senha"
           outlined
           required
           type="password"
       />
 
-      <VSpacer></VSpacer>
+      <VSpacer />
 
       <VRow class="ga-2" justify="end" align-content="end" no-gutters>
         <VCol cols="4">
@@ -54,50 +54,28 @@
           </VBtn>
         </VCol>
         <VCol cols="4">
-          <VBtn
+          <VeeButton
               variant="tonal"
               color="primary"
               width="100%"
-              type="submit"
-              :loading="isLoading"
+              :loading="isSubmitting"
           >
             Cadastrar
-          </VBtn>
+          </VeeButton>
         </VCol>
       </VRow>
-    </VForm>
+    </VeeForm>
   </Modal>
 </template>
 
 <script setup lang="ts">
 import Modal from '~/components/El/Modal/index.vue'
-import { useField, useForm } from 'vee-validate'
-import {validateEmail, validateName, validatePassword, validatePasswordConfirmation} from "~/utils/Validators";
+import { ref } from 'vue'
+import { z } from 'zod'
+import { useUser } from '~/composables/useUser'
 
-const { handleSubmit } = useForm({
-  validationSchema: {
-    name(value: string) {
-      return validateName(value)
-    },
-    email (value: string) {
-      return validateEmail(value)
-    },
-    password: (value: string) => {
-      return validatePassword(value)
-    },
-    repeatPassword: (value: string) => {
-      return validatePasswordConfirmation(value, password?.value?.value as string)
-    }
-  }
-})
-
-const isLoading = ref(false)
 const showRegisterModal = ref(false)
-
-const name = useField('name')
-const email = useField('email')
-const password = useField('password')
-const repeatPassword = useField('repeatPassword')
+const isLoading = ref(false)
 
 const onClose = () => {
   showRegisterModal.value = false
@@ -105,7 +83,15 @@ const onClose = () => {
 
 const { register } = useUser()
 
-const submit = handleSubmit(async values => {
+const validationSchema = z.object({
+  name: z.string().min(3, { message: 'Nome deve ter pelo menos 3 caracteres' }),
+  email: z.string().email({ message: 'E-mail inválido' }),
+  password: z.string().min(6, { message: 'Senha deve ter pelo menos 6 caracteres' }),
+  repeatPassword: z.string().min(6, { message: 'A senha de repetição deve ter pelo menos 6 caracteres' })
+      .refine(val => val === formData.value.password, { message: 'As senhas não coincidem' })
+})
+
+const submit = async (values: Record<string, any>) => {
   isLoading.value = true
   const { code } = await register({
     name: values.name,
@@ -116,5 +102,5 @@ const submit = handleSubmit(async values => {
     showRegisterModal.value = false
   }
   isLoading.value = false
-})
+}
 </script>

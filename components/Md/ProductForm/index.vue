@@ -1,49 +1,50 @@
 <template>
-  <VForm fast-fail @submit.prevent="submit">
+  <VeeForm :validationSchema="validationSchema" @submit="submit" v-slot="{ isSubmitting }">
     <div class="field-container">
       <VRow>
         <VCol cols="12" md="6" class="pl-0 pb-0">
           <VeeTextField
-              :value="productName"
+              name="productName"
               label="Nome do Produto"
-              outlined
+              variant="outlined"
               required
           />
         </VCol>
 
         <VCol cols="12" md="6" class="pr-0 pb-0">
           <VeeTextField
-              :value="productPrice"
-              prefix="R$"
+              name="productPrice"
               label="Preço do Produto"
-              outlined
+              variant="outlined"
               type="number"
+              prefix="R$"
               required
           />
         </VCol>
 
         <VCol cols="12">
-          <VeeTextField
-              :value="productDescription"
+          <VeeTextarea
+              name="productDescription"
               label="Descrição do Produto"
-              outlined
+              variant="outlined"
+              rows="4"
               required
           />
         </VCol>
 
         <VCol cols="12" class="product-type-container">
           <VeeSelect
-              :value="productType"
+              name="productType"
               :items="productTypes.map(type => type.name)"
               placeholder="Selecione o tipo de produto"
               label="Tipo de Produto"
+              variant="outlined"
               no-data-text="Sem opções, clique para cadastrar um novo tipo de produto abaixo deste input."
-              outlined
               required
           />
           <span v-if="onRegisterNewProductType" class="product-type-message" @click="onRegisterNewProductType">
               Cadastrar novo tipo de produto <VIcon color="var(--secondary-700)">mdi-link</VIcon>
-            </span>
+          </span>
         </VCol>
 
         <h5 class="mt-5">
@@ -58,25 +59,25 @@
             class="image-field mt-0"
             :class="index % 2 === 0 ? 'pl-0' : 'pr-0'"
         >
-          <VTextField
+          <VeeTextField
+              name="imageUrls"
               v-model="imageUrls[index]"
               :label="`URL da imagem ${index + 1}`"
-              outlined
-              required
+              variant="outlined"
           />
-          <VBtn
+          <VeeButton
               v-if="imageUrls.length > 1"
               icon
               class="remove-btn mb-6"
               @click="removeImageField(index)"
           >
             <VIcon>mdi-delete</VIcon>
-          </VBtn>
+          </VeeButton>
         </VCol>
         <VCol cols="12">
-          <VBtn  @click="addImageField" color="primary" class="mb-8 float-end">
+          <VeeButton @click="addImageField" color="primary" class="mb-8 float-end">
             <VIcon color="white">mdi-plus</VIcon> Adicionar imagem
-          </VBtn>
+          </VeeButton>
         </VCol>
       </VRow>
       <h5>Adicione perguntas para o usuário responder, como tamanho de uma roupa, cor ou qualquer outra pergunta necessária para este produto.</h5>
@@ -86,11 +87,11 @@
             md="6"
             class="user-field mt-0 pl-0"
         >
-          <VTextField
+          <VeeTextField
+              :name="`questionNameUser${index}`"
               v-model="userFields[index].label"
               :label="`Nome do campo ${index + 1}`"
-              :items="['Texto', 'Número', 'Opções']"
-              outlined
+              variant="outlined"
           />
         </VCol>
 
@@ -99,21 +100,21 @@
             md="4"
             class="user-field mt-0 pl-0"
         >
-          <VSelect
-              v-model="userFields[index].type"
+          <VeeSelect
+              :name="`questionTypeUser${index}`"
               :label="`Tipo do campo ${index + 1}`"
               :items="['Texto', 'Número', 'Opções']"
-              outlined
+              variant="outlined"
           />
         </VCol>
         <VCol cols="2">
-          <VBtn
+          <VeeButton
               icon
               class="remove-btn mt-4"
               @click="removeUserField(index)"
           >
             <VIcon>mdi-delete</VIcon>
-          </VBtn>
+          </VeeButton>
         </VCol>
         <h5 class="w-100 mb-3" v-if="userFields[index].type === UserFieldTypeLabel.options">Opções para o campo {{ index + 1 }}:</h5>
         <VCol
@@ -123,95 +124,60 @@
             :key="optionIndex"
             class="image-field mt-0"
         >
-          <VTextField
+          <VeeTextField
+              :name="`questionUser${index}Option${optionIndex}`"
               v-model="(userFields[index].options || [])[optionIndex] as string"
               :label="`Opção ${optionIndex + 1}`"
-              outlined
+              variant="outlined"
               required
           />
-          <VBtn
-              v-if="userFields[index].options.length > 1"
+          <VeeButton
+              v-if="userFields[index] && userFields[index]?.options?.length > 1"
               icon
               class="remove-btn mb-6"
               @click="removeUserFieldOption(index, optionIndex)"
           >
             <VIcon>mdi-delete</VIcon>
-          </VBtn>
+          </VeeButton>
         </VCol>
         <VCol cols="12">
-          <VBtn v-if="userFields[index].type === UserFieldTypeLabel.options" @click="addUserFieldOption(index)" variant="outlined" class="mb-8 float-end">
-             Adicionar opção para o campo {{ index + 1 }}
-          </VBtn>
+          <VeeButton v-if="userFields[index].type === UserFieldTypeLabel.options" @click="addUserFieldOption(index)" variant="outlined" class="mb-8 float-end">
+            Adicionar opção para o campo {{ index + 1 }}
+          </VeeButton>
         </VCol>
       </VRow>
       <VRow>
         <VCol cols="12">
-          <VBtn  @click="addUserField" color="primary" class="mb-8 float-end mt-3">
+          <VeeButton @click="addUserField" color="primary" class="mb-8 float-end mt-3">
             <VIcon color="white">mdi-plus</VIcon> Adicionar pergunta de usuário
-          </VBtn>
+          </VeeButton>
         </VCol>
       </VRow>
     </div>
-
 
     <VSpacer class="my-6"/>
 
     <VRow justify="end" align-content="end" no-gutters>
       <VCol cols="6">
-        <VBtn size="large" variant="text" width="100%" @click="onClose">
+        <VeeButton size="large" variant="text" width="100%" @click="onClose">
           Cancelar
-        </VBtn>
+        </VeeButton>
       </VCol>
       <VCol cols="6">
-        <VBtn size="large" variant="tonal" color="primary" width="100%" type="submit" :loading="isLoading">
+        <VeeButton size="large" variant="tonal" color="primary" width="100%" type="submit" :loading="isSubmitting">
           {{ isEdition ? 'Editar' : 'Adicionar' }}
-        </VBtn>
+        </VeeButton>
       </VCol>
     </VRow>
-  </VForm>
+  </VeeForm>
 </template>
+
 <script setup lang="ts">
-import {useStoreData} from "~/composables/useStoreData";
-import {useField, useForm} from "vee-validate";
-import {ref} from "vue";
-import type {IProductType} from "~/composables/useStoreData";
-import type {UserField, UserFieldTypeLabel} from "~/types/product";
-
-export interface InitialValues {
-  productName: string
-  productPrice: number
-  productDescription: string
-  productType: string
-  imageUrls: string[]
-  userFields: UserField[]
-}
-
-interface Fields {
-  productName: string;
-  productPrice: number;
-  productDescription: string;
-  productType: string;
-}
-
-export interface ActionParams extends Fields {
-  imageUrls: string[]
-  productType: string
-  ecommerceId: number
-  userFields: UserField[]
-}
-
-const props = defineProps<{
-  action: (values: ActionParams) => Promise<void>
-  onClose: () => void
-  onRegisterNewProductType?: () => void
-  updateProductList?: (params: { cache: 'no-cache' | 'force-cache' }) => Promise<void>
-  initialValues?: InitialValues
-}>()
-
-const products = useState('products', () => [])
-const { productTypes, ecommerceId } = useStoreData();
-
-const isEdition = !!props.initialValues
+import { ref } from 'vue'
+import { z } from 'zod'
+import { useStoreData } from '~/composables/useStoreData'
+import type { IProductType } from '~/composables/useStoreData'
+import { UserFieldTypeLabel } from '~/types/product'
 
 interface UserFieldWithLabel {
   label: string
@@ -219,71 +185,59 @@ interface UserFieldWithLabel {
   options?: string[]
 }
 
-const isLoading = ref(false);
+const props = defineProps<{
+  action: (values: Record<string, any>) => Promise<void>
+  onClose: () => void
+  onRegisterNewProductType?: () => void
+  updateProductList?: (params: { cache: 'no-cache' | 'force-cache' }) => Promise<void>
+  initialValues?: Record<string, any>
+}>()
+
+const products = useState('products', () => [])
+const { productTypes, ecommerceId } = useStoreData()
+
+const isEdition = !!props.initialValues
+
+const isLoading = ref(false)
 const imageUrls = ref(props?.initialValues?.imageUrls || [''])
-const userFields = ref<UserFieldWithLabel[]>(props?.initialValues?.userFields.map(field => ({
+const userFields = ref<UserFieldWithLabel[]>(props?.initialValues?.userFields.map((field: UserFieldWithLabel) => ({
   ...field,
   type: getFieldLabel(field.type)
 })) || [])
 
-const { handleSubmit } = useForm<Fields>({
-  initialValues: {
-    productName: props?.initialValues?.productName || '',
-    productPrice: props?.initialValues?.productPrice || 0,
-    productDescription: props?.initialValues?.productDescription || '',
-    productType: props?.initialValues?.productType || ''
-  },
-  validationSchema: {
-    productName: (value: string) => value && value.length > 0 || 'O nome é obrigatório',
-    productPrice: (value: number) => value && value > 0 || 'O preço deve ser maior que zero',
-    productDescription: (value: string) => value && value.length > 0 || 'A descrição é obrigatória',
-    productType: (value: string) => value && value.length > 0 || 'O tipo de produto é obrigatório'
-  },
-});
-
-const productName = useField('productName');
-const productPrice = useField('productPrice');
-const productDescription = useField('productDescription');
-const productType = useField('productType');
-
-const onClose = () => {
-  props.onClose();
-};
-
 const addImageField = () => {
-  imageUrls.value.push('');
-};
+  imageUrls.value.push('')
+}
 
 const removeImageField = (index: number) => {
-  imageUrls.value.splice(index, 1);
-};
+  imageUrls.value.splice(index, 1)
+}
 
 const addUserField = () => {
   userFields.value.push({
     label: '',
     type: UserFieldTypeLabel.options,
     options: ['']
-  });
-};
+  })
+}
 
 const removeUserField = (index: number) => {
-  userFields.value.splice(index, 1);
-};
+  userFields.value.splice(index, 1)
+}
 
 const addUserFieldOption = (index: number) => {
-  userFields.value[index].options?.push('');
+  userFields.value[index].options?.push('')
 }
 
 const removeUserFieldOption = (fieldIndex: number, optionIndex: number) => {
   if (userFields.value[fieldIndex].type === UserFieldTypeLabel.options && userFields.value[fieldIndex].options?.length === 1) {
-    // If there is only one option and the type is options, don't remove it
     return
   }
-  userFields.value[fieldIndex].options?.splice(optionIndex, 1);
+  userFields.value[fieldIndex].options?.splice(optionIndex, 1)
 }
 
-const submit = handleSubmit(async (values: Fields) => {
-  isLoading.value = true;
+const submit = async (values: Record<string, any>) => {
+  isLoading.value = true
 
   try {
     await props.action({
@@ -307,23 +261,35 @@ const submit = handleSubmit(async (values: Fields) => {
         return { ...field, type }
       })
     })
-    onClose()
-    handleSuccess(`Produto ${isEdition ? 'editado' : 'adicionado'} com sucesso!`);
+    props.onClose()
+    handleSuccess(`Produto ${isEdition ? 'editado' : 'adicionado'} com sucesso!`)
 
-    // If the list has less than 20 products, update to show in the homepage
     if (products.value.length < 20 && props.updateProductList) {
       await props.updateProductList({ cache: 'no-cache' })
     }
   } catch (error) {
     if (error instanceof Error && error.message.includes('PRODUCT_EXISTS')) {
-      handleError(`Erro: ${error.message}`);
+      handleError(`Erro: ${error.message}`)
     } else {
-      handleError(`Erro ao ${isEdition ? 'editar' : 'adicionar'} produto`);
+      handleError(`Erro ao ${isEdition ? 'editar' : 'adicionar'} produto`)
     }
   } finally {
-    isLoading.value = false;
+    isLoading.value = false
   }
-});
+}
+
+const validationSchema = z.object({
+  productName: z.string().min(3, { message: 'Nome do produto deve ter pelo menos 3 caracteres' }),
+  productPrice: z.number().min(0, { message: 'Preço do produto deve ser maior ou igual a 0' }),
+  productDescription: z.string().min(10, { message: 'Descrição deve ter pelo menos 10 caracteres' }),
+  productType: z.string().nonempty({ message: 'O tipo de produto é obrigatório' }),
+  imageUrls: z.array(z.string().url({ message: 'Deve ser uma URL válida' })).optional(),
+  userFields: z.array(z.object({
+    label: z.string().min(1, { message: 'Nome do campo não pode ser vazio' }),
+    type: z.enum(['Texto', 'Número', 'Opções']),
+    options: z.array(z.string()).optional(),
+  })).optional()
+})
 </script>
 
 <style scoped lang="scss">
