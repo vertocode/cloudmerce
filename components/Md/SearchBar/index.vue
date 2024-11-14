@@ -1,11 +1,11 @@
 <template>
   <div class="search-bar">
-    <VForm fast-fail @submit.prevent="handleSearch">
+    <VeeForm formClass="form" :validationSchema="validationSchema" @submit="handleSearch" fast-fail>
       <VeeTextField
+          name="search"
           variant="outlined"
           class="vee-text-field"
           :disabled="filterSearchProducts.length"
-          :value="search"
           :label="`Buscar ${productType}`"
           required
       />
@@ -16,7 +16,7 @@
       >
         <v-icon>mdi-magnify</v-icon>
       </VBtn>
-    </VForm>
+    </VeeForm>
     <span v-if="filterSearchProducts.length" class="filter-message">
       Filtrando por: <strong>{{ filterSearchProducts }}</strong>
       <span class="clean-btn" @click="cleanFilter">Limpar filtro</span>
@@ -25,21 +25,15 @@
 </template>
 
 <script setup lang="ts">
-import { useField, useForm } from "vee-validate";
-import {useStoreData} from "~/composables/useStoreData";
+import { ref, computed } from 'vue'
+import { useRoute } from 'vue-router'
+import { z } from 'zod'
+import { useStoreData } from '~/composables/useStoreData'
 
 const route = useRoute()
-const { handleSubmit, setValues } = useForm()
-
-const filterSearchProducts = useState('filterSearchProducts', () => '')
-const search = useField('search')
+const filterSearchProducts = ref('')
 
 const { getProductTypeById } = useStoreData()
-
-const cleanFilter = () => {
-  filterSearchProducts.value = ''
-  setValues({ search: '' })
-}
 
 const productType = computed(() => {
   const defaultProductType = 'produtos'
@@ -47,14 +41,21 @@ const productType = computed(() => {
   if (!productType || Array.isArray(productType)) return defaultProductType
 
   const name = getProductTypeById(productType)?.name
-
   return name?.toLowerCase() || defaultProductType
 })
 
-const handleSearch = handleSubmit((values) => {
+const validationSchema = z.object({
+  search: z.string().min(3, { message: 'A busca deve ter pelo menos 3 caracteres' })
+})
+
+const cleanFilter = () => {
+  filterSearchProducts.value = ''
+}
+
+const handleSearch = async (values: { search: string }) => {
   if (!values.search) return
   filterSearchProducts.value = values.search
-})
+}
 </script>
 
 <style scoped lang="scss">
@@ -70,6 +71,11 @@ const handleSearch = handleSubmit((values) => {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   background: rgba(255, 255, 255, 0.9);
   backdrop-filter: blur(10px);
+
+  :deep(.form) {
+    width: 100%;
+    display: flex;
+  }
 
   .filter-message {
     color: #6c757d;
@@ -90,7 +96,7 @@ const handleSearch = handleSubmit((values) => {
     width: 100%;
 
     .vee-text-field {
-      flex-grow: 1;
+      width: 100%;
       input {
         font-size: 1.1rem;
         padding: 12px 20px;
@@ -109,7 +115,6 @@ const handleSearch = handleSubmit((values) => {
       background-color: #007aff;
       color: white;
       border-radius: 50%;
-      margin-bottom: 20px;
       width: 50px;
       height: 50px;
       margin-left: 12px;
