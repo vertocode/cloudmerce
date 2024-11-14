@@ -19,7 +19,6 @@
           name="email"
           label="E-mail"
           outlined
-          required
           :error-messages="errors.email"
       />
 
@@ -27,7 +26,6 @@
           name="password"
           label="Senha"
           outlined
-          required
           type="password"
           :error-messages="errors.password"
       />

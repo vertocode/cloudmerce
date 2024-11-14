@@ -1,7 +1,7 @@
 <template>
   <VeeForm :validationSchema @submit="handleSubmit" v-slot="{ errors, isSubmitting }">
     {{ errors }}
-    <VeeTextField name="name" label="Nome" required />
+    <VeeTextField name="name" label="Nome" />
     <VeeTextField name="email" label="E-mail" type="email" />
     <VeeTextField name="password" label="Senha" type="password" />
     <VeeButton :loading="isSubmitting">Enviar</VeeButton>

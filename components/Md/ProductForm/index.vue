@@ -7,7 +7,6 @@
               name="productName"
               label="Nome do Produto"
               variant="outlined"
-              required
           />
         </VCol>
 
@@ -18,7 +17,6 @@
               variant="outlined"
               type="number"
               prefix="R$"
-              required
           />
         </VCol>
 

@@ -14,7 +14,6 @@
               :rules="rules"
               label="Nome do Tipo de Produto"
               outlined
-              required
               @input="() => editProductTypeName(index, type.name)"
           />
           <DeleteProductType :product-type="type.name" :on-confirm="() => deleteProductType(type.id)">

@@ -13,18 +13,15 @@
                   :value="name"
                   label="Seu Nome"
                   outlined
-                  required
               />
               <VeeTextField
                   :value="email"
                   label="Seu E-mail"
                   outlined
-                  required
               />
               <VeeTextarea
                   :value="message"
                   label="Sua Mensagem"
-                  required
               />
               <VBtn
                   variant="tonal"

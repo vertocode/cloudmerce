@@ -4,7 +4,7 @@
         :variant="variant || 'outlined'"
         class="vee-text-field"
         autocomplete="off"
-        :error-messages="errorMessage"
+        :error-messages="errorMessage === 'Required' ? 'Campo obrigatório' : errorMessage"
         v-bind="{ ...$attrs, ...field }"
     />
   </Field>
@@ -16,6 +16,5 @@ import { Field } from "vee-validate"
 defineProps<{
   name: string
   variant?: "outlined" | "plain" | "filled" | "underlined" | "solo" | "solo-inverted" | "solo-filled"
-  required?: boolean
 }>()
 </script>

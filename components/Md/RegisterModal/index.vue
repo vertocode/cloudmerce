@@ -15,35 +15,13 @@
     </template>
 
     <VeeForm :validationSchema="validationSchema" @submit="submit" v-slot="{ isSubmitting }">
-      <VeeTextField
-          name="name"
-          label="Nome"
-          outlined
-          required
-      />
+      <VeeTextField name="name" label="Nome" />
 
-      <VeeTextField
-          name="email"
-          label="E-mail"
-          outlined
-          required
-      />
+      <VeeTextField name="email" label="E-mail" />
 
-      <VeeTextField
-          name="password"
-          label="Senha"
-          outlined
-          required
-          type="password"
-      />
+      <VeeTextField name="password" label="Senha" type="password" />
 
-      <VeeTextField
-          name="repeatPassword"
-          label="Repetir Senha"
-          outlined
-          required
-          type="password"
-      />
+      <VeeTextField name="repeatPassword" label="Repetir Senha" type="password" />
 
       <VSpacer />
 
@@ -88,7 +66,9 @@ const validationSchema = z.object({
   email: z.string().email({ message: 'E-mail inválido' }),
   password: z.string().min(6, { message: 'Senha deve ter pelo menos 6 caracteres' }),
   repeatPassword: z.string().min(6, { message: 'A senha de repetição deve ter pelo menos 6 caracteres' })
-      .refine(val => val === formData.value.password, { message: 'As senhas não coincidem' })
+}).refine((fields) =>  fields.password === fields.repeatPassword, {
+  message: 'As senhas não coincidem',
+  path: ['repeatPassword']
 })
 
 const submit = async (values: Record<string, any>) => {

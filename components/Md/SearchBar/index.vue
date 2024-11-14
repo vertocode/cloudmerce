@@ -7,7 +7,6 @@
           class="vee-text-field"
           :disabled="filterSearchProducts.length"
           :label="`Buscar ${productType}`"
-          required
       />
       <VBtn
           type="submit"
