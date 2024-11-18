@@ -1,7 +1,9 @@
 <template>
   <Modal
       max-width="800"
+      persistent
       :is-opened="showEditModal"
+      @close="onClose"
       :card-props="{ title: `Editar Produto ${initialValues.productName || ''}` }"
   >
     <template #trigger>
@@ -21,8 +23,7 @@
 <script setup lang="ts">
 import Modal from '~/components/El/Modal/index.vue'
 import ProductForm from '~/components/Md/ProductForm/index.vue'
-import type { ActionParams, InitialValues } from '~/components/Md/ProductForm/index.vue'
-import type {IProduct} from "~/types/product";
+import type { IProduct } from "~/types/product";
 
 const showEditModal = ref(false)
 
@@ -37,7 +38,7 @@ const { put } = useApi()
 
 const { getProductTypeById } = useStoreData()
 
-const initialValues = computed((): InitialValues => {
+const initialValues = computed(() => {
   const product = props.initialValues
 
   return {
@@ -46,11 +47,14 @@ const initialValues = computed((): InitialValues => {
     imageUrls: Array.isArray(product.image) ? (product.image || '') : [product.image || ''],
     productDescription: product.description || '',
     productPrice: product.price || 0,
-    userFields: product.fields || [],
+    userFields: product.fields.map(field => ({
+      ...field,
+      type: getFieldLabel(field.type)
+    })) || [],
   }
 })
 
-const updateProduct = async (values: ActionParams) => {
+const updateProduct = async (values: Record<string, any>) => {
   await put(`/products/${props.initialValues.id}`, {
     ecommerceId: values.ecommerceId,
     name: values.productName,

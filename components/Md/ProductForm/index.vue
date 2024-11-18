@@ -1,5 +1,5 @@
 <template>
-  <VeeForm :validationSchema="validationSchema" :initialValues="initialFormValues" @submit="submit" v-slot="{ isSubmitting, values, errors }">
+  <VeeForm :validationSchema="validationSchema" :initialValues @submit="submit" v-slot="{ isSubmitting, errors, meta: { dirty } }">
     <div class="field-container">
       <VRow>
         <VCol cols="12" md="6" class="pl-0 pb-0">
@@ -52,7 +52,7 @@
               cols="12"
               :md="fields.length === 1 ? 12 : 6"
               v-for="(_, index) in fields"
-              :key="index"
+              :key="`image-field-${index}`"
               class="image-field mt-0"
               :class="index % 2 === 0 ? 'pl-0' : 'pr-0'"
           >
@@ -173,7 +173,7 @@
         </VBtn>
       </VCol>
       <VCol cols="6">
-        <VeeButton size="large" variant="tonal" color="primary" width="100%" :loading="isSubmitting">
+        <VeeButton size="large" variant="tonal" color="primary" width="100%" :loading="isSubmitting" :disabled="!dirty">
           {{ isEdition ? 'Editar' : 'Adicionar' }}
         </VeeButton>
       </VCol>
@@ -208,15 +208,6 @@ const initialUserField = {
   label: '',
   type: UserFieldTypeLabel.options,
   options: ['']
-}
-
-const initialFormValues = {
-  productName: '',
-  productPrice: '',
-  productDescription: '',
-  productType: '',
-  imageUrls: [],
-  userFields: []
 }
 
 const submit = async (values: Record<string, any>) => {

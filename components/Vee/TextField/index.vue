@@ -3,6 +3,7 @@
     <VTextField
         :variant="variant || 'outlined'"
         class="vee-text-field"
+        v-model="field.value"
         autocomplete="off"
         :error-messages="errorMessage === 'Required' ? 'Campo obrigatório' : errorMessage"
         v-bind="{ ...$attrs, ...field }"
