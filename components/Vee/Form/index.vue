@@ -1,5 +1,5 @@
 <template>
-  <Form class="vee-form" :validation-schema="schema" fast-fail as="" v-slot="{ ...attrs }">
+  <Form class="vee-form" :validation-schema="schema" :initialValues="initialValues" fast-fail as="" v-slot="{ ...attrs }">
     <VForm
         :class="formClass"
         @submit.prevent="handleSubmit(attrs.values, attrs.validate)"
@@ -16,6 +16,7 @@ import { toTypedSchema } from '@vee-validate/zod'
 
 const props = defineProps<{
   validationSchema?: z.ZodSchema<any>
+  initialValues?: Record<string, any>
   formClass?: string
 }>()
 

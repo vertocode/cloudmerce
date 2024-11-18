@@ -50,7 +50,6 @@ export const useUser = () => {
             }
             userData.value = response as User
             storage.setItem('userData', response)
-            handleSuccess('Login efetuado com sucesso!')
             return { code: 'success' }
         } catch (error) {
             handleError('Erro ao efetuar login')

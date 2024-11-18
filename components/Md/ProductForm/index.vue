@@ -1,6 +1,5 @@
 <template>
-  <VeeForm :validationSchema="validationSchema" @submit="submit" v-slot="{ isSubmitting, values }">
-    {{ values }}
+  <VeeForm :validationSchema="validationSchema" :initialValues="initialFormValues" @submit="submit" v-slot="{ isSubmitting, values, errors }">
     <div class="field-container">
       <VRow>
         <VCol cols="12" md="6" class="pl-0 pb-0">
@@ -46,7 +45,7 @@
 
         <h5 class="mt-5">
           Você deve colocar o link da imagem aqui. É possível usar qualquer serviço de armazenamento em nuvem, como
-          <a href="https://imgur.com/">Imgur</a> ou outro de sua preferência. (Opcional, mas recomendado.)
+          <a href="https://imgur.com/">Imgur</a> ou outro de sua preferência.
         </h5>
         <FieldArray name="imageUrls" v-slot="{ fields, push, remove }">
           <VCol
@@ -78,79 +77,92 @@
           </VCol>
         </FieldArray>
       </VRow>
-      <h5>Adicione perguntas para o usuário responder, como tamanho de uma roupa, cor ou qualquer outra pergunta necessária para este produto.</h5>
-      <VRow v-if="userFields.length > 0" v-for="(_, index) in userFields" :key="index">
-        <VCol
-            cols="10"
-            md="6"
-            class="user-field mt-0 pl-0"
-        >
-          <VeeTextField
-              :name="`questionNameUser${index}`"
-              v-model="userFields[index].label"
-              :label="`Nome do campo ${index + 1}`"
-              variant="outlined"
-          />
-        </VCol>
+      <VAlert class="mb-5" color="warning" v-if="errors.imageUrls">
+        <p v-if="errors.imageUrls">
+          Adicione pelo menos uma imagem para o produto.
+        </p>
+      </VAlert>
 
-        <VCol
-            cols="10"
-            md="4"
-            class="user-field mt-0 pl-0"
-        >
-          <VeeSelect
-              :name="`questionTypeUser${index}`"
-              :label="`Tipo do campo ${index + 1}`"
-              :items="['Texto', 'Número', 'Opções']"
-              variant="outlined"
-          />
-        </VCol>
-        <VCol cols="2">
-          <VBtn
-              icon
-              class="remove-btn mt-4"
-              @click="removeUserField(index)"
+      <h5>Adicione perguntas para o usuário responder, como tamanho de uma roupa, cor ou qualquer outra pergunta necessária para este produto.</h5>
+      <FieldArray name="userFields" v-slot="{ fields, push, remove }">
+        <VRow v-if="fields.length > 0" v-for="(userQuestion, userIndex) in fields" :key="`user-field-${userIndex}`">
+          <VCol
+              cols="10"
+              md="6"
+              class="user-field mt-0 pl-0"
           >
-            <VIcon>mdi-delete</VIcon>
-          </VBtn>
-        </VCol>
-        <h5 class="w-100 mb-3" v-if="userFields[index].type === UserFieldTypeLabel.options">Opções para o campo {{ index + 1 }}:</h5>
-        <VCol
-            cols="6"
-            v-if="userFields[index].type === UserFieldTypeLabel.options"
-            v-for="(_, optionIndex) in userFields[index].options"
-            :key="optionIndex"
-            class="image-field mt-0"
-        >
-          <VeeTextField
-              :name="`questionUser${index}Option${optionIndex}`"
-              v-model="(userFields[index].options || [])[optionIndex] as string"
-              :label="`Opção ${optionIndex + 1}`"
-              variant="outlined"
-          />
-          <VBtn
-              v-if="userFields[index] && userFields[index]?.options?.length > 1"
-              icon
-              class="remove-btn mb-6"
-              @click="removeUserFieldOption(index, optionIndex)"
+            <VeeTextField
+                :name="`userFields[${userIndex}].label`"
+                :label="`Nome do campo ${userIndex + 1}`"
+                variant="outlined"
+            />
+          </VCol>
+
+          <VCol
+              cols="10"
+              md="4"
+              class="user-field mt-0 pl-0"
           >
-            <VIcon>mdi-delete</VIcon>
-          </VBtn>
-        </VCol>
-        <VCol cols="12">
-          <VBtn v-if="userFields[index].type === UserFieldTypeLabel.options" @click="addUserFieldOption(index)" variant="outlined" class="mb-8 float-end">
-            Adicionar opção para o campo {{ index + 1 }}
-          </VBtn>
-        </VCol>
-      </VRow>
-      <VRow>
-        <VCol cols="12">
-          <VBtn @click="addUserField" color="primary" class="mb-8 float-end mt-3">
-            <VIcon color="white">mdi-plus</VIcon> Adicionar pergunta de usuário
-          </VBtn>
-        </VCol>
-      </VRow>
+            <VeeSelect
+                :name="`userFields[${userIndex}].type`"
+                :label="`Tipo do campo ${userIndex + 1}`"
+                :items="['Texto', 'Número', 'Opções']"
+                variant="outlined"
+            />
+          </VCol>
+          <VCol cols="2">
+            <VBtn
+                icon
+                class="remove-btn mt-4"
+                @click="remove(userIndex)"
+            >
+              <VIcon>mdi-delete</VIcon>
+            </VBtn>
+          </VCol>
+          <h5 class="w-100 mb-3" v-if="userQuestion.type === UserFieldTypeLabel.options">Opções para o campo {{ userIndex + 1 }}:</h5>
+          <FieldArray :name="`userFields[${userIndex}].options`" v-slot="{ fields: userOptions, push: addUserOption, remove: removeUserOption }">
+            <VCol
+                cols="6"
+                v-for="(_, optionIndex) in userOptions"
+                :key="optionIndex"
+                class="image-field mt-0"
+            >
+              <VeeTextField
+                  :name="`userFields[${userIndex}].options[${optionIndex}]`"
+                  :label="`Opção ${optionIndex + 1}`"
+                  variant="outlined"
+              />
+              <VBtn
+                  v-if="userOptions.length > 1"
+                  icon
+                  class="remove-btn mb-6"
+                  @click="removeUserOption(optionIndex)"
+              >
+                <VIcon>mdi-delete</VIcon>
+              </VBtn>
+            </VCol>
+            <VCol cols="12">
+              <VBtn @click="addUserOption('')" variant="outlined" class="mb-8 float-end">
+                Adicionar opção para o campo {{ userIndex + 1 }}
+              </VBtn>
+            </VCol>
+          </FieldArray>
+        </VRow>
+        <VRow>
+          <VCol cols="12">
+            <VBtn @click="push(initialUserField)" color="primary" class="mb-8 float-end mt-3">
+              <VIcon color="white">mdi-plus</VIcon> Adicionar pergunta de usuário
+            </VBtn>
+          </VCol>
+        </VRow>
+      </FieldArray>
     </div>
+
+    <VAlert color="warning" v-if="errors.userFields">
+      <p v-if="errors.userFields">
+        Adicione pelo menos uma pergunta para o usuário.
+      </p>
+    </VAlert>
 
     <VSpacer class="my-6"/>
 
@@ -175,13 +187,7 @@ import { z } from 'zod'
 import { useStoreData } from '~/composables/useStoreData'
 import type { IProductType } from '~/composables/useStoreData'
 import { UserFieldTypeLabel } from '~/types/product'
-import {FieldArray} from "vee-validate";
-
-interface UserFieldWithLabel {
-  label: string
-  type: UserFieldTypeLabel
-  options?: string[]
-}
+import { FieldArray } from 'vee-validate'
 
 const props = defineProps<{
   action: (values: Record<string, any>) => Promise<void>
@@ -197,32 +203,20 @@ const { productTypes, ecommerceId } = useStoreData()
 const isEdition = !!props.initialValues
 
 const isLoading = ref(false)
-const userFields = ref<UserFieldWithLabel[]>(props?.initialValues?.userFields.map((field: UserFieldWithLabel) => ({
-  ...field,
-  type: getFieldLabel(field.type)
-})) || [])
 
-const addUserField = () => {
-  userFields.value.push({
-    label: '',
-    type: UserFieldTypeLabel.options,
-    options: ['']
-  })
+const initialUserField = {
+  label: '',
+  type: UserFieldTypeLabel.options,
+  options: ['']
 }
 
-const removeUserField = (index: number) => {
-  userFields.value.splice(index, 1)
-}
-
-const addUserFieldOption = (index: number) => {
-  userFields.value[index].options?.push('')
-}
-
-const removeUserFieldOption = (fieldIndex: number, optionIndex: number) => {
-  if (userFields.value[fieldIndex].type === UserFieldTypeLabel.options && userFields.value[fieldIndex].options?.length === 1) {
-    return
-  }
-  userFields.value[fieldIndex].options?.splice(optionIndex, 1)
+const initialFormValues = {
+  productName: '',
+  productPrice: '',
+  productDescription: '',
+  productType: '',
+  imageUrls: [],
+  userFields: []
 }
 
 const submit = async (values: Record<string, any>) => {
@@ -233,7 +227,7 @@ const submit = async (values: Record<string, any>) => {
       ...values,
       ecommerceId: ecommerceId,
       productType: productTypes.value.find((type: IProductType) => type.name === values.productType)?.id || '',
-      userFields: userFields.value.map(field => {
+      userFields: values.userFields.map(field => {
         const type = (() => {
           switch (field.type) {
             case UserFieldTypeLabel.text:
@@ -271,12 +265,12 @@ const validationSchema = z.object({
   productPrice: z.number().min(10, { message: 'Preço do produto deve ser maior ou igual a R$10,00' }),
   productDescription: z.string().min(10, { message: 'Descrição deve ter pelo menos 10 caracteres' }),
   productType: z.string().nonempty({ message: 'O tipo de produto é obrigatório' }),
-  imageUrls: z.array(z.string().url({ message: 'Deve ser uma URL válida' })).optional(),
+  imageUrls: z.array(z.string().url({ message: 'Deve ser uma URL válida' })).min(1, { message: 'Adicione pelo menos 1 imagem' }),
   userFields: z.array(z.object({
     label: z.string().min(1, { message: 'Nome do campo não pode ser vazio' }),
     type: z.enum(['Texto', 'Número', 'Opções']),
-    options: z.array(z.string()).optional(),
-  })).optional()
+    options: z.array(z.string().min(1, 'Campo obrigatório')).min(1, 'Adicione pelo menos 1 opção').optional(),
+  }))
 })
 </script>
 
