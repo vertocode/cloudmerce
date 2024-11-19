@@ -1,7 +1,7 @@
 <template>
   <Field v-if="name" :name v-slot="{ field, errorMessage }">
     <VSelect
-        :variant="variant"
+        :variant="variant || 'outlined'"
         class="vee-select"
         v-model="field.value"
         :error-messages="errorMessage === 'Required' ? 'Campo obrigatório' : errorMessage"

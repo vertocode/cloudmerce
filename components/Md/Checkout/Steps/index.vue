@@ -2,19 +2,12 @@
   <v-stepper
       v-model="step"
       class="steppers"
-      :items="['Dados de Contato', 'Dados de Envio', 'Dados de Pagamento']"
+      :items="['Dados de Envio', 'Dados de Pagamento']"
       hide-actions
       v-slot="{ prev, next }"
   >
     <main class="content">
-      <component :is="DynamicStep" />
-
-      <VBtn @click="prev" class="back-button">
-        Voltar
-      </VBtn>
-      <VBtn @click="next" class="next-button">
-        Próximo
-      </VBtn>
+      <component :is="DynamicStep" :next :prev />
     </main>
   </v-stepper>
 </template>
@@ -42,9 +35,12 @@ const DynamicStep = computed(() => {
 
 <style lang="scss">
 .steppers {
-  margin-top: 16px;
+  height: max-content;
+  margin: 16px 0;
+  padding-bottom: 12px;
 
   .content {
+    width: 100%;
     padding: 0 16px;
 
     .back-button {
