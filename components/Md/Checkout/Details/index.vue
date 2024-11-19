@@ -1,6 +1,6 @@
 <template>
   <div class="checkout-details">
-    <h3>Detalhes da Ordem</h3>
+    <h3>Detalhes da Compra</h3>
     <div class="list">
       <VList>
         <CartItem v-for="(item, index) in cartProducts" :key="index" :item="item" />
