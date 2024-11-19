@@ -2,7 +2,7 @@
   <div v-if="loading" class="spinner">
     <VProgressCircular indeterminate color="var(--primary-color-500)" size="50" />
   </div>
-  <VRow v-else>
+  <VRow v-else-if="products.length">
     <VCol
         cols="12"
         xl="3"
@@ -15,16 +15,27 @@
       <MdProductCard :product :updateProductList />
     </VCol>
   </VRow>
+  <MdNoProducts v-else @retry="retryFetch" @goHome="goToHomePage" />
 </template>
 
 <script setup lang="ts">
 import type { IProduct } from "~/types/product"
 
-defineProps<{
+const router = useRouter()
+
+const props = defineProps<{
   products: IProduct[]
   updateProductList: (param: { cache: 'no-cache' | 'force-cache' }) => Promise<void>
   loading?: boolean
 }>()
+
+const retryFetch = async () => {
+  await props.updateProductList({ cache: 'no-cache' })
+}
+
+const goToHomePage = () => {
+  router.push('/')
+}
 </script>
 
 <style lang="scss">

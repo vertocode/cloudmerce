@@ -31,7 +31,7 @@ export const useUser = () => {
     const isAdmin = computed(() => userData.value?.role === 'admin')
 
     onMounted(() => {
-        if (process.client) {
+        if (process.client && !userData.value) {
             userData.value = storage.getItem<User>('userData');
         }
     })

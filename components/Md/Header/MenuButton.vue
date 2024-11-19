@@ -23,6 +23,12 @@
         <VListItem @click="$router.push('/contact')" class="navigation-item">
           <VListItemTitle>Contato</VListItemTitle>
         </VListItem>
+        <VListItem @click="$router.push('/checkout')" class="navigation-item">
+          <VListItemTitle>Carrinho de Compras</VListItemTitle>
+        </VListItem>
+        <VListItem v-if="userData" @click="logout" class="navigation-item">
+          <VListItemTitle>Sair da Conta</VListItemTitle>
+        </VListItem>
 
         <template v-if="isAdmin">
           <h3 class="admin-subtitle">Ações de Administrador</h3>
@@ -57,7 +63,7 @@ const showPaletteModal = ref(false)
 const showProductTypeModal = ref(false)
 const showProductModal = ref(false)
 
-const { isAdmin } = useUser()
+const { userData, isAdmin, logout } = useUser()
 
 const onRegisterNewProductType = () => {
   showProductModal.value = false
@@ -86,6 +92,7 @@ const onRegisterNewProductType = () => {
   font-size: 1rem;
   background-color: var(--secondary-color-700);
   color: #fff;
+  pointer-events: none;
 }
 
 .admin-item {
