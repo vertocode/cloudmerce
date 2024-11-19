@@ -8,9 +8,16 @@
     </div>
     <div class="summary">
       <div class="row-summary" v-for="cartProduct in cartProducts">
-        <div>
-          <span>{{ cartProduct.quantity }} {{ cartProduct.name }}</span>
-        </div>
+        <VTooltip bottom>
+          <template #activator="{ props }">
+            <div class="label" v-bind="props">
+              <span>{{ cartProduct.quantity }} {{ cartProduct.name }}</span>
+            </div>
+          </template>
+          <div>
+            <span>{{ cartProduct.quantity }} {{ cartProduct.name }}</span>
+          </div>
+        </VTooltip>
         <span class="value">+ R${{ cartProduct.price * cartProduct.quantity }}</span>
       </div>
 
@@ -53,6 +60,13 @@ const { cartProducts, total } = useCart()
       justify-content: space-between;
       align-items: center;
       margin: 16px 0;
+
+      .label {
+        max-width: 220px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
 
       .value {
         font-weight: 600;

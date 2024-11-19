@@ -12,7 +12,18 @@
       </VBtn>
     </div>
     <div class="product-info">
-      <VListItemTitle>{{ item.name }}</VListItemTitle>
+      <VTooltip bottom>
+        <template #activator="{ props }">
+          <VListItemTitle
+              v-bind="props"
+              class="product-name"
+          >
+            {{ item.name }}
+          </VListItemTitle>
+        </template>
+        <span>{{ item.name }}</span>
+      </VTooltip>
+
       <VListItemSubtitle>R${{ item.price }}</VListItemSubtitle>
 
       <VProgressCircular
@@ -120,6 +131,13 @@ const decreaseQuantity = () => changeQuantity(props.item, props.item.quantity - 
     flex-grow: 1;
     gap: 16px;
     justify-content: space-between;
+
+    .product-name {
+      max-width: 150px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
 
     .quantity {
       margin: 8px 0;
