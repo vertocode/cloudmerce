@@ -2,7 +2,7 @@
   <Form class="vee-form" :validation-schema="schema" :initialValues="initialValues" fast-fail as="" v-slot="{ ...attrs }">
     <VForm
         :class="formClass"
-        @submit.prevent="handleSubmit(attrs.values, attrs.validate)"
+        @submit.prevent="handleSubmit(attrs.values, attrs.validate, attrs.resetForm)"
     >
       <slot v-bind="attrs"></slot>
     </VForm>
@@ -17,6 +17,7 @@ import { toTypedSchema } from '@vee-validate/zod'
 const props = defineProps<{
   validationSchema?: z.ZodSchema<any>
   initialValues?: Record<string, any>
+  resetOnSubmit?: boolean
   formClass?: string
 }>()
 
@@ -24,11 +25,15 @@ const schema = props.validationSchema ? toTypedSchema(props.validationSchema) : 
 
 const emit = defineEmits()
 
-const handleSubmit = async (values: Record<string, any>, validate: () => Promise<{ valid: boolean }>) => {
+const handleSubmit = async (values: Record<string, any>, validate: () => Promise<{ valid: boolean }>, reset: () => void) => {
   const res = await validate()
 
   if (!res?.valid) return
 
   emit('submit', values)
+
+  if (props.resetOnSubmit) {
+    reset()
+  }
 }
 </script>

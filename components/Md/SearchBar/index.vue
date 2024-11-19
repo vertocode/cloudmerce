@@ -1,6 +1,6 @@
 <template>
   <div class="search-bar">
-    <VeeForm formClass="form" :validationSchema="validationSchema" @submit="handleSearch" fast-fail>
+    <VeeForm formClass="form" :validationSchema="validationSchema" @submit="handleSearch" fast-fail :reset-on-submit="!!filterSearchProducts">
       <VeeTextField
           name="search"
           variant="outlined"
@@ -24,10 +24,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue'
-import { useRoute } from 'vue-router'
 import { z } from 'zod'
-import { useStoreData } from '~/composables/useStoreData'
 
 const route = useRoute()
 const filterSearchProducts = useState<string>('filterSearchProducts')
