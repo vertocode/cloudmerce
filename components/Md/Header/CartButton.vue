@@ -39,7 +39,7 @@
             <span class="cart-total-value">R${{ total }}</span>
           </div>
 
-          <VBtn block color="primary">Comprar</VBtn>
+          <VBtn block color="primary" @click="$router.push('/checkout')">Comprar</VBtn>
         </div>
       </div>
 
@@ -52,7 +52,6 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, onMounted } from 'vue'
 import CartItem from "~/components/Md/Header/CartItem.vue"
 import { useCart } from "~/composables/useCart"
 
@@ -61,14 +60,10 @@ const isLoaded = ref(false)
 
 onMounted(() => isLoaded.value = true)
 
-const { cartProducts, getCart, isCartDrawerOpened, loading } = useCart()
+const { cartProducts, getCart, isCartDrawerOpened, loading, total } = useCart()
 
 onMounted(() => {
   getCart()
-})
-
-const total = computed(() => {
-  return cartProducts.value.reduce((sum, product) => sum + (product.price * product.quantity), 0).toFixed(2)
 })
 </script>
 

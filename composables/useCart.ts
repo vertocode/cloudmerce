@@ -1,4 +1,5 @@
 import type {IAddItemToCartResponse, ICartItem, IGetCartResponse} from "~/types/cart";
+import {computed} from "vue";
 
 export const useCart = () => {
     const isCartDrawerOpened = useState('isCartDrawerOpened', () => false)
@@ -121,5 +122,9 @@ export const useCart = () => {
         }
     }
 
-    return { cartProducts, loading, isCartDrawerOpened, addToCart, changeQuantity, getCart }
+    const total = computed(() => {
+        return cartProducts.value.reduce((sum, product) => sum + (product.price * product.quantity), 0).toFixed(2)
+    })
+
+    return { cartProducts, loading, isCartDrawerOpened, total, addToCart, changeQuantity, getCart }
 }
