@@ -4,7 +4,7 @@ export const useProductList = (filters?: IProductFilters) => {
     const products = useState<IProduct[]>('products', () => [])
     const lastFilters = useState<IProductFilters | null>(() => null)
     const loading = useState<boolean>(() => false)
-    const search = useState('filterSearchProducts', () => '')
+    const search = useState<string>('filterSearchProducts', () => '')
 
     const { ecommerceId } = useStoreData()
     const { get } = useApi()

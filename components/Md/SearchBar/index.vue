@@ -11,8 +11,9 @@
       <VeeButton
           icon
           class="search-btn"
+          :color="filterSearchProducts ? 'error' : ''"
       >
-        <v-icon>mdi-magnify</v-icon>
+        <VIcon>{{ filterSearchProducts.length ? 'mdi-close' : 'mdi-magnify' }}</VIcon>
       </VeeButton>
     </VeeForm>
     <span v-if="filterSearchProducts.length" class="filter-message">
@@ -29,7 +30,7 @@ import { z } from 'zod'
 import { useStoreData } from '~/composables/useStoreData'
 
 const route = useRoute()
-const filterSearchProducts = useState('filterSearchProducts')
+const filterSearchProducts = useState<string>('filterSearchProducts')
 
 const { getProductTypeById } = useStoreData()
 
@@ -43,7 +44,7 @@ const productType = computed(() => {
 })
 
 const validationSchema = z.object({
-  search: z.string().min(3, { message: 'A busca deve ter pelo menos 3 caracteres' })
+  search: z.string().refine(value => !value || value.length > 3, { message: 'A busca deve ter pelo menos 3 caracteres' })
 })
 
 const cleanFilter = () => {
@@ -51,7 +52,14 @@ const cleanFilter = () => {
 }
 
 const handleSearch = async (values: { search: string }) => {
-  if (!values.search) return
+  const { search: newSearch } = values
+  if (!newSearch) return
+
+  if (newSearch === filterSearchProducts.value) {
+    cleanFilter()
+    return
+  }
+
   filterSearchProducts.value = values.search
 }
 </script>
