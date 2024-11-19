@@ -8,13 +8,12 @@
           :disabled="filterSearchProducts.length"
           :label="`Buscar ${productType}`"
       />
-      <VBtn
-          type="submit"
+      <VeeButton
           icon
           class="search-btn"
       >
         <v-icon>mdi-magnify</v-icon>
-      </VBtn>
+      </VeeButton>
     </VeeForm>
     <span v-if="filterSearchProducts.length" class="filter-message">
       Filtrando por: <strong>{{ filterSearchProducts }}</strong>
@@ -30,7 +29,7 @@ import { z } from 'zod'
 import { useStoreData } from '~/composables/useStoreData'
 
 const route = useRoute()
-const filterSearchProducts = ref('')
+const filterSearchProducts = useState('filterSearchProducts')
 
 const { getProductTypeById } = useStoreData()
 
