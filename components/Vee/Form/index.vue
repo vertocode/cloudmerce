@@ -3,6 +3,7 @@
     <VForm
         :class="formClass"
         @submit.prevent="handleSubmit(attrs.values, attrs.validate, attrs.resetForm)"
+        :id
     >
       <slot v-bind="attrs"></slot>
     </VForm>
@@ -19,6 +20,7 @@ const props = defineProps<{
   initialValues?: Record<string, any>
   resetOnSubmit?: boolean
   formClass?: string
+  id?: string
 }>()
 
 const schema = props.validationSchema ? toTypedSchema(props.validationSchema) : {}
