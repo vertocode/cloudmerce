@@ -44,7 +44,7 @@
         <VeeTextField required name="number" label="Número" />
       </VCol>
     </VRow>
-    <VBtn @click="next" class="next-button">
+    <VBtn @click="next" class="next-button" append-icon="mdi-arrow-right">
       Próximo
     </VBtn>
   </VeeForm>

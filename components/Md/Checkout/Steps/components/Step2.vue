@@ -20,8 +20,14 @@
         <VeeTextField required name="cvc" label="CVC" />
       </VCol>
     </VRow>
-    <VBtn @click="next" class="next-button">
-      Processar Pagamento
+    <VBtn @click="next" class="back-button" prepend-icon="mdi-arrow-left">
+      Voltar
+    </VBtn>
+    <VBtn @click="next" class="next-button" color="primary">
+      <span class="mr-2">
+        Processar Pagamento
+      </span>
+      <VIcon color="#fff">mdi-credit-card-outline</VIcon>
     </VBtn>
   </VeeForm>
 </template>
