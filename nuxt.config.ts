@@ -16,7 +16,7 @@ export default defineNuxtConfig({
   ],
   runtimeConfig: {
     stripe: {
-      key: process.env.STRIPE_PUBLISHABLE_KEY
+      key: process.env.STRIPE_SECRET_KEY
     },
     public: {
       apiUrl: process.env.API_URL,

@@ -1,11 +1,13 @@
+import {useServerStripe} from "#stripe/server";
+
 export default defineEventHandler(async (event) => {
     const stripe = await useServerStripe(event);
-    const orderAmount = 1400;
+    const orderAmount = 50;
     let paymentIntent;
 
     try {
         paymentIntent = await stripe.paymentIntents.create({
-            currency: "usd",
+            currency: "brl",
             amount: orderAmount,
             automatic_payment_methods: { enabled: true },
         });
