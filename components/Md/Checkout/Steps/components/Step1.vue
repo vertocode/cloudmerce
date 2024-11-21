@@ -51,7 +51,7 @@
 </template>
 
 <script setup lang="ts">
-defineProps<{ next: Function; prev: Function }>()
+defineProps<{ next: Function }>()
 </script>
 
 <style lang="scss">
