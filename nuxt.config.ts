@@ -6,6 +6,7 @@ export default defineNuxtConfig({
     transpile: ['vuetify']
   },
   modules: [
+    '@unlok-co/nuxt-stripe',
     (_options, nuxt) => {
       nuxt.hooks.hook('vite:extendConfig', (config) => {
         // @ts-expect-error
@@ -14,11 +15,17 @@ export default defineNuxtConfig({
     },
   ],
   runtimeConfig: {
+    stripe: {
+      key: process.env.STRIPE_PUBLISHABLE_KEY
+    },
     public: {
       apiUrl: process.env.API_URL,
       emailjsServiceId: process.env.EMAILJS_SERVICE_ID,
       emailjstemplateId: process.env.EMAILJS_TEMPLATE_ID,
       emailjsuserId: process.env.EMAILJS_USER_ID,
+      stripe: {
+        key: process.env.STRIPE_PUBLISHABLE_KEY
+      },
     }
   },
   vite: {

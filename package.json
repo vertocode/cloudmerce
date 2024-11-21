@@ -12,6 +12,7 @@
   "dependencies": {
     "@mdi/font": "^7.4.47",
     "@types/tinycolor2": "^1.4.6",
+    "@unlok-co/nuxt-stripe": "latest",
     "nuxt": "^3.13.2",
     "tinycolor2": "^1.6.0",
     "vee-validate": "^4.14.4",
@@ -21,6 +22,7 @@
   "devDependencies": {
     "@vee-validate/zod": "^4.14.7",
     "emailjs-com": "^3.2.0",
+    "nuxt-stripe-module": "^3.2.0",
     "sass-embedded": "^1.80.3",
     "vite-plugin-vuetify": "^2.0.4",
     "vuetify": "^3.7.3"
