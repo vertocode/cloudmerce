@@ -50,6 +50,16 @@ const DynamicStep = computed(() => {
     .next-button {
       float: right;
     }
+
+    @media screen and (max-width: $mobile-breakpoint) {
+      .back-button, .next-button {
+        width: 100%;
+      }
+
+      .next-button {
+        margin-top: 16px;
+      }
+    }
   }
 }
 </style>
