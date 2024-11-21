@@ -32,7 +32,7 @@ defineProps<{ prev: Function }>()
 const { post } = useApi()
 const { loadStripe } = useClientStripe()
 const { ecommerceId } = useStoreData()
-const { cartId } = useCart()
+const { cartId, removeCartId } = useCart()
 const { userData } = useUser()
 const config = useRuntimeConfig()
 
@@ -98,6 +98,7 @@ const handleSubmit = async () => {
     }) as { code: 'success' | 'error' }
 
     if (response?.code === 'success') {
+      removeCartId()
       handleSuccess('Pedido realizado com sucesso!')
     } else {
       throw new Error('code not success')

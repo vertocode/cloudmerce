@@ -16,6 +16,12 @@ export const useCart = () => {
         return null
     })
 
+    const removeCartId = () => {
+        if (cartId) {
+            localStorage.removeItem('cartId')
+        }
+    }
+
     const getCart = async () => {
         if (!cartId.value) {
             return
@@ -126,5 +132,5 @@ export const useCart = () => {
         return cartProducts.value.reduce((sum, product) => sum + (product.price * product.quantity), 0).toFixed(2)
     })
 
-    return { cartProducts, loading, isCartDrawerOpened, total, cartId, addToCart, changeQuantity, getCart }
+    return { cartProducts, loading, isCartDrawerOpened, total, cartId, removeCartId, addToCart, changeQuantity, getCart }
 }
