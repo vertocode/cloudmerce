@@ -5,6 +5,9 @@ export default defineNuxtConfig({
   build: {
     transpile: ['vuetify']
   },
+  plugins: [
+    '~/plugins/mask.ts',
+  ],
   modules: [
     '@unlok-co/nuxt-stripe',
     (_options, nuxt) => {

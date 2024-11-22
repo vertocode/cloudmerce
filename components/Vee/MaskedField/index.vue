@@ -6,6 +6,7 @@
         v-model="field.value"
         autocomplete="off"
         :error-messages="errorMessage === 'Required' ? 'Campo obrigatório' : errorMessage"
+        v-mask="mask"
         v-bind="{
           ...$attrs,
            ...field
@@ -19,6 +20,7 @@ import { Field } from "vee-validate"
 
 defineProps<{
   name: string
+  mask: string
   variant?: "outlined" | "plain" | "filled" | "underlined" | "solo" | "solo-inverted" | "solo-filled"
 }>()
 </script>

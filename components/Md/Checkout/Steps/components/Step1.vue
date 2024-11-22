@@ -11,22 +11,34 @@
         <VeeTextField required name="email" label="E-mail" placeholder="Digite o seu e-mail para contato" />
       </VCol>
       <VCol cols="12" md="4" class="pl-0 pb-0">
-        <VeeTextField required name="birthday" label="Data de Nascimento" placeholder="Digite a sua data de nascimento" />
+        <VeeDateField required name="birthday" label="Data de Nascimento" placeholder="Digite a sua data de nascimento" />
       </VCol>
       <VCol cols="12" md="4" class="pl-0 pb-0">
-        <VeeTextField required name="phone" label="Telefone" placeholder="Digite o seu telefone para contato" />
+        <VeeMaskedField
+            required
+            name="phone"
+            label="Telefone"
+            placeholder="Digite o seu telefone para contato"
+            mask="(##) # ####-####"
+        />
       </VCol>
       <VCol cols="12" md="4" class="pl-0 pb-0">
         <VeeSelect required name="hasWhatsapp" label="Possui Whatsapp" :items="['Sim', 'Não']" />
       </VCol>
       <VCol cols="12" md="4" class="pl-0 pb-0">
-        <VeeTextField required name="cpf" label="CPF" placeholder="Digite o seu CPF" />
+        <VeeMaskedField
+            required
+            name="cpf"
+            label="CPF"
+            placeholder="Digite o seu CPF"
+            mask="###.###.###-##"
+        />
       </VCol>
       <VCol cols="12">
         <h2 class="title">Endereço</h2>
       </VCol>
       <VCol cols="12" md="4" class="pl-0 pb-0">
-        <VeeTextField required name="cep" label="Cep" placeholder="Digite o CEP para envio" />
+        <VeeMaskedField mask="#####-###" required name="cep" label="Cep" placeholder="Digite o CEP para envio" />
       </VCol>
       <VCol cols="12" md="4" class="pl-0 pb-0">
         <VeeTextField required name="state" label="Estado" placeholder="Digite o estado para envio" />
@@ -41,7 +53,7 @@
         <VeeTextField required name="street" label="Rua" placeholder="Digite a rua para envio"/>
       </VCol>
       <VCol cols="12" md="4" class="pl-0 pb-0">
-        <VeeTextField required name="number" label="Número" placeholder="Digite o número para envio"/>
+        <VeeTextField type="number" required name="number" label="Número" placeholder="Digite o número para envio"/>
       </VCol>
     </VRow>
     <VBtn @click="next" class="next-button" append-icon="mdi-arrow-right">
