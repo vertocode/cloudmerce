@@ -100,6 +100,7 @@ const handleSubmit = async () => {
     if (response?.code === 'success') {
       removeCartId()
       handleSuccess('Pedido realizado com sucesso!')
+      // TODO: Add redirect to order page
     } else {
       throw new Error('code not success')
     }
