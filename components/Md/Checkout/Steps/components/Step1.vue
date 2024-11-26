@@ -1,5 +1,5 @@
 <template>
-  <VeeForm>
+  <VeeForm :validationSchema="validationSchema" @submit="() => next()">
     <VRow>
       <VCol cols="12">
         <h2 class="title">Dados Pessoais</h2>
@@ -56,14 +56,33 @@
         <VeeTextField type="number" required name="number" label="Número" placeholder="Digite o número para envio"/>
       </VCol>
     </VRow>
-    <VBtn @click="next" class="next-button" append-icon="mdi-arrow-right">
+    <VeeButton class="next-button" append-icon="mdi-arrow-right">
       Próximo
-    </VBtn>
+    </VeeButton>
   </VeeForm>
 </template>
 
 <script setup lang="ts">
+import {z} from "zod";
+
 defineProps<{ next: Function }>()
+
+const validationSchema = z.object({
+  name: z.string().min(3, { message: 'Nome deve ter pelo menos 3 caracteres' }),
+  email: z.string().email({ message: 'E-mail inválido' }),
+  birthday: z.string()
+      .min(10, { message: 'Data de nascimento inválida' })
+      .refine(validateBirthdateString, { message: 'Data de nascimento inválida' }),
+  phone: z.string().min(16, { message: 'Telefone inválido' }),
+  hasWhatsapp: z.string().min(1, { message: 'Selecione uma opção' }),
+  cpf: z.string().refine(validateCPF, { message: 'CPF inválido' }),
+  cep: z.string().min(9, { message: 'CEP inválido' }),
+  state: z.string().min(3, { message: 'Estado inválido' }),
+  city: z.string().min(3, { message: 'Cidade inválida' }),
+  neighborhood: z.string().min(3, { message: 'Bairro inválido' }),
+  street: z.string().min(3, { message: 'Rua inválida' }),
+  number: z.number({ message: 'Campo obrigatório' }).min(1, { message: 'Número inválido' })
+})
 </script>
 
 <style lang="scss">
