@@ -1,5 +1,5 @@
 <template>
-  <VeeForm :validationSchema="validationSchema" @submit="() => next()">
+  <VeeForm :validationSchema="validationSchema" @submit="handleSubmit">
     <VRow>
       <VCol cols="12">
         <h2 class="title">Dados Pessoais</h2>
@@ -65,7 +65,7 @@
 <script setup lang="ts">
 import {z} from "zod";
 
-defineProps<{ next: Function }>()
+const props = defineProps<{ next: Function }>()
 
 const validationSchema = z.object({
   name: z.string().min(3, { message: 'Nome deve ter pelo menos 3 caracteres' }),
@@ -83,6 +83,19 @@ const validationSchema = z.object({
   street: z.string().min(3, { message: 'Rua inválida' }),
   number: z.number({ message: 'Campo obrigatório' }).min(1, { message: 'Número inválido' })
 })
+
+const { post } = useApi()
+
+const handleSubmit = async (values: Record<string, any>) => {
+  console.log(values, 'submit user data')
+  try {
+    await post('/users', values)
+    props.next()
+  } catch (e) {
+    console.error(e)
+    handleError('Erro ao enviar formulário com dados de usuário')
+  }
+}
 </script>
 
 <style lang="scss">
