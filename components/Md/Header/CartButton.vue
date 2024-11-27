@@ -55,16 +55,15 @@
 import CartItem from "~/components/Md/Header/CartItem.vue"
 import { useCart } from "~/composables/useCart"
 
-
 const isLoaded = ref(false)
 
-onMounted(() => isLoaded.value = true)
+onMounted(() => {
+  isLoaded.value = true
+  getCart()
+})
 
 const { cartProducts, getCart, isCartDrawerOpened, loading, total } = useCart()
 
-onMounted(() => {
-  getCart()
-})
 </script>
 
 <style lang="scss" scoped>

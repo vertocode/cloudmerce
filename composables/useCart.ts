@@ -5,7 +5,7 @@ export const useCart = () => {
     const isCartDrawerOpened = useState('isCartDrawerOpened', () => false)
     const cartProducts = useState<ICartItem[]>('cartProducts', () => [])
     const ownerId = useState<string | null>('ownerId', () => null)
-    const loading = ref<boolean>(false)
+    const loading = useState<boolean>('cartLoading', () => true)
 
     const { put, get } = useApi()
     const { ecommerceId } = useStoreData()
@@ -25,6 +25,7 @@ export const useCart = () => {
 
     const getCart = async () => {
         if (!cartId.value) {
+            loading.value = false
             return
         }
         try {

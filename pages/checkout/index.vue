@@ -1,5 +1,8 @@
 <template>
-  <div class="checkout" v-if="cartProducts.length">
+  <div v-if="loading" class="spinner-container">
+    <h1>Carregando...</h1>
+  </div>
+  <div class="checkout" v-else-if="cartProducts.length">
     <MdCheckoutSteps />
 
     <MdCheckoutDetails />
@@ -8,10 +11,18 @@
 </template>
 
 <script setup lang="ts">
-const cartProducts = useState('cartProducts', () => [])
+const { cartProducts, loading } = useCart()
 </script>
 
 <style lang="scss">
+.spinner-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 24px;
+  height: 50vh;
+}
+
 .checkout {
   display: grid;
   grid-template-columns: 1fr 350px;
