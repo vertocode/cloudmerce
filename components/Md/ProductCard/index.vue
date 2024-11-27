@@ -21,7 +21,7 @@
       </MdDeleteProductModal>
     </VCardActions>
   </VCard>
-  <MdAddItemQuestionModal :product="showQuestionAddModal ? product : null" @close="showQuestionAddModal = false"/>
+  <MdAddItemQuestionModal :product="showQuestionAddModal ? product : null" @close="showQuestionAddModal = false" />
 </template>
 
 <script setup lang="ts">

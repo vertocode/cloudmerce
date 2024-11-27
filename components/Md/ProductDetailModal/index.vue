@@ -35,12 +35,13 @@
           :loading
           class="w-100"
           color="primary"
-          @click="handleAddToCart"
+          @click="addToCart"
       >
         Adicionar ao Carrinho
       </v-btn>
     </div>
   </Modal>
+  <MdAddItemQuestionModal :product="showQuestionAddModal ? product : null" @close="showQuestionAddModal = false" />
 </template>
 
 <script setup lang="ts">
@@ -49,6 +50,7 @@ import Modal from '~/components/El/Modal/index.vue'
 import type { IProduct } from "~/types/product"
 
 const showProductDetailModal = ref(false)
+const showQuestionAddModal = ref<boolean>(false)
 
 const onClose = () => {
   showProductDetailModal.value = false
@@ -56,14 +58,23 @@ const onClose = () => {
 
 const props = defineProps<{ product: IProduct }>()
 
-const { addToCart, loading } = useCart()
+const { addToCart: handleAddToCart, loading } = useCart()
 
 const formattedPrice = computed(() => {
   return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(props.product.price)
 })
 
-const handleAddToCart = () => {
-  addToCart({ ...props.product, quantity: 1 })
+const addToCart = async () => {
+  if (props.product.fields.length > 0) {
+    onClose()
+    showQuestionAddModal.value = true
+    return
+  }
+
+  await handleAddToCart({
+    ...props.product,
+    quantity: 1
+  })
   onClose()
 }
 
