@@ -1,4 +1,5 @@
 import {computed} from "vue";
+import type {User} from "~/types/user";
 
 interface AuthParams {
     email: string;
@@ -11,32 +12,6 @@ interface RegisterParams {
     password: string;
 }
 
-export type Role = 'user' | 'admin'
-
-interface UserAddress {
-    cep: string
-    street: string
-    number: string
-    city: string
-    state: string
-    country: string
-    neighborhood: string
-}
-
-interface User {
-    _id: string
-    createdAt: string
-    email: string
-    name: string
-    birthday: string
-    role: Role
-    password: string
-    phone?: string
-    hasWhatsapp?: boolean
-    cpf?: string
-    address?: UserAddress
-}
-
 export const useUser = () => {
     const storage = makeStorage()
 
@@ -44,12 +19,18 @@ export const useUser = () => {
     const { get, post } = useApi();
 
     const isAdmin = computed(() => userData.value?.role === 'admin')
+    const isLogged = computed(() => !!userData.value)
 
     onMounted(() => {
         if (process.client && !userData.value) {
             userData.value = storage.getItem<User>('userData');
         }
     })
+
+    const setUser = (user: User) => {
+        userData.value = user
+        storage.setItem('userData', user)
+    }
 
     const login = async (authParams: AuthParams) => {
         try {
@@ -63,14 +44,13 @@ export const useUser = () => {
             if (!(response as User)?._id) {
                 throw new Error('Response without user id')
             }
-            userData.value = response as User
-            storage.setItem('userData', response)
+            setUser(response as User)
             return { code: 'success' }
         } catch (error) {
             handleError('Erro ao efetuar login')
             return { code: 'error' }
         }
-    };
+    }
 
     const logout = () => {
         userData.value = null;
@@ -97,6 +77,8 @@ export const useUser = () => {
     return {
         userData,
         isAdmin,
+        isLogged,
+        setUser,
         login,
         logout,
         register,

@@ -53,7 +53,6 @@ import { z } from 'zod'
 import { useUser } from '~/composables/useUser'
 
 const showRegisterModal = ref(false)
-const isLoading = ref(false)
 
 const onClose = () => {
   showRegisterModal.value = false
@@ -72,7 +71,6 @@ const validationSchema = z.object({
 })
 
 const submit = async (values: Record<string, any>) => {
-  isLoading.value = true
   const { code } = await register({
     name: values.name,
     email: values.email,
@@ -81,6 +79,5 @@ const submit = async (values: Record<string, any>) => {
   if (code === 'success') {
     showRegisterModal.value = false
   }
-  isLoading.value = false
 }
 </script>

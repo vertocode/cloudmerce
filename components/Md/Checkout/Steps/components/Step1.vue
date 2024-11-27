@@ -1,5 +1,5 @@
 <template>
-  <VeeForm :validationSchema="validationSchema" @submit="handleSubmit">
+  <VeeForm :validationSchema="validationSchema" @submit="handleSubmit" v-slot="{ isSubmitting }">
     <VRow>
       <VCol cols="12">
         <h2 class="title">Dados Pessoais</h2>
@@ -34,6 +34,12 @@
             mask="###.###.###-##"
         />
       </VCol>
+      <VCol cols="12" md="6" class="pl-0 pb-0" v-if="!isLogged">
+        <VeeTextField required name="password" label="Senha" type="password" />
+      </VCol>
+      <VCol cols="12" md="6" class="pl-0 pb-0" v-if="!isLogged">
+        <VeeTextField required name="repeatPassword" label="Repita sua senha" type="password" />
+      </VCol>
       <VCol cols="12">
         <h2 class="title">Endereço</h2>
       </VCol>
@@ -56,7 +62,7 @@
         <VeeTextField type="number" required name="number" label="Número" placeholder="Digite o número para envio"/>
       </VCol>
     </VRow>
-    <VeeButton class="next-button" append-icon="mdi-arrow-right">
+    <VeeButton class="next-button" append-icon="mdi-arrow-right" :loading="isSubmitting">
       Próximo
     </VeeButton>
   </VeeForm>
@@ -64,10 +70,12 @@
 
 <script setup lang="ts">
 import {z} from "zod";
+import type {User} from "~/types/user";
 
 const props = defineProps<{ next: Function }>()
 
 const validationSchema = z.object({
+  // user information
   name: z.string().min(3, { message: 'Nome deve ter pelo menos 3 caracteres' }),
   email: z.string().email({ message: 'E-mail inválido' }),
   birthday: z.string()
@@ -76,18 +84,25 @@ const validationSchema = z.object({
   phone: z.string().min(16, { message: 'Telefone inválido' }),
   hasWhatsapp: z.string().min(1, { message: 'Selecione uma opção' }),
   cpf: z.string().refine(validateCPF, { message: 'CPF inválido' }),
+  password: z.string().min(6, { message: 'Senha deve ter pelo menos 6 caracteres' }),
+  repeatPassword: z.string().min(6, { message: 'A senha de repetição deve ter pelo menos 6 caracteres' }),
+
+  // address information
   cep: z.string().min(9, { message: 'CEP inválido' }),
   state: z.string().min(3, { message: 'Estado inválido' }),
   city: z.string().min(3, { message: 'Cidade inválida' }),
   neighborhood: z.string().min(3, { message: 'Bairro inválido' }),
   street: z.string().min(3, { message: 'Rua inválida' }),
   number: z.number({ message: 'Campo obrigatório' }).min(1, { message: 'Número inválido' })
+}).refine((fields) =>  fields.password === fields.repeatPassword, {
+  message: 'As senhas não coincidem',
+  path: ['repeatPassword']
 })
 
 const { post } = useApi()
 const { ecommerceId } = useStoreData()
 const { cartId } = useCart()
-const { userData } = useUser()
+const { userData, isLogged, setUser } = useUser()
 
 const handleSubmit = async (values: Record<string, any>) => {
   console.log(values, 'submit user data')
@@ -117,6 +132,7 @@ const handleSubmit = async (values: Record<string, any>) => {
         phone: values.phone || defaultPhone,
         cpf: values.cpf || defaultCpf,
         birthday: values.birthday || defaultBirthday,
+        password: values?.password,
         hasWhatsapp: values.hasWhatsapp === 'Sim' || defaultHasWhatsapp,
         address: {
           cep: values.cep || defaultCep,
@@ -130,6 +146,7 @@ const handleSubmit = async (values: Record<string, any>) => {
       cartId: cartId.value
     })
     console.log(response, 'response')
+    setUser(response as User)
     props.next()
   } catch (e) {
     console.error(e)
