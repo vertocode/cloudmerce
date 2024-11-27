@@ -1,6 +1,5 @@
 <template>
-  <VeeForm :validationSchema="validationSchema" :initialValues @submit="handleSubmit" v-slot="{ isSubmitting, errors }">
-    {{ errors }}
+  <VeeForm :validationSchema="validationSchema" :initialValues @submit="handleSubmit" v-slot="{ isSubmitting, values, errors }">
     <VRow>
       <VCol cols="12">
         <h2 class="title">Dados Pessoais</h2>
@@ -9,7 +8,7 @@
         <VeeTextField required name="name" label="Nome" placeholder="Digite o seu nome completo" />
       </VCol>
       <VCol cols="12" md="4" class="pl-0 pb-0">
-        <VeeTextField required name="email" label="E-mail" placeholder="Digite o seu e-mail para contato" />
+        <VeeTextField required name="email" label="E-mail" placeholder="Digite o seu e-mail para contato" :disabled="isLogged"/>
       </VCol>
       <VCol cols="12" md="4" class="pl-0 pb-0">
         <VeeDateField required name="birthday" label="Data de Nascimento" placeholder="Digite a sua data de nascimento" />
@@ -85,21 +84,26 @@ const validationSchema = z.object({
   phone: z.string().min(16, { message: 'Telefone inválido' }),
   hasWhatsapp: z.string().min(1, { message: 'Selecione uma opção' }),
   cpf: z.string().refine(validateCPF, { message: 'CPF inválido' }),
-  password: z.string().optional().refine(password => {
-    if (isLogged) return true
-    if (!password) return 'Campo obrigatório'
-    if (password.length < 6) return 'A senha deve ter pelo menos 6 caracteres'
-    if (!/[a-z]/.test(password)) return 'A senha deve conter pelo menos uma letra minúscula'
-    if (!/[A-Z]/.test(password)) return 'A senha deve conter pelo menos uma letra maiúscula'
-    if (!/[0-9]/.test(password)) return 'A senha deve conter pelo menos um número'
-    return true
-  }),
-  repeatPassword: z.string().optional().refine(repeatPassword => {
-    if (isLogged) return true
-    if (!repeatPassword) return 'Campo obrigatório'
-    if (repeatPassword.length < 6) return 'A senha de repetição deve ter pelo menos 6 caracteres'
-    return true
-  }),
+  password: z
+      .string()
+      .refine((password) => {
+        if (isLogged.value) return true; // Skip validation if logged in
+        if (!password) return false
+        if (password.length < 6) return false
+        return true;
+      }, {
+        message: "A senha deve ter pelo menos 6 caracteres",
+      })
+      .optional(),
+  repeatPassword: z
+      .string()
+      .refine((repeatPassword) => {
+        if (isLogged.value) return true; // Skip validation if logged in
+        if (!repeatPassword) return false
+        if (repeatPassword.length < 6) return false
+        return true;
+      }, { message: 'A senha de repetição deve ter pelo menos 6 caracteres' })
+      .optional(),
 
   // address information
   cep: z.string().min(9, { message: 'CEP inválido' }),
@@ -164,7 +168,7 @@ const handleSubmit = async (values: Record<string, any>) => {
         phone: values.phone || defaultPhone,
         cpf: values.cpf || defaultCpf,
         birthday: values.birthday || defaultBirthday,
-        ...(isLogged ? {} : { password: values.password }),
+        ...(isLogged.value ? {} : { password: values.password }),
         hasWhatsapp: values.hasWhatsapp === 'Sim' || defaultHasWhatsapp,
         address: {
           cep: values.cep || defaultCep,
