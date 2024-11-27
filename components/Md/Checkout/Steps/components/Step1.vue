@@ -1,5 +1,6 @@
 <template>
-  <VeeForm :validationSchema="validationSchema" :initialValues @submit="handleSubmit" v-slot="{ isSubmitting }">
+  <VeeForm :validationSchema="validationSchema" :initialValues @submit="handleSubmit" v-slot="{ isSubmitting, errors }">
+    {{ errors }}
     <VRow>
       <VCol cols="12">
         <h2 class="title">Dados Pessoais</h2>
@@ -35,10 +36,10 @@
         />
       </VCol>
       <VCol cols="12" md="6" class="pl-0 pb-0" v-if="!isLogged">
-        <VeeTextField required name="password" label="Senha" type="password" />
+        <VeeTextField :required="!isLogged" name="password" label="Senha" type="password" />
       </VCol>
       <VCol cols="12" md="6" class="pl-0 pb-0" v-if="!isLogged">
-        <VeeTextField required name="repeatPassword" label="Repita sua senha" type="password" />
+        <VeeTextField :required="!isLogged" name="repeatPassword" label="Repita sua senha" type="password" />
       </VCol>
       <VCol cols="12">
         <h2 class="title">Endereço</h2>
@@ -84,8 +85,21 @@ const validationSchema = z.object({
   phone: z.string().min(16, { message: 'Telefone inválido' }),
   hasWhatsapp: z.string().min(1, { message: 'Selecione uma opção' }),
   cpf: z.string().refine(validateCPF, { message: 'CPF inválido' }),
-  password: z.string().min(6, { message: 'Senha deve ter pelo menos 6 caracteres' }),
-  repeatPassword: z.string().min(6, { message: 'A senha de repetição deve ter pelo menos 6 caracteres' }),
+  password: z.string().optional().refine(password => {
+    if (isLogged) return true
+    if (!password) return 'Campo obrigatório'
+    if (password.length < 6) return 'A senha deve ter pelo menos 6 caracteres'
+    if (!/[a-z]/.test(password)) return 'A senha deve conter pelo menos uma letra minúscula'
+    if (!/[A-Z]/.test(password)) return 'A senha deve conter pelo menos uma letra maiúscula'
+    if (!/[0-9]/.test(password)) return 'A senha deve conter pelo menos um número'
+    return true
+  }),
+  repeatPassword: z.string().optional().refine(repeatPassword => {
+    if (isLogged) return true
+    if (!repeatPassword) return 'Campo obrigatório'
+    if (repeatPassword.length < 6) return 'A senha de repetição deve ter pelo menos 6 caracteres'
+    return true
+  }),
 
   // address information
   cep: z.string().min(9, { message: 'CEP inválido' }),
@@ -108,23 +122,22 @@ const initialValues = computed(() => {
   if (!userData.value) return
 
   return {
-    name: userData.value?.name,
-    email: userData.value?.email,
-    phone: userData.value?.phone,
-    cpf: userData.value?.cpf,
-    birthday: userData.value?.birthday,
+    name: userData.value?.name || '',
+    email: userData.value?.email || '',
+    phone: userData.value?.phone || '',
+    cpf: userData.value?.cpf || '',
+    birthday: userData.value?.birthday || '',
     hasWhatsapp: userData.value?.hasWhatsapp ? 'Sim' : 'Não',
-    cep: userData.value?.address?.cep,
-    state: userData.value?.address?.state,
-    city: userData.value?.address?.city,
-    neighborhood: userData.value?.address?.neighborhood,
-    street: userData.value?.address?.street,
-    number: userData.value?.address?.number
+    cep: userData.value?.address?.cep || '',
+    state: userData.value?.address?.state || '',
+    city: userData.value?.address?.city || '',
+    neighborhood: userData.value?.address?.neighborhood || '',
+    street: userData.value?.address?.street || '',
+    number: userData.value?.address?.number ? Number(userData.value?.address?.number) : undefined
   }
 })
 
 const handleSubmit = async (values: Record<string, any>) => {
-  console.log(values, 'submit user data')
   try {
     const {
       _id,
@@ -140,7 +153,7 @@ const handleSubmit = async (values: Record<string, any>) => {
         city: defaultCity = '',
         neighborhood: defaultNeighborhood = '',
         street: defaultStreet = '',
-        number: defaultNumber = ''
+        number: defaultNumber = 0
       } = {}
     } = userData.value || {}
     const response = await post(`/checkout/user/${ecommerceId}`, {
@@ -151,7 +164,7 @@ const handleSubmit = async (values: Record<string, any>) => {
         phone: values.phone || defaultPhone,
         cpf: values.cpf || defaultCpf,
         birthday: values.birthday || defaultBirthday,
-        password: values?.password,
+        ...(isLogged ? {} : { password: values.password }),
         hasWhatsapp: values.hasWhatsapp === 'Sim' || defaultHasWhatsapp,
         address: {
           cep: values.cep || defaultCep,
@@ -164,7 +177,6 @@ const handleSubmit = async (values: Record<string, any>) => {
       },
       cartId: cartId.value
     })
-    console.log(response, 'response')
     setUser(response as User)
     props.next()
   } catch (e) {
