@@ -1,5 +1,5 @@
 <template>
-  <div class="checkout-details">
+  <VCard elevation="3" class="checkout-details">
     <h3>Detalhes da Compra</h3>
     <div class="list">
       <VList>
@@ -26,7 +26,7 @@
         <span class="cart-total-value">R${{ total }}</span>
       </div>
     </div>
-  </div>
+  </VCard>
 </template>
 
 <script setup lang="ts">
@@ -37,6 +37,7 @@ const { cartProducts, total } = useCart()
 
 <style lang="scss">
 .checkout-details {
+  height: max-content;
   margin: 16px 0;
   padding: 16px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
