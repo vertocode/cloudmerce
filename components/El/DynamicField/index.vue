@@ -39,16 +39,16 @@
 import { defineProps } from 'vue';
 
 interface Field {
-  label: string;
-  type: 'text' | 'number' | 'options';
-  options?: string[];
+  label: string
+  type: 'text' | 'number' | 'options'
+  options?: string[]
 }
 
-defineProps<{ field: Field }>();
+const props = defineProps<{ field: Field, initialValue?: string }>();
 
 const emit = defineEmits()
 
-const value = ref<string>('')
+const value = ref<string>(props?.initialValue ||'')
 
 watch(value, (newValue) => {
   emit('update', newValue)

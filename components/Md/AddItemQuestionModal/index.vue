@@ -21,6 +21,7 @@
           <ElDynamicField
               required
               :field="field"
+              :initial-value="field.options?.[0] || ''"
               @update="value => values[field.label] = value"
           />
         </VCol>
