@@ -4,6 +4,7 @@ import {computed} from "vue";
 export const useCart = () => {
     const isCartDrawerOpened = useState('isCartDrawerOpened', () => false)
     const cartProducts = useState<ICartItem[]>('cartProducts', () => [])
+    const ownerId = useState<string | null>('ownerId', () => null)
     const loading = ref<boolean>(false)
 
     const { put, get } = useApi()
@@ -32,6 +33,9 @@ export const useCart = () => {
 
             if (!response?._id) {
                 throw new Error('Response without _id.')
+            }
+            if (response?.userId) {
+                ownerId.value = response.userId
             }
             cartProducts.value = response.items.map(item => {
                 const productDetails = item.productId
@@ -132,5 +136,5 @@ export const useCart = () => {
         return cartProducts.value.reduce((sum, product) => sum + (product.price * product.quantity), 0).toFixed(2)
     })
 
-    return { cartProducts, loading, isCartDrawerOpened, total, cartId, removeCartId, addToCart, changeQuantity, getCart }
+    return { cartProducts, loading, isCartDrawerOpened, total, cartId, ownerId, removeCartId, addToCart, changeQuantity, getCart }
 }

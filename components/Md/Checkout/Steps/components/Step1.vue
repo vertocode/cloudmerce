@@ -1,5 +1,11 @@
 <template>
-  <VeeForm :validationSchema="validationSchema" :initialValues @submit="handleSubmit" v-slot="{ isSubmitting, values, errors }">
+  <VeeForm
+      :key="isLogged ? 'logged-form' : 'unlogged-form'"
+      :validationSchema="validationSchema"
+      :initialValues
+      v-slot="{ isSubmitting }"
+      @submit="handleSubmit"
+  >
     <VRow>
       <VCol cols="12">
         <h2 class="title">Dados Pessoais</h2>
@@ -71,6 +77,7 @@
 <script setup lang="ts">
 import {z} from "zod";
 import type {User} from "~/types/user";
+import type {SubmitOptions} from "~/components/Vee/Form/index.vue";
 
 const props = defineProps<{ next: Function }>()
 
@@ -119,11 +126,11 @@ const validationSchema = z.object({
 
 const { post } = useApi()
 const { ecommerceId } = useStoreData()
-const { cartId } = useCart()
+const { cartId, ownerId } = useCart()
 const { userData, isLogged, setUser } = useUser()
 
 const initialValues = computed(() => {
-  if (!userData.value) return
+  if (!isLogged.value) return
 
   return {
     name: userData.value?.name || '',
@@ -141,7 +148,14 @@ const initialValues = computed(() => {
   }
 })
 
-const handleSubmit = async (values: Record<string, any>) => {
+const handleSubmit = async (values: Record<string, any>, { meta }: SubmitOptions) => {
+  const hasNotChanges = !meta.dirty
+  const alreadySetUser = ownerId.value
+  if (hasNotChanges && alreadySetUser) {
+    props.next()
+    return
+  }
+
   try {
     const {
       _id,

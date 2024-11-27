@@ -20,6 +20,7 @@ export interface IAddItemToCartResponse extends ICartResponse {
 }
 
 export interface IGetCartResponse extends ICartResponse {
+    userId: string
     items: {
         productId: IProductResponse
         fieldValues: {
