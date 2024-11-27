@@ -1,5 +1,5 @@
 <template>
-  <VeeForm :validationSchema="validationSchema" @submit="handleSubmit" v-slot="{ isSubmitting }">
+  <VeeForm :validationSchema="validationSchema" :initialValues @submit="handleSubmit" v-slot="{ isSubmitting }">
     <VRow>
       <VCol cols="12">
         <h2 class="title">Dados Pessoais</h2>
@@ -103,6 +103,25 @@ const { post } = useApi()
 const { ecommerceId } = useStoreData()
 const { cartId } = useCart()
 const { userData, isLogged, setUser } = useUser()
+
+const initialValues = computed(() => {
+  if (!userData.value) return
+
+  return {
+    name: userData.value?.name,
+    email: userData.value?.email,
+    phone: userData.value?.phone,
+    cpf: userData.value?.cpf,
+    birthday: userData.value?.birthday,
+    hasWhatsapp: userData.value?.hasWhatsapp ? 'Sim' : 'Não',
+    cep: userData.value?.address?.cep,
+    state: userData.value?.address?.state,
+    city: userData.value?.address?.city,
+    neighborhood: userData.value?.address?.neighborhood,
+    street: userData.value?.address?.street,
+    number: userData.value?.address?.number
+  }
+})
 
 const handleSubmit = async (values: Record<string, any>) => {
   console.log(values, 'submit user data')
