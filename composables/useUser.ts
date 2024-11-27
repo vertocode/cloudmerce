@@ -13,13 +13,28 @@ interface RegisterParams {
 
 export type Role = 'user' | 'admin'
 
+interface UserAddress {
+    cep: string
+    street: string
+    number: string
+    city: string
+    state: string
+    country: string
+    neighborhood: string
+}
+
 interface User {
-    createdAt: string;
-    email: string;
-    name: string;
+    _id: string
+    createdAt: string
+    email: string
+    name: string
+    birthday: string
     role: Role
-    password: string;
-    _id: string;
+    password: string
+    phone?: string
+    hasWhatsapp?: boolean
+    cpf?: string
+    address?: UserAddress
 }
 
 export const useUser = () => {

@@ -85,11 +85,51 @@ const validationSchema = z.object({
 })
 
 const { post } = useApi()
+const { ecommerceId } = useStoreData()
+const { cartId } = useCart()
+const { userData } = useUser()
 
 const handleSubmit = async (values: Record<string, any>) => {
   console.log(values, 'submit user data')
   try {
-    await post('/users', values)
+    const {
+      _id,
+      name: defaultName,
+      email: defaultEmail,
+      phone: defaultPhone,
+      cpf: defaultCpf,
+      birthday: defaultBirthday,
+      hasWhatsapp: defaultHasWhatsapp,
+      address: {
+        cep: defaultCep = '',
+        state: defaultState = '',
+        city: defaultCity = '',
+        neighborhood: defaultNeighborhood = '',
+        street: defaultStreet = '',
+        number: defaultNumber = ''
+      } = {}
+    } = userData.value || {}
+    const response = await post(`/checkout/user/${ecommerceId}`, {
+      userData: {
+        _id,
+        name: values.name || defaultName,
+        email: values.email || defaultEmail,
+        phone: values.phone || defaultPhone,
+        cpf: values.cpf || defaultCpf,
+        birthday: values.birthday || defaultBirthday,
+        hasWhatsapp: values.hasWhatsapp === 'Sim' || defaultHasWhatsapp,
+        address: {
+          cep: values.cep || defaultCep,
+          state: values.state || defaultState,
+          city: values.city || defaultCity,
+          neighborhood: values.neighborhood || defaultNeighborhood,
+          street: values.street || defaultStreet,
+          number: values.number || defaultNumber
+        }
+      },
+      cartId: cartId.value
+    })
+    console.log(response, 'response')
     props.next()
   } catch (e) {
     console.error(e)
