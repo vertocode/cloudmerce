@@ -2,7 +2,7 @@
   <VDialog
       :model-value="isOpened"
       :max-width="maxWidth || '400'"
-      :persistent="persistent"
+      :persistent
   >
     <template v-slot:activator="{ props: activatorProps }">
       <slot name="trigger" v-bind="activatorProps" />

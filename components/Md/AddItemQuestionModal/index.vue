@@ -1,6 +1,7 @@
 <template>
   <ElModal
       :is-opened="!!product"
+      persistent
       :card-props="{ title: `Adicionar produto ao carrinho`, prependIcon: 'mdi-cart' }"
       max-width="600"
       @close="$emit('close')"

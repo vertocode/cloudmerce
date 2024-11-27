@@ -7,6 +7,7 @@ export const useCart = () => {
     const ownerId = useState<string | null>('ownerId', () => null)
     const loading = useState<boolean>('cartLoading', () => true)
 
+    const route = useRoute()
     const { put, get } = useApi()
     const { ecommerceId } = useStoreData()
 
@@ -85,7 +86,11 @@ export const useCart = () => {
 
             await getCart()
 
-            isCartDrawerOpened.value = true
+            if (!route.path.includes('/checkout')) {
+                isCartDrawerOpened.value = true
+            } else {
+                handleSuccess(`${item.name} adicionado ao carrinho.`)
+            }
 
             return { code: 'success' }
         } catch (error) {

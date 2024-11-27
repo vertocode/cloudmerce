@@ -1,5 +1,5 @@
 <template>
-  <div v-if="loading" class="spinner-container">
+  <div v-if="loading && !cartProducts.length" class="spinner-container">
     <h1>Carregando...</h1>
   </div>
   <div class="checkout" v-else-if="cartProducts.length">
