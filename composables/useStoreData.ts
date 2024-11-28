@@ -36,7 +36,7 @@ export const useStoreData = () => {
         }
     }
 
-    callOnce('updateProductTypes', () => updateProductTypes({ cache: 'force-cache' }))
+    callOnce('updateProductTypes', () => updateProductTypes({ cache: 'no-cache' }))
 
     const storeName = 'Cloudmerce'
     const storeLogo = 'https://i.imgur.com/wtfyizY.png'

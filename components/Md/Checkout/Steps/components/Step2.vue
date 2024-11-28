@@ -6,6 +6,10 @@
       Não se preocupe, seus dados estão seguros! Utilizamos a tecnologia da <a href="https://docs.stripe.com/security?locale=pt-BR" target="_blank">Stripe</a> para processar os pagamentos, garantindo a máxima segurança das suas informações. Nenhum dado fornecido aqui será armazenado em nosso sistema.
     </p>
 
+    <div class="spinner" v-if="!isFormLoaded">
+      <VProgressCircular indeterminate size="100" />
+    </div>
+
     <div id="link-authentication-element" />
     <div id="payment-element" />
 
@@ -35,8 +39,10 @@ const { ecommerceId } = useStoreData()
 const { cartId, removeCartId } = useCart()
 const { userData } = useUser()
 const config = useRuntimeConfig()
+const router = useRouter()
 
 const isLoading = ref(false)
+const isFormLoaded = ref(false)
 const messages = ref<string[]>([])
 
 let stripe: Stripe | null = null
@@ -67,6 +73,7 @@ onMounted(async () => {
   const linkAuthenticationElement = elements.create("linkAuthentication")
   linkAuthenticationElement.mount("#link-authentication-element")
   isLoading.value = false
+  isFormLoaded.value = true
 })
 
 const handleSubmit = async () => {
@@ -95,12 +102,18 @@ const handleSubmit = async () => {
       cartId: cartId.value,
       userId: userData.value?._id,
       paymentIntentId: paymentIntent.id
-    }) as { code: 'success' | 'error' }
+    }) as { code: 'success' | 'error', order: { _id: string } }
 
     if (response?.code === 'success') {
       removeCartId()
       handleSuccess('Pedido realizado com sucesso!')
-      // TODO: Add redirect to order page
+      const { _id: orderId } = response?.order || {}
+      if (orderId) {
+        await router.push(`/orders/${orderId}`)
+      } else {
+        handleError('Ocorreu um erro ao redirecionar para a página de pedido. Verifique na lista de pedidos.')
+        await router.push('/orders')
+      }
     } else {
       throw new Error('code not success')
     }
