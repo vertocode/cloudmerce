@@ -121,6 +121,10 @@ const goToOrders = () => {
 
     :deep(.calc) {
       width: 100%;
+
+      .label {
+        max-width: 100%;
+      }
     }
 
     @media screen and (max-width: $mobile-breakpoint) {
