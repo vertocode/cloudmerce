@@ -17,12 +17,12 @@ import { toTypedSchema } from '@vee-validate/zod'
 
 export interface SubmitOptions {
   meta: FormSlotProps['meta']
+  resetForm: VoidFunction
 }
 
 const props = defineProps<{
   validationSchema?: z.ZodSchema<any>
   initialValues?: Record<string, any>
-  resetOnSubmit?: boolean
   formClass?: string
   id?: string
 }>()
@@ -37,10 +37,6 @@ const handleSubmit = async (attrs: FormSlotProps) => {
 
   if (!res?.valid) return
 
-  emit('submit', values, { meta } as SubmitOptions)
-
-  if (props.resetOnSubmit) {
-    resetForm()
-  }
+  emit('submit', values, { meta, resetForm } as SubmitOptions)
 }
 </script>

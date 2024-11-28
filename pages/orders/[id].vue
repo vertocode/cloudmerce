@@ -48,7 +48,7 @@
                   />
                 </VListItemAvatar>
                 <VListItemContent>
-                  <VListItemTitle>{{ item.productId.name }}</VListItemTitle>
+                  <VListItemTitle class="product-name">{{ item.productId.name }}</VListItemTitle>
                   <VListItemSubtitle>
                     Quantidade: {{ item.quantity }}
                   </VListItemSubtitle>
@@ -69,6 +69,16 @@
       <div v-else>
         <p class="error-message">Não foi possível carregar os detalhes do pedido.</p>
       </div>
+
+      <div>
+        <h4>
+          Tem dúvidas ou precisa de assistência com seu pedido? Estamos à disposição para ajudar. Entre em contato através do formulário abaixo.
+        </h4>
+
+        <br>
+
+        <ElContactForm :additional-info="additionalInformationContact"/>
+      </div>
     </VCard>
   </div>
 </template>
@@ -82,7 +92,9 @@ const id = route.params.id as string
 
 const { order, loading } = useOrderById(id)
 
-console.log(order.value, '<<<')
+const additionalInformationContact = computed(() => {
+  return `orderId: ${id} \n orderDetails: ${JSON.stringify(order.value)}`
+})
 
 const products = computed(() => {
   if (!order.value) return []
@@ -177,6 +189,10 @@ const goToOrders = () => {
     display: flex;
     align-items: center;
     gap: 16px;
+
+    .product-name {
+      max-width: 300px;
+    }
   }
 
   .product-image {
