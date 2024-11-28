@@ -1,5 +1,5 @@
 <template>
-  <v-stepper
+  <VStepper
       v-model="step"
       class="steppers"
       :items="['Dados de Envio', 'Dados de Pagamento']"
@@ -9,7 +9,7 @@
     <main class="content">
       <component :is="DynamicStep" :next :prev />
     </main>
-  </v-stepper>
+  </VStepper>
 </template>
 
 <script setup lang="ts">
