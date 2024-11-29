@@ -19,8 +19,10 @@
                   Pedido nº {{ order._id }}
                 </VCardTitle>
                 <VCardText>
-                  <p>Status: {{ formatStatus(order.status) }}</p>
-                  <p>Total: R$ {{ calculateTotal(order.items) }}</p>
+                  <div class="status-total">
+                    <p>Status: <MdOrdersStatusChip :status="order.status"/> </p>
+                    <p>Total: <strong>R$ {{ calculateTotal(order.items) }}</strong></p>
+                  </div>
                   <VList dense class="product-list">
                     <MdOrdersListProductItem v-for="item in order.items" :key="item.productId._id" :item="item" />
                   </VList>
@@ -41,14 +43,8 @@
 </template>
 
 <script setup lang="ts">
-import type { OrderStatus } from "~/types/order"
-
 const { orders, loading, fetchOrders } = useOrders()
 const router = useRouter()
-
-const formatStatus = (status: OrderStatus) => {
-  return getOrderLabelStatus(status)
-}
 
 const calculateTotal = (items: any[]) =>
     items.reduce((total, item) => total + item.productId.price * item.quantity, 0).toFixed(2)
@@ -73,6 +69,12 @@ onMounted(() => fetchOrders())
     .order-title {
       font-weight: bold;
       font-size: 1.2em;
+    }
+
+    .status-total {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 16px;
     }
 
     .product-list {

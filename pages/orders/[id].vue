@@ -19,11 +19,11 @@
 
       <div v-else-if="order">
         <div class="order-status">
-          <h3>Status do Pedido</h3>
+          <h3 class="mobile-status">Status do Pedido: <MdOrdersStatusChip :status="order.status"/></h3>
           <VStepper
               hide-actions
               v-model="statusStep"
-              class="status-stepper"
+              class="status-stepper desktop-status"
               elevation="0"
               :items="['Aguardando Pagamento', 'Loja Notificada', 'Pedido Enviado', 'Pedido Entregue']"
           >
@@ -170,11 +170,25 @@ const goToOrders = () => {
   .order-status {
     margin-bottom: 24px;
     text-align: center;
-  }
 
-  .status-stepper {
-    margin-top: 16px;
-    justify-content: center;
+    .status-stepper {
+      margin-top: 16px;
+      justify-content: center;
+    }
+
+    .mobile-status {
+      display: none;
+    }
+
+    @media screen and (max-width: 900px) {
+      .desktop-status {
+        display: none;
+      }
+
+      .mobile-status {
+        display: block;
+      }
+    }
   }
 
   .products {
