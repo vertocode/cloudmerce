@@ -1,6 +1,7 @@
 <template>
   <VDialog
       :model-value="isOpened"
+      width="auto"
       :max-width="maxWidth || '400'"
       :persistent
   >

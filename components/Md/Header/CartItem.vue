@@ -63,7 +63,7 @@
           <strong>{{ field.label }}:</strong> {{ field.value || 'N/A' }}
         </div>
       </div>
-      <MdProductDetailModal :product="item">
+      <MdProductDetailsModal :product="item">
         <VBtn
             class="view-details-btn small-btn"
             size="x-small"
@@ -71,7 +71,7 @@
         >
           Ver Detalhes
         </VBtn>
-      </MdProductDetailModal>
+      </MdProductDetailsModal>
     </div>
   </div>
 </template>

@@ -10,9 +10,7 @@
 
     <VCardActions class="card-actions">
       <VBtn color="primary" variant="flat" :loading="addingToCart" class="add-to-cart-btn" @click="addToCart">Adicionar ao Carrinho</VBtn>
-      <MdProductDetailModal :product>
-        <VBtn class="view-details-btn" variant="outlined">Ver Detalhes</VBtn>
-      </MdProductDetailModal>
+      <VBtn class="view-details-btn" variant="outlined" @click="$router.push(`/product/${product.id}`)">Ver Detalhes</VBtn>
       <MdEditProductModal :initial-values="product" :updateProductList>
         <VBtn v-if="isAdmin" class="edit-btn">Editar (ADM)</VBtn>
       </MdEditProductModal>
