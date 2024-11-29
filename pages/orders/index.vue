@@ -59,9 +59,7 @@
 import type {OrderStatus} from "~/types/order";
 
 const { orders, loading, fetchOrders } = useOrders()
-const route = useRoute()
 const router = useRouter()
-const ecommerceId = route.query.ecommerceId as string
 
 const formatStatus = (status: OrderStatus) => {
   return getOrderLabelStatus(status)
@@ -74,7 +72,7 @@ const goToOrderDetails = (orderId: string) => {
   router.push(`/orders/${orderId}`)
 }
 
-onMounted(() => fetchOrders(ecommerceId))
+onMounted(() => fetchOrders())
 </script>
 
 <style scoped lang="scss">

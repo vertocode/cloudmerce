@@ -1,6 +1,8 @@
+import type { Order } from '~/types/order'
+
 export const useOrders = () => {
-    const orders = useState('orders', () => [])
-    const loading = useState('loadingOrders', () => false)
+    const orders = useState<Order[]>('orders', () => [])
+    const loading = useState<boolean>('loadingOrders', () => false)
 
     const { get } = useApi()
 
@@ -14,7 +16,7 @@ export const useOrders = () => {
                 return
             }
             const response = await get(`/orders/${ecommerceId}`, { userId })
-            orders.value = response
+            orders.value = response as Order[]
         } catch (err) {
             console.error(err)
             handleError('Erro ao buscar pedidos')
