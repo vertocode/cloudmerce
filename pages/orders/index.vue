@@ -22,26 +22,11 @@
                   <p>Status: {{ formatStatus(order.status) }}</p>
                   <p>Total: R$ {{ calculateTotal(order.items) }}</p>
                   <VList dense class="product-list">
-                    <VListItem v-for="item in order.items" :key="item.productId._id">
-                      <VListItemAvatar>
-                        <img
-                            :src="item.productId.image?.[0] || '/placeholder.png'"
-                            alt="Imagem do produto"
-                            class="product-image"
-                        />
-                      </VListItemAvatar>
-                      <VListItemContent>
-                        <VListItemTitle>{{ item.productId.name }}</VListItemTitle>
-                        <VListItemSubtitle>Qtd: {{ item.quantity }}</VListItemSubtitle>
-                      </VListItemContent>
-                      <VListItemIcon>
-                        <span>R$ {{ (item.productId.price * item.quantity).toFixed(2) }}</span>
-                      </VListItemIcon>
-                    </VListItem>
+                    <MdOrdersListProductItem v-for="item in order.items" :key="item.productId._id" :item="item" />
                   </VList>
                 </VCardText>
                 <VCardActions>
-                  <VBtn color="primary" variant="text" @click="goToOrderDetails(order._id)">
+                  <VBtn color="primary" variant="elevated" @click="goToOrderDetails(order._id)">
                     Ver Detalhes
                   </VBtn>
                 </VCardActions>
@@ -106,26 +91,6 @@ onMounted(() => fetchOrders())
     text-align: center;
     color: gray;
     margin-top: 16px;
-  }
-
-  .v-list-item {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    margin-bottom: 8px;
-
-    .v-list-item-avatar {
-      margin-right: 12px;
-    }
-
-    .v-list-item-content {
-      flex-grow: 1;
-    }
-
-    .v-list-item-icon {
-      font-size: 1rem;
-      margin-left: 8px;
-    }
   }
 
   .v-list-item-title {

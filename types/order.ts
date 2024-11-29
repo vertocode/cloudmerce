@@ -1,6 +1,6 @@
 export type OrderStatus = 'pending_payment' | 'paid' | 'product_sent' | 'finished'
 
-interface OrderItem {
+export interface OrderItem {
     productId: {
         _id: string
         name: string

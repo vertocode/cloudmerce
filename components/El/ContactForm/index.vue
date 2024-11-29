@@ -11,7 +11,7 @@
         <VeeTextarea name="message" label="Sua Mensagem" outlined />
       </VCol>
     </VRow>
-    <VeeButton variant="tonal" color="primary" class="float-end" :loading="isSubmitting">
+    <VeeButton variant="elevated" color="primary" class="float-end" :loading="isSubmitting">
       Enviar Mensagem
     </VeeButton>
   </VeeForm>
