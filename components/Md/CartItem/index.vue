@@ -63,15 +63,14 @@
           <strong>{{ field.label }}:</strong> {{ field.value || 'N/A' }}
         </div>
       </div>
-      <MdProductDetailsModal :product="item">
-        <VBtn
-            class="view-details-btn small-btn"
-            size="x-small"
-            variant="outlined"
-        >
-          Ver Detalhes
-        </VBtn>
-      </MdProductDetailsModal>
+      <VBtn
+          class="view-details-btn small-btn"
+          size="x-small"
+          variant="outlined"
+          @click="$router.push(`/product/${item.id}`)"
+      >
+        Ver Detalhes
+      </VBtn>
     </div>
   </div>
 </template>

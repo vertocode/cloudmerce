@@ -13,7 +13,7 @@
               </h4>
             </VExpansionPanelTitle>
             <VExpansionPanelText>
-              <CartItem
+              <MdCartItem
                   class="item"
                   v-for="(item, index) in cartProducts"
                   :key="index"
@@ -28,8 +28,6 @@
 </template>
 
 <script setup lang="ts">
-import CartItem from "~/components/Md/Header/CartItem.vue";
-
 const { cartProducts, total } = useCart()
 
 const expandedPanels = ref<number[]>([0])

@@ -29,7 +29,7 @@
       <div v-else-if="cartProducts.length" class="cart-items-list">
         <div class="list">
           <VList>
-            <CartItem v-for="(item, index) in cartProducts" :key="index" :item="item" />
+            <MdCartItem v-for="(item, index) in cartProducts" :key="index" :item="item" />
           </VList>
         </div>
 
@@ -52,7 +52,6 @@
 </template>
 
 <script setup lang="ts">
-import CartItem from "~/components/Md/Header/CartItem.vue"
 import { useCart } from "~/composables/useCart"
 
 const isLoaded = ref(false)
