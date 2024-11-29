@@ -14,6 +14,12 @@
       </template>
 
       <VList class="navigation-list">
+        <VListItem @click="$router.push('/checkout')" class="navigation-item">
+          <VListItemTitle>Carrinho de Compras</VListItemTitle>
+        </VListItem>
+        <VListItem @click="$router.push('/orders')" class="navigation-item">
+          <VListItemTitle>Meus Pedidos</VListItemTitle>
+        </VListItem>
         <VListItem @click="$router.push('/about')" class="navigation-item">
           <VListItemTitle>Sobre Nós</VListItemTitle>
         </VListItem>
@@ -22,9 +28,6 @@
         </VListItem>
         <VListItem @click="$router.push('/contact')" class="navigation-item">
           <VListItemTitle>Contato</VListItemTitle>
-        </VListItem>
-        <VListItem @click="$router.push('/checkout')" class="navigation-item">
-          <VListItemTitle>Carrinho de Compras</VListItemTitle>
         </VListItem>
         <VListItem v-if="userData" @click="logout" class="navigation-item">
           <VListItemTitle>Sair da Conta</VListItemTitle>

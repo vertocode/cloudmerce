@@ -48,7 +48,6 @@ const submitContact = async (values: Record<string, any>, { resetForm }: SubmitO
   }
 
   try {
-    console.log(values, 'values')
     await emailjs.send(
         serviceId,
         templateId,
