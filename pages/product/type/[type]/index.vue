@@ -14,7 +14,7 @@ import { useProductList } from "~/composables/useProductList";
 import { useStoreData } from "~/composables/useStoreData";
 
 const route = useRoute()
-const productType = computed(() => route.params.productType as string)
+const productType = computed(() => route.params.type as string)
 const { getProductTypeById } = useStoreData()
 const { products, loading, update: updateProductList } = useProductList({
   productType: productType.value

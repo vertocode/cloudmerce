@@ -57,7 +57,7 @@ const scrollRight = () => {
 }
 
 const redirectTo = (type: string) => {
-  router.push(`/product/${type}`)
+  router.push(`/product/type/${type}`)
 }
 
 // Determine if a type is active based on the URL
