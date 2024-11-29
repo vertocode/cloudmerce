@@ -61,7 +61,6 @@ const formattedPrice = computed(() => {
 })
 
 const addToCart = async () => {
-  console.log(props.product, '<<<')
   if (props.product.fields.length > 0) {
     showQuestionAddModal.value = true
     return

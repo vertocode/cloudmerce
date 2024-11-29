@@ -1,4 +1,4 @@
-import type {IProduct} from "~/types/product";
+import type {IProduct, IProductResponse} from "~/types/product";
 
 interface IUseProduct {
     product?: IProduct
@@ -14,7 +14,17 @@ export const useProduct = ({ product, updateProductList }: IUseProduct) => {
     const getProductById = async (id: string): Promise<IProduct | null> => {
         try {
             loading.value = true
-            return await get(`/products/${ecommerceId}/${id}`) as Promise<IProduct>
+            const response = await get(`/products/${ecommerceId}/${id}`) as IProductResponse
+
+            return {
+                id: response._id,
+                name: response.name,
+                price: response.price,
+                description: response.description,
+                productType: response.productType,
+                image: response.image,
+                fields: response.fields
+            }
         } catch (error) {
             console.error(error)
             return null
