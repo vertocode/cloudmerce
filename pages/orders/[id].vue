@@ -61,6 +61,8 @@
           </div>
 
           <div class="calc">
+            <MdOrdersDetailsShipping />
+
             <MdCalcProductSummary :cartProducts="products" :total="totalAmount" />
           </div>
         </VCardText>
@@ -91,6 +93,7 @@ const router = useRouter()
 const id = route.params.id as string
 
 const { order, loading } = useOrderById(id)
+const { userData } = useUser()
 
 const additionalInformationContact = computed(() => {
   return `orderId: ${id} \n orderDetails: ${JSON.stringify(order.value)}`
