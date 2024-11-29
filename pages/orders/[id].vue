@@ -40,13 +40,13 @@
                   :key="item.productId._id"
                   class="product-item"
               >
-                <VListItemAvatar>
-                  <img
-                      :src="item.productId.image?.[0] || '/placeholder.png'"
-                      alt="Imagem do Produto"
-                      class="product-image"
-                  />
-                </VListItemAvatar>
+                <img
+                    :src="item.productId.image?.[0] || '/placeholder.png'"
+                    alt="Imagem do Produto"
+                    class="product-image"
+                />
+                <br>
+                <MdProductDetailsSeeButton :productId="item.productId._id" />
                 <VListItemContent>
                   <VListItemTitle class="product-name">{{ item.productId.name }}</VListItemTitle>
                   <VListItemSubtitle>
@@ -210,6 +210,7 @@ const goToOrders = () => {
   }
 
   .product-image {
+    align-self: center;
     width: 50px;
     height: 50px;
     object-fit: cover;
