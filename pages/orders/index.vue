@@ -12,7 +12,7 @@
           <span>Carregando pedidos...</span>
         </div>
         <VCol cols="12" md="8" v-else>
-          <VRow v-if="orders.length" justify="center">
+          <VRow v-if="orders.length && userData" justify="center">
             <VCol v-for="order in orders" :key="order._id" cols="12">
               <VCard class="order-card" elevation="4">
                 <VCardTitle class="order-title">
@@ -53,7 +53,11 @@ const goToOrderDetails = (orderId: string) => {
   router.push(`/orders/${orderId}`)
 }
 
-onMounted(() => fetchOrders())
+const { userData } = useUser()
+
+watch(userData, () => {
+  fetchOrders()
+})
 </script>
 
 <style scoped lang="scss">

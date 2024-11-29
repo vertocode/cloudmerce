@@ -12,8 +12,7 @@ export const useOrders = () => {
             const userId = useUser().userData.value?._id
             const ecommerceId = useStoreData().ecommerceId
             if (!userId) {
-                handleError('Usuário não autenticado')
-                return
+                return []
             }
             const response = await get(`/orders/${ecommerceId}`, { userId })
             orders.value = response as Order[]
