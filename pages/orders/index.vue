@@ -13,15 +13,15 @@
         </div>
         <VCol cols="12" md="8" v-else>
           <VRow v-if="orders.length" justify="center">
-            <VCol v-for="order in orders" :key="order._id" cols="12" md="6" lg="4">
-              <VCard class="order-card" elevation="2">
+            <VCol v-for="order in orders" :key="order._id" cols="12">
+              <VCard class="order-card" elevation="4">
                 <VCardTitle class="order-title">
-                  Pedido nº{{ order._id }}
+                  Pedido nº {{ order._id }}
                 </VCardTitle>
                 <VCardText>
                   <p>Status: {{ formatStatus(order.status) }}</p>
                   <p>Total: R$ {{ calculateTotal(order.items) }}</p>
-                  <VList dense>
+                  <VList dense class="product-list">
                     <VListItem v-for="item in order.items" :key="item.productId._id">
                       <VListItemAvatar>
                         <img
@@ -32,7 +32,7 @@
                       </VListItemAvatar>
                       <VListItemContent>
                         <VListItemTitle>{{ item.productId.name }}</VListItemTitle>
-                        <VListItemSubtitle>Quantidade: {{ item.quantity }}</VListItemSubtitle>
+                        <VListItemSubtitle>Qtd: {{ item.quantity }}</VListItemSubtitle>
                       </VListItemContent>
                       <VListItemIcon>
                         <span>R$ {{ (item.productId.price * item.quantity).toFixed(2) }}</span>
@@ -56,7 +56,7 @@
 </template>
 
 <script setup lang="ts">
-import type {OrderStatus} from "~/types/order";
+import type { OrderStatus } from "~/types/order"
 
 const { orders, loading, fetchOrders } = useOrders()
 const router = useRouter()
@@ -77,21 +77,28 @@ onMounted(() => fetchOrders())
 
 <style scoped lang="scss">
 .orders-list {
-  padding: 16px;
-
   .order-card {
-    border-radius: 8px;
+    border-radius: 10px;
     margin-bottom: 16px;
+    background-color: #fff;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    padding: 16px;
 
     .order-title {
       font-weight: bold;
+      font-size: 1.2em;
+    }
+
+    .product-list {
+      display: flex;
     }
   }
 
   .product-image {
-    width: 50px;
-    height: 50px;
-    border-radius: 4px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
     object-fit: cover;
   }
 
@@ -99,6 +106,42 @@ onMounted(() => fetchOrders())
     text-align: center;
     color: gray;
     margin-top: 16px;
+  }
+
+  .v-list-item {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: 8px;
+
+    .v-list-item-avatar {
+      margin-right: 12px;
+    }
+
+    .v-list-item-content {
+      flex-grow: 1;
+    }
+
+    .v-list-item-icon {
+      font-size: 1rem;
+      margin-left: 8px;
+    }
+  }
+
+  .v-list-item-title {
+    max-width: 100px;
+    font-size: 1em;
+    font-weight: 500;
+  }
+
+  .v-list-item-subtitle {
+    font-size: 0.85em;
+    color: #666;
+  }
+
+  .v-card-actions {
+    display: flex;
+    justify-content: flex-end;
   }
 }
 </style>
