@@ -27,11 +27,13 @@
 
         <div class="action-buttons">
           <VBtn
+              class="w-full"
               :loading="loading"
               color="primary"
               block
               @click="addToCart"
           >
+            <VIcon class="mr-1" color="#fff">mdi-cart</VIcon>
             Adicionar ao Carrinho
           </VBtn>
         </div>
@@ -59,6 +61,7 @@ const formattedPrice = computed(() => {
 })
 
 const addToCart = async () => {
+  console.log(props.product, '<<<')
   if (props.product.fields.length > 0) {
     showQuestionAddModal.value = true
     return
@@ -86,25 +89,31 @@ const addToCart = async () => {
   .product-main {
     display: flex;
     gap: 24px;
-    flex-wrap: wrap;
-
-    @media (max-width: 768px) {
-      flex-direction: column;
-    }
+    align-items: center;
 
     .image-section {
-      flex: 1;
+      width: 100%;
       max-width: 400px;
+      align-self: baseline;
 
       :deep(.product-image-carousel) {
         width: 100%;
       }
     }
 
+    @media (max-width: $mobile-breakpoint) {
+      flex-wrap: wrap;
+
+      .image-section {
+        max-width: 100%;
+      }
+    }
+
     .details-section {
-      flex: 2;
+      height: max-content;
       display: flex;
       flex-direction: column;
+      width: 100%;
 
       .product-name {
         font-size: 1.5rem;
@@ -150,8 +159,13 @@ const addToCart = async () => {
 
       .action-buttons {
         margin-top: auto;
+        max-width: 400px;
 
-        button {
+        @media (max-width: $mobile-breakpoint) {
+          max-width: 100%;
+        }
+
+        .v-btn {
           width: 100%;
           padding: 12px;
           font-size: 1rem;

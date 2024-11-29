@@ -1,14 +1,25 @@
 import type {IProduct} from "~/types/product";
 
 interface IUseProduct {
-    product: IProduct
+    product?: IProduct
     updateProductList?: (param: { cache: 'no-cache' | 'force-cache' }) => Promise<void>
 }
 
 export const useProduct = ({ product, updateProductList }: IUseProduct) => {
     const loading = ref(false)
 
-    const { post, remove } = useApi()
+    const { post, remove, get } = useApi()
+    const { ecommerceId } = useStoreData()
+
+    const getProductById = async (id: string): Promise<IProduct | null> => {
+        try {
+            loading.value = true
+            return await get(`/products/${ecommerceId}/${id}`) as Promise<IProduct>
+        } catch (error) {
+            console.error(error)
+            return null
+        }
+    }
 
     const handleDelete = async () => {
         try {
@@ -25,6 +36,7 @@ export const useProduct = ({ product, updateProductList }: IUseProduct) => {
     }
 
     return {
+        getProductById,
         handleDelete,
         loading
     }
