@@ -53,9 +53,16 @@ const props = defineProps<{
 const emit = defineEmits()
 
 const values = ref<Record<string, string>>(props.product?.fields.reduce((acc, field) => {
-  acc[field.label] = '';
-  return acc;
-}, {} as Record<string, string>) || {});
+  acc[field.label] = ''
+
+  console.log(field, '<<< field')
+  console.log(field.options, '<<< options')
+  if (field.options?.length) acc[field.label] = field.options[0]
+
+  return acc
+}, {} as Record<string, string>) || {})
+
+console.log(values.value)
 
 const question = computed(() => {
   const { product } = props;
@@ -77,13 +84,20 @@ const handleConfirm = async () => {
   }
 
   const { product } = props
-  const { code } = await addToCart({
-    ...product,
-    fields: product?.fields?.map(field => ({
-      ...field,
-      value: values.value[field.label]
-    })) || []
-  })
+
+  const fields = product?.fields?.map(field => {
+      const value = (() => {
+        if (field.type === 'options' && field.options?.length) {
+          return field.options.at(0)
+        }
+
+        return values.value[field.label]
+      })()
+
+      return { ...field, value }
+    }) || []
+
+  const { code } = await addToCart({ ...product, fields, quantity: 1 })
 
   if (code === 'success') {
     emit('close')
