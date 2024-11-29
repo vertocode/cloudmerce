@@ -120,6 +120,12 @@ const totalAmount = computed(() =>
 const goToOrders = () => {
   router.push('/orders')
 }
+
+watch(userData, () => {
+  if (!userData.value) {
+    goToOrders()
+  }
+})
 </script>
 
 <style scoped lang="scss">
