@@ -210,6 +210,14 @@ const goToOrders = () => {
     .product-name {
       max-width: 300px;
     }
+
+    @media screen and (max-width: $mobile-breakpoint) {
+      width: 100%;
+
+      .product-name {
+        max-width: 70vw;
+      }
+    }
   }
 
   .product-image {

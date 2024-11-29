@@ -10,20 +10,20 @@
       <div class="address-row">
         <span class="label">Endereço:</span>
         <span class="value">
-          {{ addressData.street }}, {{ addressData.number }}
+          {{ addressData.neighborhood }} - {{ addressData.street }}, {{ addressData.number }}
         </span>
       </div>
       <div class="address-row">
-        <span class="label">Bairro:</span>
-        <span class="value">{{ addressData.neighborhood }}</span>
+        <span class="label">Cidade:</span>
+        <span class="value">{{ addressData.city }}</span>
       </div>
       <div class="address-row">
-        <span class="label">Cidade:</span>
-        <span class="value">{{ addressData.city }} - {{ addressData.state }}</span>
+        <span class="label">Estado:</span>
+        <span class="value">{{ addressData.state }}</span>
       </div>
       <div class="address-row">
         <span class="label">País:</span>
-        <span class="value">{{ addressData.country }}</span>
+        <span class="value">{{ addressData.country || 'Brasil' }}</span>
       </div>
     </div>
 
@@ -34,12 +34,9 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from "vue";
-import { useUser } from "~/composables/useUser"; // Adapte conforme necessário
+const { userData } = useUser()
 
-const { userData } = useUser();
-
-const addressData = computed(() => userData.value?.address);
+const addressData = computed(() => userData.value?.address)
 </script>
 
 <style scoped lang="scss">
