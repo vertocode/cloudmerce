@@ -1,11 +1,23 @@
 <template>
   <div>
-    <VCard elevation="1" class="checkout-details">
-      <MdCalcProductSummary :cartProducts :total />
+    <VCard
+      elevation="1"
+      class="checkout-details"
+    >
+      <MdCalcProductSummary
+        :cart-products
+        :total
+      />
     </VCard>
-    <VCard elevation="1" class="checkout-products">
+    <VCard
+      elevation="1"
+      class="checkout-products"
+    >
       <div class="list">
-        <VExpansionPanels elevation="0" v-model="expandedPanels">
+        <VExpansionPanels
+          v-model="expandedPanels"
+          elevation="0"
+        >
           <VExpansionPanel>
             <VExpansionPanelTitle>
               <h4 class="product-title">
@@ -14,10 +26,10 @@
             </VExpansionPanelTitle>
             <VExpansionPanelText>
               <MdCartItem
-                  class="item"
-                  v-for="(item, index) in cartProducts"
-                  :key="index"
-                  :item="item"
+                v-for="(item, index) in cartProducts"
+                :key="index"
+                class="item"
+                :item="item"
               />
             </VExpansionPanelText>
           </VExpansionPanel>
@@ -43,7 +55,6 @@ const expandedPanels = ref<number[]>([0])
     font-size: 1.5rem;
     margin-bottom: 16px;
   }
-
 
 }
 

@@ -2,30 +2,30 @@
   <div class="dynamic-field">
     <template v-if="field.type === 'text'">
       <v-text-field
-          :label="field.label"
-          required
-          v-model="value"
-          outlined
+        v-model="value"
+        :label="field.label"
+        required
+        outlined
       />
     </template>
 
     <template v-else-if="field.type === 'number'">
       <v-text-field
-          :label="field.label"
-          required
-          v-model="value"
-          type="number"
-          outlined
+        v-model="value"
+        :label="field.label"
+        required
+        type="number"
+        outlined
       />
     </template>
 
     <template v-else-if="field.type === 'options'">
       <v-select
-          required
-          :label="field.label"
-          :items="field.options || []"
-          v-model="value"
-          outlined
+        v-model="value"
+        required
+        :label="field.label"
+        :items="field.options || []"
+        outlined
       />
     </template>
 
@@ -36,7 +36,7 @@
 </template>
 
 <script setup lang="ts">
-import { defineProps } from 'vue';
+import { defineProps } from 'vue'
 
 interface Field {
   label: string
@@ -44,11 +44,11 @@ interface Field {
   options?: string[]
 }
 
-const props = defineProps<{ field: Field, initialValue?: string }>();
+const props = defineProps<{ field: Field, initialValue?: string }>()
 
 const emit = defineEmits()
 
-const value = ref<string>(props?.initialValue ||'')
+const value = ref<string>(props?.initialValue || '')
 
 watch(value, (newValue) => {
   emit('update', newValue)

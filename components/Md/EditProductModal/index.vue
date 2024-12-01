@@ -1,21 +1,24 @@
 <template>
   <Modal
-      max-width="800"
-      persistent
-      :is-opened="showEditModal"
-      @close="onClose"
-      :card-props="{ title: `Editar Produto ${initialValues.productName || ''}` }"
+    max-width="800"
+    persistent
+    :is-opened="showEditModal"
+    :card-props="{ title: `Editar Produto ${initialValues.productName || ''}` }"
+    @close="onClose"
   >
     <template #trigger>
-      <div class="w-100" @click="showEditModal = true">
+      <div
+        class="w-100"
+        @click="showEditModal = true"
+      >
         <slot />
       </div>
     </template>
     <ProductForm
-        :updateProductList
-        :initialValues
-        :onClose
-        :action="updateProduct"
+      :update-product-list
+      :initial-values
+      :on-close
+      :action="updateProduct"
     />
   </Modal>
 </template>
@@ -23,7 +26,7 @@
 <script setup lang="ts">
 import Modal from '~/components/El/Modal/index.vue'
 import ProductForm from '~/components/Md/ProductForm/index.vue'
-import type { IProduct } from "~/types/product";
+import type { IProduct } from '~/types/product'
 
 const showEditModal = ref(false)
 
@@ -49,7 +52,7 @@ const initialValues = computed(() => {
     productPrice: product.price || 0,
     userFields: product.fields.map(field => ({
       ...field,
-      type: getFieldLabel(field.type)
+      type: getFieldLabel(field.type),
     })) || [],
   }
 })
@@ -62,7 +65,7 @@ const updateProduct = async (values: Record<string, any>) => {
     description: values.productDescription,
     productType: values.productType,
     image: values.imageUrls,
-    fields: values.userFields
+    fields: values.userFields,
   })
 }
 </script>

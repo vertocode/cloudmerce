@@ -1,13 +1,19 @@
 <template>
-  <div v-if="loading && !cartProducts.length" class="spinner-container">
+  <div
+    v-if="loading && !cartProducts.length"
+    class="spinner-container"
+  >
     <h1>Carregando...</h1>
   </div>
-  <div class="checkout" v-else-if="cartProducts.length">
+  <div
+    v-else-if="cartProducts.length"
+    class="checkout"
+  >
     <MdCheckoutSteps />
 
     <MdCheckoutDetails />
   </div>
-  <MdCheckoutEmpty v-else/>
+  <MdCheckoutEmpty v-else />
 </template>
 
 <script setup lang="ts">

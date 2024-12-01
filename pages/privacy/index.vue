@@ -1,6 +1,8 @@
 <template>
   <div class="privacy-page">
-    <h1 class="privacy-title">Política de Privacidade</h1>
+    <h1 class="privacy-title">
+      Política de Privacidade
+    </h1>
     <p>
       Bem-vindo à nossa loja! Nossa política de privacidade garante a proteção dos seus dados pessoais enquanto você navega e realiza compras em nossa plataforma.
       Estamos comprometidos com a segurança e a transparência das informações fornecidas por você.
@@ -39,7 +41,7 @@
     </section>
 
     <p class="privacy-contact">
-      Caso tenha dúvidas ou preocupações sobre nossa política de privacidade, entre em contato conosco pelo e-mail <a :href="`mailto:${techEmail}`">{{techEmail}}</a>.
+      Caso tenha dúvidas ou preocupações sobre nossa política de privacidade, entre em contato conosco pelo e-mail <a :href="`mailto:${techEmail}`">{{ techEmail }}</a>.
     </p>
   </div>
 </template>

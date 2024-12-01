@@ -1,39 +1,49 @@
 <template>
   <!-- Check if product image is a string (single image) -->
   <VImg
-      v-if="isStringImage || (images?.length && asImage)"
-      :src="images?.length ? images[0] : images as string"
-      alt=""
-      aspect-ratio="1"
-      class="product-image"
+    v-if="isStringImage || (images?.length && asImage)"
+    :src="images?.length ? images[0] : images as string"
+    alt=""
+    aspect-ratio="1"
+    class="product-image"
   />
 
   <!-- Check if product image is an array with one image -->
   <VImg
-      v-else-if="images?.length === 1"
-      :src="images[0]"
-      alt=""
-      aspect-ratio="1"
-      class="product-image"
+    v-else-if="images?.length === 1"
+    :src="images[0]"
+    alt=""
+    aspect-ratio="1"
+    class="product-image"
   />
 
   <!-- Carousel for multiple images -->
-  <VCarousel v-else-if="images?.length > 1" class="product-image-carousel">
-    <VCarouselItem v-for="(img, index) in images" :key="index">
-      <VImg :src="img" alt="" aspect-ratio="1" class="product-image" />
+  <VCarousel
+    v-else-if="images?.length > 1"
+    class="product-image-carousel"
+  >
+    <VCarouselItem
+      v-for="(img, index) in images"
+      :key="index"
+    >
+      <VImg
+        :src="img"
+        alt=""
+        aspect-ratio="1"
+        class="product-image"
+      />
     </VCarouselItem>
   </VCarousel>
 
   <!-- Default image if no product image is available -->
   <VImg
-      v-else
-      src="~/assets/productWithoutImage.webp"
-      alt=""
-      aspect-ratio="1"
-      class="product-image"
+    v-else
+    src="~/assets/productWithoutImage.webp"
+    alt=""
+    aspect-ratio="1"
+    class="product-image"
   />
 </template>
-
 
 <script setup lang="ts">
 const props = defineProps<{

@@ -1,24 +1,28 @@
 <template>
-  <Field v-if="name" :name v-slot="{ field, errorMessage }">
+  <Field
+    v-if="name"
+    v-slot="{ field, errorMessage }"
+    :name
+  >
     <VTextField
-        :variant="variant || 'outlined'"
-        class="vee-text-field"
-        v-model="field.value"
-        autocomplete="off"
-        :error-messages="errorMessage === 'Required' ? 'Campo obrigatório' : errorMessage"
-        v-bind="{
-          ...$attrs,
-           ...field
-        }"
+      v-model="field.value"
+      :variant="variant || 'outlined'"
+      class="vee-text-field"
+      autocomplete="off"
+      :error-messages="errorMessage === 'Required' ? 'Campo obrigatório' : errorMessage"
+      v-bind="{
+        ...$attrs,
+        ...field,
+      }"
     />
   </Field>
 </template>
 
 <script setup lang="ts">
-import { Field } from "vee-validate"
+import { Field } from 'vee-validate'
 
 defineProps<{
   name: string
-  variant?: "outlined" | "plain" | "filled" | "underlined" | "solo" | "solo-inverted" | "solo-filled"
+  variant?: 'outlined' | 'plain' | 'filled' | 'underlined' | 'solo' | 'solo-inverted' | 'solo-filled'
 }>()
 </script>

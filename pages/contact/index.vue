@@ -1,9 +1,21 @@
 <template>
-  <v-container class="contactPage" fluid>
-    <v-row justify="center" align="center" class="mb-5">
-      <v-col cols="12" md="6">
+  <v-container
+    class="contactPage"
+    fluid
+  >
+    <v-row
+      justify="center"
+      align="center"
+      class="mb-5"
+    >
+      <v-col
+        cols="12"
+        md="6"
+      >
         <v-card>
-          <v-card-title class="headline">Entre em Contato</v-card-title>
+          <v-card-title class="headline">
+            Entre em Contato
+          </v-card-title>
           <v-card-text>
             <p>Estamos aqui para ajudar! Se você tiver alguma dúvida ou precisar de mais informações, não hesite em entrar em contato conosco.</p>
             <v-divider class="my-4" />
@@ -14,7 +26,10 @@
       </v-col>
     </v-row>
 
-    <v-row justify="center" class="footerContact">
+    <v-row
+      justify="center"
+      class="footerContact"
+    >
       <v-col class="text-center">
         <p>E-mail: {{ techEmail }}</p>
         <p>Telefone: {{ formattedWhatsappNumber }}</p>

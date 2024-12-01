@@ -1,9 +1,11 @@
 <template>
-  <VChip :color="getColor(status)">{{ getOrderLabelStatus(status) }}</VChip>
+  <VChip :color="getColor(status)">
+    {{ getOrderLabelStatus(status) }}
+  </VChip>
 </template>
 
 <script setup lang="ts">
-import type {OrderStatus} from "~/types/order";
+import type { OrderStatus } from '~/types/order'
 
 defineProps<{
   status: OrderStatus

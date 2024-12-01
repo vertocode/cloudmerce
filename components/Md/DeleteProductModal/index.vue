@@ -1,10 +1,13 @@
 <template>
   <Modal
-      :is-opened="showDeleteModal"
-      :card-props="{ title: `Deletar Produto ${productName}` }"
+    :is-opened="showDeleteModal"
+    :card-props="{ title: `Deletar Produto ${productName}` }"
   >
     <template #trigger>
-      <div class="w-100" @click="showDeleteModal = true">
+      <div
+        class="w-100"
+        @click="showDeleteModal = true"
+      >
         <slot />
       </div>
     </template>
@@ -14,16 +17,30 @@
         Esta ação irá excluir o produto <strong>{{ productName }}</strong> de forma permanente e é irreversível. Deseja continuar?
       </p>
 
-      <VSpacer></VSpacer>
+      <VSpacer />
 
-      <VRow class="ga-2" justify="end" align-content="end" no-gutters>
+      <VRow
+        class="ga-2"
+        justify="end"
+        align-content="end"
+        no-gutters
+      >
         <VCol cols="4">
-          <VBtn variant="text" @click="onClose">
+          <VBtn
+            variant="text"
+            @click="onClose"
+          >
             Cancelar
           </VBtn>
         </VCol>
         <VCol cols="4">
-          <VBtn variant="tonal" color="error" width="100%" @click="confirmDelete" :loading="isLoading">
+          <VBtn
+            variant="tonal"
+            color="error"
+            width="100%"
+            :loading="isLoading"
+            @click="confirmDelete"
+          >
             Deletar
           </VBtn>
         </VCol>
@@ -33,33 +50,35 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
-import Modal from '~/components/El/Modal/index.vue';
+import { ref } from 'vue'
+import Modal from '~/components/El/Modal/index.vue'
 
 const props = defineProps<{
   loading?: boolean
-  onConfirm: () => Promise<void>;
-  productName: string;
+  onConfirm: () => Promise<void>
+  productName: string
 }>()
 
 const showDeleteModal = ref(false)
-const isLoading = ref(false);
+const isLoading = ref(false)
 
 const onClose = () => {
-  showDeleteModal.value = false;
+  showDeleteModal.value = false
 }
 
 const confirmDelete = async () => {
-  isLoading.value = true;
+  isLoading.value = true
   try {
-    await props.onConfirm();
-    onClose();
-  } catch (error) {
-    console.error("Erro ao deletar produto:", error);
-  } finally {
-    isLoading.value = false;
+    await props.onConfirm()
+    onClose()
   }
-};
+  catch (error) {
+    console.error('Erro ao deletar produto:', error)
+  }
+  finally {
+    isLoading.value = false
+  }
+}
 </script>
 
 <style scoped lang="scss">

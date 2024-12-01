@@ -1,10 +1,17 @@
 <template>
   <div class="calc-product-summary">
     <h4>Calculo dos Produtos</h4>
-    <div class="row-summary" v-for="cartProduct in cartProducts">
+    <div
+      v-for="cartProduct in cartProducts"
+      :key="`calc-product-${cartProduct.id}`"
+      class="row-summary"
+    >
       <VTooltip bottom>
         <template #activator="{ props }">
-          <div class="label" v-bind="props">
+          <div
+            class="label"
+            v-bind="props"
+          >
             <span>{{ cartProduct.quantity }} {{ cartProduct.name }}</span>
           </div>
         </template>
@@ -23,7 +30,7 @@
 </template>
 
 <script setup lang="ts">
-import type {ICartItem} from "~/types/cart";
+import type { ICartItem } from '~/types/cart'
 
 interface Props {
   cartProducts: ICartItem[]

@@ -3,6 +3,6 @@
     type="submit"
     v-bind="$attrs"
   >
-    <slot></slot>
+    <slot />
   </VBtn>
 </template>

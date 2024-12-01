@@ -4,14 +4,26 @@
       <h1 class="banner-title">
         Produtos de <span class="highlight">Qualidade</span> para Você
       </h1>
-      <p class="banner-subtitle">Tudo o que você precisa, a um clique de distância</p>
+      <p class="banner-subtitle">
+        Tudo o que você precisa, a um clique de distância
+      </p>
       <div class="payment-options">
         <div class="option">
-          <VIcon large class="icon pix-icon">mdi-cash</VIcon>
+          <VIcon
+            large
+            class="icon pix-icon"
+          >
+            mdi-cash
+          </VIcon>
           <span>Desconto no Pix</span>
         </div>
         <div class="option">
-          <VIcon large class="icon credit-card-icon">mdi-credit-card</VIcon>
+          <VIcon
+            large
+            class="icon credit-card-icon"
+          >
+            mdi-credit-card
+          </VIcon>
           <span>Cartão de Crédito Aceito</span>
         </div>
       </div>

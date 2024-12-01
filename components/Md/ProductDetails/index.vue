@@ -1,7 +1,13 @@
 <template>
   <div class="product-detail-page">
     <header class="product-header">
-      <VBtn prepend-icon="mdi-arrow-left" @click="$router.back()" variant="outlined">Voltar</VBtn>
+      <VBtn
+        prepend-icon="mdi-arrow-left"
+        variant="outlined"
+        @click="$router.back()"
+      >
+        Voltar
+      </VBtn>
     </header>
 
     <div class="product-main">
@@ -10,15 +16,24 @@
       </div>
 
       <div class="details-section">
-        <h1 class="product-name">{{ product.name }}</h1>
-        <p class="product-price">{{ formattedPrice }}</p>
-        <p class="product-description">{{ product.description }}</p>
+        <h1 class="product-name">
+          {{ product.name }}
+        </h1>
+        <p class="product-price">
+          {{ formattedPrice }}
+        </p>
+        <p class="product-description">
+          {{ product.description }}
+        </p>
 
-        <ul class="product-fields" v-if="product.fields.length">
+        <ul
+          v-if="product.fields.length"
+          class="product-fields"
+        >
           <li
-              v-for="(field, index) in product.fields.filter(field => field.type === 'options')"
-              :key="index"
-              class="field-item"
+            v-for="(field, index) in product.fields.filter(field => field.type === 'options')"
+            :key="index"
+            class="field-item"
           >
             <span class="field-label">{{ field.label }}:</span>
             <span class="field-value">{{ field.options?.join(', ') }}</span>
@@ -27,13 +42,18 @@
 
         <div class="action-buttons">
           <VBtn
-              class="w-full"
-              :loading="loading"
-              color="primary"
-              block
-              @click="addToCart"
+            class="w-full"
+            :loading="loading"
+            color="primary"
+            block
+            @click="addToCart"
           >
-            <VIcon class="mr-1" color="#fff">mdi-cart</VIcon>
+            <VIcon
+              class="mr-1"
+              color="#fff"
+            >
+              mdi-cart
+            </VIcon>
             Adicionar ao Carrinho
           </VBtn>
         </div>
@@ -41,14 +61,14 @@
     </div>
 
     <MdAddItemQuestionModal
-        :product="showQuestionAddModal ? product : null"
-        @close="showQuestionAddModal = false"
+      :product="showQuestionAddModal ? product : null"
+      @close="showQuestionAddModal = false"
     />
   </div>
 </template>
 
 <script setup lang="ts">
-import type { IProduct } from "~/types/product"
+import type { IProduct } from '~/types/product'
 
 const showQuestionAddModal = ref(false)
 
@@ -68,7 +88,7 @@ const addToCart = async () => {
 
   await handleAddToCart({
     ...props.product,
-    quantity: 1
+    quantity: 1,
   })
 }
 </script>

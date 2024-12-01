@@ -1,24 +1,36 @@
 <template>
   <div class="search-bar">
-    <VeeForm formClass="form" :validationSchema="validationSchema" @submit="handleSearch" fast-fail :reset-on-submit="!!filterSearchProducts">
+    <VeeForm
+      form-class="form"
+      :validation-schema="validationSchema"
+      fast-fail
+      :reset-on-submit="!!filterSearchProducts"
+      @submit="handleSearch"
+    >
       <VeeTextField
-          name="search"
-          variant="outlined"
-          class="vee-text-field"
-          :disabled="filterSearchProducts.length"
-          :label="`Buscar ${productType}`"
+        name="search"
+        variant="outlined"
+        class="vee-text-field"
+        :disabled="filterSearchProducts.length"
+        :label="`Buscar ${productType}`"
       />
       <VeeButton
-          icon
-          class="search-btn"
-          :color="filterSearchProducts ? 'error' : ''"
+        icon
+        class="search-btn"
+        :color="filterSearchProducts ? 'error' : ''"
       >
         <VIcon>{{ filterSearchProducts.length ? 'mdi-close' : 'mdi-magnify' }}</VIcon>
       </VeeButton>
     </VeeForm>
-    <span v-if="filterSearchProducts.length" class="filter-message">
+    <span
+      v-if="filterSearchProducts.length"
+      class="filter-message"
+    >
       Filtrando por: <strong>{{ filterSearchProducts }}</strong>
-      <span class="clean-btn" @click="cleanFilter">Limpar filtro</span>
+      <span
+        class="clean-btn"
+        @click="cleanFilter"
+      >Limpar filtro</span>
     </span>
   </div>
 </template>
@@ -41,7 +53,7 @@ const productType = computed(() => {
 })
 
 const validationSchema = z.object({
-  search: z.string().refine(value => !value || value.length > 3, { message: 'A busca deve ter pelo menos 3 caracteres' })
+  search: z.string().refine(value => !value || value.length > 3, { message: 'A busca deve ter pelo menos 3 caracteres' }),
 })
 
 const cleanFilter = () => {

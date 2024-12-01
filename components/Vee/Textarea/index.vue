@@ -1,13 +1,17 @@
 <template>
-  <Field v-if="name" :name v-slot="{ field, errorMessage }">
+  <Field
+    v-if="name"
+    v-slot="{ field, errorMessage }"
+    :name
+  >
     <VTextarea
-        :variant="variant || 'outlined'"
-        class="vee-text-area"
-        v-model="field.value"
-        :error-messages="errorMessage === 'Required' ? 'Campo obrigatório' : errorMessage"
-        v-bind="{ ...$attrs, ...field }"
-        rows="4"
-        autocomplete="off"
+      v-model="field.value"
+      :variant="variant || 'outlined'"
+      class="vee-text-area"
+      :error-messages="errorMessage === 'Required' ? 'Campo obrigatório' : errorMessage"
+      v-bind="{ ...$attrs, ...field }"
+      rows="4"
+      autocomplete="off"
     />
   </Field>
 </template>

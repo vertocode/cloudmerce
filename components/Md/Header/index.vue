@@ -2,15 +2,21 @@
   <header>
     <MdContainer class="header_container">
       <VRow>
-        <VCol cols="6" class="logo_container">
+        <VCol
+          cols="6"
+          class="logo_container"
+        >
           <img
-              :src="storeLogo"
-              alt="Logo"
-              @click="$router.push('/')"
-          />
+            :src="storeLogo"
+            alt="Logo"
+            @click="$router.push('/')"
+          >
         </VCol>
 
-        <VCol cols="6" class="action_container">
+        <VCol
+          cols="6"
+          class="action_container"
+        >
           <UserButton />
           <CartButton />
           <MenuButton />
@@ -22,11 +28,10 @@
 
 <script setup lang="ts">
 import UserButton from '~/components/Md/Header/UserButton.vue'
-import CartButton from "~/components/Md/Header/CartButton.vue"
-import MenuButton from "~/components/Md/Header/MenuButton.vue"
+import CartButton from '~/components/Md/Header/CartButton.vue'
+import MenuButton from '~/components/Md/Header/MenuButton.vue'
 
 const { storeLogo } = useStoreData()
-
 </script>
 
 <style scoped lang="scss">

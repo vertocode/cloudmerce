@@ -1,21 +1,30 @@
 <template>
   <div class="no-products">
-    <VIcon large class="no-products-icon">mdi-package-variant</VIcon>
-    <h3 class="no-products-title">Nenhum produto encontrado</h3>
-    <p class="no-products-message">Não há produtos disponíveis nesta categoria.</p>
+    <VIcon
+      large
+      class="no-products-icon"
+    >
+      mdi-package-variant
+    </VIcon>
+    <h3 class="no-products-title">
+      Nenhum produto encontrado
+    </h3>
+    <p class="no-products-message">
+      Não há produtos disponíveis nesta categoria.
+    </p>
 
     <div class="button-group">
       <VBtn
-          color="primary"
-          class="retry-btn"
-          @click="$emit('retry')"
+        color="primary"
+        class="retry-btn"
+        @click="$emit('retry')"
       >
         Tentar Novamente
       </VBtn>
       <VBtn
-          color="secondary"
-          class="home-btn"
-          @click="$emit('goHome')"
+        color="secondary"
+        class="home-btn"
+        @click="$emit('goHome')"
       >
         Buscar por outro tipo de produto
       </VBtn>

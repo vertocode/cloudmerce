@@ -1,12 +1,12 @@
 <template>
   <Modal
-      :is-opened="showLoginModal"
-      persistent
-      @close="onClose"
-      :card-props="{
+    :is-opened="showLoginModal"
+    persistent
+    :card-props="{
       prependIcon: 'mdi-account',
-      title: 'Login'
+      title: 'Login',
     }"
+    @close="onClose"
   >
     <template #trigger>
       <div @click="showLoginModal = true">
@@ -14,32 +14,49 @@
       </div>
     </template>
 
-    <VeeForm :validation-schema="validationSchema" @submit="submit" v-slot="{ errors, isSubmitting }">
+    <VeeForm
+      v-slot="{ errors, isSubmitting }"
+      :validation-schema="validationSchema"
+      @submit="submit"
+    >
       <VeeTextField
-          name="email"
-          label="E-mail"
-          outlined
-          :error-messages="errors.email"
+        name="email"
+        label="E-mail"
+        outlined
+        :error-messages="errors.email"
       />
 
       <VeeTextField
-          name="password"
-          label="Senha"
-          outlined
-          type="password"
-          :error-messages="errors.password"
+        name="password"
+        label="Senha"
+        outlined
+        type="password"
+        :error-messages="errors.password"
       />
 
-      <VSpacer></VSpacer>
+      <VSpacer />
 
-      <VRow class="ga-2" justify="end" align-content="end" no-gutters>
+      <VRow
+        class="ga-2"
+        justify="end"
+        align-content="end"
+        no-gutters
+      >
         <VCol cols="4">
-          <VBtn variant="text" @click="onClose">
+          <VBtn
+            variant="text"
+            @click="onClose"
+          >
             Cancelar
           </VBtn>
         </VCol>
         <VCol cols="4">
-          <VeeButton color="primary" width="100%" type="submit" :loading="isSubmitting">
+          <VeeButton
+            color="primary"
+            width="100%"
+            type="submit"
+            :loading="isSubmitting"
+          >
             Login
           </VeeButton>
         </VCol>
@@ -49,20 +66,20 @@
 </template>
 
 <script setup lang="ts">
-import Modal from '~/components/El/Modal/index.vue'
 import { z } from 'zod'
 import { ref } from 'vue'
+import Modal from '~/components/El/Modal/index.vue'
 import { useUser } from '~/composables/useUser'
 
 const validationSchema = z.object({
   email: z
-      .string()
-      .min(1, { message: 'E-mail é obrigatório' })
-      .email({ message: 'E-mail inválido' }),
+    .string()
+    .min(1, { message: 'E-mail é obrigatório' })
+    .email({ message: 'E-mail inválido' }),
   password: z
-      .string()
-      .min(1, { message: 'Senha é obrigatória' })
-      .min(6, { message: 'Senha deve ter pelo menos 6 caracteres' }),
+    .string()
+    .min(1, { message: 'Senha é obrigatória' })
+    .min(6, { message: 'Senha deve ter pelo menos 6 caracteres' }),
 })
 
 const isLoading = ref(false)

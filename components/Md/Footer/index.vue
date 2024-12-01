@@ -3,19 +3,52 @@
     <div class="footer-container">
       <div class="footer-logo">
         <img
-            :src="storeLogo"
-            alt="Logo"
-            @click="$router.push('/')"
-        />
+          :src="storeLogo"
+          alt="Logo"
+          @click="$router.push('/')"
+        >
       </div>
 
       <div class="footer-links">
-        <VBtn variant="text" @click="$router.push('/about')">Sobre Nós</VBtn>
-        <VBtn variant="text" @click="$router.push('/privacy')">Política de Privacidade</VBtn>
-        <VBtn variant="text" @click="$router.push('/contact')">Contato</VBtn>
-        <VBtn v-if="isAdmin" variant="text" @click="showProductTypeModal = true">Tipos de Produto</VBtn>
-        <VBtn v-if="isAdmin" variant="text" @click="showProductModal = true">Cadastrar Novo Produto</VBtn>
-        <VBtn v-if="isAdmin" variant="text" @click="showPaletteModal = true">Configurações de Paleta</VBtn>
+        <VBtn
+          variant="text"
+          @click="$router.push('/about')"
+        >
+          Sobre Nós
+        </VBtn>
+        <VBtn
+          variant="text"
+          @click="$router.push('/privacy')"
+        >
+          Política de Privacidade
+        </VBtn>
+        <VBtn
+          variant="text"
+          @click="$router.push('/contact')"
+        >
+          Contato
+        </VBtn>
+        <VBtn
+          v-if="isAdmin"
+          variant="text"
+          @click="showProductTypeModal = true"
+        >
+          Tipos de Produto
+        </VBtn>
+        <VBtn
+          v-if="isAdmin"
+          variant="text"
+          @click="showProductModal = true"
+        >
+          Cadastrar Novo Produto
+        </VBtn>
+        <VBtn
+          v-if="isAdmin"
+          variant="text"
+          @click="showPaletteModal = true"
+        >
+          Configurações de Paleta
+        </VBtn>
       </div>
 
       <div class="footer-contact">
@@ -29,12 +62,18 @@
       <p>&copy; {{ new Date().getFullYear() }} {{ storeName }}. Todos os direitos reservados.</p>
     </div>
   </footer>
-  <MdPaletteModal :show-palette-modal="showPaletteModal" :on-close="() => showPaletteModal = false"/>
-  <MdManageProductType :showProductTypeModal="showProductTypeModal" :onClose="() => showProductTypeModal = false" />
+  <MdPaletteModal
+    :show-palette-modal="showPaletteModal"
+    :on-close="() => showPaletteModal = false"
+  />
+  <MdManageProductType
+    :show-product-type-modal="showProductTypeModal"
+    :on-close="() => showProductTypeModal = false"
+  />
   <MdRegisterProductModal
-      :showRegisterModal="showProductModal"
-      :onClose="() => showProductModal = false"
-      :on-register-new-product-type="onRegisterNewProductType"
+    :show-register-modal="showProductModal"
+    :on-close="() => showProductModal = false"
+    :on-register-new-product-type="onRegisterNewProductType"
   />
 </template>
 

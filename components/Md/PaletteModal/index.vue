@@ -1,23 +1,46 @@
 <template>
-  <Modal max-width="max-content" :isOpened="showPaletteModal" persistent @close="onClose" :cardProps="{ class: 'palette-modal' }">
+  <Modal
+    max-width="max-content"
+    :is-opened="showPaletteModal"
+    persistent
+    :card-props="{ class: 'palette-modal' }"
+    @close="onClose"
+  >
     <template #default>
-      <v-card-title class="headline">Escolha sua Paleta de Cores</v-card-title>
+      <v-card-title class="headline">
+        Escolha sua Paleta de Cores
+      </v-card-title>
       <v-card-text>
         <v-container fluid>
           <div class="list">
-            <v-row justify="center" align="center">
-              <v-col v-for="(palette, index) in palettes" :key="index" cols="12" md="4" class="palette-col">
+            <v-row
+              justify="center"
+              align="center"
+            >
+              <v-col
+                v-for="(palette, index) in palettes"
+                :key="index"
+                cols="12"
+                md="4"
+                class="palette-col"
+              >
                 <v-card
                   :style="{ backgroundColor: palette.primaryColor, color: palette.secondaryColor }"
                   class="palette-card"
-                  :class="{ 'selected': selectedPalette?.primaryColor === palette.primaryColor }"
+                  :class="{ selected: selectedPalette?.primaryColor === palette.primaryColor }"
                   @click="selectPalette(palette, index)"
                 >
                   <v-card-title>{{ palette.name }}</v-card-title>
                   <v-card-subtitle>Cor Primária: {{ palette.primaryColor }}</v-card-subtitle>
                   <v-card-subtitle>Cor Secundária: {{ palette.secondaryColor }}</v-card-subtitle>
                   <v-card-actions>
-                    <v-btn variant="tonal" class="select-btn" color="white">Selecionar</v-btn>
+                    <v-btn
+                      variant="tonal"
+                      class="select-btn"
+                      color="white"
+                    >
+                      Selecionar
+                    </v-btn>
                   </v-card-actions>
                 </v-card>
               </v-col>
@@ -26,14 +49,21 @@
         </v-container>
       </v-card-text>
       <v-card-actions>
-        <v-spacer></v-spacer>
-        <v-btn @click="onClose" color="grey darken-1">Fechar</v-btn>
+        <v-spacer />
         <v-btn
-            variant="flat"
-            @click="applyPalette"
-            :disabled="!selectedPalette"
-            :color="selectedPalette ? selectedPalette.primaryColor : ''"
-        >Aplicar Paleta {{ selectedPalette ? selectedPalette.index + 1 : null }}</v-btn>
+          color="grey darken-1"
+          @click="onClose"
+        >
+          Fechar
+        </v-btn>
+        <v-btn
+          variant="flat"
+          :disabled="!selectedPalette"
+          :color="selectedPalette ? selectedPalette.primaryColor : ''"
+          @click="applyPalette"
+        >
+          Aplicar Paleta {{ selectedPalette ? selectedPalette.index + 1 : null }}
+        </v-btn>
       </v-card-actions>
     </template>
   </Modal>
@@ -41,9 +71,9 @@
 
 <script setup lang="ts">
 import tinycolor from 'tinycolor2'
-import Modal from '~/components/El/Modal/index.vue'
 import { palettes } from './data/palettes'
 import type { IPalette } from './type/palette'
+import Modal from '~/components/El/Modal/index.vue'
 
 const props = defineProps<{
   showPaletteModal: boolean
@@ -53,7 +83,7 @@ const props = defineProps<{
 const selectedPalette = ref<IPalette & { index: number } | null>(null)
 
 const selectPalette = (palette: IPalette, index: number) => {
-  selectedPalette.value = {...palette, index}
+  selectedPalette.value = { ...palette, index }
 }
 
 const applyPalette = () => {
@@ -71,11 +101,13 @@ const applyPalette = () => {
       if (intensity === 500) {
         adjustedPrimaryColor = primaryColor
         adjustedSecondaryColor = secondaryColor
-      } else if (intensity < 500) {
+      }
+      else if (intensity < 500) {
         // Lighten colors for intensities less than 500
         adjustedPrimaryColor = primaryColor.clone().lighten(adjustAmount * (500 - intensity) / 100).toString()
         adjustedSecondaryColor = secondaryColor.clone().lighten(adjustAmount * (500 - intensity) / 100).toString()
-      } else {
+      }
+      else {
         // Darken colors for intensities greater than 500
         adjustedPrimaryColor = primaryColor.clone().darken(adjustAmount * (intensity - 500) / 100).toString()
         adjustedSecondaryColor = secondaryColor.clone().darken(adjustAmount * (intensity - 500) / 100).toString()

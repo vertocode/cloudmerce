@@ -1,13 +1,17 @@
 <template>
   <VStepper
-      v-model="step"
-      class="steppers"
-      :items="['Dados de Envio', 'Dados de Pagamento']"
-      hide-actions
-      v-slot="{ prev, next }"
+    v-slot="{ prev, next }"
+    v-model="step"
+    class="steppers"
+    :items="['Dados de Envio', 'Dados de Pagamento']"
+    hide-actions
   >
     <main class="content">
-      <component :is="DynamicStep" :next :prev />
+      <component
+        :is="DynamicStep"
+        :next
+        :prev
+      />
     </main>
   </VStepper>
 </template>
@@ -29,6 +33,7 @@ const DynamicStep = computed(() => {
       return Step3
     default:
       handleError('Invalid step')
+      return null
   }
 })
 </script>

@@ -1,23 +1,29 @@
 <template>
   <div>
-    <h2 class="product-type-title">{{ productTypeData?.name }}</h2>
+    <h2 class="product-type-title">
+      {{ productTypeData?.name }}
+    </h2>
     <MdSearchBar class="mt-3" />
 
-    <MdProductList :products :loading :updateProductList />
+    <MdProductList
+      :products
+      :loading
+      :update-product-list
+    />
   </div>
 </template>
 
 <script setup lang="ts">
 import { useRoute } from 'vue-router'
 import { computed } from 'vue'
-import { useProductList } from "~/composables/useProductList";
-import { useStoreData } from "~/composables/useStoreData";
+import { useProductList } from '~/composables/useProductList'
+import { useStoreData } from '~/composables/useStoreData'
 
 const route = useRoute()
 const productType = computed(() => route.params.type as string)
 const { getProductTypeById } = useStoreData()
 const { products, loading, update: updateProductList } = useProductList({
-  productType: productType.value
+  productType: productType.value,
 })
 
 const productTypeData = computed(() => getProductTypeById(productType.value))

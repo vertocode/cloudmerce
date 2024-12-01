@@ -1,54 +1,77 @@
 <template>
   <div class="order-details">
-    <VCard class="order-card" elevation="3">
+    <VCard
+      class="order-card"
+      elevation="3"
+    >
       <VCardActions>
-        <VBtn color="primary" variant="outlined" @click="goToOrders">
-          <VIcon class="mr-1" color="primary">mdi-arrow-left</VIcon>
+        <VBtn
+          color="primary"
+          variant="outlined"
+          @click="goToOrders"
+        >
+          <VIcon
+            class="mr-1"
+            color="primary"
+          >
+            mdi-arrow-left
+          </VIcon>
           Voltar para Pedidos
         </VBtn>
       </VCardActions>
 
-      <VCardTitle class="order-title">Detalhes do Pedido nº{{id}}</VCardTitle>
+      <VCardTitle class="order-title">
+        Detalhes do Pedido nº{{ id }}
+      </VCardTitle>
 
       <div v-if="loading">
         <div class="loading-container">
-          <VProgressCircular indeterminate size="50" color="primary" />
+          <VProgressCircular
+            indeterminate
+            size="50"
+            color="primary"
+          />
           <span>Carregando detalhes do pedido...</span>
         </div>
       </div>
 
       <div v-else-if="order">
         <div class="order-status">
-          <h3 class="mobile-status">Status do Pedido: <MdOrdersStatusChip :status="order.status"/></h3>
+          <h3 class="mobile-status">
+            Status do Pedido: <MdOrdersStatusChip :status="order.status" />
+          </h3>
           <VStepper
-              hide-actions
-              v-model="statusStep"
-              class="status-stepper desktop-status"
-              elevation="0"
-              :items="['Aguardando Pagamento', 'Loja Notificada', 'Pedido Enviado', 'Pedido Entregue']"
-          >
-
-          </VStepper>
+            v-model="statusStep"
+            hide-actions
+            class="status-stepper desktop-status"
+            elevation="0"
+            :items="['Aguardando Pagamento', 'Loja Notificada', 'Pedido Enviado', 'Pedido Entregue']"
+          />
         </div>
 
         <VCardText class="content">
           <div class="products">
             <h4>Produtos Comprados</h4>
-            <VList dense class="products">
+            <VList
+              dense
+              class="products"
+            >
               <VListItem
-                  v-for="item in order.items"
-                  :key="item.productId._id"
-                  class="product-item"
+                v-for="item in order.items"
+                :key="item.productId._id"
+                class="product-item"
               >
                 <img
-                    :src="item.productId.image?.[0] || '/placeholder.png'"
-                    alt="Imagem do Produto"
-                    class="product-image"
-                />
+                  :src="item.productId.image?.[0] || '/placeholder.png'"
+                  alt="Imagem do Produto"
+                  class="product-image"
+                >
                 <br>
-                <MdProductDetailsSeeButton :productId="item.productId._id" />
+                <MdProductDetailsSeeButton :product-id="item.productId._id" />
                 <VListItemContent>
-                  <VListItemTitle class="product-name">{{ item.productId.name }}</VListItemTitle>
+                  <VListItemTitle class="product-name">
+                    {{ item.productId.name }}
+                  </VListItemTitle>
                   <VListItemSubtitle>
                     Quantidade: {{ item.quantity }}
                   </VListItemSubtitle>
@@ -63,13 +86,18 @@
           <div class="calc">
             <MdOrdersDetailsShipping />
 
-            <MdCalcProductSummary :cartProducts="products" :total="totalAmount" />
+            <MdCalcProductSummary
+              :cart-products="products"
+              :total="totalAmount"
+            />
           </div>
         </VCardText>
       </div>
 
       <div v-else>
-        <p class="error-message">Não foi possível carregar os detalhes do pedido.</p>
+        <p class="error-message">
+          Não foi possível carregar os detalhes do pedido.
+        </p>
       </div>
 
       <div>
@@ -79,7 +107,7 @@
 
         <br>
 
-        <ElContactForm :additional-info="additionalInformationContact"/>
+        <ElContactForm :additional-info="additionalInformationContact" />
       </div>
     </VCard>
   </div>
@@ -104,17 +132,17 @@ const products = computed(() => {
 
   return order.value.items.map(item => ({
     quantity: item.quantity,
-    ...item.productId
+    ...item.productId,
   }))
 })
 
 const statusStep = computed(() => (order.value?.status === 'paid' ? 2 : 1))
 
 const totalAmount = computed(() =>
-    order.value?.items?.reduce(
-        (total, item) => total + item.productId.price * item.quantity,
-        0
-    ).toFixed(2) || '0.00'
+  order.value?.items?.reduce(
+    (total, item) => total + item.productId.price * item.quantity,
+    0,
+  ).toFixed(2) || '0.00',
 )
 
 const goToOrders = () => {

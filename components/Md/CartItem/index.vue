@@ -1,22 +1,25 @@
 <template>
   <div class="cart-item">
     <div class="product-image-container">
-      <MdProductImage :image="item.image" as-image />
+      <MdProductImage
+        :image="item.image"
+        as-image
+      />
       <VBtn
-          icon
-          class="remove-btn"
-          :disabled="loading"
-          @click="removeItem"
+        icon
+        class="remove-btn"
+        :disabled="loading"
+        @click="removeItem"
       >
         <VIcon>mdi-delete</VIcon>
       </VBtn>
     </div>
     <div class="product-info">
       <VTooltip bottom>
-        <template #activator="{ props }">
+        <template #activator="{ props: tooltipProps }">
           <VListItemTitle
-              v-bind="props"
-              class="product-name"
+            v-bind="tooltipProps"
+            class="product-name"
           >
             {{ item.name }}
           </VListItemTitle>
@@ -27,52 +30,59 @@
       <VListItemSubtitle>R${{ item.price }}</VListItemSubtitle>
 
       <VProgressCircular
-          v-if="loading"
-          indeterminate
-          color="primary"
-          size="24"
-          class="loading-spinner"
+        v-if="loading"
+        indeterminate
+        color="primary"
+        size="24"
+        class="loading-spinner"
       />
 
       <div class="quantity">
         <span>Quantidade:</span>
         <div class="quantity-controls">
           <VBtn
-              icon
-              size="small"
-              class="quantity-btn"
-              :disabled="loading"
-              @click="decreaseQuantity"
+            icon
+            size="small"
+            class="quantity-btn"
+            :disabled="loading"
+            @click="decreaseQuantity"
           >
             <VIcon>mdi-minus</VIcon>
           </VBtn>
           <span class="quantity-value">{{ item.quantity }}</span>
           <VBtn
-              icon
-              size="small"
-              class="quantity-btn"
-              :disabled="loading"
-              @click="increaseQuantity"
+            icon
+            size="small"
+            class="quantity-btn"
+            :disabled="loading"
+            @click="increaseQuantity"
           >
             <VIcon>mdi-plus</VIcon>
           </VBtn>
         </div>
       </div>
-      <div v-if="item.fields.length" class="product-fields">
-        <div v-for="field in item.fields" :key="field.label" class="field">
+      <div
+        v-if="item.fields.length"
+        class="product-fields"
+      >
+        <div
+          v-for="field in item.fields"
+          :key="field.label"
+          class="field"
+        >
           <strong>{{ field.label }}:</strong> {{ field.value || 'N/A' }}
         </div>
       </div>
-      <MdProductDetailsSeeButton :productId="item.id" />
+      <MdProductDetailsSeeButton :product-id="item.id" />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import type { ICartItem } from "~/types/cart"
+import type { ICartItem } from '~/types/cart'
 
 const props = defineProps<{
-  item: ICartItem;
+  item: ICartItem
 }>()
 
 const { changeQuantity, loading } = useCart()

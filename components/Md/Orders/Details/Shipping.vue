@@ -2,7 +2,10 @@
   <div class="shipping-details">
     <h4>Detalhes de Envio</h4>
 
-    <div v-if="addressData" class="address-summary">
+    <div
+      v-if="addressData"
+      class="address-summary"
+    >
       <div class="address-row">
         <span class="label">CEP:</span>
         <span class="value">{{ addressData.cep }}</span>
@@ -27,7 +30,10 @@
       </div>
     </div>
 
-    <div v-else class="no-address">
+    <div
+      v-else
+      class="no-address"
+    >
       <span>Não há endereço cadastrado.</span>
     </div>
   </div>

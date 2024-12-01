@@ -1,18 +1,25 @@
 <template>
-  <Form class="vee-form" :validation-schema="schema" :initialValues="initialValues" fast-fail as="" v-slot="{ ...attrs }">
+  <Form
+    v-slot="{ ...attrs }"
+    class="vee-form"
+    :validation-schema="schema"
+    :initial-values="initialValues"
+    fast-fail
+    as=""
+  >
     <VForm
-        :class="formClass"
-        @submit.prevent="handleSubmit(attrs)"
-        :id
+      :id
+      :class="formClass"
+      @submit.prevent="handleSubmit(attrs)"
     >
-      <slot v-bind="attrs"></slot>
+      <slot v-bind="attrs" />
     </VForm>
   </Form>
 </template>
 
 <script setup lang="ts">
-import {Form, type FormSlotProps} from 'vee-validate'
-import { z } from 'zod';
+import { Form, type FormSlotProps } from 'vee-validate'
+import type { z } from 'zod'
 import { toTypedSchema } from '@vee-validate/zod'
 
 export interface SubmitOptions {
@@ -21,8 +28,8 @@ export interface SubmitOptions {
 }
 
 const props = defineProps<{
-  validationSchema?: z.ZodSchema<any>
-  initialValues?: Record<string, any>
+  validationSchema?: z.ZodSchema<unknown>
+  initialValues?: Record<string, unknown>
   formClass?: string
   id?: string
 }>()

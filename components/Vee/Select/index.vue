@@ -1,15 +1,19 @@
 <template>
-  <Field v-if="name" :name v-slot="{ field, errorMessage }">
+  <Field
+    v-if="name"
+    v-slot="{ field, errorMessage }"
+    :name
+  >
     <VSelect
-        :variant="variant || 'outlined'"
-        class="vee-select"
-        v-model="field.value"
-        :error-messages="errorMessage === 'Required' ? 'Campo obrigatório' : errorMessage"
-        :items="items"
-        v-bind="{ ...$attrs, ...field }"
-        autocomplete="off"
-        :no-data-text="noDataText || 'Sem opções'"
-        :placeholder="placeholder"
+      v-model="field.value"
+      :variant="variant || 'outlined'"
+      class="vee-select"
+      :error-messages="errorMessage === 'Required' ? 'Campo obrigatório' : errorMessage"
+      :items="items"
+      v-bind="{ ...$attrs, ...field }"
+      autocomplete="off"
+      :no-data-text="noDataText || 'Sem opções'"
+      :placeholder="placeholder"
     />
   </Field>
 </template>

@@ -1,67 +1,75 @@
 <template>
   <v-snackbar
-      v-model="snackbar.open"
-      :color="bgColor"
-      location="top right"
-      variant="flat"
-      :timeout="timeout"
+    v-model="snackbar.open"
+    :color="bgColor"
+    location="top right"
+    variant="flat"
+    :timeout="timeout"
   >
     <div class="snackbar">
-      <v-icon left :style="{ color: computedColor }">{{ computedIcon }}</v-icon>
-      <span class="snackbar-message" :style="{ color: computedColor }">{{ snackbar.message }}</span>
+      <v-icon
+        left
+        :style="{ color: computedColor }"
+      >
+        {{ computedIcon }}
+      </v-icon>
+      <span
+        class="snackbar-message"
+        :style="{ color: computedColor }"
+      >{{ snackbar.message }}</span>
     </div>
   </v-snackbar>
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed } from 'vue'
 
-const { snackbar, timeout } = useSnackbar();
+const { snackbar, timeout } = useSnackbar()
 
 const bgColor = computed(() => {
   switch (snackbar.variant) {
     case 'error':
-      return '#fdb3ad';
+      return '#fdb3ad'
     case 'warning':
-      return '#efe086';
+      return '#efe086'
     case 'info':
-      return '#a8c9e7';
+      return '#a8c9e7'
     case 'success':
-      return '#c0efc2';
+      return '#c0efc2'
     default:
-      return '';
+      return ''
   }
-});
+})
 
 const computedColor = computed(() => {
   switch (snackbar.variant) {
     case 'error':
-      return '#f44336';
+      return '#f44336'
     case 'warning':
-      return '#9a8b29';
+      return '#9a8b29'
     case 'info':
-      return '#2196f3';
+      return '#2196f3'
     case 'success':
-      return '#4caf50';
+      return '#4caf50'
     default:
-      return '';
+      return ''
   }
-});
+})
 
 const computedIcon = computed(() => {
   switch (snackbar.variant) {
     case 'error':
-      return 'mdi-alert-circle';
+      return 'mdi-alert-circle'
     case 'warning':
-      return 'mdi-alert';
+      return 'mdi-alert'
     case 'info':
-      return 'mdi-information';
+      return 'mdi-information'
     case 'success':
-      return 'mdi-check-circle';
+      return 'mdi-check-circle'
     default:
-      return '';
+      return ''
   }
-});
+})
 </script>
 
 <style scoped>

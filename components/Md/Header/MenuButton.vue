@@ -1,47 +1,80 @@
 <template>
   <div class="menu-button">
     <VMenu
-        v-model="isDrawerOpen"
-        offset-y
-        close-on-content-click
-        class="menu"
-        transition="scale-transition"
+      v-model="isDrawerOpen"
+      offset-y
+      close-on-content-click
+      class="menu"
+      transition="scale-transition"
     >
       <template #activator="{ props }">
-        <VBtn icon v-bind="props">
+        <VBtn
+          icon
+          v-bind="props"
+        >
           <VIcon>mdi-menu</VIcon>
         </VBtn>
       </template>
 
       <VList class="navigation-list">
-        <VListItem @click="$router.push('/checkout')" class="navigation-item">
+        <VListItem
+          class="navigation-item"
+          @click="$router.push('/checkout')"
+        >
           <VListItemTitle>Carrinho de Compras</VListItemTitle>
         </VListItem>
-        <VListItem @click="$router.push('/orders')" class="navigation-item">
+        <VListItem
+          class="navigation-item"
+          @click="$router.push('/orders')"
+        >
           <VListItemTitle>Meus Pedidos</VListItemTitle>
         </VListItem>
-        <VListItem @click="$router.push('/about')" class="navigation-item">
+        <VListItem
+          class="navigation-item"
+          @click="$router.push('/about')"
+        >
           <VListItemTitle>Sobre Nós</VListItemTitle>
         </VListItem>
-        <VListItem @click="$router.push('/privacy')" class="navigation-item">
+        <VListItem
+          class="navigation-item"
+          @click="$router.push('/privacy')"
+        >
           <VListItemTitle>Política de Privacidade</VListItemTitle>
         </VListItem>
-        <VListItem @click="$router.push('/contact')" class="navigation-item">
+        <VListItem
+          class="navigation-item"
+          @click="$router.push('/contact')"
+        >
           <VListItemTitle>Contato</VListItemTitle>
         </VListItem>
-        <VListItem v-if="userData" @click="logout" class="navigation-item">
+        <VListItem
+          v-if="userData"
+          class="navigation-item"
+          @click="logout"
+        >
           <VListItemTitle>Sair da Conta</VListItemTitle>
         </VListItem>
 
         <template v-if="isAdmin">
-          <h3 class="admin-subtitle">Ações de Administrador</h3>
-          <VListItem @click="showProductTypeModal = true" class="navigation-item admin-item">
+          <h3 class="admin-subtitle">
+            Ações de Administrador
+          </h3>
+          <VListItem
+            class="navigation-item admin-item"
+            @click="showProductTypeModal = true"
+          >
             <VListItemTitle>Tipos de Produto</VListItemTitle>
           </VListItem>
-          <VListItem @click="showProductModal = true" class="navigation-item admin-item">
+          <VListItem
+            class="navigation-item admin-item"
+            @click="showProductModal = true"
+          >
             <VListItemTitle>Cadastrar Novo Produto</VListItemTitle>
           </VListItem>
-          <VListItem @click="showPaletteModal = true" class="navigation-item admin-item">
+          <VListItem
+            class="navigation-item admin-item"
+            @click="showPaletteModal = true"
+          >
             <VListItemTitle>Configurações de Paleta</VListItemTitle>
           </VListItem>
         </template>
@@ -49,12 +82,18 @@
     </VMenu>
   </div>
 
-  <MdPaletteModal :show-palette-modal="showPaletteModal" :on-close="() => showPaletteModal = false"/>
-  <MdManageProductType :showProductTypeModal="showProductTypeModal" :onClose="() => showProductTypeModal = false" />
+  <MdPaletteModal
+    :show-palette-modal="showPaletteModal"
+    :on-close="() => showPaletteModal = false"
+  />
+  <MdManageProductType
+    :show-product-type-modal="showProductTypeModal"
+    :on-close="() => showProductTypeModal = false"
+  />
   <MdRegisterProductModal
-      :showRegisterModal="showProductModal"
-      :onClose="() => showProductModal = false"
-      :on-register-new-product-type="onRegisterNewProductType"
+    :show-register-modal="showProductModal"
+    :on-close="() => showProductModal = false"
+    :on-register-new-product-type="onRegisterNewProductType"
   />
 </template>
 

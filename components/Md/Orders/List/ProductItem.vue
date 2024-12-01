@@ -1,14 +1,16 @@
 <template>
   <VListItem class="product-item">
     <img
-        :src="item.productId.image?.[0] || '/placeholder.png'"
-        alt="Imagem do produto"
-        class="product-image"
-    />
+      :src="item.productId.image?.[0] || '/placeholder.png'"
+      alt="Imagem do produto"
+      class="product-image"
+    >
     <div class="product-info">
       <VTooltip bottom>
         <template #activator="{ props }">
-          <VListItemTitle v-bind="props">{{ item.productId.name }}</VListItemTitle>
+          <VListItemTitle v-bind="props">
+            {{ item.productId.name }}
+          </VListItemTitle>
         </template>
         <div>
           {{ item.productId.name }}
@@ -23,7 +25,7 @@
 </template>
 
 <script setup lang="ts">
-import type {OrderItem} from "~/types/order";
+import type { OrderItem } from '~/types/order'
 
 interface Props {
   item: OrderItem

@@ -1,9 +1,9 @@
 <template>
   <VBtn
-      class="view-details-btn small-btn"
-      size="x-small"
-      variant="outlined"
-      @click="$router.push(`/product/${productId}`)"
+    class="view-details-btn small-btn"
+    size="x-small"
+    variant="outlined"
+    @click="$router.push(`/product/${productId}`)"
   >
     Ver Detalhes
   </VBtn>

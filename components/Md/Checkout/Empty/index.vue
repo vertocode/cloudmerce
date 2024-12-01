@@ -1,11 +1,18 @@
 <template>
   <div class="empty-cart-container">
-    <v-icon class="empty-cart-icon" size="96">mdi-cart-outline</v-icon>
-    <h2 class="empty-cart-title">Carrinho Vazio</h2>
+    <v-icon
+      class="empty-cart-icon"
+      size="96"
+    >
+      mdi-cart-outline
+    </v-icon>
+    <h2 class="empty-cart-title">
+      Carrinho Vazio
+    </h2>
     <v-btn
-        color="primary"
-        class="home-button"
-        @click="redirectToHome"
+      color="primary"
+      class="home-button"
+      @click="redirectToHome"
     >
       Adicionar Produtos
     </v-btn>

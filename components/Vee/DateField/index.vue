@@ -1,9 +1,9 @@
 <template>
-    <VeeMaskedField
-        :name
-        mask="##/##/####"
-        v-bind="{...$attrs}"
-    />
+  <VeeMaskedField
+    :name
+    mask="##/##/####"
+    v-bind="{ ...$attrs }"
+  />
 </template>
 
 <script setup lang="ts">

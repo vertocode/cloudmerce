@@ -1,10 +1,10 @@
 <template>
   <Modal
-      max-width="800"
-      persistent
-      @close="onClose"
-      :is-opened="showRegisterModal"
-      :card-props="{ title: 'Adicionar Produto' }"
+    max-width="800"
+    persistent
+    :is-opened="showRegisterModal"
+    :card-props="{ title: 'Adicionar Produto' }"
+    @close="onClose"
   >
     <template #trigger>
       <div>
@@ -12,9 +12,9 @@
       </div>
     </template>
     <ProductForm
-        :onRegisterNewProductType="onRegisterNewProductType"
-        :onClose="onClose"
-        :action="register"
+      :on-register-new-product-type="onRegisterNewProductType"
+      :on-close="onClose"
+      :action="register"
     />
   </Modal>
 </template>
@@ -25,9 +25,9 @@ import ProductForm from '~/components/Md/ProductForm/index.vue'
 
 defineProps<{
   onRegisterNewProductType: () => void
-  showRegisterModal: boolean;
-  onClose: () => void;
-}>();
+  showRegisterModal: boolean
+  onClose: () => void
+}>()
 
 const { post } = useApi()
 
@@ -40,6 +40,6 @@ const register = async (values: any) => {
     productType: values.productType,
     fields: values.userFields,
     image: values.imageUrls,
-  });
+  })
 }
 </script>

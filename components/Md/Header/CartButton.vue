@@ -1,35 +1,57 @@
 <template>
   <div>
-    <VBtn icon @click="isCartDrawerOpened = !isCartDrawerOpened">
+    <VBtn
+      icon
+      @click="isCartDrawerOpened = !isCartDrawerOpened"
+    >
       <VIcon>mdi-cart</VIcon>
     </VBtn>
 
     <VNavigationDrawer
-        v-model="isCartDrawerOpened"
-        app
-        temporary
-        width="320"
-        height="100%"
-        location="right"
-        class="cart-drawer"
-        v-if="isLoaded"
+      v-if="isLoaded"
+      v-model="isCartDrawerOpened"
+      app
+      temporary
+      width="320"
+      height="100%"
+      location="right"
+      class="cart-drawer"
     >
-      <v-toolbar flat dense>
+      <v-toolbar
+        flat
+        dense
+      >
         <div class="title">
-          <v-toolbar-title class="flex justify-space-between">Carrinho de Compras</v-toolbar-title>
-          <VIcon @click="isCartDrawerOpened = false">mdi-close</VIcon>
+          <v-toolbar-title class="flex justify-space-between">
+            Carrinho de Compras
+          </v-toolbar-title>
+          <VIcon @click="isCartDrawerOpened = false">
+            mdi-close
+          </VIcon>
         </div>
-
       </v-toolbar>
 
-      <div v-if="loading" class="loading">
-        <VProgressLinear indeterminate color="primary" />
+      <div
+        v-if="loading"
+        class="loading"
+      >
+        <VProgressLinear
+          indeterminate
+          color="primary"
+        />
       </div>
 
-      <div v-else-if="cartProducts.length" class="cart-items-list">
+      <div
+        v-else-if="cartProducts.length"
+        class="cart-items-list"
+      >
         <div class="list">
           <VList>
-            <MdCartItem v-for="(item, index) in cartProducts" :key="index" :item="item" />
+            <MdCartItem
+              v-for="(item, index) in cartProducts"
+              :key="index"
+              :item="item"
+            />
           </VList>
         </div>
 
@@ -39,12 +61,23 @@
             <span class="cart-total-value">R${{ total }}</span>
           </div>
 
-          <VBtn block color="primary" @click="$router.push('/checkout')">Comprar</VBtn>
+          <VBtn
+            block
+            color="primary"
+            @click="$router.push('/checkout')"
+          >
+            Comprar
+          </VBtn>
         </div>
       </div>
 
-      <div v-else class="empty-cart">
-        <VIcon class="empty-cart-icon">mdi-cart-off</VIcon>
+      <div
+        v-else
+        class="empty-cart"
+      >
+        <VIcon class="empty-cart-icon">
+          mdi-cart-off
+        </VIcon>
         <p>Seu carrinho está vazio!</p>
       </div>
     </VNavigationDrawer>
@@ -52,7 +85,7 @@
 </template>
 
 <script setup lang="ts">
-import { useCart } from "~/composables/useCart"
+import { useCart } from '~/composables/useCart'
 
 const isLoaded = ref(false)
 
@@ -62,7 +95,6 @@ onMounted(() => {
 })
 
 const { cartProducts, getCart, isCartDrawerOpened, loading, total } = useCart()
-
 </script>
 
 <style lang="scss" scoped>

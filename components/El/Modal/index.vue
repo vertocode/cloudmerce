@@ -1,26 +1,32 @@
 <template>
   <VDialog
-      :model-value="isOpened"
-      width="auto"
-      :max-width="maxWidth || '400'"
-      :persistent
+    :model-value="isOpened"
+    width="auto"
+    :max-width="maxWidth || '400'"
+    :persistent
   >
-    <template v-slot:activator="{ props: activatorProps }">
-      <slot name="trigger" v-bind="activatorProps" />
+    <template #activator="{ props: activatorProps }">
+      <slot
+        name="trigger"
+        v-bind="activatorProps"
+      />
     </template>
 
-    <VCard v-bind="cardProps" class="modal-card">
+    <VCard
+      v-bind="cardProps"
+      class="modal-card"
+    >
       <VBtn
-          variant="text"
-          icon
-          class="close-btn"
-          @click="$emit('close')"
+        variant="text"
+        icon
+        class="close-btn"
+        @click="$emit('close')"
       >
         <VIcon>mdi-close</VIcon>
       </VBtn>
 
       <VContainer>
-        <slot></slot>
+        <slot />
       </VContainer>
     </VCard>
   </VDialog>

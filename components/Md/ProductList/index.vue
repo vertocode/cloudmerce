@@ -1,25 +1,39 @@
 <template>
-  <div v-if="loading" class="spinner">
-    <VProgressCircular indeterminate color="var(--primary-color-500)" size="50" />
+  <div
+    v-if="loading"
+    class="spinner"
+  >
+    <VProgressCircular
+      indeterminate
+      color="var(--primary-color-500)"
+      size="50"
+    />
   </div>
   <VRow v-else-if="products.length">
     <VCol
-        cols="12"
-        xl="3"
-        lg="3"
-        md="4"
-        sm="6"
-        v-for="product in products"
-        :key="product.id"
+      v-for="product in products"
+      :key="product.id"
+      cols="12"
+      xl="3"
+      lg="3"
+      md="4"
+      sm="6"
     >
-      <MdProductCard :product :updateProductList />
+      <MdProductCard
+        :product
+        :update-product-list
+      />
     </VCol>
   </VRow>
-  <MdNoProducts v-else @retry="retryFetch" @goHome="goToHomePage" />
+  <MdNoProducts
+    v-else
+    @retry="retryFetch"
+    @go-home="goToHomePage"
+  />
 </template>
 
 <script setup lang="ts">
-import type { IProduct } from "~/types/product"
+import type { IProduct } from '~/types/product'
 
 const router = useRouter()
 

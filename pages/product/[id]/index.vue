@@ -1,15 +1,26 @@
 <template>
   <div>
-    <div v-if="isLoading" class="spinner-container">
+    <div
+      v-if="isLoading"
+      class="spinner-container"
+    >
       <h1>Carregando...</h1>
     </div>
-    <MdProductDetails v-else-if="product" :product="product" />
-    <VAlert v-else-if="!isLoading" type="error">Produto não encontrado</VAlert>
+    <MdProductDetails
+      v-else-if="product"
+      :product="product"
+    />
+    <VAlert
+      v-else-if="!isLoading"
+      type="error"
+    >
+      Produto não encontrado
+    </VAlert>
   </div>
 </template>
 
 <script setup lang="ts">
-import type {IProduct} from "~/types/product";
+import type { IProduct } from '~/types/product'
 
 const route = useRoute()
 const id = route.params.id
@@ -18,7 +29,6 @@ const product = ref<IProduct | null>(null)
 const isLoading = ref<boolean>(true)
 
 const { getProductById } = useProduct({})
-
 
 onMounted(async () => {
   if (!id) {

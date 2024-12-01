@@ -1,21 +1,37 @@
 <template>
-  <div class="subheader" v-if="productTypes.length">
-    <VBtn icon v-if="canScrollLeft" @click="scrollLeft" class="scroll-btn scroll-left">
+  <div
+    v-if="productTypes.length"
+    class="subheader"
+  >
+    <VBtn
+      v-if="canScrollLeft"
+      icon
+      class="scroll-btn scroll-left"
+      @click="scrollLeft"
+    >
       <v-icon>mdi-chevron-left</v-icon>
     </VBtn>
 
-    <div ref="scrollContainer" class="scroll-container">
+    <div
+      ref="scrollContainer"
+      class="scroll-container"
+    >
       <div
-          v-for="type in productTypes"
-          :key="type.id"
-          :class="['product-type', { active: isActiveType(type.id) }]"
-          @click="redirectTo(type.id)"
+        v-for="type in productTypes"
+        :key="type.id"
+        :class="['product-type', { active: isActiveType(type.id) }]"
+        @click="redirectTo(type.id)"
       >
         {{ type.name }}
       </div>
     </div>
 
-    <VBtn icon v-if="canScrollRight" @click="scrollRight" class="scroll-btn scroll-right">
+    <VBtn
+      v-if="canScrollRight"
+      icon
+      class="scroll-btn scroll-right"
+      @click="scrollRight"
+    >
       <v-icon>mdi-chevron-right</v-icon>
     </VBtn>
   </div>
@@ -23,8 +39,8 @@
 
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
-import { useStoreData } from "@/composables/useStoreData"
-import { useRouter, useRoute } from "vue-router"
+import { useRouter, useRoute } from 'vue-router'
+import { useStoreData } from '@/composables/useStoreData'
 
 const { productTypes } = useStoreData()
 const router = useRouter()
@@ -40,19 +56,19 @@ const checkScrollButtons = () => {
     canScrollLeft.value = container.scrollLeft > 0
     canScrollRight.value = container.scrollLeft < container.scrollWidth - container.clientWidth
   }
-};
+}
 
 const scrollLeft = () => {
-  const container = scrollContainer.value;
+  const container = scrollContainer.value
   if (container) {
-    container.scrollBy({ left: -200, behavior: "smooth" })
+    container.scrollBy({ left: -200, behavior: 'smooth' })
   }
-};
+}
 
 const scrollRight = () => {
   const container = scrollContainer.value
   if (container) {
-    container.scrollBy({ left: 200, behavior: "smooth" })
+    container.scrollBy({ left: 200, behavior: 'smooth' })
   }
 }
 
@@ -65,7 +81,7 @@ const isActiveType = (type: string) => route.params.productType === type
 
 onMounted(() => {
   checkScrollButtons()
-  if (scrollContainer.value) scrollContainer.value.addEventListener("scroll", checkScrollButtons)
+  if (scrollContainer.value) scrollContainer.value.addEventListener('scroll', checkScrollButtons)
 })
 </script>
 

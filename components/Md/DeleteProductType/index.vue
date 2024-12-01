@@ -1,7 +1,7 @@
 <template>
   <Modal
-      :is-opened="showDeleteModal"
-      :card-props="{ title: `Deletar Tipo de produto ${productType}` }"
+    :is-opened="showDeleteModal"
+    :card-props="{ title: `Deletar Tipo de produto ${productType}` }"
   >
     <template #trigger>
       <div @click="showDeleteModal = true">
@@ -18,16 +18,30 @@
         A ação será realizada ao clicar no botão ‘Salvar’.
       </p>
 
-      <VSpacer></VSpacer>
+      <VSpacer />
 
-      <VRow class="ga-2" justify="end" align-content="end" no-gutters>
+      <VRow
+        class="ga-2"
+        justify="end"
+        align-content="end"
+        no-gutters
+      >
         <VCol cols="4">
-          <VBtn variant="text" @click="onClose">
+          <VBtn
+            variant="text"
+            @click="onClose"
+          >
             Cancelar
           </VBtn>
         </VCol>
         <VCol cols="4">
-          <VBtn variant="tonal" color="error" width="100%" @click="onConfirm" :loading="isLoading">
+          <VBtn
+            variant="tonal"
+            color="error"
+            width="100%"
+            :loading="isLoading"
+            @click="onConfirm"
+          >
             Confirmar
           </VBtn>
         </VCol>
@@ -37,20 +51,20 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
-import Modal from '~/components/El/Modal/index.vue';
+import { ref } from 'vue'
+import Modal from '~/components/El/Modal/index.vue'
 
 defineProps<{
   loading?: boolean
-  onConfirm: () => Promise<void>;
-  productType: string;
+  onConfirm: () => Promise<void>
+  productType: string
 }>()
 
 const showDeleteModal = ref(false)
-const isLoading = ref(false);
+const isLoading = ref(false)
 
 const onClose = () => {
-  showDeleteModal.value = false;
+  showDeleteModal.value = false
 }
 </script>
 

@@ -1,7 +1,7 @@
 <template>
   <VApp>
     <ElSnackbar />
-    <MdHeader  />
+    <MdHeader />
     <MdSubHeader />
     <MdScrollToTop />
     <MdContainer class="main_container">

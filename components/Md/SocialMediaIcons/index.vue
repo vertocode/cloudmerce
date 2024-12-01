@@ -1,12 +1,12 @@
 <template>
   <div class="social-media-icons">
     <VIcon
-        v-for="socialMedia in storeSocialMedia"
-        :key="socialMedia.name"
-        class="social-icon"
-        :title="`Abrir ${socialMedia.name}`"
-        @click="openSocialMedia(socialMedia.url)"
-        :style="{ color }"
+      v-for="socialMedia in storeSocialMedia"
+      :key="socialMedia.name"
+      class="social-icon"
+      :title="`Abrir ${socialMedia.name}`"
+      :style="{ color }"
+      @click="openSocialMedia(socialMedia.url)"
     >
       {{ socialMedia.icon }}
     </VIcon>

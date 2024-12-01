@@ -1,10 +1,10 @@
 <template>
   <VMenu v-if="isLogged">
-    <template v-slot:activator="{ props }">
+    <template #activator="{ props }">
       <VBtn
-          class="user-button"
-          :class="{ 'admin-btn': isAdmin }"
-          v-bind="props"
+        class="user-button"
+        :class="{ 'admin-btn': isAdmin }"
+        v-bind="props"
       >
         <VIcon>{{ isAdmin ? 'mdi-account-check' : 'mdi-account' }}</VIcon>
         {{ userData?.name?.split(' ')?.at(0) }}
@@ -12,11 +12,11 @@
     </template>
 
     <VList>
-<!--      <VListItem @click="$router.push('/profile')">-->
-<!--        <VListItemTitle>-->
-<!--          <VIcon>mdi-account</VIcon> Profile-->
-<!--        </VListItemTitle>-->
-<!--      </VListItem>-->
+      <!--      <VListItem @click="$router.push('/profile')"> -->
+      <!--        <VListItemTitle> -->
+      <!--          <VIcon>mdi-account</VIcon> Profile -->
+      <!--        </VListItemTitle> -->
+      <!--      </VListItem> -->
       <VListItem @click="logout">
         <VListItemTitle>
           <VIcon>mdi-logout</VIcon> Logout
@@ -25,27 +25,46 @@
     </VList>
   </VMenu>
 
-  <div v-else class="unlogged_actions">
+  <div
+    v-else
+    class="unlogged_actions"
+  >
     <div class="desktop">
       <template v-if="isLoading">
-        <VBtn :loading="true" disabled>
-          <VProgressCircular indeterminate size="24" />
+        <VBtn
+          :loading="true"
+          disabled
+        >
+          <VProgressCircular
+            indeterminate
+            size="24"
+          />
         </VBtn>
       </template>
       <template v-else>
         <MdLoginModal>
-          <VBtn prepend-icon="mdi-account">Login</VBtn>
+          <VBtn prepend-icon="mdi-account">
+            Login
+          </VBtn>
         </MdLoginModal>
 
         <MdRegisterModal>
-          <VBtn prepend-icon="mdi-account-plus">Cadastro</VBtn>
+          <VBtn prepend-icon="mdi-account-plus">
+            Cadastro
+          </VBtn>
         </MdRegisterModal>
       </template>
     </div>
     <div class="mobile">
       <template v-if="isLoading">
-        <VBtn :loading="true" disabled>
-          <VProgressCircular indeterminate size="24" />
+        <VBtn
+          :loading="true"
+          disabled
+        >
+          <VProgressCircular
+            indeterminate
+            size="24"
+          />
         </VBtn>
       </template>
       <template v-else>
@@ -63,13 +82,14 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
+
 const { logout, userData, isAdmin } = useUser()
 
 const isLogged = computed(() => !!userData.value)
 const isLoading = ref(true)
 
 onMounted(() => {
-  isLoading.value = false;
+  isLoading.value = false
 })
 </script>
 
