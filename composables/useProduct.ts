@@ -1,11 +1,10 @@
 import type { IProduct, IProductResponse } from '~/types/product'
 
 interface IUseProduct {
-  product?: IProduct
   updateProductList?: (param: { cache: 'no-cache' | 'force-cache' }) => Promise<void>
 }
 
-export const useProduct = ({ product, updateProductList }: IUseProduct) => {
+export const useProduct = ({ updateProductList }: IUseProduct) => {
   const loading = ref(false)
 
   const { remove, get } = useApi()
@@ -32,7 +31,7 @@ export const useProduct = ({ product, updateProductList }: IUseProduct) => {
     }
   }
 
-  const handleDelete = async () => {
+  const handleDelete = async (product: IProduct) => {
     try {
       loading.value = true
       await remove(`/products/${product.id}`)

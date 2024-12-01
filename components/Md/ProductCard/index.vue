@@ -31,7 +31,7 @@
       </VBtn>
       <MdEditProductModal
         :initial-values="product"
-        :update-product-list
+        :updateProductList
       >
         <VBtn
           v-if="isAdmin"
@@ -41,7 +41,7 @@
         </VBtn>
       </MdEditProductModal>
       <MdDeleteProductModal
-        :on-confirm="handleDelete"
+        :on-confirm="() => handleDelete(product)"
         :product-name="product.name"
       >
         <VBtn
@@ -69,7 +69,7 @@ const props = defineProps<{
   updateProductList: (param: { cache: 'no-cache' | 'force-cache' }) => Promise<void>
 }>()
 
-const { handleDelete } = useProduct({ product: props.product, updateProductList: props.updateProductList })
+const { handleDelete } = useProduct({ updateProductList: props.updateProductList })
 
 const { isAdmin } = useUser()
 const { addToCart: handleAddToCart, loading: addingToCart } = useCart()
