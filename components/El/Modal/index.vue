@@ -2,7 +2,8 @@
   <VDialog
     :model-value="isOpened"
     width="auto"
-    :max-width="maxWidth || '400'"
+    :min-width="minWidth || '380'"
+    :max-width="maxWidth || '1200'"
     :persistent
   >
     <template #activator="{ props: activatorProps }">
@@ -36,6 +37,7 @@
 defineProps<{
   isOpened: boolean
   cardProps: object
+  minWidth?: string
   maxWidth?: string
   persistent?: boolean
 }>()
