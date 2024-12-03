@@ -86,8 +86,6 @@ const values = ref<Record<string, string>>(props.product?.fields.reduce((acc, fi
   return acc
 }, {} as Record<string, string>) || {})
 
-console.log(values.value)
-
 const question = computed(() => {
   const { product } = props
   if (!product) return ''

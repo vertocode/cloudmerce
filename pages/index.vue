@@ -5,7 +5,10 @@
     <MdProductList
       :products
       :loading
-      :update-product-list
+      :current-page="currentPage"
+      :total-pages="totalPages"
+      :update-product-list="updateProductList"
+      @page-change="onChangePage"
     />
   </MdContainer>
 </template>
@@ -14,5 +17,5 @@
 definePageMeta({
   layout: 'no-container',
 })
-const { products, loading, update: updateProductList } = useProductList()
+const { products, loading, update: updateProductList, totalPages, onChangePage, currentPage } = useProductList()
 </script>

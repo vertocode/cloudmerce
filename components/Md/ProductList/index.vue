@@ -30,9 +30,16 @@
     @retry="retryFetch"
     @go-home="goToHomePage"
   />
+  <PaginationComponent
+    v-if="!loading && products.length"
+    :current-page="currentPage"
+    :total-pages="totalPages"
+    @page-change="handlePageChange"
+  />
 </template>
 
 <script setup lang="ts">
+import PaginationComponent from './PaginationComponent.vue'
 import type { IProduct } from '~/types/product'
 
 const router = useRouter()
@@ -41,6 +48,12 @@ const props = defineProps<{
   products: IProduct[]
   updateProductList: (param: { cache: 'no-cache' | 'force-cache' }) => Promise<void>
   loading?: boolean
+  currentPage: number
+  totalPages: number
+}>()
+
+const emit = defineEmits<{
+  (event: 'pageChange', page: number): void
 }>()
 
 const retryFetch = async () => {
@@ -49,6 +62,10 @@ const retryFetch = async () => {
 
 const goToHomePage = () => {
   router.push('/')
+}
+
+const handlePageChange = (page: number) => {
+  emit('pageChange', page)
 }
 </script>
 

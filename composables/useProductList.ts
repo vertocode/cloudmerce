@@ -5,6 +5,12 @@ export const useProductList = (filters?: IProductFilters) => {
   const lastFilters = useState<IProductFilters | null>(() => null)
   const loading = useState<boolean>(() => false)
   const search = useState<string>('filterSearchProducts', () => '')
+  const currentPage = ref(1)
+  const totalPages = ref(1)
+
+  const onChangePage = (page: number) => {
+    currentPage.value = page
+  }
 
   const { ecommerceId } = useStoreData()
   const { get } = useApi()
@@ -30,6 +36,7 @@ export const useProductList = (filters?: IProductFilters) => {
       ...filters,
       search: search.value || '',
       limit: 20,
+      page: currentPage.value,
     }, {
       cache: cache || 'force-cache',
     }) as IProductResponse[]
@@ -48,7 +55,11 @@ export const useProductList = (filters?: IProductFilters) => {
     loading.value = false
   }
 
-  watch(search, () => fetchProducts({ cache: 'no-cache' }))
+  watch(search, () => {
+    fetchProducts({ cache: 'no-cache' })
+    currentPage.value = 1
+  })
+  watch(currentPage, () => fetchProducts({ cache: 'no-cache' }))
 
   onMounted(() => fetchProducts({ cache: 'no-cache' }))
 
@@ -56,5 +67,8 @@ export const useProductList = (filters?: IProductFilters) => {
     products,
     loading,
     update: fetchProducts,
+    currentPage,
+    totalPages,
+    onChangePage,
   }
 }
