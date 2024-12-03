@@ -1,0 +1,4 @@
+<template>
+  <ElSnackbar />
+  <slot />
+</template>
