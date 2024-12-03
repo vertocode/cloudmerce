@@ -23,6 +23,13 @@ export interface IProduct {
   fields: UserField[]
 }
 
+export interface IGetProductsResponse {
+  products: IProductResponse[]
+  totalPages: number
+  limit: number
+  page: number
+}
+
 export interface IProductResponse {
   createdAt: string
   ecommerceId: string

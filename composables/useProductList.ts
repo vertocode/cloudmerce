@@ -1,4 +1,4 @@
-import type { IProduct, IProductFilters, IProductResponse } from '~/types/product'
+import type { IGetProductsResponse, IProduct, IProductFilters, IProductResponse } from '~/types/product'
 
 export const useProductList = (filters?: IProductFilters) => {
   const products = useState<IProduct[]>('products', () => [])
@@ -39,9 +39,9 @@ export const useProductList = (filters?: IProductFilters) => {
       page: currentPage.value,
     }, {
       cache: cache || 'force-cache',
-    }) as IProductResponse[]
+    }) as IGetProductsResponse
 
-    products.value = response.map((product: IProductResponse): IProduct => ({
+    products.value = response.products.map((product: IProductResponse): IProduct => ({
       id: product._id,
       name: product.name,
       image: product.image,
@@ -50,6 +50,7 @@ export const useProductList = (filters?: IProductFilters) => {
       productType: product.productType,
       fields: product.fields,
     }))
+    totalPages.value = response.totalPages
     lastFilters.value = filters || null
 
     loading.value = false
