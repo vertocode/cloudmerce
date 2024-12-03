@@ -29,6 +29,7 @@ export const useProductList = (filters?: IProductFilters) => {
     const response = await get(`/products/ecommerce/${ecommerceId}`, {
       ...filters,
       search: search.value || '',
+      limit: 20,
     }, {
       cache: cache || 'force-cache',
     }) as IProductResponse[]
