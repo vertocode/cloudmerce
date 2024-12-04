@@ -59,7 +59,29 @@
       >
         <VeeTextField
           name="bannerDescription"
-          label="Descrição do Banner"
+          label="Mensagem do Banner"
+          outlined
+        />
+      </VCol>
+      <VCol
+        cols="12"
+        md="6"
+        class="pl-0 pb-0"
+      >
+        <VeeColorField
+          name="primaryColor"
+          label="Cor Primária"
+          outlined
+        />
+      </VCol>
+      <VCol
+        cols="12"
+        md="6"
+        class="pr-0 pb-0"
+      >
+        <VeeColorField
+          name="secondaryColor"
+          label="Cor Secundária"
           outlined
         />
       </VCol>
