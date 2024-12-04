@@ -5,12 +5,21 @@
     <p>Caso você acredite que este seja um erro, por favor, entre em contato conosco utilizando o formulário de contato disponível ao final da página.</p>
     <div>
       <h2>Formulário para configuração</h2>
-      <MdWhitelabelConfigurationForm />
+      <br>
+      <ClientOnly>
+        <MdWhitelabelConfigurationForm />
+      </ClientOnly>
     </div>
-    <div>
-      <h2>Contato caso precise: </h2>
-      <ElContactForm />
-    </div>
+    <VExpansionPanels>
+      <VExpansionPanel>
+        <VExpansionPanelTitle>
+          Contato
+        </VExpansionPanelTitle>
+        <VExpansionPanelText>
+          <ElContactForm />
+        </VExpansionPanelText>
+      </VExpansionPanel>
+    </VExpansionPanels>
   </main>
 </template>
 
@@ -21,7 +30,6 @@ definePageMeta({
 </script>
 
 <style lang="scss">
-// Variáveis para cores e tipografia
 $primary-color: #007BFF;
 $secondary-color: #f8f9fa;
 $background-color: #f4f6f9;
@@ -45,7 +53,7 @@ body {
 }
 
 main {
-  max-width: 960px;
+  max-width: 1200px;
   margin: 0 auto;
   padding: 40px;
   background-color: #ffffff;
@@ -76,35 +84,6 @@ form {
   display: flex;
   flex-direction: column;
   gap: 20px;
-
-  input,
-  textarea {
-    padding: 12px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 1rem;
-    outline: none;
-    transition: border-color 0.3s;
-
-    &:focus {
-      border-color: $primary-color;
-    }
-  }
-
-  button {
-    padding: 14px 20px;
-    background-color: $primary-color;
-    color: #ffffff;
-    border: none;
-    border-radius: 5px;
-    font-size: 1.1rem;
-    cursor: pointer;
-    transition: background-color 0.3s;
-
-    &:hover {
-      background-color: darken($primary-color, 10%);
-    }
-  }
 }
 
 footer {
