@@ -1,5 +1,7 @@
+import type { IWhitelabel, IWhitelabelError } from '~/types/whitelabel'
+
 export const useWhitelabel = () => {
-  const whitelabel = useState('whitelabel', () => null)
+  const whitelabel = useState<IWhitelabel | null>('whitelabel', () => null)
 
   const getWhitelabel = async () => {
     if (whitelabel.value) return whitelabel.value
@@ -8,13 +10,13 @@ export const useWhitelabel = () => {
     const router = useRouter()
     const url = useRequestURL()
     try {
-      console.log('pegando whitelabel...')
       const response = await get(`/whitelabel/${url.host}`)
-      console.log('whitelabel:', response)
-      if (response?.code === 404) {
+      if ((response as IWhitelabelError)?.code === 404) {
         await router.push('/whitelabel-configuration')
       }
-      whitelabel.value = response
+      if (!(response as IWhitelabel).name) throw new Error('Something wrong in the response data')
+
+      whitelabel.value = response as IWhitelabel
       return response
     }
     catch (error) {
