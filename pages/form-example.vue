@@ -19,6 +19,10 @@
       label="Senha"
       type="password"
     />
+    <VeeColorField
+      name="color"
+      label="Cor"
+    />
     <VeeButton :loading="isSubmitting">
       Enviar
     </VeeButton>

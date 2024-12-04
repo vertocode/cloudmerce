@@ -49,7 +49,6 @@ body {
   background-color: $background-color;
   color: $text-color;
   line-height: 1.6;
-  padding: 20px;
 }
 
 main {
