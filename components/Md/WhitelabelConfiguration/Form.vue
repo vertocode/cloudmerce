@@ -1,5 +1,8 @@
 <template>
-  <VeeForm :initial-values="initialValues">
+  <VeeForm
+    :initial-values="initialValues"
+    :validation-schema="validationSchema"
+  >
     <VRow>
       <VCol
         cols="12"
@@ -132,7 +135,29 @@
 </template>
 
 <script setup lang="ts">
+import { z } from 'zod'
+
 const initialValues = {
   baseUrl: window?.location?.origin as string,
 }
+
+const validationSchema = z.object({
+  name: z.string().min(3, { message: 'O nome da loja deve ter pelo menos 3 caracteres' }),
+  baseUrl: z
+    .string()
+    .url({ message: 'URL inválida' }),
+  logo: z.string().url({ message: 'URL da logo inválida' }),
+  description: z.string().optional(),
+  bannerTitle: z.string().min(5, { message: 'O título do banner deve ter pelo menos 5 caracteres' }),
+  bannerDescription: z.string().optional(),
+  primaryColor: z
+    .string()
+    .refine(validateColor, { message: 'Insira uma cor hexadecimal válida' }),
+  secondaryColor: z
+    .string()
+    .refine(validateColor, { message: 'Insira uma cor hexadecimal válida' }),
+  wpp: z.string().optional(),
+  instagram: z.string().optional(),
+  twitter: z.string().optional(),
+})
 </script>
