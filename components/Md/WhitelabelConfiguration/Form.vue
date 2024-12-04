@@ -14,7 +14,7 @@
       <VCol
         cols="12"
         md="4"
-        class="pl-0 pb-0"
+        class="pb-0"
       >
         <VeeTextField
           name="baseUrl"
@@ -82,6 +82,39 @@
         <VeeColorField
           name="secondaryColor"
           label="Cor Secundária"
+          outlined
+        />
+      </VCol>
+      <VCol
+        cols="12"
+        md="4"
+        class="pl-0 pb-0"
+      >
+        <VeeTextField
+          name="wpp"
+          label="Número do WhatsApp"
+          outlined
+        />
+      </VCol>
+      <VCol
+        cols="12"
+        md="4"
+        class="pb-0"
+      >
+        <VeeTextField
+          name="wpp"
+          label="@ do Instagram"
+          outlined
+        />
+      </VCol>
+      <VCol
+        cols="12"
+        md="4"
+        class="pr-0 pb-0"
+      >
+        <VeeTextField
+          name="wpp"
+          label="Twitter"
           outlined
         />
       </VCol>
