@@ -2,6 +2,7 @@
   <VeeForm
     :initial-values="initialValues"
     :validation-schema="validationSchema"
+    @submit="handleSubmit"
   >
     <VRow>
       <VCol
@@ -136,6 +137,7 @@
 
 <script setup lang="ts">
 import { z } from 'zod'
+import type { IWhitelabel } from '~/types/whitelabel'
 
 const initialValues = {
   baseUrl: window?.location?.origin as string,
@@ -160,4 +162,39 @@ const validationSchema = z.object({
   instagram: z.string().optional(),
   twitter: z.string().optional(),
 })
+
+const handleSubmit = async (values: Record<string, any>) => {
+  const { post } = useApi()
+  const router = useRouter()
+  try {
+    const response = await post('/whitelabel', {
+      baseUrl: values.baseUrl,
+      name: values.name,
+      description: values.description,
+      primaryColor: values.primaryColor,
+      secondaryColor: values.secondaryColor,
+      banner: {
+        title: values.bannerTitle,
+        description: values.bannerDescription,
+      },
+      logoUrl: values.logo,
+      socialMedia: {
+        whatsapp: values.wpp,
+        instagram: values.instagram,
+        twitter: values.twitter,
+      },
+    })
+    if ((response as IWhitelabel)?._id) {
+      handleSuccess('Configuração salva com sucesso')
+      await router.push('/')
+    }
+    else {
+      throw new Error(`Response without _id: ${response}`)
+    }
+  }
+  catch (e) {
+    console.error(e)
+    handleError('Erro ao salvar configuração')
+  }
+}
 </script>

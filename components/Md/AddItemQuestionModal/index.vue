@@ -79,8 +79,6 @@ const emit = defineEmits()
 const values = ref<Record<string, string>>(props.product?.fields.reduce((acc, field) => {
   acc[field.label] = ''
 
-  console.log(field, '<<< field')
-  console.log(field.options, '<<< options')
   if (field.options?.length) acc[field.label] = field.options[0]
 
   return acc

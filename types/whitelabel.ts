@@ -1,4 +1,5 @@
 export interface IWhitelabel {
+  _id: string
   baseUrl: string
   name: string
   description?: string
