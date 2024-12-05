@@ -2,10 +2,10 @@
   <div class="banner">
     <div class="banner-content">
       <h1 class="banner-title">
-        Produtos de <span class="highlight">Qualidade</span> para Você
+        {{ whitelabel?.banner?.title }}
       </h1>
       <p class="banner-subtitle">
-        Tudo o que você precisa, a um clique de distância
+        {{ whitelabel?.banner?.description }}
       </p>
       <div class="payment-options">
         <div class="option">
@@ -15,7 +15,7 @@
           >
             mdi-cash
           </VIcon>
-          <span>Desconto no Pix</span>
+          <span>Pix</span>
         </div>
         <div class="option">
           <VIcon
@@ -24,16 +24,22 @@
           >
             mdi-credit-card
           </VIcon>
-          <span>Cartão de Crédito Aceito</span>
+          <span>Cartão de Crédito</span>
         </div>
       </div>
     </div>
   </div>
 </template>
 
+<script setup lang="ts">
+const { getWhitelabel } = useWhitelabel()
+
+const whitelabel = await getWhitelabel()
+</script>
+
 <style scoped lang="scss">
 .banner {
-  background: url('assets/banner.png') no-repeat center;
+  background: var(--primary-color-500);
   background-size: cover;
   padding: 60px 20px;
   display: flex;
@@ -58,11 +64,6 @@
   font-weight: 600;
   margin-bottom: 8px;
   color: #ffffff;
-}
-
-.highlight {
-  color: #FFD700;
-  font-weight: 600;
 }
 
 .banner-subtitle {
@@ -97,8 +98,7 @@
 }
 
 .icon {
-  color: #FFD700;
-  background-color: rgba(0, 0, 0, 0.1);
+  color: #fff;
   padding: 12px;
   border-radius: 50%;
 }
