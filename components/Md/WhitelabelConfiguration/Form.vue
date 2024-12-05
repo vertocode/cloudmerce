@@ -22,7 +22,7 @@
       >
         <VeeTextField
           name="baseUrl"
-          label="URL do E-Commerce"
+          label="Host do E-Commerce"
           disabled
         />
       </VCol>
@@ -32,7 +32,7 @@
         class="pr-0 pb-0"
       >
         <VeeTextField
-          name="logo"
+          name="logoUrl"
           label="URL da sua logo"
         />
       </VCol>
@@ -139,8 +139,22 @@
 import { z } from 'zod'
 import type { IWhitelabel } from '~/types/whitelabel'
 
+const url = useRequestURL()
+
+const { getWhitelabel } = useWhitelabel()
+
+const whitelabel = await getWhitelabel()
+
 const initialValues = {
-  baseUrl: window?.location?.origin as string,
+  baseUrl: url.host as unknown as string,
+  bannerTitle: whitelabel?.banner?.title || '',
+  bannerDescription: whitelabel?.banner?.description || '',
+  socialMedia: {
+    wpp: whitelabel?.socialMedia?.wpp || '',
+    instagram: whitelabel?.socialMedia?.instagram || '',
+    twitter: whitelabel?.socialMedia?.twitter || '',
+  },
+  ...(whitelabel || {}),
 }
 
 const validationSchema = z.object({
@@ -148,7 +162,7 @@ const validationSchema = z.object({
   baseUrl: z
     .string()
     .url({ message: 'URL inválida' }),
-  logo: z.string().url({ message: 'URL da logo inválida' }),
+  logoUrl: z.string().url({ message: 'URL da logo inválida' }),
   description: z.string().optional(),
   bannerTitle: z.string().min(5, { message: 'O título do banner deve ter pelo menos 5 caracteres' }),
   bannerDescription: z.string().optional(),
@@ -177,9 +191,9 @@ const handleSubmit = async (values: Record<string, any>) => {
         title: values.bannerTitle,
         description: values.bannerDescription,
       },
-      logoUrl: values.logo,
+      logoUrl: values.logoUrl,
       socialMedia: {
-        whatsapp: values.wpp,
+        wpp: values.wpp,
         instagram: values.instagram,
         twitter: values.twitter,
       },

@@ -71,11 +71,17 @@
           >
             <VListItemTitle>Cadastrar Novo Produto</VListItemTitle>
           </VListItem>
+          <!--          <VListItem -->
+          <!--            class="navigation-item admin-item" -->
+          <!--            @click="showPaletteModal = true" -->
+          <!--          > -->
+          <!--            <VListItemTitle>Configurações de Paleta</VListItemTitle> -->
+          <!--          </VListItem> -->
           <VListItem
             class="navigation-item admin-item"
-            @click="showPaletteModal = true"
+            @click="$router.push('/edit-whitelabel')"
           >
-            <VListItemTitle>Configurações de Paleta</VListItemTitle>
+            <VListItemTitle>Configurações do E-Commerce</VListItemTitle>
           </VListItem>
         </template>
       </VList>

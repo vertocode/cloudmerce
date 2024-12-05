@@ -17,7 +17,7 @@ export const useWhitelabel = () => {
       if (!(response as IWhitelabel).name) throw new Error('Something wrong in the response data')
 
       whitelabel.value = response as IWhitelabel
-      return response
+      return response as IWhitelabel
     }
     catch (error) {
       handleError('Erro inesperado ao buscar dados da loja')
