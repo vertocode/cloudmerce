@@ -45,6 +45,10 @@ $tablet-breakpoint: 992px;
   padding: 0 !important;
 }
 
+.bg-primary {
+  background-color: var(--primary-color-500) !important;
+}
+
 input:-webkit-autofill,
 input:-webkit-autofill:hover,
 input:-webkit-autofill:focus textarea:-webkit-autofill,

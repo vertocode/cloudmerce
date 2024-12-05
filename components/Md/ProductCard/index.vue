@@ -31,7 +31,7 @@
       </VBtn>
       <MdEditProductModal
         :initial-values="product"
-        :updateProductList
+        :update-product-list
       >
         <VBtn
           v-if="isAdmin"
@@ -147,18 +147,8 @@ const addToCart = async () => {
       }
     }
 
-    .add-to-cart-btn {
-      background-color: #007aff;
-      color: #fff;
-
-      &:hover {
-        background-color: #005bb5;
-      }
-    }
-
     .view-details-btn {
       background-color: #f4f4f4;
-      color: #007aff;
 
       &:hover {
         background-color: #e0e0e0;

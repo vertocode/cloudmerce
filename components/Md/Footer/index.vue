@@ -3,7 +3,7 @@
     <div class="footer-container">
       <div class="footer-logo">
         <img
-          :src="storeLogo"
+          :src="whitelabel?.logoUrl"
           alt="Logo"
           @click="$router.push('/')"
         >
@@ -59,7 +59,7 @@
       <MdSocialMediaIcons />
     </div>
     <div class="footer-bottom">
-      <p>&copy; {{ new Date().getFullYear() }} {{ storeName }}. Todos os direitos reservados.</p>
+      <p>&copy; {{ new Date().getFullYear() }} {{ whitelabel?.name }}. Todos os direitos reservados.</p>
     </div>
   </footer>
   <MdPaletteModal
@@ -79,8 +79,11 @@
 
 <script setup lang="ts">
 const { techEmail, formattedWhatsappNumber } = useContact()
-const { storeLogo, storeName } = useStoreData()
 const { isAdmin } = useUser()
+
+const { getWhitelabel } = useWhitelabel()
+
+const whitelabel = await getWhitelabel()
 
 const showPaletteModal = ref(false)
 const showProductTypeModal = ref(false)
@@ -107,9 +110,16 @@ const onRegisterNewProductType = () => {
     gap: 16px;
     margin-bottom: 24px;
 
-    .footer-logo img {
-      max-width: 100px;
-      cursor: pointer;
+    .footer-logo {
+      padding: 24px;
+      background-color: #fff;
+      border-radius: 8px;
+
+      img {
+        mix-blend-mode: darken;
+        max-width: 100px;
+        cursor: pointer;
+      }
     }
 
     .footer-links {
