@@ -2,7 +2,7 @@
   <div class="color-field">
     <Field
       v-if="name"
-      v-slot="{ field, errorMessage, value, setValue }"
+      v-slot="{ field, errorMessage, setValue, value }"
       :name
     >
       <VTextField
@@ -24,12 +24,12 @@
         <template #activator="{ props }">
           <span
             class="color-example"
-            :style="`background-color: ${color}`"
+            :style="`background-color: ${`#${value}`}`"
             v-bind="props"
           />
         </template>
         <VColorPicker
-          v-model="color"
+          v-model="field.value"
           show-swatches
           hide-inputs
           @update:model-value="(v) => setValue(v.replace('#', ''))"
@@ -41,8 +41,6 @@
 
 <script setup lang="ts">
 import { Field } from 'vee-validate'
-
-const color = ref('#000')
 
 defineProps<{
   name: string
