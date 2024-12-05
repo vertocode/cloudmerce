@@ -70,7 +70,6 @@
 </template>
 
 <script setup lang="ts">
-import tinycolor from 'tinycolor2'
 import { palettes } from './data/palettes'
 import type { IPalette } from './type/palette'
 import Modal from '~/components/El/Modal/index.vue'
@@ -88,35 +87,8 @@ const selectPalette = (palette: IPalette, index: number) => {
 
 const applyPalette = () => {
   if (selectedPalette.value) {
-    const primaryColor = tinycolor(selectedPalette.value.primaryColor)
-    const secondaryColor = tinycolor(selectedPalette.value.secondaryColor)
-
-    const intensities = [100, 200, 300, 400, 500, 600, 700]
-    const adjustAmount = 10
-
-    intensities.forEach((intensity) => {
-      let adjustedPrimaryColor
-      let adjustedSecondaryColor
-
-      if (intensity === 500) {
-        adjustedPrimaryColor = primaryColor
-        adjustedSecondaryColor = secondaryColor
-      }
-      else if (intensity < 500) {
-        // Lighten colors for intensities less than 500
-        adjustedPrimaryColor = primaryColor.clone().lighten(adjustAmount * (500 - intensity) / 100).toString()
-        adjustedSecondaryColor = secondaryColor.clone().lighten(adjustAmount * (500 - intensity) / 100).toString()
-      }
-      else {
-        // Darken colors for intensities greater than 500
-        adjustedPrimaryColor = primaryColor.clone().darken(adjustAmount * (intensity - 500) / 100).toString()
-        adjustedSecondaryColor = secondaryColor.clone().darken(adjustAmount * (intensity - 500) / 100).toString()
-      }
-
-      document.documentElement.style.setProperty(`--primary-color-${intensity}`, adjustedPrimaryColor as string)
-      document.documentElement.style.setProperty(`--secondary-color-${intensity}`, adjustedSecondaryColor as string)
-    })
-
+    const { primaryColor: primary, secondaryColor: secondary } = selectedPalette.value
+    handleChangePallete({ primary, secondary })
     if (props.onClose) props.onClose()
     selectedPalette.value = null
   }

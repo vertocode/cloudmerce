@@ -3,6 +3,15 @@ import type { IWhitelabel, IWhitelabelError } from '~/types/whitelabel'
 export const useWhitelabel = () => {
   const whitelabel = useState<IWhitelabel | null>('whitelabel', () => null)
 
+  onMounted(() => {
+    if (import.meta.client) {
+      handleChangePalette({
+        primary: whitelabel.value?.primaryColor || '',
+        secondary: whitelabel.value?.secondaryColor || '',
+      })
+    }
+  })
+
   const getWhitelabel = async () => {
     if (whitelabel.value) return whitelabel.value
 
