@@ -13,7 +13,7 @@
     <VCol
       v-for="product in products"
       :key="product.id"
-      cols="12"
+      cols="6"
       xl="3"
       lg="3"
       md="4"

@@ -10,25 +10,28 @@
 
     <VCardSubtitle class="product-price">
       {{ formattedPrice }}
+      <VIcon
+        class="detail-button"
+        size="42"
+        @click="$router.push(`/product/${product.id}`)"
+      >
+        mdi-eye-circle
+      </VIcon>
     </VCardSubtitle>
 
     <VCardActions class="card-actions">
-      <VBtn
-        color="primary"
-        variant="flat"
-        :loading="addingToCart"
-        class="add-to-cart-btn"
-        @click="addToCart"
-      >
-        Adicionar ao Carrinho
-      </VBtn>
-      <VBtn
-        class="view-details-btn"
-        variant="outlined"
-        @click="$router.push(`/product/${product.id}`)"
-      >
-        Ver Detalhes
-      </VBtn>
+      <div class="public-actions">
+        <VBtn
+          color="primary"
+          variant="flat"
+          :loading="addingToCart"
+          class="add-to-cart-btn"
+          @click="addToCart"
+        >
+          Comprar
+        </VBtn>
+      </div>
+
       <MdEditProductModal
         :initial-values="product"
         :update-product-list
@@ -122,9 +125,16 @@ const addToCart = async () => {
   }
 
   .product-price {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     color: #6c757d;
     font-size: 1.1rem;
     padding: 0 16px 16px;
+
+    .detail-button {
+      cursor: pointer;
+    }
   }
 
   .card-actions {
@@ -133,25 +143,15 @@ const addToCart = async () => {
     flex-direction: column;
     gap: 8px;
 
-    .add-to-cart-btn,
-    .view-details-btn,
-    .edit-btn,
-    .delete-btn {
+    .public-actions {
       width: 100%;
-      padding: 12px;
-      transition: background-color 0.3s, transform 0.3s;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      display: flex;
+      gap: 16px;
+      align-items: center;
+      justify-content: flex-end;
 
-      &:hover {
-        transform: translateY(-2px);
-      }
-    }
-
-    .view-details-btn {
-      background-color: #f4f4f4;
-
-      &:hover {
-        background-color: #e0e0e0;
+      .add-to-cart-btn {
+        width: 100%;
       }
     }
 
