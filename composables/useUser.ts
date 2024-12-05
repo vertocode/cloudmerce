@@ -33,8 +33,16 @@ export const useUser = () => {
   }
 
   const login = async (authParams: AuthParams) => {
+    const { getWhitelabel } = useWhitelabel()
     try {
-      const response = await get('/auth/login', authParams) as User | { errorCode: string }
+      const whitelabel = await getWhitelabel()
+      if (!whitelabel?._id) {
+        throw new Error('Whitelabel not found')
+      }
+      const response = await get('/auth/login', {
+        whitelabelId: whitelabel._id,
+        ...authParams,
+      }) as User | { errorCode: string }
 
       if ((response as { errorCode: string })?.errorCode === 'user_not_found') {
         handleWarning('Usuário não encontrado')
@@ -60,8 +68,16 @@ export const useUser = () => {
   }
 
   const register = async (registerParams: RegisterParams) => {
+    const { getWhitelabel } = useWhitelabel()
     try {
-      const response = await post('/users', registerParams)
+      const whitelabel = await getWhitelabel()
+      if (!whitelabel?._id) {
+        throw new Error('Whitelabel not found')
+      }
+      const response = await post('/users', {
+        whitelabelId: whitelabel._id,
+        ...registerParams,
+      })
       const userResponse = response as User
       if (!userResponse?._id) {
         throw new Error('Response without user id')
