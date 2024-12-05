@@ -178,10 +178,11 @@ const validationSchema = z.object({
 })
 
 const handleSubmit = async (values: Record<string, any>) => {
-  const { post } = useApi()
+  const { post, put } = useApi()
   const router = useRouter()
+  const id = whitelabel?._id
   try {
-    const response = await post('/whitelabel', {
+    const whitelabelData = {
       baseUrl: values.baseUrl,
       name: values.name,
       description: values.description,
@@ -197,13 +198,29 @@ const handleSubmit = async (values: Record<string, any>) => {
         instagram: values.instagram,
         twitter: values.twitter,
       },
-    })
-    if ((response as IWhitelabel)?._id) {
-      handleSuccess('Configuração salva com sucesso')
-      await router.push('/')
+    }
+    if (id) {
+      const response = await put(`/whitelabel/${id}`, whitelabelData)
+
+      if ((response as { code: number })?.code === 200) {
+        handleSuccess('Configuração salva com sucesso')
+        await router.push('/')
+        window.location.reload()
+      }
+      else {
+        throw new Error(`Response without code 200: ${response}`)
+      }
     }
     else {
-      throw new Error(`Response without _id: ${response}`)
+      const response = await post('/whitelabel', whitelabelData)
+
+      if ((response as IWhitelabel)?._id) {
+        handleSuccess('Configuração salva com sucesso')
+        await router.push('/')
+      }
+      else {
+        throw new Error(`Response without _id: ${response}`)
+      }
     }
   }
   catch (e) {
