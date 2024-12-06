@@ -1,32 +1,42 @@
 <template>
   <div class="banner">
-    <div class="banner-content">
-      <h1 class="banner-title">
-        {{ whitelabel?.banner?.title }}
-      </h1>
-      <p class="banner-subtitle">
-        {{ whitelabel?.banner?.description }}
-      </p>
-      <div class="payment-options">
-        <div class="option">
-          <VIcon
-            large
-            class="icon pix-icon"
-          >
-            mdi-cash
-          </VIcon>
-          <span>Pix</span>
+    <div class="banner-image">
+      <img
+        src="~/assets/banner-image.png"
+        alt="banner-image"
+      >
+    </div>
+    <div class="gradient">
+      <MdContainer class="container">
+        <div class="banner-content">
+          <h1 class="banner-title">
+            {{ whitelabel?.banner?.title }}
+          </h1>
+          <p class="banner-subtitle">
+            {{ whitelabel?.banner?.description }}
+          </p>
+          <div class="payment-options">
+            <div class="option">
+              <VIcon
+                large
+                class="icon pix-icon"
+              >
+                mdi-cash
+              </VIcon>
+              <span>Pix</span>
+            </div>
+            <div class="option">
+              <VIcon
+                large
+                class="icon credit-card-icon"
+              >
+                mdi-credit-card
+              </VIcon>
+              <span>Cartão de Crédito</span>
+            </div>
+          </div>
         </div>
-        <div class="option">
-          <VIcon
-            large
-            class="icon credit-card-icon"
-          >
-            mdi-credit-card
-          </VIcon>
-          <span>Cartão de Crédito</span>
-        </div>
-      </div>
+      </MdContainer>
     </div>
   </div>
 </template>
@@ -39,16 +49,48 @@ const whitelabel = await getWhitelabel()
 
 <style scoped lang="scss">
 .banner {
-  background: var(--primary-color-500);
-  background-size: cover;
-  padding: 60px 20px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
-  color: #ffffff;
+  background-color: var(--primary-color-500);
+  position: relative;
+  height: 350px;
+  padding: 60px 120px;
+  display: block;
   width: 100%;
   border-radius: 0;
+
+  .gradient {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(86.28deg, var(--primary-color-400) 10.21%, var(--primary-color-600) 32.99%, var(--primary-color-600) 56.02%, var(--primary-color-400) 127.2%);
+
+    .container {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+    }
+  }
+}
+
+.banner-image {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  z-index: 1;
+  height: 300px;
+  opacity: 50%;
+  object-fit: contain;
+
+  img {
+    object-fit: fill;
+    width: 100%;
+    height: 100%;
+  }
 }
 
 .banner-content {
