@@ -1,4 +1,6 @@
 export default function (successMessage: string) {
-  const { openSnackbar } = useSnackbar()
-  openSnackbar(successMessage, 'success')
+  if (import.meta.client) {
+    const { openSnackbar } = useSnackbar()
+    openSnackbar(successMessage, 'success')
+  }
 }

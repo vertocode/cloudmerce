@@ -1,4 +1,6 @@
 export default function (errorMessage: string) {
-  const { openSnackbar } = useSnackbar()
-  openSnackbar(errorMessage || 'Houve um erro inesperado.', 'error')
+  if (import.meta.client) {
+    const { openSnackbar } = useSnackbar()
+    openSnackbar(errorMessage || 'Houve um erro inesperado.', 'error')
+  }
 }
