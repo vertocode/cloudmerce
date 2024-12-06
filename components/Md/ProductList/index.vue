@@ -9,22 +9,17 @@
       size="50"
     />
   </div>
-  <VRow v-else-if="products.length">
-    <VCol
+  <div
+    v-else-if="products.length"
+    class="product-list"
+  >
+    <MdProductCard
       v-for="product in products"
       :key="product.id"
-      cols="6"
-      xl="3"
-      lg="3"
-      md="4"
-      sm="6"
-    >
-      <MdProductCard
-        :product
-        :update-product-list
-      />
-    </VCol>
-  </VRow>
+      :product
+      :update-product-list
+    />
+  </div>
   <MdNoProducts
     v-else
     @retry="retryFetch"
@@ -77,5 +72,25 @@ const handlePageChange = (page: number) => {
   justify-content: center;
   align-items: center;
   height: 300px;
+}
+
+.product-list {
+  display: grid;
+  gap: 20px;
+  padding: 20px;
+  grid-template-columns: repeat(5, 1fr);
+
+  @media screen and (max-width: 1400px) {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  @media screen and (max-width: 1050px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  @media screen and (max-width: 800px) {
+    padding: 24px 0;
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 </style>

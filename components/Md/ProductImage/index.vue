@@ -20,6 +20,9 @@
   <!-- Carousel for multiple images -->
   <VCarousel
     v-else-if="images?.length > 1"
+    hide-delimiter-background
+    show-arrows="hover"
+    :cycle
     class="product-image-carousel"
   >
     <VCarouselItem
@@ -49,6 +52,7 @@
 const props = defineProps<{
   image: string | string[]
   asImage?: boolean
+  cycle?: boolean
 }>()
 
 const images = computed(() => {

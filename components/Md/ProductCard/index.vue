@@ -121,6 +121,10 @@ const addToCart = async () => {
     .product-name {
       font-size: 1.5rem;
       color: #007aff;
+
+      @media screen and (max-width: $mobile-breakpoint) {
+        font-size: 1rem;
+      }
     }
   }
 
@@ -134,6 +138,10 @@ const addToCart = async () => {
 
     .detail-button {
       cursor: pointer;
+    }
+
+    @media screen and (max-width: $mobile-breakpoint) {
+      font-size: .9rem;
     }
   }
 
