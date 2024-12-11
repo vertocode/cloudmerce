@@ -75,6 +75,7 @@ const handleSearch = async (values: { search: string }) => {
 
 <style scoped lang="scss">
 .search-bar {
+  z-index: 3;
   width: 90%;
   max-width: 700px;
   margin: auto;

@@ -163,8 +163,8 @@ const validationSchema = z.object({
     .string(),
   logoUrl: z.string().url({ message: 'URL da logo inválida' }),
   description: z.string().optional(),
-  bannerTitle: z.string().min(5, { message: 'O título do banner deve ter pelo menos 5 caracteres' }),
-  bannerDescription: z.string().optional(),
+  bannerTitle: z.string().min(5, { message: 'O título do banner deve ter pelo menos 5 caracteres' }).max(40, 'Título do banner deve ter no máximo 50 caracteres'),
+  bannerDescription: z.string().min(5, { message: 'A descrição do banner deve ter pelo menos 5 caracteres' }).max(150, 'Descrição do banner deve ter no máximo 150 caracteres'),
   primaryColor: z
     .string()
     .refine(validateColor, { message: 'Insira uma cor hexadecimal válida' }),

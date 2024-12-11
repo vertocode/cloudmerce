@@ -15,26 +15,6 @@
           <p class="banner-subtitle">
             {{ whitelabel?.banner?.description }}
           </p>
-          <div class="payment-options">
-            <div class="option">
-              <VIcon
-                large
-                class="icon pix-icon"
-              >
-                mdi-cash
-              </VIcon>
-              <span>Pix</span>
-            </div>
-            <div class="option">
-              <VIcon
-                large
-                class="icon credit-card-icon"
-              >
-                mdi-credit-card
-              </VIcon>
-              <span>Cartão de Crédito</span>
-            </div>
-          </div>
         </div>
       </MdContainer>
     </div>
@@ -48,10 +28,14 @@ const whitelabel = await getWhitelabel()
 </script>
 
 <style scoped lang="scss">
+@import url("https://use.typekit.net/eor8tme.css");
+
 .banner {
+  margin: auto;
+  max-width: 1600px;
   background-color: var(--primary-color-500);
   position: relative;
-  height: 350px;
+  height: 500px;
   padding: 60px 120px;
   display: block;
   width: 100%;
@@ -69,9 +53,11 @@ const whitelabel = await getWhitelabel()
     background: linear-gradient(86.28deg, var(--primary-color-400) 10.21%, var(--primary-color-600) 32.99%, var(--primary-color-600) 56.02%, var(--primary-color-400) 127.2%);
 
     .container {
+      z-index: 2;
       width: 100%;
       display: flex;
-      justify-content: center;
+      padding-left: 15%;
+      justify-content: flex-start;
     }
   }
 }
@@ -82,7 +68,7 @@ const whitelabel = await getWhitelabel()
   right: 0;
   left: 0;
   z-index: 1;
-  height: 300px;
+  height: 500px;
   opacity: 50%;
   object-fit: contain;
 
@@ -97,85 +83,65 @@ const whitelabel = await getWhitelabel()
   display: flex;
   flex-direction: column;
   align-items: center;
-  max-width: 700px;
+  max-width: 50%;
   text-align: center;
 }
 
 .banner-title {
-  font-size: 2.5rem;
-  font-weight: 600;
+  font-family: "muli", sans-serif;
+  font-weight: 900;
+  font-style: normal;
+  font-size: 3.5rem;
   margin-bottom: 8px;
   color: #ffffff;
 }
 
 .banner-subtitle {
-  font-size: 1.2rem;
+  font-family: "muli", sans-serif;
   font-weight: 400;
+  font-style: normal;
+  font-size: 1.5rem;
   margin-bottom: 30px;
   color: rgba(255, 255, 255, 0.9);
 }
 
-.payment-options {
-  display: flex;
-  gap: 20px;
-  margin-top: 20px;
-}
+@media (max-width: 1200px) {
+  .banner-title {
+    font-size: 3rem;
+  }
 
-.option {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-size: 1rem;
-  font-weight: 400;
-  background-color: rgba(255, 255, 255, 0.2);
-  padding: 12px 24px;
-  border-radius: 8px;
-  transition: background-color 0.3s ease, transform 0.3s ease;
-  color: #ffffff;
-}
-
-.option:hover {
-  background-color: rgba(255, 255, 255, 0.3);
-  transform: translateY(-2px);
-}
-
-.icon {
-  color: #fff;
-  padding: 12px;
-  border-radius: 50%;
+  .banner-subtitle {
+    font-size: 1.3rem;
+  }
 }
 
 @media (max-width: 768px) {
-  .banner-title {
-    font-size: 2rem;
+  .container {
+    z-index: 2;
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    padding-left: 10px !important;
   }
 
-  .banner-subtitle {
-    font-size: 1rem;
+  .banner-image {
+    opacity: 30%;
   }
 
-  .payment-options {
+  .banner-content {
+    display: flex;
     flex-direction: column;
+    align-items: center;
+    max-width: 100%;
+    text-align: center;
   }
-}
 
-@media (max-width: 480px) {
   .banner-title {
-    font-size: 1.8rem;
+    font-size: 2.5rem;
   }
 
   .banner-subtitle {
-    font-size: 0.9rem;
-  }
-
-  .option {
-    font-size: 0.9rem;
-    padding: 10px 20px;
-  }
-
-  .icon {
-    font-size: 22px;
-    padding: 10px;
+    font-size: 1.3rem;
   }
 }
 </style>
