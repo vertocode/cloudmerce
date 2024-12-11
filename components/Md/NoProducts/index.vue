@@ -10,11 +10,20 @@
       Nenhum produto encontrado
     </h3>
     <p class="no-products-message">
-      Não há produtos disponíveis nesta categoria.
+      Não há produtos disponíveis {{ filterSearchProducts ? 'de acordo com os filtros selecionados' : 'nesta categoria' }}.
     </p>
 
     <div class="button-group">
       <VBtn
+        v-if="filterSearchProducts"
+        color="primary"
+        class="clean-btn"
+        @click="filterSearchProducts = ''"
+      >
+        Limpar Filtros
+      </VBtn>
+      <VBtn
+        v-if="!filterSearchProducts"
         color="primary"
         class="retry-btn"
         @click="$emit('retry')"
@@ -22,6 +31,7 @@
         Tentar Novamente
       </VBtn>
       <VBtn
+        v-if="!filterSearchProducts"
         color="secondary"
         class="home-btn"
         @click="$emit('goHome')"
@@ -31,6 +41,10 @@
     </div>
   </div>
 </template>
+
+<script setup lang="ts">
+const filterSearchProducts = useState<string>('filterSearchProducts')
+</script>
 
 <style lang="scss" scoped>
 .no-products {

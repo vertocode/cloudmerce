@@ -77,7 +77,7 @@ const handleSearch = async (values: { search: string }) => {
 .search-bar {
   z-index: 3;
   width: 90%;
-  max-width: 700px;
+  max-width: 900px;
   margin: auto;
   display: flex;
   flex-direction: column;
