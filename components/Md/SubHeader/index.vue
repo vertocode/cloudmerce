@@ -38,11 +38,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
-import { useRouter, useRoute } from 'vue-router'
-import { useStoreData } from '@/composables/useStoreData'
-
-const { productTypes } = useStoreData()
+const { productTypes } = useProductTypes()
 const router = useRouter()
 const route = useRoute()
 

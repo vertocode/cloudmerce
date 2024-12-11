@@ -262,8 +262,6 @@
 import { ref } from 'vue'
 import { z } from 'zod'
 import { FieldArray } from 'vee-validate'
-import { useStoreData } from '~/composables/useStoreData'
-import type { IProductType } from '~/composables/useStoreData'
 import { UserFieldTypeLabel } from '~/types/product'
 
 const props = defineProps<{
@@ -275,7 +273,7 @@ const props = defineProps<{
 }>()
 
 const products = useState('products', () => [])
-const { productTypes, ecommerceId } = useStoreData()
+const { productTypes } = useProductTypes()
 
 const isEdition = !!props.initialValues
 

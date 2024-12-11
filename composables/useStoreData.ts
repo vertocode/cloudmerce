@@ -1,43 +1,5 @@
-export interface IProductType {
-  id: string
-  name: string
-}
-
-interface IProductTypeResponse {
-  _id: string
-  name: string
-  createdAt: string
-  updatedAt: string
-  ecommerceId: string
-}
-
 export const useStoreData = () => {
-  const { get } = useApi()
   const ecommerceId = 1
-  const productTypes = useState<IProductType[]>(() => [])
-
-  interface IUpdateProductTypes {
-    cache?: 'no-cache' | 'force-cache'
-  }
-
-  const updateProductTypes = async ({ cache }: IUpdateProductTypes) => {
-    try {
-      if (productTypes.value.length && cache !== 'no-cache') return
-
-      const response = await get(`/product-types/ecommerce/${ecommerceId}`, {}, {
-        cache: cache || 'force-cache',
-      }) as IProductTypeResponse[]
-      productTypes.value = response.map((productType: IProductTypeResponse) => ({
-        id: productType?._id,
-        name: productType.name,
-      }))
-    }
-    catch (e) {
-      console.error(e)
-    }
-  }
-
-  callOnce('updateProductTypes', () => updateProductTypes({ cache: 'no-cache' }))
 
   const storeName = 'Cloudmerce'
   const storeLogo = 'https://i.imgur.com/wtfyizY.png'
@@ -65,18 +27,11 @@ export const useStoreData = () => {
     },
   ]
 
-  const getProductTypeById = (id: string) => {
-    return productTypes.value.find(productType => productType.id === id)
-  }
-
   return {
     ecommerceId,
-    productTypes,
     storeName,
     storeDescription,
     storeLogo,
     storeSocialMedia,
-    getProductTypeById,
-    updateProductTypes: updateProductTypes,
   }
 }

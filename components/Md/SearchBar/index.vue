@@ -41,7 +41,7 @@ import { z } from 'zod'
 const route = useRoute()
 const filterSearchProducts = useState<string>('filterSearchProducts')
 
-const { getProductTypeById } = useStoreData()
+const { getProductTypeById } = useProductTypes()
 
 const productType = computed(() => {
   const defaultProductType = 'produtos'

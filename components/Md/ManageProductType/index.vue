@@ -79,10 +79,8 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from 'vue'
 import Modal from '~/components/El/Modal/index.vue'
 import DeleteProductType from '~/components/Md/DeleteProductType/index.vue'
-import { useStoreData } from '~/composables/useStoreData'
 
 const props = defineProps<{
   showProductTypeModal: boolean
@@ -90,7 +88,7 @@ const props = defineProps<{
 }>()
 
 const isLoading = ref(false)
-const { productTypes, ecommerceId, updateProductTypes } = useStoreData()
+const { productTypes, updateProductTypes } = useProductTypes()
 const { put } = useApi()
 
 const rules = [
@@ -131,6 +129,16 @@ const submit = async () => {
       const oldProductType = oldProductTypes.value.find(oldType => oldType.id === type.id)
       return oldProductType && oldProductType.name !== type.name
     })
+
+    const { getWhitelabel } = useWhitelabel()
+
+    const whitelabel = await getWhitelabel()
+
+    if (!whitelabel) {
+      throw new Error('Whitelabel not found')
+    }
+
+    const ecommerceId = whitelabel._id
 
     const productTypes = [
       ...productTypesToUpdate.map(type => ({ ecommerceId, id: type.id, name: type.name, action: 'update' })),

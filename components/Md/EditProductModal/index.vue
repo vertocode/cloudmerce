@@ -39,7 +39,7 @@ const props = defineProps<{
 
 const { put } = useApi()
 
-const { getProductTypeById } = useStoreData()
+const { getProductTypeById } = useProductTypes()
 
 const initialValues = computed(() => {
   const product = props.initialValues
