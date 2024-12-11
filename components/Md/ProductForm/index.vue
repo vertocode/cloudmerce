@@ -290,10 +290,16 @@ const initialUserField = {
 const submit = async (values: Record<string, any>) => {
   isLoading.value = true
 
+  const { getWhitelabel } = useWhitelabel()
+
   try {
+    const whitelabel = await getWhitelabel()
+    if (!whitelabel) {
+      throw new Error('Whitelabel not found')
+    }
     await props.action({
       ...values,
-      ecommerceId: ecommerceId,
+      ecommerceId: whitelabel._id,
       productType: productTypes.value.find((type: IProductType) => type.name === values.productType)?.id || '',
       userFields: values.userFields.map((field) => {
         const type = (() => {

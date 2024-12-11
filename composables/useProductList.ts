@@ -12,7 +12,6 @@ export const useProductList = (filters?: IProductFilters) => {
     currentPage.value = page
   }
 
-  const { ecommerceId } = useStoreData()
   const { get } = useApi()
 
   interface IFetchProducts {
@@ -31,8 +30,16 @@ export const useProductList = (filters?: IProductFilters) => {
       return
     }
 
+    const { getWhitelabel } = useWhitelabel()
+
+    const whitelabel = await getWhitelabel()
+
+    if (!whitelabel) {
+      throw new Error('Whitelabel not found')
+    }
+
     loading.value = true
-    const response = await get(`/products/ecommerce/${ecommerceId}`, {
+    const response = await get(`/products/ecommerce/${whitelabel._id}`, {
       ...filters,
       search: search.value || '',
       limit: 20,
