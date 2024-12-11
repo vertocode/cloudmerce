@@ -203,5 +203,6 @@ const onClose = () => {
 .product-type-fields {
   max-height: 500px;
   overflow-y: auto;
+  padding-top: 8px;
 }
 </style>
