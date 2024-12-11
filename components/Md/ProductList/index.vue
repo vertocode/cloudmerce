@@ -77,7 +77,7 @@ const handlePageChange = (page: number) => {
 .product-list {
   display: grid;
   gap: 20px;
-  padding: 20px;
+  padding: 20px 0;
   grid-template-columns: repeat(5, 1fr);
 
   @media screen and (max-width: 1400px) {
