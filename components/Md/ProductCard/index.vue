@@ -164,6 +164,7 @@ const addToCart = async () => {
     }
 
     .edit-btn {
+      width: 100%;
       background-color: #28a745;
       color: #fff;
 
@@ -173,6 +174,7 @@ const addToCart = async () => {
     }
 
     .delete-btn {
+      width: 100%;
       background-color: #dc3545;
       color: #fff;
 
