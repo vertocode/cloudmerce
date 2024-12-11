@@ -82,7 +82,7 @@ const handleSearch = async (values: { search: string }) => {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 12px 24px 0 12px;
+  padding: 24px 32px 8px 24px;
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   background: rgba(255, 255, 255, 0.9);
@@ -111,22 +111,6 @@ const handleSearch = async (values: { search: string }) => {
     align-items: center;
     width: 100%;
 
-    .vee-text-field {
-      width: 100%;
-      input {
-        font-size: 1.1rem;
-        padding: 12px 20px;
-        border-radius: 8px;
-        border: 1px solid #e0e0e0;
-        transition: border-color 0.3s;
-
-        &:focus {
-          border-color: #007aff;
-          outline: none;
-        }
-      }
-    }
-
     .search-btn {
       background-color: #007aff;
       color: white;
@@ -148,55 +132,6 @@ const handleSearch = async (values: { search: string }) => {
       .v-icon {
         font-size: 1.6rem;
         color: #fff;
-      }
-    }
-  }
-}
-
-@media (max-width: 768px) {
-  .search-bar {
-    padding: 20px;
-
-    form {
-      .vee-text-field {
-        input {
-          font-size: 1rem;
-        }
-      }
-
-      .search-btn {
-        width: 45px;
-        height: 45px;
-        .v-icon {
-          font-size: 1.4rem;
-        }
-      }
-    }
-  }
-}
-
-@media (max-width: 480px) {
-  .search-bar {
-    padding: 16px;
-
-    .filter-message {
-      font-size: 0.85rem;
-    }
-
-    form {
-      .vee-text-field {
-        input {
-          font-size: 0.9rem;
-          padding: 10px 16px;
-        }
-      }
-
-      .search-btn {
-        width: 40px;
-        height: 40px;
-        .v-icon {
-          font-size: 1.2rem;
-        }
       }
     }
   }
