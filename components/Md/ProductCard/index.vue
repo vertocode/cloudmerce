@@ -32,17 +32,13 @@
         </VBtn>
       </div>
 
-      <MdEditProductModal
-        :initial-values="product"
-        :update-product-list
+      <VBtn
+        v-if="isAdmin"
+        class="edit-btn"
+        @click="$router.push(`/product/${product.id}/edit`)"
       >
-        <VBtn
-          v-if="isAdmin"
-          class="edit-btn"
-        >
-          Editar (ADM)
-        </VBtn>
-      </MdEditProductModal>
+        Editar (ADM)
+      </VBtn>
       <MdDeleteProductModal
         :on-confirm="() => handleDelete(product)"
         :product-name="product.name"
