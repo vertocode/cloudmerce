@@ -38,7 +38,7 @@
     <VeeButton
       variant="elevated"
       color="primary"
-      class="float-end"
+      class="float-end mb-5"
       :loading="isSubmitting"
     >
       Enviar Mensagem

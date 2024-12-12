@@ -9,7 +9,6 @@ export const useCart = () => {
 
   const route = useRoute()
   const { put, get } = useApi()
-  const { ecommerceId } = useStoreData()
 
   const cartId = computed(() => {
     if (import.meta.client) {
@@ -31,7 +30,15 @@ export const useCart = () => {
     }
     try {
       loading.value = true
-      const response = await get(`/get-cart/${ecommerceId}`, { cartId: cartId.value }) as IGetCartResponse
+      const { getWhitelabel } = useWhitelabel()
+
+      const whitelabel = await getWhitelabel()
+
+      if (!whitelabel) {
+        throw new Error('Whitelabel not found')
+      }
+
+      const response = await get(`/get-cart/${whitelabel._id}`, { cartId: cartId.value }) as IGetCartResponse
 
       if (!response?._id) {
         throw new Error('Response without _id.')

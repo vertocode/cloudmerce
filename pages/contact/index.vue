@@ -1,6 +1,6 @@
 <template>
   <v-container
-    class="contactPage"
+    class="contact-page"
     fluid
   >
     <v-row
@@ -27,12 +27,17 @@
     </v-row>
 
     <v-row
+      v-if="storeEmail || formattedWhatsappNumber"
       justify="center"
       class="footerContact"
     >
       <v-col class="text-center">
-        <p>E-mail: {{ techEmail }}</p>
-        <p>Telefone: {{ formattedWhatsappNumber }}</p>
+        <p v-if="storeEmail">
+          E-mail: {{ storeEmail }}
+        </p>
+        <p v-if="formattedWhatsappNumber">
+          Telefone: {{ formattedWhatsappNumber }}
+        </p>
       </v-col>
     </v-row>
 
@@ -41,11 +46,11 @@
 </template>
 
 <script setup lang="ts">
-const { techEmail, formattedWhatsappNumber } = useContact()
+const { storeEmail, formattedWhatsappNumber } = useContact()
 </script>
 
 <style scoped lang="scss">
-.contactPage {
+.contact-page {
   padding: 20px;
 
   .v-card {

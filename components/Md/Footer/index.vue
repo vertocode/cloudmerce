@@ -52,8 +52,12 @@
       </div>
 
       <div class="footer-contact">
-        <p>Contato: {{ techEmail }}</p>
-        <p>Telefone: {{ formattedWhatsappNumber }}</p>
+        <p v-if="storeEmail">
+          Contato: {{ storeEmail }}
+        </p>
+        <p v-if="formattedWhatsappNumber">
+          Telefone: {{ formattedWhatsappNumber }}
+        </p>
       </div>
 
       <MdSocialMediaIcons />
@@ -78,7 +82,7 @@
 </template>
 
 <script setup lang="ts">
-const { techEmail, formattedWhatsappNumber } = useContact()
+const { storeEmail, formattedWhatsappNumber } = useContact()
 const { isAdmin } = useUser()
 
 const { getWhitelabel } = useWhitelabel()

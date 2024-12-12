@@ -17,6 +17,9 @@ export interface IWhitelabel {
     facebook?: string
     twitter?: string
   }
+  contact: {
+    email: string
+  }
   pixKey?: {
     phone?: string
     cpf?: string

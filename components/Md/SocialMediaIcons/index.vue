@@ -1,7 +1,10 @@
 <template>
-  <div class="social-media-icons">
+  <div
+    v-if="storeSocialMedia.length"
+    class="social-media-icons"
+  >
     <VIcon
-      v-for="socialMedia in storeSocialMedia"
+      v-for="socialMedia in storeSocialMedia.values()"
       :key="socialMedia.name"
       class="social-icon"
       :title="`Abrir ${socialMedia.name}`"
@@ -14,7 +17,52 @@
 </template>
 
 <script setup lang="ts">
-const { storeSocialMedia } = useStoreData()
+const { getWhitelabel } = useWhitelabel()
+
+const whitelabel = await getWhitelabel()
+
+if (!whitelabel) {
+  throw new Error('Whitelabel not found')
+}
+
+const storeSocialMedia = computed(() => {
+  const { wpp, instagram, facebook, twitter } = whitelabel.socialMedia || {}
+  const config = []
+
+  if (wpp) {
+    config.push({
+      name: 'WhatsApp',
+      url: `https://wa.me/${wpp}`,
+      icon: 'mdi-whatsapp',
+    })
+  }
+
+  if (instagram) {
+    config.push({
+      name: 'Instagram',
+      url: `https://www.instagram.com/${instagram}`,
+      icon: 'mdi-instagram',
+    })
+  }
+
+  if (facebook) {
+    config.push({
+      name: 'Facebook',
+      url: `https://www.facebook.com/${facebook}`,
+      icon: 'mdi-facebook',
+    })
+  }
+
+  if (twitter) {
+    config.push({
+      name: 'Twitter',
+      url: `https://x.com/${twitter}`,
+      icon: 'mdi-twitter',
+    })
+  }
+
+  return config
+})
 
 const openSocialMedia = (url: string) => {
   window.open(url)

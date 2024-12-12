@@ -254,7 +254,6 @@ const validationSchema = z.object({
 })
 
 const { post } = useApi()
-const { ecommerceId } = useStoreData()
 const { cartId, ownerId } = useCart()
 const { userData, isLogged, setUser } = useUser()
 
@@ -303,7 +302,15 @@ const handleSubmit = async (values: Record<string, any>, { meta }: SubmitOptions
         number: defaultNumber = 0,
       } = {},
     } = userData.value || {}
-    const response = await post(`/checkout/user/${ecommerceId}`, {
+    const { getWhitelabel } = useWhitelabel()
+
+    const whitelabel = await getWhitelabel()
+
+    if (!whitelabel) {
+      throw new Error('Whitelabel not found')
+    }
+
+    const response = await post(`/checkout/user/${whitelabel._id}`, {
       userData: {
         _id,
         name: values.name || defaultName,
