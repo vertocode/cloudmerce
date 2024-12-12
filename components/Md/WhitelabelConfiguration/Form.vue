@@ -94,7 +94,8 @@
         md="4"
         class="pl-0 pb-0"
       >
-        <VeeTextField
+        <VeeMaskedField
+          mask="## #####-####"
           name="wpp"
           label="Número do WhatsApp"
           outlined
@@ -106,7 +107,7 @@
         class="pb-0"
       >
         <VeeTextField
-          name="wpp"
+          name="instagram"
           label="@ do Instagram"
           outlined
         />
@@ -117,7 +118,7 @@
         class="pr-0 pb-0"
       >
         <VeeTextField
-          name="wpp"
+          name="twitter"
           label="Twitter"
           outlined
         />
@@ -149,11 +150,9 @@ const initialValues = {
   baseUrl: url.host as unknown as string,
   bannerTitle: whitelabel?.banner?.title || '',
   bannerDescription: whitelabel?.banner?.description || '',
-  socialMedia: {
-    wpp: whitelabel?.socialMedia?.wpp || '',
-    instagram: whitelabel?.socialMedia?.instagram || '',
-    twitter: whitelabel?.socialMedia?.twitter || '',
-  },
+  wpp: whitelabel?.socialMedia?.wpp || '',
+  instagram: whitelabel?.socialMedia?.instagram || '',
+  twitter: whitelabel?.socialMedia?.twitter || '',
   ...(whitelabel || {}),
 }
 

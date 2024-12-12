@@ -32,7 +32,7 @@ const storeSocialMedia = computed(() => {
   if (wpp) {
     config.push({
       name: 'WhatsApp',
-      url: `https://wa.me/${wpp}`,
+      url: `https://wa.me/55${wpp}`,
       icon: 'mdi-whatsapp',
     })
   }
