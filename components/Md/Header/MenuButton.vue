@@ -67,7 +67,7 @@
           </VListItem>
           <VListItem
             class="navigation-item admin-item"
-            @click="showProductModal = true"
+            @click="$router.push('/register-new-product')"
           >
             <VListItemTitle>Cadastrar Novo Produto</VListItemTitle>
           </VListItem>

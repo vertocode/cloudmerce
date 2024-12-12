@@ -2,7 +2,7 @@
   <VeeForm
     v-slot="{ isSubmitting, errors, meta: { dirty } }"
     :validation-schema="validationSchema"
-    :initial-values
+    :initial-values="{ userFields: [], ...initialValues }"
     @submit="submit"
   >
     <div class="field-container">
@@ -216,15 +216,6 @@
       </FieldArray>
     </div>
 
-    <VAlert
-      v-if="errors.userFields"
-      color="warning"
-    >
-      <p v-if="errors.userFields">
-        Adicione pelo menos uma pergunta para o usuário.
-      </p>
-    </VAlert>
-
     <VSpacer class="my-6" />
 
     <VRow
@@ -272,7 +263,6 @@ const props = defineProps<{
   initialValues?: Record<string, any>
 }>()
 
-const products = useState('products', () => [])
 const { productTypes } = useProductTypes()
 
 const isEdition = !!props.initialValues
@@ -289,6 +279,7 @@ const submit = async (values: Record<string, any>) => {
   isLoading.value = true
 
   const { getWhitelabel } = useWhitelabel()
+  const router = useRouter()
 
   try {
     const whitelabel = await getWhitelabel()
@@ -315,12 +306,9 @@ const submit = async (values: Record<string, any>) => {
         return { ...field, type }
       }),
     })
-    props.onClose()
     handleSuccess(`Produto ${isEdition ? 'editado' : 'adicionado'} com sucesso!`)
 
-    if (products.value.length < 20 && props.updateProductList) {
-      await props.updateProductList({ cache: 'no-cache' })
-    }
+    await router.push('/')
   }
   catch (error) {
     if (error instanceof Error && error.message.includes('PRODUCT_EXISTS')) {
