@@ -358,11 +358,6 @@ const validationSchema = z.object({
   }
 }
 
-.field-container {
-  max-height: 70vh;
-  overflow-y: auto;
-}
-
 .remove-btn {
   .v-icon {
     color: var(--danger-color-500);
