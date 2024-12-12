@@ -1,6 +1,11 @@
 <template>
   <div class="register-product">
-    <h1>Editar produto</h1>
+    <header>
+      <VIcon @click="$router.back()">
+        mdi-arrow-left
+      </VIcon>
+      <h1>Editar produto</h1>
+    </header>
     <MdProductForm
       :on-register-new-product-type="onRegisterNewProductType"
       :on-close="onClose"
@@ -65,5 +70,16 @@ const updateProduct = async (values: Record<string, any>) => {
 <style scoped lang="scss">
 .register-product {
   padding: 24px 0;
+
+  header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 24px;
+
+    .v-icon {
+      cursor: pointer;
+    }
+  }
 }
 </style>
