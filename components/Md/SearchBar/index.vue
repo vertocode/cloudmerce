@@ -60,12 +60,13 @@ const cleanFilter = () => {
   filterSearchProducts.value = ''
 }
 
-const handleSearch = async (values: { search: string }) => {
+const handleSearch = async (values: { search: string }, { resetForm }: { resetForm: VoidFunction }) => {
   const { search: newSearch } = values
   if (!newSearch) return
 
   if (newSearch === filterSearchProducts.value) {
     cleanFilter()
+    resetForm()
     return
   }
 
