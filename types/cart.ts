@@ -1,6 +1,12 @@
 import type { IProduct, IProductResponse } from '~/types/product'
 
+export interface IExpiredCartItem {
+  id: string
+  status: 'expired'
+}
+
 export interface ICartItem extends IProduct {
+  status: 'active'
   quantity: number
 }
 

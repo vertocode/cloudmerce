@@ -1,13 +1,14 @@
 import { computed } from 'vue'
-import type { IAddItemToCartResponse, ICartItem, IGetCartResponse } from '~/types/cart'
+import type { IAddItemToCartResponse, ICartItem, IExpiredCartItem, IGetCartResponse } from '~/types/cart'
 
 export const useCart = () => {
   const isCartDrawerOpened = useState('isCartDrawerOpened', () => false)
-  const cartProducts = useState<ICartItem[]>('cartProducts', () => [])
+  const cartProducts = useState<(ICartItem | IExpiredCartItem)[]>('cartProducts', () => [])
   const ownerId = useState<string | null>('ownerId', () => null)
   const loading = useState<boolean>('cartLoading', () => true)
 
   const route = useRoute()
+  const { getWhitelabel } = useWhitelabel()
   const { put, get } = useApi()
 
   const cartId = computed(() => {
@@ -30,7 +31,6 @@ export const useCart = () => {
     }
     try {
       loading.value = true
-      const { getWhitelabel } = useWhitelabel()
 
       const whitelabel = await getWhitelabel()
 
@@ -49,8 +49,17 @@ export const useCart = () => {
       cartProducts.value = response.items.map((item) => {
         const productDetails = item.productId
 
+        // If it's null, it means that this product is not available anymore
+        if (!productDetails) {
+          return {
+            id: item._id,
+            status: 'expired',
+          }
+        }
+
         return {
           id: productDetails._id,
+          status: 'active',
           name: productDetails.name,
           price: productDetails.price,
           image: productDetails.image,
@@ -80,7 +89,14 @@ export const useCart = () => {
   const addToCart = async (item: ICartItem): Promise<{ code: string }> => {
     try {
       loading.value = true
-      const response = await put(`/add-cart-item/${ecommerceId}`, {
+
+      const whitelabel = await getWhitelabel()
+
+      if (!whitelabel) {
+        throw new Error('Whitelabel not found')
+      }
+
+      const response = await put(`/add-cart-item/${whitelabel._id}`, {
         cartId: cartId.value,
         productId: item.id,
         quantity: 1,
@@ -117,11 +133,17 @@ export const useCart = () => {
   const changeQuantity = async (item: ICartItem, newQuantity: number): Promise<{ code: string }> => {
     try {
       loading.value = true
-      const response = await put(`/change-cart-item-quantity/${ecommerceId}`, {
+      const whitelabel = await getWhitelabel()
+
+      if (!whitelabel) {
+        throw new Error('Whitelabel not found')
+      }
+
+      const response = await put(`/change-cart-item-quantity/${whitelabel._id}`, {
         cartId: cartId.value,
         productId: item.id,
         quantity: newQuantity,
-        fields: item.fields.map(field => ({ fieldLabel: field.label, value: field?.value })),
+        fields: item?.fields?.map(field => ({ fieldLabel: field.label, value: field?.value })) || [],
       }) as IAddItemToCartResponse
 
       if (!response?._id) {
@@ -154,7 +176,12 @@ export const useCart = () => {
   }
 
   const total = computed(() => {
-    return cartProducts.value.reduce((sum, product) => sum + (product.price * product.quantity), 0).toFixed(2)
+    return cartProducts.value.reduce((sum, product) => {
+      if (product?.status === 'expired') {
+        return sum
+      }
+      return sum + (product?.price * product.quantity)
+    }, 0).toFixed(2)
   })
 
   return { cartProducts, loading, isCartDrawerOpened, total, cartId, ownerId, removeCartId, addToCart, changeQuantity, getCart }

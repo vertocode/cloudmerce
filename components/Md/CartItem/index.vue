@@ -1,5 +1,8 @@
 <template>
-  <div class="cart-item">
+  <div
+    v-if="item.status === 'active'"
+    class="cart-item"
+  >
     <div class="product-image-container">
       <MdProductImage
         :image="item.image"
@@ -75,6 +78,28 @@
       </div>
       <MdProductDetailsSeeButton :product-id="item.id" />
     </div>
+  </div>
+  <div v-else>
+    <VAlert
+      type="info"
+      elevation="1"
+    >
+      O produto com o id "{{ item.id }}" foi removido do catalogo. Caso deseje adicionar novamente, entre em contato com a loja.
+      <div class="unavailable-product-actions mt-2">
+        <VBtn
+          size="small"
+          @click="removeItem"
+        >
+          Ignorar
+        </VBtn>
+        <VBtn
+          size="small"
+          @click="$router.push('/contact')"
+        >
+          Contato
+        </VBtn>
+      </div>
+    </VAlert>
   </div>
 </template>
 
@@ -175,5 +200,10 @@ const decreaseQuantity = () => changeQuantity(props.item, props.item.quantity - 
       }
     }
   }
+}
+
+.unavailable-product-actions {
+  display: flex;
+  gap: 8px;
 }
 </style>
