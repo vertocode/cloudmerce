@@ -17,7 +17,7 @@
       <VeeButton
         icon
         class="search-btn"
-        :color="filterSearchProducts ? 'error' : ''"
+        :color="filterSearchProducts ? 'error' : 'primary'"
       >
         <VIcon>{{ filterSearchProducts.length ? 'mdi-close' : 'mdi-magnify' }}</VIcon>
       </VeeButton>
@@ -112,9 +112,8 @@ const handleSearch = async (values: { search: string }) => {
     width: 100%;
 
     .search-btn {
-      background-color: #007aff;
+      margin-top: 4px;
       color: white;
-      border-radius: 50%;
       width: 50px;
       height: 50px;
       margin-left: 12px;
@@ -125,7 +124,6 @@ const handleSearch = async (values: { search: string }) => {
       transition: background-color 0.3s ease, transform 0.3s ease;
 
       &:hover {
-        background-color: #005bb5;
         transform: scale(1.05);
       }
 
