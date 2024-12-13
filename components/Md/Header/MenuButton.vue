@@ -71,12 +71,6 @@
           >
             <VListItemTitle>Cadastrar Novo Produto</VListItemTitle>
           </VListItem>
-          <!--          <VListItem -->
-          <!--            class="navigation-item admin-item" -->
-          <!--            @click="showPaletteModal = true" -->
-          <!--          > -->
-          <!--            <VListItemTitle>Configurações de Paleta</VListItemTitle> -->
-          <!--          </VListItem> -->
           <VListItem
             class="navigation-item admin-item"
             @click="$router.push('/edit-whitelabel')"
@@ -88,10 +82,6 @@
     </VMenu>
   </div>
 
-  <MdPaletteModal
-    :show-palette-modal="showPaletteModal"
-    :on-close="() => showPaletteModal = false"
-  />
   <MdManageProductType
     :show-product-type-modal="showProductTypeModal"
     :on-close="() => showProductTypeModal = false"
@@ -107,7 +97,6 @@
 import { ref } from 'vue'
 
 const isDrawerOpen = ref(false)
-const showPaletteModal = ref(false)
 const showProductTypeModal = ref(false)
 const showProductModal = ref(false)
 

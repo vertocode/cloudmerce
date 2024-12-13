@@ -42,13 +42,6 @@
         >
           Cadastrar Novo Produto
         </VBtn>
-        <VBtn
-          v-if="isAdmin"
-          variant="text"
-          @click="showPaletteModal = true"
-        >
-          Configurações de Paleta
-        </VBtn>
       </div>
 
       <div class="footer-contact">
@@ -66,10 +59,6 @@
       <p>&copy; {{ new Date().getFullYear() }} {{ whitelabel?.name }}. Todos os direitos reservados.</p>
     </div>
   </footer>
-  <MdPaletteModal
-    :show-palette-modal="showPaletteModal"
-    :on-close="() => showPaletteModal = false"
-  />
   <MdManageProductType
     :show-product-type-modal="showProductTypeModal"
     :on-close="() => showProductTypeModal = false"
@@ -89,7 +78,6 @@ const { getWhitelabel } = useWhitelabel()
 
 const whitelabel = await getWhitelabel()
 
-const showPaletteModal = ref(false)
 const showProductTypeModal = ref(false)
 const showProductModal = ref(false)
 
