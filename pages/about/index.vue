@@ -55,10 +55,9 @@ const whitelabel = await getWhitelabel()
     }
 
     .store-logo {
-      width: 48px;
       height: 48px;
 
-      img {
+      :deep(img) {
         width: max-content;
       }
     }
