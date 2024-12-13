@@ -139,11 +139,17 @@ export const useCart = () => {
         throw new Error('Whitelabel not found')
       }
 
-      const response = await put(`/change-cart-item-quantity/${whitelabel._id}`, {
+      const commonParams = {
         cartId: cartId.value,
-        productId: item.id,
         quantity: newQuantity,
         fields: item?.fields?.map(field => ({ fieldLabel: field.label, value: field?.value })) || [],
+      }
+
+      const differentParams = newQuantity === 0 ? { cartItemId: item.id } : { productId: item.id }
+
+      const response = await put(`/change-cart-item-quantity/${whitelabel._id}`, {
+        ...commonParams,
+        ...differentParams,
       }) as IAddItemToCartResponse
 
       if (!response?._id) {
@@ -152,7 +158,7 @@ export const useCart = () => {
 
       await getCart()
 
-      if (newQuantity === 0) {
+      if (newQuantity === 0 && item?.name) {
         handleSuccess(`${item.name} removido do carrinho.`)
       }
 
