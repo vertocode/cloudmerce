@@ -6,6 +6,12 @@
         alt="banner-image"
       >
     </div>
+    <div class="banner-image-mobile">
+      <img
+        src="~/assets/banner-image-mobile.png"
+        alt="banner-image"
+      >
+    </div>
     <div class="gradient">
       <MdContainer class="container">
         <div class="banner-content">
@@ -62,7 +68,7 @@ const whitelabel = await getWhitelabel()
   }
 }
 
-.banner-image {
+.banner-image, .banner-image-mobile {
   position: absolute;
   top: 0;
   right: 0;
@@ -70,13 +76,16 @@ const whitelabel = await getWhitelabel()
   z-index: 1;
   height: 500px;
   opacity: 50%;
-  object-fit: contain;
 
   img {
     object-fit: fill;
     width: 100%;
     height: 100%;
   }
+}
+
+.banner-image-mobile {
+  display: none !important;
 }
 
 .banner-content {
@@ -125,7 +134,11 @@ const whitelabel = await getWhitelabel()
   }
 
   .banner-image {
-    opacity: 30%;
+    display: none;
+  }
+
+  .banner-image-mobile {
+    display: block !important;
   }
 
   .banner-content {
