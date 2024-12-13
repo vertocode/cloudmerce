@@ -1,37 +1,40 @@
 <template>
   <div class="search-bar">
     <VeeForm
-      form-class="form"
+      v-slot="{ ...attrs }"
+      form-class="vee-form"
       :validation-schema="validationSchema"
       fast-fail
       :reset-on-submit="!!filterSearchProducts"
       @submit="handleSearch"
     >
-      <VeeTextField
-        name="search"
-        variant="outlined"
-        class="vee-text-field"
-        :disabled="filterSearchProducts.length"
-        :label="`Buscar ${productType}`"
-      />
-      <VeeButton
-        icon
-        class="search-btn"
-        :color="filterSearchProducts ? 'error' : 'primary'"
-      >
-        <VIcon>{{ filterSearchProducts.length ? 'mdi-close' : 'mdi-magnify' }}</VIcon>
-      </VeeButton>
-    </VeeForm>
-    <span
-      v-if="filterSearchProducts.length"
-      class="filter-message"
-    >
-      Filtrando por: <strong>{{ filterSearchProducts }}</strong>
+      <section class="form">
+        <VeeTextField
+          name="search"
+          variant="outlined"
+          class="vee-text-field"
+          :disabled="filterSearchProducts.length"
+          :label="`Buscar ${productType}`"
+        />
+        <VeeButton
+          icon
+          class="search-btn"
+          :color="filterSearchProducts ? 'error' : 'primary'"
+        >
+          <VIcon>{{ filterSearchProducts.length ? 'mdi-close' : 'mdi-magnify' }}</VIcon>
+        </VeeButton>
+      </section>
       <span
-        class="clean-btn"
-        @click="cleanFilter"
-      >Limpar filtro</span>
-    </span>
+        v-if="filterSearchProducts.length"
+        class="filter-message"
+      >
+        Filtrando por: <strong>{{ filterSearchProducts }}</strong>
+        <span
+          class="clean-btn"
+          @click="cleanFilter({ resetForm: attrs.resetForm })"
+        >Limpar filtro</span>
+      </span>
+    </VeeForm>
   </div>
 </template>
 
@@ -56,8 +59,10 @@ const validationSchema = z.object({
   search: z.string().refine(value => !value || value.length > 3, { message: 'A busca deve ter pelo menos 3 caracteres' }),
 })
 
-const cleanFilter = () => {
+const cleanFilter = ({ resetForm }: { resetForm: VoidFunction }) => {
+  console.log(resetForm, '<<< resetForm')
   filterSearchProducts.value = ''
+  resetForm()
 }
 
 const handleSearch = async (values: { search: string }, { resetForm }: { resetForm: VoidFunction }) => {
@@ -65,8 +70,7 @@ const handleSearch = async (values: { search: string }, { resetForm }: { resetFo
   if (!newSearch) return
 
   if (newSearch === filterSearchProducts.value) {
-    cleanFilter()
-    resetForm()
+    cleanFilter({ resetForm })
     return
   }
 
@@ -89,8 +93,11 @@ const handleSearch = async (values: { search: string }, { resetForm }: { resetFo
   background: rgba(255, 255, 255, 0.9);
   backdrop-filter: blur(10px);
 
-  :deep(.form) {
+  :deep(.vee-form) {
     width: 100%;
+  }
+
+  .form {
     display: flex;
   }
 
