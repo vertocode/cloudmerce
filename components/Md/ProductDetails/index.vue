@@ -19,6 +19,9 @@
         <h1 class="product-name">
           {{ product.name }}
         </h1>
+        <p class="product-id">
+          #{{ product.id }}
+        </p>
         <p class="product-price">
           {{ formattedPrice }}
         </p>
@@ -137,8 +140,15 @@ const addToCart = async () => {
       .product-name {
         font-size: 1.5rem;
         font-weight: bold;
-        margin-bottom: 8px;
+        margin-bottom: 0;
+        padding-bottom: 0;
         color: #333;
+      }
+
+      .product-id {
+        font-size: .9rem;
+        margin-bottom: 8px;
+        color: gray;
       }
 
       .product-price {
