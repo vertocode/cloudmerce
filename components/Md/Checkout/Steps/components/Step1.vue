@@ -3,7 +3,7 @@
     :key="isLogged ? 'logged-form' : 'unlogged-form'"
     v-slot="{ isSubmitting }"
     :validation-schema="validationSchema"
-    :initial-values
+    :initial-values="initialValues"
     @submit="handleSubmit"
   >
     <VRow>

@@ -10,6 +10,5 @@ export const useStoreData = () => {
     storeName,
     storeDescription,
     storeLogo,
-    storeSocialMedia,
   }
 }
