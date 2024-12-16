@@ -77,8 +77,18 @@ const updateProduct = async (values: Record<string, any>) => {
     gap: 12px;
     margin-bottom: 24px;
 
+    h1 {
+      font-size: 1.5rem;
+    }
+
     .v-icon {
       cursor: pointer;
+    }
+
+    @media (max-width: $mobile-breakpoint) {
+      h1 {
+        font-size: 1.2rem;
+      }
     }
   }
 }

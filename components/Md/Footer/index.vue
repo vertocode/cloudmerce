@@ -38,7 +38,7 @@
         <VBtn
           v-if="isAdmin"
           variant="text"
-          @click="showProductModal = true"
+          @click="$router.push('/register-new-product')"
         >
           Cadastrar Novo Produto
         </VBtn>
@@ -63,11 +63,6 @@
     :show-product-type-modal="showProductTypeModal"
     :on-close="() => showProductTypeModal = false"
   />
-  <MdRegisterProductModal
-    :show-register-modal="showProductModal"
-    :on-close="() => showProductModal = false"
-    :on-register-new-product-type="onRegisterNewProductType"
-  />
 </template>
 
 <script setup lang="ts">
@@ -79,12 +74,6 @@ const { getWhitelabel } = useWhitelabel()
 const whitelabel = await getWhitelabel()
 
 const showProductTypeModal = ref(false)
-const showProductModal = ref(false)
-
-const onRegisterNewProductType = () => {
-  showProductModal.value = false
-  showProductTypeModal.value = true
-}
 </script>
 
 <style scoped lang="scss">
