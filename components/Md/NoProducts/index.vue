@@ -76,6 +76,8 @@ const filterSearchProducts = useState<string>('filterSearchProducts')
 
   .button-group {
     display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
     gap: 16px;
 
     .retry-btn {
