@@ -104,10 +104,10 @@
 </template>
 
 <script setup lang="ts">
-import type { ICartItem } from '~/types/cart'
+import type { ICartItem, IExpiredCartItem } from '~/types/cart'
 
 const props = defineProps<{
-  item: ICartItem
+  item: ICartItem | IExpiredCartItem
 }>()
 
 const { changeQuantity, loading } = useCart()

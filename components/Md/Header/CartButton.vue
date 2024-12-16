@@ -48,9 +48,9 @@
         <div class="list">
           <VList>
             <MdCartItem
-              v-for="(item, index) in cartProducts"
-              :key="index"
-              :item="item"
+              v-for="(item, key) in cartProducts"
+              :key
+              :item
             />
           </VList>
         </div>
