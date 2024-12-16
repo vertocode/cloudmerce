@@ -114,9 +114,9 @@ const { changeQuantity, loading } = useCart()
 
 const removeItem = () => changeQuantity(props.item, 0)
 
-const increaseQuantity = () => changeQuantity(props.item, props.item.quantity + 1)
+const increaseQuantity = () => changeQuantity(props.item, ((props.item as ICartItem)?.quantity || 0) + 1)
 
-const decreaseQuantity = () => changeQuantity(props.item, props.item.quantity - 1)
+const decreaseQuantity = () => changeQuantity(props.item, ((props.item as ICartItem).quantity || 0) - 1)
 </script>
 
 <style lang="scss" scoped>

@@ -130,7 +130,9 @@ export const useCart = () => {
       loading.value = false
     }
   }
-  const changeQuantity = async (item: ICartItem, newQuantity: number): Promise<{ code: string }> => {
+  const changeQuantity = async (item: ICartItem | IExpiredCartItem, newQuantity: number): Promise<{ code: string }> => {
+    const availableItem = item as ICartItem
+
     try {
       loading.value = true
       const whitelabel = await getWhitelabel()
@@ -139,18 +141,30 @@ export const useCart = () => {
         throw new Error('Whitelabel not found')
       }
 
+      const isAvailable = !!availableItem.name
+
       const commonParams = {
         cartId: cartId.value,
         quantity: newQuantity,
-        fields: item?.fields?.map(field => ({ fieldLabel: field.label, value: field?.value })) || [],
+        fields: isAvailable ? availableItem?.fields?.map(field => ({ fieldLabel: field.label, value: field?.value })) : [],
       }
 
-      const differentParams = newQuantity === 0 ? { cartItemId: item.id } : { productId: item.id }
+      const differentParams = isAvailable ? { productId: item.id } : { cartItemId: item.id }
 
       const response = await put(`/change-cart-item-quantity/${whitelabel._id}`, {
         ...commonParams,
         ...differentParams,
       }) as IAddItemToCartResponse
+
+      const hasDeletedCart = (response as unknown as { message: string })?.message?.includes('deleted')
+
+      if (hasDeletedCart) {
+        removeCartId()
+        cartProducts.value = []
+        isCartDrawerOpened.value = false
+        handleSuccess('Carrinho limpo com sucesso, continue comprando!')
+        return { code: 'success' }
+      }
 
       if (!response?._id) {
         throw new Error('Response without _id.')
@@ -158,8 +172,8 @@ export const useCart = () => {
 
       await getCart()
 
-      if (newQuantity === 0 && item?.name) {
-        handleSuccess(`${item.name} removido do carrinho.`)
+      if (newQuantity === 0 && availableItem?.name) {
+        handleSuccess(`${availableItem?.name || 'Produto'} removido do carrinho.`)
       }
 
       return { code: 'success' }
@@ -168,10 +182,10 @@ export const useCart = () => {
       console.error(error)
 
       if (newQuantity === 0) {
-        handleError(`Erro ao remover ${item.name} do carrinho.`)
+        handleError(`Erro ao remover ${availableItem?.name || 'Produto'} do carrinho.`)
       }
       else {
-        handleError(`Erro ao mudar quantidade de ${item.name} no carrinho para ${newQuantity}.`)
+        handleError(`Erro ao mudar quantidade de ${availableItem?.name || 'produto'} no carrinho para ${newQuantity}.`)
       }
 
       return { code: 'error' }

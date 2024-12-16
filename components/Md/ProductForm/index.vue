@@ -10,7 +10,6 @@
         <VCol
           cols="12"
           md="6"
-          class="pl-0 pb-0"
         >
           <VeeTextField
             name="productName"
@@ -22,7 +21,6 @@
         <VCol
           cols="12"
           md="6"
-          class="pr-0 pb-0"
         >
           <VeeTextField
             name="productPrice"
@@ -33,7 +31,9 @@
           />
         </VCol>
 
-        <VCol cols="12">
+        <VCol
+          cols="12"
+        >
           <VeeTextarea
             name="productDescription"
             label="Descrição do Produto"
@@ -77,7 +77,6 @@
             cols="12"
             :md="fields.length === 1 ? 12 : 6"
             class="image-field mt-0"
-            :class="index % 2 === 0 ? 'pl-0' : 'pr-0'"
           >
             <VeeTextField
               :name="`imageUrls[${index}]`"
@@ -129,7 +128,7 @@
           <VCol
             cols="10"
             md="6"
-            class="user-field mt-0 pl-0"
+            class="user-field mt-0"
           >
             <VeeTextField
               :name="`userFields[${userIndex}].label`"
@@ -141,7 +140,7 @@
           <VCol
             cols="10"
             md="4"
-            class="user-field mt-0 pl-0"
+            class="user-field"
           >
             <VeeSelect
               :name="`userFields[${userIndex}].type`"
@@ -184,6 +183,7 @@
                 v-if="userOptions.length > 1"
                 icon
                 class="remove-btn mb-6"
+                :class="optionIndex % 2 === 0 ? 'mr-4' : ''"
                 @click="removeUserOption(optionIndex)"
               >
                 <VIcon>mdi-delete</VIcon>
