@@ -15,8 +15,11 @@
       <VRadioGroup
         v-model="field.value"
         class="radio-group"
-        column
         :error-messages="errorMessage === 'Required' ? 'Campo obrigatório' : errorMessage"
+        v-bind="{
+          ...$attrs,
+          ...field,
+        }"
       >
         <VRadio
           v-for="option in options"
@@ -54,7 +57,11 @@ defineProps<{
 
 .radio-group {
   display: flex;
-  flex-direction: column;
-  gap: 8px;
+  flex-direction: row;
+  gap: 12px;
+
+  :deep(.v-label) {
+    word-break: normal;
+  }
 }
 </style>

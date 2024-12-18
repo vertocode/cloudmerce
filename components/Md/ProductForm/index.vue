@@ -2,7 +2,7 @@
   <VeeForm
     v-slot="{ isSubmitting, errors, meta: { dirty } }"
     :validation-schema="validationSchema"
-    :initial-values="{ userFields: [], ...initialValues }"
+    :initial-values="{ userFields: [], stock: 'limited', ...initialValues }"
     @submit="submit"
   >
     <div class="field-container">
@@ -61,6 +61,17 @@
           >
             Cadastrar novo tipo de produto <VIcon color="var(--secondary-700)">mdi-link</VIcon>
           </span>
+        </VCol>
+
+        <VCol cols="12">
+          <VeeRadioGroup
+            name="stock"
+            :options="[
+              { label: 'Limitado', value: 'limited' },
+              { label: 'Ilimitado', value: 'unlimited' },
+            ]"
+            label="Estoque"
+          />
         </VCol>
 
         <Images :errors />
