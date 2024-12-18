@@ -3,7 +3,6 @@
     <VeeForm
       v-slot="{ ...attrs }"
       form-class="vee-form"
-      :validation-schema="validationSchema"
       fast-fail
       :reset-on-submit="!!filterSearchProducts"
       @submit="handleSearch"
@@ -39,8 +38,6 @@
 </template>
 
 <script setup lang="ts">
-import { z } from 'zod'
-
 const route = useRoute()
 const filterSearchProducts = useState<string>('filterSearchProducts')
 
@@ -53,10 +50,6 @@ const productType = computed(() => {
 
   const name = getProductTypeById(productType)?.name
   return name?.toLowerCase() || defaultProductType
-})
-
-const validationSchema = z.object({
-  search: z.string().refine(value => !value || value.length > 3, { message: 'A busca deve ter pelo menos 3 caracteres' }),
 })
 
 const cleanFilter = ({ resetForm }: { resetForm: VoidFunction }) => {
