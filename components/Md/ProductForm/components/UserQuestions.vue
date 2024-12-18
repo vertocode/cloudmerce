@@ -12,9 +12,9 @@
       <VExpansionPanel>
         <VExpansionPanelTitle>Exemplo</VExpansionPanelTitle>
         <VExpansionPanelText>
-          <p>Nome do campo 1: Tamanho</p>
-          <p>Tipo do campo 1: Opções</p>
-          <p>Opções para o campo 1:</p>
+          <p>Nome do campo: Tamanho</p>
+          <p>Tipo do campo: Opções</p>
+          <p>Opções para o campo:</p>
           <ul>
             <li>Opção 1: P</li>
             <li>Opção 2: M</li>
@@ -28,87 +28,93 @@
       v-slot="{ fields, push, remove }"
       name="userFields"
     >
-      <VRow
-        v-for="(userQuestion, userIndex) in fields"
-        v-if="fields.length > 0"
-        :key="`user-field-${userIndex}`"
-      >
-        <VCol
-          cols="10"
-          md="6"
-          class="user-field mt-0"
+      <div class="user-fields">
+        <VRow
+          v-for="(userQuestion, userIndex) in fields"
+          v-if="fields.length > 0"
+          :key="`user-field-${userIndex}`"
+          class="user-question-card"
         >
-          <VeeTextField
-            :name="`userFields[${userIndex}].label`"
-            :label="`Nome do campo ${userIndex + 1}`"
-            variant="outlined"
-          />
-        </VCol>
-
-        <VCol
-          cols="10"
-          md="4"
-          class="user-field"
-        >
-          <VeeSelect
-            :name="`userFields[${userIndex}].type`"
-            :label="`Tipo do campo ${userIndex + 1}`"
-            :items="['Texto', 'Número', 'Opções']"
-            variant="outlined"
-          />
-        </VCol>
-        <VCol cols="2">
-          <VBtn
-            icon
-            class="remove-btn mt-4"
-            @click="remove(userIndex)"
-          >
-            <VIcon>mdi-delete</VIcon>
-          </VBtn>
-        </VCol>
-        <h5
-          v-if="userQuestion.type === UserFieldTypeLabel.options"
-          class="w-100 mb-3"
-        >
-          Opções para o campo {{ userIndex + 1 }}:
-        </h5>
-        <FieldArray
-          v-slot="{ fields: userOptions, push: addUserOption, remove: removeUserOption }"
-          :name="`userFields[${userIndex}].options`"
-        >
+          <VCol cols="12">
+            <h4>Campo {{ userIndex + 1 }}:</h4>
+          </VCol>
           <VCol
-            v-for="(_, optionIndex) in userOptions"
-            :key="optionIndex"
-            cols="12"
+            cols="10"
             md="6"
-            class="image-field mt-0"
+            class="user-field mt-0"
           >
             <VeeTextField
-              :name="`userFields[${userIndex}].options[${optionIndex}]`"
-              :label="`Opção ${optionIndex + 1}`"
+              :name="`userFields[${userIndex}].label`"
+              :label="`Nome do campo ${userIndex + 1}`"
               variant="outlined"
             />
+          </VCol>
+
+          <VCol
+            cols="10"
+            md="4"
+            class="user-field"
+          >
+            <VeeSelect
+              :name="`userFields[${userIndex}].type`"
+              :label="`Tipo do campo ${userIndex + 1}`"
+              :items="['Texto', 'Número', 'Opções']"
+              variant="outlined"
+            />
+          </VCol>
+          <VCol cols="2">
             <VBtn
-              v-if="userOptions.length > 1"
               icon
-              class="remove-btn mb-6"
-              :class="optionIndex % 2 === 0 ? 'mr-4' : ''"
-              @click="removeUserOption(optionIndex)"
+              class="remove-btn mt-4"
+              @click="remove(userIndex)"
             >
               <VIcon>mdi-delete</VIcon>
             </VBtn>
           </VCol>
-          <VCol cols="12">
-            <VBtn
-              variant="outlined"
-              class="mb-8 float-end"
-              @click="addUserOption('')"
+          <h5
+            v-if="userQuestion.type === UserFieldTypeLabel.options"
+            class="w-100 mb-3"
+          >
+            Opções para o campo {{ userIndex + 1 }}:
+          </h5>
+          <FieldArray
+            v-slot="{ fields: userOptions, push: addUserOption, remove: removeUserOption }"
+            :name="`userFields[${userIndex}].options`"
+          >
+            <VCol
+              v-for="(_, optionIndex) in userOptions"
+              :key="optionIndex"
+              cols="12"
+              md="6"
+              class="image-field mt-0"
             >
-              Adicionar opção para o campo {{ userIndex + 1 }}
-            </VBtn>
-          </VCol>
-        </FieldArray>
-      </VRow>
+              <VeeTextField
+                :name="`userFields[${userIndex}].options[${optionIndex}]`"
+                :label="`Opção ${optionIndex + 1}`"
+                variant="outlined"
+              />
+              <VBtn
+                v-if="userOptions.length > 1"
+                icon
+                class="remove-btn mb-6"
+                :class="optionIndex % 2 === 0 ? 'mr-4' : ''"
+                @click="removeUserOption(optionIndex)"
+              >
+                <VIcon>mdi-delete</VIcon>
+              </VBtn>
+            </VCol>
+            <VCol cols="12">
+              <VBtn
+                variant="outlined"
+                class="mb-8 float-end"
+                @click="addUserOption('')"
+              >
+                Adicionar opção para o campo {{ userIndex + 1 }}
+              </VBtn>
+            </VCol>
+          </FieldArray>
+        </VRow>
+      </div>
       <VRow>
         <VCol cols="12">
           <VBtn
@@ -157,6 +163,33 @@ const initialUserField = {
 
     ul {
       margin-left: 24px;
+    }
+  }
+
+  .user-fields {
+    margin-top: 24px;
+    margin-bottom: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+
+    .user-question-card {
+      padding: 24px;
+      background-color: white;
+      border: 1px solid var(--secondary-200);
+      border-radius: 8px;
+
+      h4 {
+        margin-bottom: 12px;
+      }
+
+      .user-field {
+        margin-top: 8px;
+      }
+
+      .remove-btn {
+        margin-top: 24px;
+      }
     }
   }
 }
