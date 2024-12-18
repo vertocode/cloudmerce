@@ -4,7 +4,7 @@
       <VIcon @click="$router.back()">
         mdi-arrow-left
       </VIcon>
-      <h1>Registrar um novo produto</h1>
+      <h1>Cadastrar Novo Produto</h1>
     </header>
     <MdProductForm
       :on-register-new-product-type="onRegisterNewProductType"
