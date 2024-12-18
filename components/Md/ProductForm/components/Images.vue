@@ -1,8 +1,9 @@
 <template>
-  <div class="w-100">
+  <Card class="images">
+    <h3>Adicionar imagens para o produto</h3>
     <h5 class="mt-5">
       Você deve colocar o link da imagem aqui. É possível usar qualquer serviço de armazenamento em nuvem, como
-      <a href="https://imgur.com/">Imgur</a> ou outro de sua preferência.
+      <a href="https://imgur.com/">Imgur</a> ou outro de sua preferência. (1 imagem é obrigatória)
     </h5>
     <VRow>
       <FieldArray
@@ -52,13 +53,26 @@
         Adicione pelo menos uma imagem para o produto.
       </p>
     </VAlert>
-  </div>
+  </Card>
 </template>
 
 <script setup lang="ts">
 import { FieldArray } from 'vee-validate'
+import Card from '~/components/Md/ProductForm/components/Card.vue'
 
 defineProps<{
   errors: Record<string, string>
 }>()
 </script>
+
+<style lang="scss" scoped>
+.images {
+  margin-top: 24px;
+  .image-field {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 8px;
+  }
+}
+</style>

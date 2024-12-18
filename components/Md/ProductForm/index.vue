@@ -139,11 +139,4 @@ const submit = async (values: Record<string, any>) => {
   font-weight: 500;
   color: #333;
 }
-
-.image-field {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-top: 8px;
-}
 </style>
