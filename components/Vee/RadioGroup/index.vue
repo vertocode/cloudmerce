@@ -15,6 +15,8 @@
       <VRadioGroup
         v-model="field.value"
         class="radio-group"
+        direction="horizontal"
+        inline
         :error-messages="errorMessage === 'Required' ? 'Campo obrigatório' : errorMessage"
         v-bind="{
           ...$attrs,
@@ -46,22 +48,18 @@ defineProps<{
 .radio-group-wrapper {
   display: flex;
   flex-direction: column;
-  gap: 8px;
-}
-
-.radio-group-label {
-  font-size: 1rem;
-  font-weight: 500;
-  color: #333;
-}
-
-.radio-group {
-  display: flex;
-  flex-direction: row;
   gap: 12px;
 
-  :deep(.v-label) {
-    word-break: normal;
+  .radio-group-label {
+    font-size: 1rem;
+    font-weight: 500;
+    color: #333;
+  }
+
+  .radio-group {
+    :deep(.v-label) {
+      word-break: normal;
+    }
   }
 }
 </style>

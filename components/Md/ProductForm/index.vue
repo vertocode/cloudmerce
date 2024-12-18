@@ -1,8 +1,8 @@
 <template>
   <VeeForm
-    v-slot="{ isSubmitting, errors, meta: { dirty } }"
+    v-slot="{ isSubmitting, errors, meta: { dirty }, values: { stockOption } }"
     :validation-schema="validationSchema"
-    :initial-values="{ userFields: [], stock: 'limited', ...initialValues }"
+    :initial-values="{ userFields: [], stockOption: 'limited', ...initialValues }"
     @submit="submit"
   >
     <div class="field-container">
@@ -63,17 +63,7 @@
           </span>
         </VCol>
 
-        <VCol cols="12">
-          <VeeRadioGroup
-            name="stock"
-            :options="[
-              { label: 'Limitado', value: 'limited' },
-              { label: 'Ilimitado', value: 'unlimited' },
-            ]"
-            label="Estoque"
-          />
-        </VCol>
-
+        <StockFields :show-stock-quantity="stockOption === StockOptions.LIMITED" />
         <Images :errors />
         <UserQuestions />
       </VRow>
@@ -118,6 +108,8 @@ import { z } from 'zod'
 import { UserFieldTypeLabel } from '~/types/product'
 import UserQuestions from '~/components/Md/ProductForm/components/UserQuestions.vue'
 import Images from '~/components/Md/ProductForm/components/Images.vue'
+import StockFields from '~/components/Md/ProductForm/components/StockFields.vue'
+import { StockOptions } from '~/components/Md/ProductForm/types/stock'
 
 const props = defineProps<{
   action: (values: Record<string, any>) => Promise<void>
@@ -186,12 +178,19 @@ const validationSchema = z.object({
   productPrice: z.number().min(10, { message: 'Preço do produto deve ser maior ou igual a R$10,00' }),
   productDescription: z.string().min(10, { message: 'Descrição deve ter pelo menos 10 caracteres' }),
   productType: z.string().nonempty({ message: 'O tipo de produto é obrigatório' }),
+  stockOption: z.enum(Object.values(StockOptions) as string[]),
+  stockQuantity: z.number().int().min(1, { message: 'Quantidade de estoque deve ser maior que 0' }).optional(),
   imageUrls: z.array(z.string().url({ message: 'Deve ser uma URL válida' })).min(1, { message: 'Adicione pelo menos 1 imagem' }),
   userFields: z.array(z.object({
     label: z.string().min(1, { message: 'Nome do campo não pode ser vazio' }),
     type: z.enum(['Texto', 'Número', 'Opções']),
     options: z.array(z.string().min(1, 'Campo obrigatório')).min(1, 'Adicione pelo menos 1 opção').optional(),
   })),
+}).refine((data) => {
+  return !(data.stockOption === StockOptions.LIMITED && !data.stockQuantity)
+}, {
+  message: 'Campo obrigatório',
+  path: ['stockQuantity'],
 })
 </script>
 
