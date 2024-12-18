@@ -36,7 +36,16 @@
           class="user-question-card"
         >
           <VCol cols="12">
-            <h4>Campo {{ userIndex + 1 }}:</h4>
+            <div class="user-question-title">
+              <h4>Campo {{ userIndex + 1 }}:</h4>
+              <VBtn
+                icon
+                class="remove-btn"
+                @click="remove(userIndex)"
+              >
+                <VIcon>mdi-delete</VIcon>
+              </VBtn>
+            </div>
           </VCol>
           <VCol
             cols="10"
@@ -51,8 +60,8 @@
           </VCol>
 
           <VCol
-            cols="10"
-            md="4"
+            cols="12"
+            md="6"
             class="user-field"
           >
             <VeeSelect
@@ -61,15 +70,6 @@
               :items="['Texto', 'Número', 'Opções']"
               variant="outlined"
             />
-          </VCol>
-          <VCol cols="2">
-            <VBtn
-              icon
-              class="remove-btn mt-4"
-              @click="remove(userIndex)"
-            >
-              <VIcon>mdi-delete</VIcon>
-            </VBtn>
           </VCol>
           <h5
             v-if="userQuestion.type === UserFieldTypeLabel.options"
@@ -179,16 +179,18 @@ const initialUserField = {
       border: 1px solid var(--secondary-200);
       border-radius: 8px;
 
-      h4 {
-        margin-bottom: 12px;
+      .user-question-title {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        h4 {
+          margin-bottom: 12px;
+        }
       }
 
       .user-field {
         margin-top: 8px;
-      }
-
-      .remove-btn {
-        margin-top: 24px;
       }
     }
   }
