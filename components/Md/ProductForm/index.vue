@@ -5,69 +5,13 @@
     :initial-values="{ userFields: [], stockOption: 'limited', ...initialValues }"
     @submit="submit"
   >
-    <div class="field-container">
-      <VRow>
-        <VCol
-          cols="12"
-          md="6"
-        >
-          <VeeTextField
-            name="productName"
-            label="Nome do Produto"
-            variant="outlined"
-          />
-        </VCol>
-
-        <VCol
-          cols="12"
-          md="6"
-        >
-          <VeeTextField
-            name="productPrice"
-            label="Preço do Produto"
-            variant="outlined"
-            type="number"
-            prefix="R$"
-          />
-        </VCol>
-
-        <VCol
-          cols="12"
-        >
-          <VeeTextarea
-            name="productDescription"
-            label="Descrição do Produto"
-            variant="outlined"
-            rows="4"
-          />
-        </VCol>
-
-        <VCol
-          cols="12"
-          class="product-type-container"
-        >
-          <VeeSelect
-            name="productType"
-            :items="productTypes.map(type => type.name)"
-            placeholder="Selecione o tipo de produto"
-            label="Tipo de Produto"
-            variant="outlined"
-            no-data-text="Sem opções, clique para cadastrar um novo tipo de produto abaixo deste input."
-          />
-          <span
-            v-if="onRegisterNewProductType"
-            class="product-type-message"
-            @click="onRegisterNewProductType"
-          >
-            Cadastrar novo tipo de produto <VIcon color="var(--secondary-700)">mdi-link</VIcon>
-          </span>
-        </VCol>
-
-        <StockFields :show-stock-quantity="stockOption === StockOptions.LIMITED" />
-        <Images :errors />
-        <UserQuestions />
-      </VRow>
-    </div>
+    <DetailFields
+      :product-types="productTypes"
+      :on-register-new-product-type="onRegisterNewProductType"
+    />
+    <StockFields :show-stock-quantity="stockOption === StockOptions.LIMITED" />
+    <Images :errors />
+    <UserQuestions />
 
     <VSpacer class="my-6" />
 
@@ -110,6 +54,8 @@ import UserQuestions from '~/components/Md/ProductForm/components/UserQuestions.
 import Images from '~/components/Md/ProductForm/components/Images.vue'
 import StockFields from '~/components/Md/ProductForm/components/StockFields.vue'
 import { StockOptions } from '~/components/Md/ProductForm/types/stock'
+import DetailFields from '~/components/Md/ProductForm/components/DetailFields.vue'
+import { validationSchema } from '~/components/Md/ProductForm/zod/schema'
 
 const props = defineProps<{
   action: (values: Record<string, any>) => Promise<void>
@@ -172,26 +118,6 @@ const submit = async (values: Record<string, any>) => {
     isLoading.value = false
   }
 }
-
-const validationSchema = z.object({
-  productName: z.string().min(3, { message: 'Nome do produto deve ter pelo menos 3 caracteres' }),
-  productPrice: z.number().min(10, { message: 'Preço do produto deve ser maior ou igual a R$10,00' }),
-  productDescription: z.string().min(10, { message: 'Descrição deve ter pelo menos 10 caracteres' }),
-  productType: z.string().nonempty({ message: 'O tipo de produto é obrigatório' }),
-  stockOption: z.enum(Object.values(StockOptions) as string[]),
-  stockQuantity: z.number().int().min(1, { message: 'Quantidade de estoque deve ser maior que 0' }).optional(),
-  imageUrls: z.array(z.string().url({ message: 'Deve ser uma URL válida' })).min(1, { message: 'Adicione pelo menos 1 imagem' }),
-  userFields: z.array(z.object({
-    label: z.string().min(1, { message: 'Nome do campo não pode ser vazio' }),
-    type: z.enum(['Texto', 'Número', 'Opções']),
-    options: z.array(z.string().min(1, 'Campo obrigatório')).min(1, 'Adicione pelo menos 1 opção').optional(),
-  })),
-}).refine((data) => {
-  return !(data.stockOption === StockOptions.LIMITED && !data.stockQuantity)
-}, {
-  message: 'Campo obrigatório',
-  path: ['stockQuantity'],
-})
 </script>
 
 <style scoped lang="scss">
@@ -202,23 +128,16 @@ const validationSchema = z.object({
   }
 }
 
-.product-type-container {
-  position: relative;
-
-  .product-type-message {
-    cursor: pointer;
-    position: absolute;
-    top: 58px;
-    right: 8px;
-    color: var(--secondary-color-700);
-    font-size: .9rem;
-  }
-}
-
 :deep(.remove-btn) {
   .v-icon {
     color: var(--danger-color-500);
   }
+}
+
+:deep(h3) {
+  font-size: 1.2rem;
+  font-weight: 500;
+  color: #333;
 }
 
 .image-field {

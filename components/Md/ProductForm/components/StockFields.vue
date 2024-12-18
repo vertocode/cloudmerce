@@ -1,6 +1,6 @@
 <template>
   <VCol cols="12">
-    <div class="stock-fields">
+    <Card class="stock-fields">
       <VeeRadioGroup
         class="stock-option-radios"
         name="stockOption"
@@ -15,12 +15,13 @@
         type="number"
         class="stock-quantity-field"
       />
-    </div>
+    </Card>
   </VCol>
 </template>
 
 <script setup lang="ts">
 import { StockOptionLabels, StockOptions } from '~/components/Md/ProductForm/types/stock'
+import Card from '~/components/Md/ProductForm/components/Card.vue'
 
 defineProps<{
   showStockQuantity?: boolean
@@ -34,8 +35,6 @@ const options = Object.entries(StockOptions).map(([key, value]) => ({
 
 <style scoped lang="scss">
 .stock-fields {
-  background-color: #f5f5f5;
-  padding: 12px;
   margin-top: 24px;
   display: flex;
   align-items: center;
