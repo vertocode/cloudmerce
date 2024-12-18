@@ -1,6 +1,29 @@
 <template>
-  <div class="w-100">
-    <h5>Adicione perguntas para o usuário responder, como tamanho de uma roupa, cor ou qualquer outra pergunta necessária para este produto.</h5>
+  <Card class="user-questions">
+    <h3>Perguntas para o usuário (Opcional)</h3>
+    <h5 class="mt-3">
+      Adicione perguntas para o usuário responder, como tamanho de uma roupa, cor ou qualquer outra pergunta necessária para este produto. As perguntas adicionada aqui serão requisitas ao usuário no momento de adicionar este produto ao carrinho.
+    </h5>
+
+    <VExpansionPanels
+      elevation="0"
+      class="example"
+    >
+      <VExpansionPanel>
+        <VExpansionPanelTitle>Exemplo</VExpansionPanelTitle>
+        <VExpansionPanelText>
+          <p>Nome do campo 1: Tamanho</p>
+          <p>Tipo do campo 1: Opções</p>
+          <p>Opções para o campo 1:</p>
+          <ul>
+            <li>Opção 1: P</li>
+            <li>Opção 2: M</li>
+            <li>Opção 3: G</li>
+          </ul>
+        </VExpansionPanelText>
+      </VExpansionPanel>
+    </VExpansionPanels>
+
     <FieldArray
       v-slot="{ fields, push, remove }"
       name="userFields"
@@ -56,7 +79,8 @@
           <VCol
             v-for="(_, optionIndex) in userOptions"
             :key="optionIndex"
-            cols="6"
+            cols="12"
+            md="6"
             class="image-field mt-0"
           >
             <VeeTextField
@@ -99,12 +123,13 @@
         </VCol>
       </VRow>
     </FieldArray>
-  </div>
+  </Card>
 </template>
 
 <script setup lang="ts">
 import { FieldArray } from 'vee-validate'
 import { UserFieldTypeLabel } from '~/types/product'
+import Card from '~/components/Md/ProductForm/components/Card.vue'
 
 const initialUserField = {
   label: '',
@@ -112,3 +137,27 @@ const initialUserField = {
   options: [''],
 }
 </script>
+
+<style lang="scss" scoped>
+.user-questions {
+  margin-top: 24px;
+  margin-bottom: 24px;
+
+  .image-field {
+    display: flex;
+    gap: 12px;
+  }
+
+  .example {
+    margin-top: 24px;
+
+    .v-expansion-panel-title:hover {
+      background-color: #e1e1e1;
+    }
+
+    ul {
+      margin-left: 24px;
+    }
+  }
+}
+</style>
