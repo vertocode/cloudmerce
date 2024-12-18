@@ -1,5 +1,5 @@
 <template>
-  <div class="register-product">
+  <div class="edit-product">
     <header>
       <VIcon @click="$router.back()">
         mdi-arrow-left
@@ -68,7 +68,7 @@ const updateProduct = async (values: Record<string, any>) => {
 </script>
 
 <style scoped lang="scss">
-.register-product {
+.edit-product {
   padding: 24px 0;
 
   header {
