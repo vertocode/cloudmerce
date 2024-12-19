@@ -31,7 +31,7 @@
         <VBtn
           v-if="isAdmin"
           variant="text"
-          @click="showProductTypeModal = true"
+          @click="$router.push('/product-type')"
         >
           Tipos de Produto
         </VBtn>
@@ -59,10 +59,6 @@
       <p>&copy; {{ new Date().getFullYear() }} {{ whitelabel?.name }}. Todos os direitos reservados.</p>
     </div>
   </footer>
-  <MdManageProductType
-    :show-product-type-modal="showProductTypeModal"
-    :on-close="() => showProductTypeModal = false"
-  />
 </template>
 
 <script setup lang="ts">
@@ -72,8 +68,6 @@ const { isAdmin } = useUser()
 const { getWhitelabel } = useWhitelabel()
 
 const whitelabel = await getWhitelabel()
-
-const showProductTypeModal = ref(false)
 </script>
 
 <style scoped lang="scss">

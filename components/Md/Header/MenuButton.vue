@@ -61,7 +61,7 @@
           </h3>
           <VListItem
             class="navigation-item admin-item"
-            @click="showProductTypeModal = true"
+            @click="$router.push('/product-type')"
           >
             <VListItemTitle>Tipos de Produto</VListItemTitle>
           </VListItem>
@@ -81,31 +81,14 @@
       </VList>
     </VMenu>
   </div>
-
-  <MdManageProductType
-    :show-product-type-modal="showProductTypeModal"
-    :on-close="() => showProductTypeModal = false"
-  />
-  <MdRegisterProductModal
-    :show-register-modal="showProductModal"
-    :on-close="() => showProductModal = false"
-    :on-register-new-product-type="onRegisterNewProductType"
-  />
 </template>
 
 <script setup lang="ts">
 import { ref } from 'vue'
 
 const isDrawerOpen = ref(false)
-const showProductTypeModal = ref(false)
-const showProductModal = ref(false)
 
 const { userData, isAdmin, logout } = useUser()
-
-const onRegisterNewProductType = () => {
-  showProductModal.value = false
-  showProductTypeModal.value = true
-}
 </script>
 
 <style scoped>
