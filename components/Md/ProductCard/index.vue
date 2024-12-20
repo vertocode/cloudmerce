@@ -1,56 +1,61 @@
 <template>
-  <VCard class="product-card">
-    <ProductImage :image="product.image" />
-
-    <div class="product-name-container">
-      <VCardTitle class="product-name">
-        {{ product.name }}
-      </VCardTitle>
-    </div>
-
-    <VCardSubtitle class="product-price">
-      {{ formattedPrice }}
-      <VIcon
-        class="detail-button"
-        size="42"
-        @click="$router.push(`/product/${product.id}`)"
-      >
-        mdi-eye-circle
-      </VIcon>
-    </VCardSubtitle>
-
-    <VCardActions class="card-actions">
-      <div class="public-actions">
-        <VBtn
-          color="primary"
-          variant="flat"
-          :loading="addingToCart"
-          class="add-to-cart-btn"
-          @click="addToCart"
-        >
-          Comprar
-        </VBtn>
+  <VCard
+    class="product-card"
+    elevation="0"
+    @click.self="$router.push(`/product/${product.id}`)"
+  >
+    <div>
+      <div class="product-image-container">
+        <ProductImage :image="product.image" />
       </div>
 
-      <VBtn
-        v-if="isAdmin"
-        class="edit-btn"
-        @click="$router.push(`/product/${product.id}/edit`)"
-      >
-        Editar (ADM)
-      </VBtn>
-      <MdDeleteProductModal
-        :on-confirm="() => handleDelete(product)"
-        :product-name="product.name"
-      >
+      <div class="product-name-container">
+        <VCardTitle class="product-name">
+          {{ product.name }}
+        </VCardTitle>
+      </div>
+
+      <VCardText class="product-description">
+        {{ product.description }}
+      </VCardText>
+    </div>
+
+    <div>
+      <VCardSubtitle class="product-price">
+        {{ formattedPrice }}
+      </VCardSubtitle>
+      <VCardActions class="card-actions">
+        <div class="public-actions">
+          <VBtn
+            variant="flat"
+            :loading="addingToCart"
+            class="add-to-cart-btn"
+            @click.stop="addToCart"
+          >
+            Comprar
+          </VBtn>
+        </div>
+
         <VBtn
           v-if="isAdmin"
-          class="delete-btn"
+          class="edit-btn"
+          @click.stop="$router.push(`/product/${product.id}/edit`)"
         >
-          Deletar (ADM)
+          Editar (ADM)
         </VBtn>
-      </MdDeleteProductModal>
-    </VCardActions>
+        <MdDeleteProductModal
+          :on-confirm="() => handleDelete(product)"
+          :product-name="product.name"
+        >
+          <VBtn
+            v-if="isAdmin"
+            class="delete-btn"
+          >
+            Deletar (ADM)
+          </VBtn>
+        </MdDeleteProductModal>
+      </VCardActions>
+    </div>
   </VCard>
   <MdAddItemQuestionModal
     :product="showQuestionAddModal ? product : null"
@@ -87,36 +92,51 @@ const addToCart = async () => {
 
   await handleAddToCart({
     ...props.product,
+    status: 'active',
     quantity: 1,
   })
 }
 </script>
 
 <style lang="scss" scoped>
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&display=swap');
+
 .product-card {
+  padding: 12px;
   color: #333;
   border-radius: 14px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   transition: transform 0.25s ease, box-shadow 0.25s ease;
   background: #fff;
   overflow: hidden;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 
-  &:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  .product-image-container {
+    overflow: hidden;
+    border-radius: 16px;
+    background-color: #E6E8EF;
+    max-height: 350px;
+    display: flex;
+    align-items: center;
   }
 
   .product-name-container {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 16px 0;
     font-weight: bold;
     color: #111;
 
     .product-name {
-      font-size: 1.5rem;
-      color: #007aff;
+      padding: 0;
+      margin-top: 12px;
+      font-family: "Oswald", serif;
+      font-optical-sizing: auto;
+      font-weight: 500;
+      font-style: normal;
+      font-size: 1.2rem;
 
       @media screen and (max-width: $mobile-breakpoint) {
         font-size: 1rem;
@@ -124,13 +144,27 @@ const addToCart = async () => {
     }
   }
 
+  .product-description {
+    padding: 0;
+    max-height: 100px;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+    text-overflow: ellipsis;
+    word-wrap: break-word;
+  }
+
   .product-price {
+    margin-top: 4px;
+    font-family: "Oswald", serif;
+    font-optical-sizing: auto;
+    font-weight: 500;
+    padding: 0;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    color: #6c757d;
     font-size: 1.1rem;
-    padding: 0 16px 16px;
 
     .detail-button {
       cursor: pointer;
@@ -142,7 +176,7 @@ const addToCart = async () => {
   }
 
   .card-actions {
-    padding: 16px;
+    padding: 16px 0 0 0;
     display: flex;
     flex-direction: column;
     gap: 8px;
@@ -155,6 +189,11 @@ const addToCart = async () => {
       justify-content: flex-end;
 
       .add-to-cart-btn {
+        transition: color 0.5s ease;
+        height: 48px;
+        border: 1px solid var(--primary-color-500);
+        color: var(--primary-color-500);
+        border-radius: 16px;
         width: 100%;
       }
     }
@@ -177,6 +216,16 @@ const addToCart = async () => {
       &:hover {
         background-color: #c82333;
       }
+    }
+  }
+
+  &:hover {
+    border: 2px solid var(--secondary-color-500);
+
+    .add-to-cart-btn {
+      border: none !important;
+      color: white !important;
+      background: linear-gradient(86.28deg, var(--secondary-color-700) 10.21%, var(--secondary-color-500) 42.99%, var(--secondary-color-500) 56.02%, var(--primary-color-700) 127.2%);
     }
   }
 }

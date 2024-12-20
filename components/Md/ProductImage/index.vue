@@ -3,8 +3,7 @@
   <VImg
     v-if="isStringImage || (images?.length && asImage)"
     :src="images?.length ? images[0] : images as string"
-    alt=""
-    aspect-ratio="1"
+    color="#E6E8EF"
     class="product-image"
   />
 
@@ -13,7 +12,7 @@
     v-else-if="images?.length === 1"
     :src="images[0]"
     alt=""
-    aspect-ratio="1"
+    color="#E6E8EF"
     class="product-image"
   />
 
@@ -71,5 +70,9 @@ const isStringImage = computed(() => {
 <style lang="scss" scoped>
 .product-image-carousel {
   height: max-content !important;
+}
+
+.product-image {
+  mix-blend-mode: darken;
 }
 </style>

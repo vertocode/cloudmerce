@@ -38,7 +38,7 @@ const whitelabel = await getWhitelabel()
 
 .banner {
   margin: auto;
-  max-width: 1555px;
+  max-width: 1850px;
   background-color: var(--primary-color-500);
   position: relative;
   height: 500px;
