@@ -23,7 +23,7 @@
           #{{ product.id }}
         </p>
         <p class="product-price">
-          {{ formattedPrice }}
+          {{ formatCurrency(product.price) }}
         </p>
         <p class="product-description">
           {{ product.description }}
@@ -78,10 +78,6 @@ const showQuestionAddModal = ref(false)
 const props = defineProps<{ product: IProduct }>()
 
 const { addToCart: handleAddToCart, loading } = useCart()
-
-const formattedPrice = computed(() => {
-  return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(props.product.price)
-})
 
 const addToCart = async () => {
   if (props.product.fields.length > 0) {

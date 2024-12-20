@@ -20,7 +20,8 @@
   <VCarousel
     v-else-if="images?.length > 1"
     hide-delimiter-background
-    show-arrows="hover"
+    :hide-delimiters="hideDelimiters"
+    :show-arrows="showArrows ?? 'hover'"
     :cycle
     class="product-image-carousel"
     @click.stop
@@ -54,6 +55,8 @@ const props = defineProps<{
   image: string | string[]
   asImage?: boolean
   cycle?: boolean
+  showArrows?: string | boolean
+  hideDelimiters?: boolean
 }>()
 
 const images = computed(() => {

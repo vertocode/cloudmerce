@@ -7,9 +7,19 @@
     @close="$emit('close')"
   >
     <div class="add-item-question-modal">
-      <p class="modal-question">
-        {{ question }}
-      </p>
+      <div class="product-details">
+        <MdProductImage
+          class="product-image"
+          :show-arrows="false"
+          cycle
+          hide-delimiters
+          :image="product?.image || []"
+        />
+        <div>
+          <h3>{{ product.name }}</h3>
+          <p>{{ formatCurrency(product.price) }}</p>
+        </div>
+      </div>
 
       <VRow
         v-if="product?.fields?.length"
@@ -84,15 +94,6 @@ const values = ref<Record<string, string>>(props.product?.fields.reduce((acc, fi
   return acc
 }, {} as Record<string, string>) || {})
 
-const question = computed(() => {
-  const { product } = props
-  if (!product) return ''
-
-  if (product.fields.length === 1) return `Para adicionar o produto ${product.name} ao carrinho, você precisa preencher o campo abaixo.`
-
-  return `Para adicionar o produto ${product.name} ao carrinho, você precisa preencher os campos abaixo.`
-})
-
 const handleConfirm = async () => {
   if (!props.product) return
 
@@ -128,6 +129,17 @@ const handleConfirm = async () => {
 <style scoped>
 .add-item-question-modal {
   padding: 16px;
+
+  .product-details {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    justify-content: center;
+
+    .product-image {
+      max-width: 100px;
+    }
+  }
 }
 
 .modal-question {
