@@ -15,6 +15,10 @@
 </template>
 
 <script setup lang="ts">
+definePageMeta({
+  middleware: ['03-admin-auth'],
+})
+
 const onRegisterNewProductType = () => {
   const router = useRouter()
   router.push('/product-type')

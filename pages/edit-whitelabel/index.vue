@@ -11,6 +11,9 @@
 </template>
 
 <script setup lang="ts">
+definePageMeta({
+  middleware: ['03-admin-auth'],
+})
 </script>
 
 <style lang="scss" scoped>
