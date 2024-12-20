@@ -64,7 +64,8 @@
     </div>
 
     <MdAddItemQuestionModal
-      :product="showQuestionAddModal ? product : null"
+      :is-opened="showQuestionAddModal"
+      :product
       @close="showQuestionAddModal = false"
     />
   </div>
@@ -87,6 +88,7 @@ const addToCart = async () => {
 
   await handleAddToCart({
     ...props.product,
+    status: 'active',
     quantity: 1,
   })
 }

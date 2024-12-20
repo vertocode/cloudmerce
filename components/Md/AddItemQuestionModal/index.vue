@@ -1,6 +1,6 @@
 <template>
   <ElModal
-    :is-opened="!!product"
+    :is-opened="isOpened"
     persistent
     :card-props="{ title: `Adicionar produto ao carrinho`, prependIcon: 'mdi-cart' }"
     max-width="600"
@@ -80,7 +80,8 @@ import type { IProduct } from '~/types/product'
 const { addToCart, loading } = useCart()
 
 const props = defineProps<{
-  product: IProduct | null
+  isOpened: boolean
+  product: IProduct
   onConfirm?: (fields: Record<string, string>) => void
 }>()
 
@@ -95,8 +96,6 @@ const values = ref<Record<string, string>>(props.product?.fields.reduce((acc, fi
 }, {} as Record<string, string>) || {})
 
 const handleConfirm = async () => {
-  if (!props.product) return
-
   const isMissingFields = Object.values(values.value).some(value => !value)
   if (isMissingFields) {
     const label = Object.keys(values.value).find(key => !values.value[key])
@@ -118,7 +117,7 @@ const handleConfirm = async () => {
     return { ...field, value }
   }) || []
 
-  const { code } = await addToCart({ ...product, fields, quantity: 1 })
+  const { code } = await addToCart({ ...product, status: 'active', fields, quantity: 1 })
 
   if (code === 'success') {
     emit('close')

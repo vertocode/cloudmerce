@@ -60,7 +60,8 @@
     </div>
   </VCard>
   <MdAddItemQuestionModal
-    :product="showQuestionAddModal ? product : null"
+    :is-opened="showQuestionAddModal"
+    :product
     @close="showQuestionAddModal = false"
   />
 </template>
