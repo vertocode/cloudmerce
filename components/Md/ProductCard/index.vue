@@ -122,6 +122,11 @@ const addToCart = async () => {
     max-height: 350px;
     display: flex;
     align-items: center;
+
+    :deep(.v-img) {
+      margin: auto;
+      max-width: 300px;
+    }
   }
 
   .product-name-container {
