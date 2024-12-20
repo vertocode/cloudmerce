@@ -144,6 +144,17 @@ const addToCart = async () => {
       font-weight: 500;
       font-style: normal;
       font-size: 1.2rem;
+      display: -webkit-box;
+      flex: 1;
+      text-wrap: wrap;
+      white-space: wrap;
+      line-height: 1.7rem;
+      -webkit-line-clamp: 2;
+      text-overflow: ellipsis;
+      max-height: 60px;
+      overflow: hidden;
+      -webkit-box-orient: vertical;
+      word-wrap: break-word;
 
       @media screen and (max-width: $mobile-breakpoint) {
         font-size: 1rem;

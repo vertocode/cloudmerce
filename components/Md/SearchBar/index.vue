@@ -11,7 +11,7 @@
         <VeeTextField
           name="search"
           variant="outlined"
-          class="vee-text-field"
+          class="search"
           :disabled="filterSearchProducts.length"
           :label="`Buscar ${productType}`"
         />
@@ -94,6 +94,10 @@ const handleSearch = async (values: { search: string }, { resetForm }: { resetFo
     display: flex;
   }
 
+  .search {
+    border-radius: 12px;
+  }
+
   .filter-message {
     color: #6c757d;
     margin-top: 8px;
@@ -121,7 +125,7 @@ const handleSearch = async (values: { search: string }, { resetForm }: { resetFo
       display: flex;
       justify-content: center;
       align-items: center;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      background: linear-gradient(86.28deg, var(--secondary-color-500) 10.21%, var(--secondary-color-500) 42.99%, var(--secondary-color-500) 56.02%, var(--primary-color-500) 157.2%);
       transition: background-color 0.3s ease, transform 0.3s ease;
 
       &:hover {

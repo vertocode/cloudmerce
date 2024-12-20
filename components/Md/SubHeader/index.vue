@@ -82,6 +82,8 @@ onMounted(() => {
 </script>
 
 <style scoped lang="scss">
+@import url('https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap');
+
 .subheader {
   display: flex;
   background-color: var(--primary-color-700);
@@ -112,10 +114,14 @@ onMounted(() => {
     .product-type {
       padding: 0.5rem 1rem;
       color: #fff;
+      font-size: 1rem;
+      font-family: "Nunito", serif;
+      font-weight: 300;
       border-radius: 25px;
       cursor: pointer;
       white-space: nowrap;
       transition: background-color 0.3s, color 0.3s;
+      position: relative;
 
       @media screen and (max-width: $mobile-breakpoint) {
         padding: 0.5rem 0.75rem;
@@ -128,8 +134,16 @@ onMounted(() => {
         font-weight: bold;
       }
 
-      &:hover {
-        text-decoration: underline;
+      &:hover::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: -2px;
+        height: 2px;
+        background-color: var(--primary-color-200);
+        transition: width 0.3s ease, background-color 0.3s ease;
+        width: 100%;
       }
     }
   }
