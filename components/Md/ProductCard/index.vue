@@ -2,11 +2,13 @@
   <VCard
     class="product-card"
     elevation="0"
-    @click.self="$router.push(`/product/${product.id}`)"
+    @click.prevent="$router.push(`/product/${product.id}`)"
   >
     <div>
       <div class="product-image-container">
-        <ProductImage :image="product.image" />
+        <ProductImage
+          :image="product.image"
+        />
       </div>
 
       <div class="product-name-container">
@@ -222,6 +224,14 @@ const addToCart = async () => {
   &:hover {
     border: 2px solid var(--secondary-color-500);
 
+    .add-to-cart-btn {
+      border: none !important;
+      color: white !important;
+      background: linear-gradient(86.28deg, var(--secondary-color-700) 10.21%, var(--secondary-color-500) 42.99%, var(--secondary-color-500) 56.02%, var(--primary-color-700) 127.2%);
+    }
+  }
+
+  @media screen and (max-width: $mobile-breakpoint) {
     .add-to-cart-btn {
       border: none !important;
       color: white !important;

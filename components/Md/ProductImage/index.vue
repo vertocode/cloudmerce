@@ -23,10 +23,12 @@
     show-arrows="hover"
     :cycle
     class="product-image-carousel"
+    @click.stop
   >
     <VCarouselItem
       v-for="(img, index) in images"
       :key="index"
+      class="product-image-carousel-item"
     >
       <VImg
         :src="img"
@@ -72,7 +74,7 @@ const isStringImage = computed(() => {
   height: max-content !important;
 }
 
-.product-image {
+.product-image, .product-image-carousel-item, .product-image-carousel {
   mix-blend-mode: darken;
 }
 </style>
