@@ -6,7 +6,7 @@
     <template #trigger>
       <div
         class="w-100"
-        @click="showDeleteModal = true"
+        @click.stop="showDeleteModal = true"
       >
         <slot />
       </div>
