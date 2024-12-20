@@ -188,10 +188,6 @@ const initialUserField = {
           margin-bottom: 12px;
         }
       }
-
-      .user-field {
-        margin-top: 8px;
-      }
     }
   }
 }
