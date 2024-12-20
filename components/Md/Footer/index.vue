@@ -42,6 +42,13 @@
         >
           Cadastrar Novo Produto
         </VBtn>
+        <VBtn
+          v-if="isAdmin"
+          variant="text"
+          @click="$router.push('/edit-whitelabel')"
+        >
+          Configurações do E-Commerce
+        </VBtn>
       </div>
 
       <div class="footer-contact">

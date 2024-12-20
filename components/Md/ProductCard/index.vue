@@ -207,16 +207,18 @@ const addToCart = async () => {
 
     .edit-btn {
       width: 100%;
-      background-color: #28a745;
-      color: #fff;
+      border-radius: 16px;
+      border: 1px solid #28a745;
+      color: #28a745;
 
       &:hover {
-        background-color: #218838;
+        border-color: #28a745;
       }
     }
 
     .delete-btn {
       width: 100%;
+      border-radius: 16px;
       background-color: #dc3545;
       color: #fff;
 
