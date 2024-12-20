@@ -29,6 +29,7 @@ export const useProduct = ({ updateProductList }: IUseProduct) => {
         productType: response.productType,
         image: response.image,
         fields: response.fields,
+        stock: response.stock,
       }
     }
     catch (error) {

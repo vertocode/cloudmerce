@@ -1,3 +1,5 @@
+import type { StockOptions } from '~/components/Md/ProductForm/types/stock'
+
 export enum UserFieldTypeLabel {
   text = 'Texto',
   number = 'Número',
@@ -13,6 +15,11 @@ export interface UserField {
   value?: string
 }
 
+export interface Stock {
+  type: StockOptions
+  quantity?: number
+}
+
 export interface IProduct {
   id: string
   name: string
@@ -20,6 +27,7 @@ export interface IProduct {
   description: string
   productType: string
   image: string | string[]
+  stock: Stock
   fields: UserField[]
 }
 
@@ -41,6 +49,7 @@ export interface IProductResponse {
   fields: UserField[]
   price: number
   updatedAt: string
+  stock: Stock
 }
 
 export interface IProductFilters {

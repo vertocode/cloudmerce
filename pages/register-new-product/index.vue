@@ -40,6 +40,10 @@ const register = async (values: any) => {
     productType: values.productType,
     fields: values.userFields,
     image: values.imageUrls,
+    stock: {
+      type: values.stockOption,
+      quantity: values.stockQuantity,
+    },
   })
 }
 </script>

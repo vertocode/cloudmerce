@@ -2,7 +2,7 @@
   <VeeForm
     v-slot="{ isSubmitting, errors, meta: { dirty }, values: { stockOption } }"
     :validation-schema="validationSchema"
-    :initial-values="{ userFields: [], stockOption: 'limited', ...initialValues }"
+    :initial-values="{ userFields: [], ...initialValues }"
     @submit="submit"
   >
     <DetailFields
@@ -48,7 +48,6 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import { z } from 'zod'
 import { UserFieldTypeLabel } from '~/types/product'
 import UserQuestions from '~/components/Md/ProductForm/components/UserQuestions.vue'
 import Images from '~/components/Md/ProductForm/components/Images.vue'
@@ -84,6 +83,10 @@ const submit = async (values: Record<string, any>) => {
     }
     await props.action({
       ...values,
+      stock: {
+        type: values.stockOption,
+        quantity: values?.stockQuantity || null,
+      },
       ecommerceId: whitelabel._id,
       productType: productTypes.value.find((type: IProductType) => type.name === values.productType)?.id || '',
       userFields: values.userFields.map((field) => {

@@ -16,6 +16,8 @@
 </template>
 
 <script setup lang="ts">
+import { StockOptions } from '~/components/Md/ProductForm/types/stock'
+
 const { getProductById } = useProduct({})
 
 const route = useRoute()
@@ -42,6 +44,8 @@ const initialValues = computed(() => {
     imageUrls: Array.isArray(product.image) ? (product.image || '') : [product.image || ''],
     productDescription: product.description || '',
     productPrice: product.price || 0,
+    stockOption: product.stock?.type || StockOptions.UNLIMITED,
+    stockQuantity: product.stock?.quantity || null,
     userFields: product.fields.map(field => ({
       ...field,
       type: getFieldLabel(field.type),
@@ -63,6 +67,10 @@ const updateProduct = async (values: Record<string, any>) => {
     productType: values.productType,
     image: values.imageUrls,
     fields: values.userFields,
+    stock: {
+      type: values.stockOption,
+      quantity: values.stockQuantity,
+    },
   })
 }
 </script>
