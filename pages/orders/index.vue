@@ -82,6 +82,10 @@
 </template>
 
 <script setup lang="ts">
+definePageMeta({
+  middleware: ['02-auth'],
+})
+
 const { orders, loading, fetchOrders } = useOrders()
 const router = useRouter()
 

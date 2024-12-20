@@ -114,7 +114,9 @@
 </template>
 
 <script setup lang="ts">
-import { useOrderById } from '~/composables/useOrderById'
+definePageMeta({
+  middleware: ['02-auth'],
+})
 
 const route = useRoute()
 const router = useRouter()
