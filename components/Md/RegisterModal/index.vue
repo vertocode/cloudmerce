@@ -41,7 +41,19 @@
         type="password"
       />
 
-      <VSpacer />
+      <VeeCheckbox
+        name="terms"
+      >
+        <template #label>
+          <div>
+            <span>Declaro que li e aceito as</span>
+            <span
+              style="color: var(--primary-color-500)"
+              @click="$router.push('/privacy')"
+            > politicas de privacidade</span>.
+          </div>
+        </template>
+      </VeeCheckbox>
 
       <VRow
         class="ga-2"
@@ -91,6 +103,7 @@ const validationSchema = z.object({
   email: z.string().email({ message: 'E-mail inválido' }),
   password: z.string().min(6, { message: 'Senha deve ter pelo menos 6 caracteres' }),
   repeatPassword: z.string().min(6, { message: 'A senha de repetição deve ter pelo menos 6 caracteres' }),
+  terms: z.boolean({ message: 'Você deve aceitar os termos de uso e a política de privacidade' }),
 }).refine(fields => fields.password === fields.repeatPassword, {
   message: 'As senhas não coincidem',
   path: ['repeatPassword'],
