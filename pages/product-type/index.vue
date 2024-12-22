@@ -130,7 +130,7 @@ const validateFields = () => {
   })
 }
 
-const submit = async () => {
+const submit = async (values: Record<string, string>) => {
   isLoading.value = true
   try {
     const productTypesToDelete = oldProductTypes.value.filter(type => !newProductTypes.value.some(newType => newType.id === type.id))
@@ -151,8 +151,8 @@ const submit = async () => {
     const ecommerceId = whitelabel._id
 
     const productTypes = [
-      ...productTypesToUpdate.map(type => ({ ecommerceId, id: type.id, name: type.name, action: 'update' })),
-      ...productTypesToAdd.map(type => ({ ecommerceId, name: type.name, action: 'add' })),
+      ...productTypesToUpdate.map(type => ({ ecommerceId, id: type.id, name: type.name, icon: type.icon, action: 'update' })),
+      ...productTypesToAdd.map(type => ({ ecommerceId, name: type.name, icon: type.icon, action: 'add' })),
       ...productTypesToDelete.map(type => ({ ecommerceId, id: type.id, action: 'delete' })),
     ]
 
