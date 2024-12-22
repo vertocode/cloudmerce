@@ -7,46 +7,55 @@
       <h1>Tipos de Produto</h1>
     </header>
     <VeeForm
+      :key="JSON.stringify(initialValues)"
       v-slot="{ isSubmitting }"
+      :initial-values="initialValues"
       @submit="submit"
     >
       <div
         v-if="newProductTypes.length"
         class="product-type-fields"
       >
-        <div
-          v-for="(type, index) in newProductTypes"
-          :key="type.id"
-          class="product-type-item"
+        <FieldArray
+          v-slot="{ fields, push, remove }"
+          name="productTypes"
         >
-          <VeeTextField
-            v-model="type.name"
-            :name="'productType' + index"
-            :rules="rules"
-            label="Nome do Tipo de Produto"
-            outlined
-            @input="() => editProductTypeName(index, type.name)"
-          />
-          <DeleteProductType
-            :product-type="type.name"
-            :on-confirm="() => deleteProductType(type.id)"
+          <div
+            v-for="(type, index) in fields"
+            :key="type.id"
+            class="product-type-item"
           >
-            <VBtn
-              icon
-              class="remove-btn"
+            <VeeTextField
+              :name="`productTypes[${index}].icon`"
+              label="Icone MDI (Opcional)"
+              outlined
+            />
+            <VeeTextField
+              :name="`productTypes[${index}].name`"
+              label="Nome do Tipo de Produto"
+              outlined
+            />
+            <DeleteProductType
+              :product-type="type.name"
+              :on-confirm="() => remove(index)"
             >
-              <VIcon>mdi-delete</VIcon>
-            </VBtn>
-          </DeleteProductType>
-        </div>
+              <VBtn
+                icon
+                class="remove-btn"
+              >
+                <VIcon>mdi-delete</VIcon>
+              </VBtn>
+            </DeleteProductType>
+          </div>
+          <VBtn
+            class="w-100 mb-8"
+            color="primary"
+            @click="push({ icon: '', name: '', id: String(newProductTypes.length + 1) })"
+          >
+            Adicionar novo tipo de produto
+          </VBtn>
+        </FieldArray>
       </div>
-      <VBtn
-        class="w-100 mb-8"
-        color="primary"
-        @click="newProductTypes.push({ name: '', id: String(newProductTypes.length + 1) })"
-      >
-        Adicionar novo tipo de produto
-      </VBtn>
 
       <VSpacer />
 
@@ -82,6 +91,7 @@
 </template>
 
 <script setup lang="ts">
+import { FieldArray } from 'vee-validate'
 import DeleteProductType from '~/components/Md/DeleteProductType/index.vue'
 
 const isLoading = ref(false)
@@ -96,6 +106,10 @@ const rules = [
 
 const oldProductTypes = ref(cloneArray(productTypes.value))
 const newProductTypes = ref(cloneArray(productTypes.value))
+
+const initialValues = computed(() => ({
+  productTypes: productTypes.value.map(type => ({ icon: '', name: type.name, id: type.id })),
+}))
 
 watch(productTypes, () => {
   newProductTypes.value = cloneArray(productTypes.value)
@@ -116,8 +130,6 @@ const validateFields = () => {
 }
 
 const submit = async () => {
-  if (!validateFields()) return
-
   isLoading.value = true
   try {
     const productTypesToDelete = oldProductTypes.value.filter(type => !newProductTypes.value.some(newType => newType.id === type.id))
@@ -159,14 +171,6 @@ const submit = async () => {
     isLoading.value = false
   }
 }
-
-const deleteProductType = async (id: string) => {
-  newProductTypes.value = newProductTypes.value.filter(type => type.id !== id)
-}
-
-const editProductTypeName = (index: number, value: string) => {
-  newProductTypes.value[index].name = value
-}
 </script>
 
 <style scoped lang="scss">
@@ -193,8 +197,8 @@ header {
 }
 
 .product-type-item {
-  display: flex;
-  align-items: center;
+  display: grid;
+  grid-template-columns: 200px 1fr max-content;
   gap: 8px;
   margin-bottom: 8px;
 

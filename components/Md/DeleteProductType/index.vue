@@ -56,7 +56,7 @@ import Modal from '~/components/El/Modal/index.vue'
 
 defineProps<{
   loading?: boolean
-  onConfirm: () => Promise<void>
+  onConfirm: () => void
   productType: string
 }>()
 
