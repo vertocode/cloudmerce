@@ -22,11 +22,12 @@
         >
           <div
             v-for="(type, index) in fields"
-            :key="type.id"
+            :key="type.value?.id || index"
             class="product-type-item"
           >
             <VeeTextField
               :name="`productTypes[${index}].icon`"
+              placeholder="mdi-laptop"
               label="Icone MDI (Opcional)"
               outlined
             />
@@ -36,7 +37,7 @@
               outlined
             />
             <DeleteProductType
-              :product-type="type.name"
+              :product-type="type.value?.name"
               :on-confirm="() => remove(index)"
             >
               <VBtn
@@ -209,10 +210,21 @@ header {
       color: var(--danger-color-500);
     }
   }
+
+  @media (max-width: $mobile-breakpoint) {
+    padding: 12px;
+    background-color: #E6E8EF;
+    display: flex;
+    flex-direction: column-reverse;
+    border-radius: 12px;
+
+    .remove-btn {
+      float: right;
+    }
+  }
 }
 
 .product-type-fields {
-  max-height: 500px;
   overflow-y: auto;
   padding-top: 8px;
 }
