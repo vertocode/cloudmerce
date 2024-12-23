@@ -5,6 +5,23 @@ export const useOrderById = (id: string) => {
   const loading = useState<boolean>(`loading-order-${id}`, () => false)
 
   const { get } = useApi()
+
+  const qrCodeImage = computed(() => {
+    if (!order.value) return null
+
+    const { qrCode: qrCodeBase64 } = order.value.paymentData || {}
+    if (!qrCodeBase64) {
+      console.error('QR Code base64 not found in order:', order.value)
+      return null
+    }
+
+    return `data:image/png;base64,${qrCodeBase64}`
+  })
+
+  const pixCode = computed(() => {
+    return ''
+  })
+
   const fetchOrder = async () => {
     const { getWhitelabel } = useWhitelabel()
 
@@ -34,5 +51,7 @@ export const useOrderById = (id: string) => {
   return {
     order,
     loading,
+    qrCodeImage,
+    pixCode,
   }
 }

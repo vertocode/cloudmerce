@@ -46,7 +46,14 @@
             class="status-stepper desktop-status"
             elevation="0"
             :items="['Aguardando Pagamento', 'Loja Notificada', 'Pedido Enviado', 'Pedido Entregue']"
-          />
+          >
+            <template #item.1>
+              <QRCodePix
+                :qr-code-img="qrCodeImage"
+                :pix-code="pixCode"
+              />
+            </template>
+          </VStepper>
         </div>
 
         <VCardText class="content">
@@ -114,6 +121,8 @@
 </template>
 
 <script setup lang="ts">
+import QRCodePix from '~/components/Md/Orders/Details/QRCodePix.vue'
+
 definePageMeta({
   middleware: ['02-auth'],
 })
@@ -122,7 +131,7 @@ const route = useRoute()
 const router = useRouter()
 const id = route.params.id as string
 
-const { order, loading } = useOrderById(id)
+const { order, loading, qrCodeImage, pixCode } = useOrderById(id)
 const { userData } = useUser()
 
 const additionalInformationContact = computed(() => {

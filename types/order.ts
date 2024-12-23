@@ -14,6 +14,12 @@ export interface OrderItem {
   }[]
 }
 
+interface PaymentData {
+  type: 'pix' | 'card'
+  qrCode?: string
+  totalAmount: number
+}
+
 export interface Order {
   _id: string
   ecommerceId: string
@@ -22,6 +28,7 @@ export interface Order {
   paymentIntentId: string
   paymentMethod: 'pix' | 'card'
   items: OrderItem[]
+  paymentData: PaymentData
   createdAt: string
   updatedAt: string
 }
