@@ -13,7 +13,7 @@ defineProps<{
 
 const getColor = (status: OrderStatus) => {
   switch (status) {
-    case 'pending_payment':
+    case 'pending':
       return 'warning'
     case 'paid':
       return 'success'

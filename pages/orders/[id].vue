@@ -39,6 +39,12 @@
         <div class="order-status">
           <h3 class="mobile-status">
             Status do Pedido: <MdOrdersStatusChip :status="order.status" />
+            <QRCodePix
+              v-if="order.status === 'pending'"
+              class="mt-6"
+              :qr-code-img="qrCodeImage"
+              :pix-code="pixCode"
+            />
           </h3>
           <VStepper
             v-model="statusStep"

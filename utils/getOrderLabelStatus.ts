@@ -2,7 +2,7 @@ import type { OrderStatus } from '~/types/order'
 
 export default function (statusCode: OrderStatus) {
   switch (statusCode) {
-    case 'pending_payment':
+    case 'pending':
       return 'Aguardando Pagamento'
     case 'paid':
       return 'Loja Notificada'

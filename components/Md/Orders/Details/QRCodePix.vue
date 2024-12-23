@@ -39,9 +39,16 @@ defineProps<{
     display: grid;
     grid-template-columns: 1.5fr .5fr;
     gap: 24px;
+
     .qr-code-image {
       margin: auto;
       max-width: 250px;
+    }
+  }
+
+  @media screen and (max-width: $mobile-breakpoint) {
+    .container {
+      grid-template-columns: 1fr;
     }
   }
 }
