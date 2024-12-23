@@ -19,7 +19,16 @@ export const useOrderById = (id: string) => {
   })
 
   const pixCode = computed(() => {
-    return ''
+    if (!order.value) return null
+
+    const { pixCode } = order.value?.paymentData || {}
+
+    if (!pixCode) {
+      console.error('Pix Code not found in order:', order.value)
+      return null
+    }
+
+    return pixCode
   })
 
   const fetchOrder = async () => {

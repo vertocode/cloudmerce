@@ -17,6 +17,7 @@ export interface OrderItem {
 interface PaymentData {
   type: 'pix' | 'card'
   qrCode?: string
+  pixCode?: string
   totalAmount: number
 }
 
