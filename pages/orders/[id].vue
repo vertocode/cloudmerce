@@ -113,15 +113,9 @@
         </p>
       </div>
 
-      <div>
-        <h4>
-          Tem dúvidas ou precisa de assistência com seu pedido? Estamos à disposição para ajudar. Entre em contato através do formulário abaixo.
-        </h4>
-
-        <br>
-
+      <ElAccordion title="Tem dúvidas ou precisa de assistência com seu pedido? Estamos à disposição para ajudar.">
         <ElContactForm :additional-info="additionalInformationContact" />
-      </div>
+      </ElAccordion>
     </VCard>
   </div>
 </template>

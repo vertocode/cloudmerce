@@ -14,7 +14,10 @@
       class="checkout-products"
     >
       <div class="list">
-        <ElAccordion :title="`Produtos no Carrinho (${cartProducts.length})`">
+        <ElAccordion
+          :title="`Produtos no Carrinho (${cartProducts.length})`"
+          default-expanded
+        >
           <MdCartItem
             v-for="(item, index) in cartProducts"
             :key="index"
@@ -29,8 +32,6 @@
 
 <script setup lang="ts">
 const { cartProducts, total } = useCart()
-
-const expandedPanels = ref<number[]>([0])
 </script>
 
 <style lang="scss" scoped>

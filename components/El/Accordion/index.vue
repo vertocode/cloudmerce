@@ -19,11 +19,12 @@
 </template>
 
 <script setup lang="ts">
-defineProps<{
+const props = defineProps<{
   title: string
+  defaultExpanded?: boolean
 }>()
 
-const expandedPanels = ref<number[]>([0])
+const expandedPanels = ref<number[]>(props.defaultExpanded ? [0] : [])
 </script>
 
 <style lang="scss" scoped>
