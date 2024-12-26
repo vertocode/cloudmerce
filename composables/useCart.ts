@@ -1,15 +1,18 @@
 import { computed } from 'vue'
-import type { IAddItemToCartResponse, ICartItem, IExpiredCartItem, IGetCartResponse } from '~/types/cart'
+import type { IAddItemToCartResponse, ICartItem, IExpiredCartItem, IGetCartResponse, ISubmitFnParams } from '~/types/cart'
 
 export const useCart = () => {
   const isCartDrawerOpened = useState('isCartDrawerOpened', () => false)
   const cartProducts = useState<(ICartItem | IExpiredCartItem)[]>('cartProducts', () => [])
   const ownerId = useState<string | null>('ownerId', () => null)
   const loading = useState<boolean>('cartLoading', () => true)
+  const loadingSubmit = ref(false)
 
   const route = useRoute()
   const { getWhitelabel } = useWhitelabel()
-  const { put, get } = useApi()
+  const { put, get, post } = useApi()
+  const router = useRouter()
+  const { userData } = useUser()
 
   const cartId = computed(() => {
     if (import.meta.client) {
@@ -204,5 +207,55 @@ export const useCart = () => {
     }, 0).toFixed(2)
   })
 
-  return { cartProducts, loading, isCartDrawerOpened, total, cartId, ownerId, removeCartId, addToCart, changeQuantity, getCart }
+  const submit = async ({ paymentMethod }: ISubmitFnParams) => {
+    try {
+      if (loadingSubmit.value) {
+        return
+      }
+
+      const whitelabel = await getWhitelabel()
+
+      loadingSubmit.value = true
+
+      const { name: userName, email: userEmail } = userData.value || {}
+
+      const response = await post(`/order/${whitelabel?._id}`, {
+        cartId: cartId.value,
+        userId: userData.value?._id,
+        paymentData: {
+          description: `Compra para ${userName} na loja ${whitelabel?.name}`,
+          paymentMethod: paymentMethod,
+          totalAmount: total.value,
+          payer: {
+            email: userEmail,
+          },
+        },
+      }) as { code: 'success' | 'error', order: { _id: string } }
+
+      if (response?.code === 'success') {
+        removeCartId()
+        handleSuccess('Pedido realizado com sucesso!')
+        const { _id: orderId } = response?.order || {}
+        if (orderId) {
+          await router.push(`/orders/${orderId}`)
+        }
+        else {
+          handleError('Ocorreu um erro ao redirecionar para a página de pedido. Verifique na lista de pedidos.')
+          await router.push('/orders')
+        }
+      }
+      else {
+        throw new Error('code not success')
+      }
+    }
+    catch (error) {
+      console.error('Error processing payment:', error)
+      handleError('Ocorreu um erro inesperado, atualize a pagina e tente novamente.')
+    }
+    finally {
+      loadingSubmit.value = false
+    }
+  }
+
+  return { cartProducts, loading, isCartDrawerOpened, total, cartId, ownerId, loadingSubmit, removeCartId, addToCart, changeQuantity, getCart, submit }
 }

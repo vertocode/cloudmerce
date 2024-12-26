@@ -38,3 +38,17 @@ export interface IGetCartResponse extends ICartResponse {
     _id: string
   }[]
 }
+
+export interface ISubmitFnParams {
+  paymentMethod: PaymentMethods
+}
+
+export enum PaymentMethods {
+  Pix = 'pix',
+  CreditCard = 'credit_card',
+}
+
+export enum PaymentMethodLabels {
+  pix = 'Pix',
+  credit_card = 'Cartão de Crédito',
+}

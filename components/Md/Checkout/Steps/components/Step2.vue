@@ -1,7 +1,7 @@
 <template>
   <div class="step2">
     <h2 class="title">
-      Dados de Pagamento
+      Forma de pagamento
     </h2>
 
     <div class="payment-methods">
@@ -18,6 +18,7 @@
 
     <PixForm
       v-if="paymentMethod === PaymentMethods.Pix"
+      :prev
     />
     <CreditCardForm
       v-else-if="paymentMethod === PaymentMethods.CreditCard"
@@ -29,16 +30,7 @@
 <script setup lang="ts">
 import CreditCardForm from '~/components/Md/Checkout/Steps/components/components/CreditCardForm.vue'
 import PixForm from '~/components/Md/Checkout/Steps/components/components/PixForm.vue'
-
-enum PaymentMethods {
-  Pix = 'pix',
-  CreditCard = 'credit_card',
-}
-
-enum PaymentMethodLabels {
-  pix = 'Pix',
-  credit_card = 'Cartão de Crédito',
-}
+import { PaymentMethods, PaymentMethodLabels } from '~/types/cart'
 
 defineProps<{ prev: () => void }>()
 const paymentMethod = ref<PaymentMethods>(PaymentMethods.Pix)
@@ -48,6 +40,7 @@ const paymentMethod = ref<PaymentMethods>(PaymentMethods.Pix)
 .step2 {
   .title {
     margin-bottom: 16px;
+    font-size: 1.2rem;
   }
 
   .payment-methods {
