@@ -14,26 +14,14 @@
       class="checkout-products"
     >
       <div class="list">
-        <VExpansionPanels
-          v-model="expandedPanels"
-          elevation="0"
-        >
-          <VExpansionPanel>
-            <VExpansionPanelTitle>
-              <h4 class="product-title">
-                Produtos no Carrinho ({{ cartProducts.length }})
-              </h4>
-            </VExpansionPanelTitle>
-            <VExpansionPanelText>
-              <MdCartItem
-                v-for="(item, index) in cartProducts"
-                :key="index"
-                class="item"
-                :item="item"
-              />
-            </VExpansionPanelText>
-          </VExpansionPanel>
-        </VExpansionPanels>
+        <ElAccordion :title="`Produtos no Carrinho (${cartProducts.length})`">
+          <MdCartItem
+            v-for="(item, index) in cartProducts"
+            :key="index"
+            class="item"
+            :item="item"
+          />
+        </ElAccordion>
       </div>
     </VCard>
   </div>
