@@ -62,5 +62,6 @@ export const useOrderById = (id: string) => {
     loading,
     qrCodeImage,
     pixCode,
+    fetchOrder,
   }
 }

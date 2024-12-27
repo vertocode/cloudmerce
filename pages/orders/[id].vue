@@ -4,7 +4,7 @@
       class="order-card"
       elevation="3"
     >
-      <VCardActions>
+      <VCardActions class="actions">
         <VBtn
           color="primary"
           variant="outlined"
@@ -17,6 +17,17 @@
             mdi-arrow-left
           </VIcon>
           Voltar para Pedidos
+        </VBtn>
+        <VBtn
+          color="primary"
+          variant="outlined"
+          icon
+          :disabled="loading || !order"
+          @click="fetchOrder"
+        >
+          <VIcon color="primary">
+            mdi-refresh
+          </VIcon>
         </VBtn>
       </VCardActions>
 
@@ -61,6 +72,10 @@
             </template>
           </VStepper>
         </div>
+
+        <p class="blockquote bg-primary rounded">
+          {{ statusMessage }}
+        </p>
 
         <VCardText class="content">
           <div class="products">
@@ -131,11 +146,28 @@ const route = useRoute()
 const router = useRouter()
 const id = route.params.id as string
 
-const { order, loading, qrCodeImage, pixCode } = useOrderById(id)
+const { order, loading, qrCodeImage, pixCode, fetchOrder } = useOrderById(id)
 const { userData } = useUser()
 
 const additionalInformationContact = computed(() => {
   return `orderId: ${id} \n orderDetails: ${JSON.stringify(order.value)}`
+})
+
+const statusMessage = computed(() => {
+  if (!order.value) return ''
+
+  switch (order.value.status) {
+    case 'pending':
+      return 'O pagamento do seu pedido ainda não foi identificado. Por favor, realize o pagamento para que possamos processar e enviar seu(s) produto(s).'
+    case 'paid':
+      return 'O pagamento do seu pedido foi confirmado. Aguardando o envio do(s) produto(s) pela loja.'
+    case 'finished':
+      return 'Seu pedido foi enviado pela loja e está a caminho. Por favor, aguarde a entrega.'
+    case 'product_sent':
+      return 'Seu pedido foi entregue com sucesso. Agradecemos pela sua compra! Caso tenha alguma dúvida, estamos à disposição.'
+    default:
+      return 'Houve um status desconhecido em relação ao seu pedido. Entre em contato com nosso suporte para mais informações.'
+  }
 })
 
 const products = computed(() => {
@@ -173,6 +205,11 @@ watch(userData, () => {
   justify-content: center;
   align-items: center;
   padding: 16px;
+
+  .actions {
+    display: flex;
+    justify-content: space-between;
+  }
 
   .content {
     display: flex;
