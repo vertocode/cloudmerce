@@ -3,7 +3,7 @@ import { StockOptions } from '~/components/Md/ProductForm/types/stock'
 
 export const validationSchema = z.object({
   productName: z.string().min(3, { message: 'Nome do produto deve ter pelo menos 3 caracteres' }),
-  productPrice: z.number().min(10, { message: 'Preço do produto deve ser maior ou igual a R$10,00' }),
+  productPrice: z.number().min(1, { message: 'Preço do produto deve ser maior ou igual a R$1,00' }),
   productDescription: z.string().min(10, { message: 'Descrição deve ter pelo menos 10 caracteres' }),
   productType: z.string().nonempty({ message: 'O tipo de produto é obrigatório' }),
   stockOption: z.enum(Object.values(StockOptions)),
