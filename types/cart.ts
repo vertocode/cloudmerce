@@ -37,6 +37,7 @@ export interface IGetCartResponse extends ICartResponse {
     quantity: number
     _id: string
   }[]
+  code?: string
 }
 
 export interface ISubmitFnParams {

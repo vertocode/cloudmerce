@@ -43,6 +43,12 @@ export const useCart = () => {
 
       const response = await get(`/get-cart/${whitelabel._id}`, { cartId: cartId.value }) as IGetCartResponse
 
+      if (response?.code === 'cart_not_found') {
+        handleWarning('Carrinho não encontrado.')
+        removeCartId()
+        return
+      }
+
       if (!response?._id) {
         throw new Error('Response without _id.')
       }
