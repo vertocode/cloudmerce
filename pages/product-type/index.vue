@@ -9,13 +9,11 @@
     <VeeForm
       :key="JSON.stringify(initialValues)"
       v-slot="{ isSubmitting }"
+      prevent-dirty
       :initial-values="initialValues"
       @submit="submit"
     >
-      <div
-        v-if="newProductTypes.length"
-        class="product-type-fields"
-      >
+      <div class="product-type-fields">
         <FieldArray
           v-slot="{ fields, push, remove }"
           name="productTypes"
@@ -51,7 +49,7 @@
           <VBtn
             class="w-100 mb-8"
             color="primary"
-            @click="push({ icon: '', name: '', id: String(newProductTypes.length + 1) })"
+            @click="push({ icon: '', name: '', id: String(fields.length + 1) })"
           >
             Adicionar novo tipo de produto
           </VBtn>
@@ -94,48 +92,30 @@
 <script setup lang="ts">
 import { FieldArray } from 'vee-validate'
 import DeleteProductType from '~/components/Md/DeleteProductType/index.vue'
+import type { IProductType } from '~/composables/useProductTypes'
 
 const isLoading = ref(false)
 const { productTypes, updateProductTypes } = useProductTypes()
+const router = useRouter()
 const { put } = useApi()
 
-const rules = [
-  (v: string | null) => !!v || 'Nome do tipo de produto é obrigatório',
-  (v: string | null) => !!v && v.length <= 25 || 'Nome do tipo de produto deve ter no máximo 25 caracteres',
-  (v: string | null) => !!v && v.length >= 3 || 'Nome do tipo de produto deve ter no mínimo 3 caracteres',
-]
-
-const oldProductTypes = ref(cloneArray(productTypes.value))
-const newProductTypes = ref(cloneArray(productTypes.value))
+const oldProductTypes = ref<IProductType[]>(cloneArray(productTypes.value))
 
 const initialValues = computed(() => ({
   productTypes: productTypes.value.map(type => ({ icon: '', name: type.name, id: type.id })),
 }))
 
 watch(productTypes, () => {
-  newProductTypes.value = cloneArray(productTypes.value)
   oldProductTypes.value = cloneArray(productTypes.value)
 })
 
-const validateFields = () => {
-  return newProductTypes.value.every((productType) => {
-    return rules.every((rule) => {
-      const value = productType.name
-      if (typeof rule(value) === 'boolean') {
-        return true
-      }
-      console.warn(`field ${value} is not valid for rule: ${rule(value)}`)
-      return false
-    })
-  })
-}
-
-const submit = async (values: Record<string, string>) => {
+const submit = async (values: { productTypes: IProductType[] }) => {
   isLoading.value = true
   try {
-    const productTypesToDelete = oldProductTypes.value.filter(type => !newProductTypes.value.some(newType => newType.id === type.id))
-    const productTypesToAdd = newProductTypes.value.filter(type => !oldProductTypes.value.some(oldType => oldType.id === type.id))
-    const productTypesToUpdate = newProductTypes.value.filter((type) => {
+    const { productTypes: newProductTypes = [] } = values
+    const productTypesToDelete = oldProductTypes.value.filter(type => !newProductTypes.some(newType => newType.id === type.id))
+    const productTypesToAdd = newProductTypes.filter(type => !oldProductTypes.value.some(oldType => oldType.id === type.id))
+    const productTypesToUpdate = newProductTypes.filter((type) => {
       const oldProductType = oldProductTypes.value.find(oldType => oldType.id === type.id)
       return oldProductType && oldProductType.name !== type.name
     })
@@ -156,13 +136,10 @@ const submit = async (values: Record<string, string>) => {
       ...productTypesToDelete.map(type => ({ ecommerceId, id: type.id, action: 'delete' })),
     ]
 
-    if (!productTypes.length) {
-      handleWarning('Nenhuma alteração foi feita, os tipos de produto estão iguais aos anteriores e o modal apenas foi fechado')
-      return
-    }
-
     await put('/product-types/multiple-update', { productTypes })
     await updateProductTypes({ cache: 'no-cache' })
+    handleSuccess('Tipos de produto salvos com sucesso')
+    router.push('/')
   }
   catch (error) {
     console.error(error)

@@ -30,6 +30,7 @@ export interface SubmitOptions {
 const props = defineProps<{
   validationSchema?: z.ZodSchema<unknown>
   initialValues?: Record<string, unknown>
+  preventDirty?: boolean
   formClass?: string
   id?: string
 }>()
@@ -43,6 +44,10 @@ const handleSubmit = async (attrs: FormSlotProps) => {
   const res = await validate()
 
   if (!res?.valid) return
+  if (props.preventDirty && !meta.dirty) {
+    handleWarning('Você não fez nenhuma alteração')
+    return
+  }
 
   emit('submit', values, { meta, resetForm } as SubmitOptions)
 }

@@ -1,4 +1,5 @@
 export interface IProductType {
+  icon?: string
   id: string
   name: string
 }
