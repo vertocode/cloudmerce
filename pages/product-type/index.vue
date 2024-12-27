@@ -117,7 +117,7 @@ const submit = async (values: { productTypes: IProductType[] }) => {
     const productTypesToAdd = newProductTypes.filter(type => !oldProductTypes.value.some(oldType => oldType.id === type.id))
     const productTypesToUpdate = newProductTypes.filter((type) => {
       const oldProductType = oldProductTypes.value.find(oldType => oldType.id === type.id)
-      return oldProductType && oldProductType.name !== type.name
+      return oldProductType && (oldProductType.name !== type.name || oldProductType.icon !== type.icon)
     })
 
     const { getWhitelabel } = useWhitelabel()
