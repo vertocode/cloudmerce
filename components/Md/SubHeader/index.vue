@@ -26,7 +26,7 @@
           v-if="type.icon"
           color="#fff"
         >
-          {{ type.icon }}
+          {{ type.icon.includes('mdi') ? type.icon : `mdi-${type.icon}` }}
         </VIcon>
         {{ type.name }}
       </div>
