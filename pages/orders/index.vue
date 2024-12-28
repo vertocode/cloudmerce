@@ -101,6 +101,10 @@ const { userData } = useUser()
 watch(userData, () => {
   fetchOrders()
 })
+
+callOnce(() => {
+  fetchOrders()
+})
 </script>
 
 <style scoped lang="scss">
