@@ -22,7 +22,7 @@
           color="primary"
           variant="outlined"
           icon
-          :disabled="loading || !order"
+          :disabled="loading || !order || order.status === 'finished'"
           @click="fetchOrder"
         >
           <VIcon color="primary">

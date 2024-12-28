@@ -57,7 +57,10 @@
                     />
                   </VList>
                 </VCardText>
-                <VCardActions>
+                <VCardActions class="order-footer">
+                  <span>
+                    Pedido feito em: {{ formatDate(order.createdAt) }}
+                  </span>
                   <VBtn
                     color="primary"
                     variant="elevated"
@@ -126,6 +129,16 @@ callOnce(() => {
       display: flex;
       justify-content: space-between;
       margin-bottom: 16px;
+    }
+
+    .order-footer {
+      display: flex;
+      justify-content: space-between;
+
+      span {
+        font-size: 0.85em;
+        color: #666;
+      }
     }
 
     .product-list {
