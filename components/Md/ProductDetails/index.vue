@@ -114,7 +114,7 @@ const addToCart = async () => {
 
     .image-section {
       width: 100%;
-      max-width: 500px;
+      max-width: 700px;
       align-self: baseline;
 
       :deep(.product-image-carousel) {

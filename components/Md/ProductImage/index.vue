@@ -19,6 +19,7 @@
   <!-- Carousel for multiple images -->
   <VCarousel
     v-else-if="images?.length > 1"
+    :model-value="modelValue"
     hide-delimiter-background
     :hide-delimiters="hideDelimiters"
     :show-arrows="showArrows ?? 'hover'"
@@ -60,6 +61,7 @@ const props = defineProps<{
   showArrows?: string | boolean
   hideDelimiters?: boolean
   onClick?: () => void
+  modelValue?: string
 }>()
 
 const images = computed(() => {
