@@ -10,6 +10,7 @@ interface IProductTypeResponse {
   createdAt: string
   updatedAt: string
   ecommerceId: string
+  icon: string
 }
 
 interface IUpdateProductTypes {
@@ -39,6 +40,7 @@ export const useProductTypes = () => {
       productTypes.value = response.map((productType: IProductTypeResponse) => ({
         id: productType?._id,
         name: productType.name,
+        icon: productType.icon,
       }))
     }
     catch (e) {

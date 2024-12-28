@@ -102,7 +102,7 @@ const { put } = useApi()
 const oldProductTypes = ref<IProductType[]>(cloneArray(productTypes.value))
 
 const initialValues = computed(() => ({
-  productTypes: productTypes.value.map(type => ({ icon: '', name: type.name, id: type.id })),
+  productTypes: productTypes.value.map(type => ({ icon: type.icon || '', name: type.name, id: type.id })),
 }))
 
 watch(productTypes, () => {

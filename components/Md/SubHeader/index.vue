@@ -22,6 +22,12 @@
         :class="['product-type', { active: isActiveType(type.id) }]"
         @click="redirectTo(type.id)"
       >
+        <VIcon
+          v-if="type.icon"
+          color="#fff"
+        >
+          {{ type.icon }}
+        </VIcon>
         {{ type.name }}
       </div>
     </div>
@@ -112,6 +118,9 @@ onMounted(() => {
     }
 
     .product-type {
+      display: flex;
+      align-items: center;
+      gap: 4px;
       padding: 0.5rem 1rem;
       color: #fff;
       font-size: 1rem;
