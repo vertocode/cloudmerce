@@ -8,6 +8,8 @@
       <div class="product-image-container">
         <ProductImage
           :image="product.image"
+          :show-arrows="!isMobileScreen"
+          :on-click="() => $router.push(`/product/${product.id}`)"
         />
       </div>
 
@@ -86,6 +88,8 @@ const showQuestionAddModal = ref<boolean>(false)
 const formattedPrice = computed(() => {
   return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(props.product.price)
 })
+
+const isMobileScreen = window.innerWidth < 768
 
 const addToCart = async () => {
   if (props.product.fields.length > 0) {

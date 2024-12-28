@@ -36,6 +36,8 @@
         alt=""
         aspect-ratio="1"
         class="product-image"
+        :class="{ ['cursor-pointer']: onClick }"
+        @click="onClick"
       />
     </VCarouselItem>
   </VCarousel>
@@ -57,6 +59,7 @@ const props = defineProps<{
   cycle?: boolean
   showArrows?: string | boolean
   hideDelimiters?: boolean
+  onClick?: () => void
 }>()
 
 const images = computed(() => {

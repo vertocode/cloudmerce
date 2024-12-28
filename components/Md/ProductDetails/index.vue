@@ -12,7 +12,7 @@
 
     <div class="product-main">
       <div class="image-section">
-        <MdProductImage :image="product.image" />
+        <ProductImages :images="product.image as string[] || []" />
       </div>
 
       <div class="details-section">
@@ -72,6 +72,7 @@
 </template>
 
 <script setup lang="ts">
+import ProductImages from './ProductImages/index.vue'
 import type { IProduct } from '~/types/product'
 
 const showQuestionAddModal = ref(false)
@@ -113,7 +114,7 @@ const addToCart = async () => {
 
     .image-section {
       width: 100%;
-      max-width: 400px;
+      max-width: 500px;
       align-self: baseline;
 
       :deep(.product-image-carousel) {
