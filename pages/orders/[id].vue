@@ -82,6 +82,10 @@
           {{ statusMessage }}
         </p>
 
+        <p class="mt-3 font-weight-bold">
+          Data do pedido: {{ formatDate(order.createdAt) }}
+        </p>
+
         <VCardText class="content">
           <div class="products">
             <h4>Produtos Comprados</h4>
