@@ -73,7 +73,10 @@
           </VStepper>
         </div>
 
-        <StatusActions :status="order.status" />
+        <StatusActions
+          :status="order.status"
+          @on-change-status="changeStatus"
+        />
 
         <p class="blockquote bg-primary rounded">
           {{ statusMessage }}
@@ -149,8 +152,8 @@ const route = useRoute()
 const router = useRouter()
 const id = route.params.id as string
 
-const { order, loading, qrCodeImage, pixCode, fetchOrder } = useOrderById(id)
-const { userData, isAdmin } = useUser()
+const { order, loading, qrCodeImage, pixCode, fetchOrder, changeStatus } = useOrderById(id)
+const { userData } = useUser()
 
 const additionalInformationContact = computed(() => {
   return `orderId: ${id} \n orderDetails: ${JSON.stringify(order.value)}`
@@ -164,9 +167,9 @@ const statusMessage = computed(() => {
       return 'O pagamento do seu pedido ainda não foi identificado. Por favor, realize o pagamento para que possamos processar e enviar seu(s) produto(s).'
     case 'paid':
       return 'O pagamento do seu pedido foi confirmado. Aguardando o envio do(s) produto(s) pela loja.'
-    case 'finished':
-      return 'Seu pedido foi enviado pela loja e está a caminho. Por favor, aguarde a entrega.'
     case 'product_sent':
+      return 'Seu pedido foi enviado pela loja e está a caminho. Por favor, aguarde a entrega.'
+    case 'finished':
       return 'Seu pedido foi entregue com sucesso. Agradecemos pela sua compra! Caso tenha alguma dúvida, estamos à disposição.'
     default:
       return 'Houve um status desconhecido em relação ao seu pedido. Entre em contato com nosso suporte para mais informações.'
@@ -182,7 +185,20 @@ const products = computed(() => {
   }))
 })
 
-const statusStep = computed(() => (order.value?.status === 'paid' ? 2 : 1))
+const statusStep = computed(() => {
+  switch (order.value?.status) {
+    case 'pending':
+      return 1
+    case 'paid':
+      return 2
+    case 'product_sent':
+      return 3
+    case 'finished':
+      return 4
+    default:
+      return 0
+  }
+})
 
 const totalAmount = computed(() =>
   order.value?.items?.reduce(

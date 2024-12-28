@@ -1,10 +1,10 @@
-import type { Order } from '~/types/order'
+import type { Order, OrderStatus } from '~/types/order'
 
 export const useOrderById = (id: string) => {
   const order = useState<Order | null>(`order-${id}`, () => null)
   const loading = useState<boolean>(`loading-order-${id}`, () => false)
 
-  const { get } = useApi()
+  const { get, put } = useApi()
 
   const qrCodeImage = computed(() => {
     if (!order.value) return null
@@ -53,6 +53,36 @@ export const useOrderById = (id: string) => {
     }
   }
 
+  const changeStatus = async (status: OrderStatus) => {
+    const { getWhitelabel } = useWhitelabel()
+
+    try {
+      const whitelabel = await getWhitelabel()
+      if (!whitelabel) {
+        throw new Error('Whitelabel not found')
+      }
+
+      loading.value = true
+      const response = await put(`/update-order-status`, {
+        orderId: id,
+        status,
+      }) as Order
+
+      if (!order.value) {
+        throw new Error('Pedido não encontrado')
+      }
+
+      order.value.status = response.status
+    }
+    catch (error) {
+      console.error(`Erro ao buscar pedido ${id}:`, error)
+      order.value = null
+    }
+    finally {
+      loading.value = false
+    }
+  }
+
   onMounted(() => {
     fetchOrder()
   })
@@ -63,5 +93,6 @@ export const useOrderById = (id: string) => {
     qrCodeImage,
     pixCode,
     fetchOrder,
+    changeStatus,
   }
 }
