@@ -5,6 +5,10 @@
         mdi-arrow-left
       </VIcon>
       <h1>Tipos de Produto</h1>
+      <a
+        href="https://pictogrammers.com/library/mdi/"
+        target="_blank"
+      >Icones MDI</a>
     </header>
     <VeeForm
       :key="JSON.stringify(initialValues)"
