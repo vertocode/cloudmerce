@@ -30,6 +30,7 @@
             <VeeTextField
               :name="`productTypes[${index}].icon`"
               placeholder="mdi-laptop"
+              :prepend-icon="type.value?.icon"
               label="Icone MDI (Opcional)"
               outlined
             />
