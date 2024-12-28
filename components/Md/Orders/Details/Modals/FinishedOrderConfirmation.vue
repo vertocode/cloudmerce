@@ -16,7 +16,7 @@
         </VBtn>
         <VBtn
           color="primary"
-          @click="onConfirm"
+          @click="onConfirm('finished')"
         >
           Confirmar
         </VBtn>
@@ -26,9 +26,11 @@
 </template>
 
 <script setup lang="ts">
+import type { OrderStatus } from '~/types/order'
+
 defineProps<{
   isOpened: boolean
-  onConfirm?: (fields: Record<string, string>) => void
+  onConfirm: (newStatus: OrderStatus) => void
 }>()
 </script>
 

@@ -27,10 +27,12 @@
   </div>
   <SendOrderConfirmation
     :is-opened="showSendOrderConfirmationModal"
+    :on-confirm="handleStatusChange"
     @close="showSendOrderConfirmationModal = false"
   />
   <FinishedOrderConfirmation
     :is-opened="showFinishedOrderConfirmationModal"
+    :on-confirm="handleStatusChange"
     @close="showFinishedOrderConfirmationModal = false"
   />
 </template>
@@ -44,10 +46,24 @@ defineProps<{
   status: OrderStatus
 }>()
 
+const emits = defineEmits()
+
 const showSendOrderConfirmationModal = ref<boolean>(false)
 const showFinishedOrderConfirmationModal = ref<boolean>(false)
 
 const { isAdmin } = useUser()
+
+const handleStatusChange = (newStatus: OrderStatus) => {
+  emits('onChangeStatus', newStatus)
+
+  if (newStatus === 'product_sent') {
+    showSendOrderConfirmationModal.value = false
+  }
+
+  if (newStatus === 'finished') {
+    showFinishedOrderConfirmationModal.value = false
+  }
+}
 </script>
 
 <style lang="scss" scoped>
