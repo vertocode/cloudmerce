@@ -73,6 +73,8 @@
           </VStepper>
         </div>
 
+        <StatusActions :status="order.status" />
+
         <p class="blockquote bg-primary rounded">
           {{ statusMessage }}
         </p>
@@ -137,6 +139,7 @@
 
 <script setup lang="ts">
 import QRCodePix from '~/components/Md/Orders/Details/QRCodePix.vue'
+import StatusActions from '~/components/Md/Orders/Details/StatusActions.vue'
 
 definePageMeta({
   middleware: ['02-auth'],
@@ -147,7 +150,7 @@ const router = useRouter()
 const id = route.params.id as string
 
 const { order, loading, qrCodeImage, pixCode, fetchOrder } = useOrderById(id)
-const { userData } = useUser()
+const { userData, isAdmin } = useUser()
 
 const additionalInformationContact = computed(() => {
   return `orderId: ${id} \n orderDetails: ${JSON.stringify(order.value)}`
@@ -253,7 +256,6 @@ watch(userData, () => {
   }
 
   .order-status {
-    margin-bottom: 24px;
     text-align: center;
 
     .status-stepper {
@@ -262,6 +264,7 @@ watch(userData, () => {
     }
 
     .mobile-status {
+      margin-bottom: 16px;
       display: none;
     }
 
