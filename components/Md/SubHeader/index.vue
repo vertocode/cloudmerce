@@ -22,10 +22,7 @@
         :class="['product-type', { active: isActiveType(type.id) }]"
         @click="redirectTo(type.id)"
       >
-        <VIcon
-          v-if="type.icon"
-          color="#fff"
-        >
+        <VIcon v-if="type.icon">
           {{ type.icon.includes('mdi') ? type.icon : `mdi-${type.icon}` }}
         </VIcon>
         {{ type.name }}
@@ -79,7 +76,7 @@ const redirectTo = (type: string) => {
 }
 
 // Determine if a type is active based on the URL
-const isActiveType = (type: string) => route.params.productType === type
+const isActiveType = (type: string) => route.params.type === type
 
 onMounted(() => {
   checkScrollButtons()
@@ -132,6 +129,10 @@ onMounted(() => {
       transition: background-color 0.3s, color 0.3s;
       position: relative;
 
+      .v-icon {
+        color: var(--primary-color-100);
+      }
+
       @media screen and (max-width: $mobile-breakpoint) {
         padding: 0.5rem 0.75rem;
         font-size: .9rem;
@@ -139,11 +140,14 @@ onMounted(() => {
 
       &.active {
         background-color: var(--secondary-color-500);
-        color: var(--primary-color-500);
-        font-weight: bold;
+        color: var(--primary-color-700);
+
+        .v-icon {
+          color: var(--primary-color-700);
+        }
       }
 
-      &:hover::after {
+      &:not(.active):hover::after {
         content: '';
         position: absolute;
         left: 0;
