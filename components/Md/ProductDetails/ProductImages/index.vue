@@ -44,6 +44,7 @@
         :src="images[0]"
         alt="first-image"
         class="first-image"
+        @click="currentIndexModal = 0"
       />
       <div class="small-images">
         <VImg
