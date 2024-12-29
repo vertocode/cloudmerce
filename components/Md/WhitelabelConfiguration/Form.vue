@@ -124,6 +124,20 @@
         />
       </VCol>
       <VCol cols="12">
+        <h3 class="mb-5">
+          Dados para receber pagamento automaticamente
+        </h3>
+      </VCol>
+      <VCol
+        cols="12"
+      >
+        <VeeTextField
+          name="mercadopagoId"
+          label="Access Token do Mercado Pago"
+          outlined
+        />
+      </VCol>
+      <VCol cols="12">
         <VeeButton
           class="mb-5 w-100"
           variant="elevated"
