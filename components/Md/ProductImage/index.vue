@@ -20,7 +20,7 @@
   <VCarousel
     v-else-if="images?.length > 1"
     :model-value="modelValue"
-    hide-delimiter-background
+    :hide-delimiter-background="hideDelimiterBackground ?? true"
     :hide-delimiters="hideDelimiters"
     :show-arrows="showArrows ?? 'hover'"
     :cycle
@@ -60,6 +60,7 @@ const props = defineProps<{
   cycle?: boolean
   showArrows?: string | boolean
   hideDelimiters?: boolean
+  hideDelimiterBackground?: boolean
   onClick?: () => void
   modelValue?: string
 }>()

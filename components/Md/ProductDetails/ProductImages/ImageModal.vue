@@ -9,6 +9,7 @@
     >
       <MdProductImage
         :image="images"
+        :hide-delimiter-background="false"
         :model-value="String(currentImageIndex)"
         show-arrows
       />
@@ -42,17 +43,21 @@ defineProps<{
   right: 0;
   bottom: 0;
   z-index: 999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
   .image-modal {
     background-color: white;
-    position: fixed;
-    top: 0;
-    left: 5%;
-    right: 5%;
-    bottom: 0;
+    height: max-content;
+    width: 90vw;
     display: flex;
     justify-content: center;
     align-items: center;
+
+    :deep(.v-img) {
+      max-height: 90vh;
+    }
 
     .close-btn {
       position: absolute;
