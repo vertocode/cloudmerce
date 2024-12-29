@@ -54,6 +54,7 @@ defineProps<{
     display: flex;
     justify-content: center;
     align-items: center;
+    position: relative;
 
     :deep(.v-img) {
       max-height: 90vh;
