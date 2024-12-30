@@ -14,7 +14,7 @@
         ...$attrs,
         ...field,
       }"
-      :type="$attrs.type === 'password' ? isPasswordVisible ? 'text' : 'password' : ''"
+      :type="$attrs.type === 'password' ? isPasswordVisible ? 'text' : 'password' : $attrs.type as string"
       :append-inner-icon="$attrs.type === 'password' ? isPasswordVisible ? 'mdi-eye-off' : 'mdi-eye' : ''"
       @click:append-inner="togglePasswordVisibility"
     />
