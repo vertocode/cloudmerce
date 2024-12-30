@@ -124,9 +124,14 @@
         />
       </VCol>
       <VCol cols="12">
-        <h3 class="mb-5">
-          Dados para receber pagamento automaticamente
+        <h3 class="mb-2">
+          Dados para receber pagamento
         </h3>
+      </VCol>
+      <VCol cols="12">
+        <p class="mb-5">
+          Para habilitar o recebimento automático de pagamentos, insira o seu Access Token do Mercado Pago. Caso prefira, você pode deixar este campo em branco e configurá-lo posteriormente. Atenção: se o token não for informado e um pedido for pago, o valor será creditado na conta da Cloudmerce.
+        </p>
       </VCol>
       <VCol
         cols="12"
