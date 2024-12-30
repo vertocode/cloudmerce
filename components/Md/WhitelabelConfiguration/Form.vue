@@ -214,7 +214,7 @@ const handleSubmit = async (values: Record<string, any>) => {
 
       if ((response as IWhitelabel)?._id) {
         handleSuccess('Configuração salva com sucesso')
-        await router.push('/')
+        window.open('/', '_self')
       }
       else {
         throw new Error(`Response without _id: ${response}`)
