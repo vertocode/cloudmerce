@@ -1,5 +1,18 @@
 <template>
   <div
+    v-if="isAdmin && !loading"
+    class="new-product-btn-container"
+  >
+    <VBtn
+      color="secondary"
+      variant="outlined"
+      @click="$router.push('/register-new-product')"
+    >
+      Novo Produto (ADM)
+    </VBtn>
+  </div>
+
+  <div
     v-if="loading"
     class="spinner"
   >
@@ -38,6 +51,7 @@ import PaginationComponent from './PaginationComponent.vue'
 import type { IProduct } from '~/types/product'
 
 const router = useRouter()
+const { isAdmin } = useUser()
 
 const props = defineProps<{
   products: IProduct[]
@@ -65,6 +79,13 @@ const handlePageChange = (page: number) => {
 </script>
 
 <style lang="scss">
+.new-product-btn-container {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  margin-top: 24px;
+}
+
 .spinner {
   margin: auto;
   width: 100%;

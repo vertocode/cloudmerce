@@ -26,7 +26,6 @@
 <script setup lang="ts">
 definePageMeta({
   layout: 'no-layout',
-  middleware: ['03-admin-auth'],
 })
 </script>
 
@@ -51,8 +50,6 @@ $font-family: 'Arial', sans-serif;
   *,
   *::before,
   *::after {
-    margin: 0;
-    padding: 0;
     box-sizing: border-box;
   }
 
@@ -88,7 +85,11 @@ $font-family: 'Arial', sans-serif;
     color: $text-color;
   }
 
-  @media (max-width: 768px) {
+  @media (max-width: 959px) {
+    [class*=v-col-md-] {
+      padding: 0 !important;
+    }
+
     h1 {
       font-size: 2rem;
     }
