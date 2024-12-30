@@ -20,10 +20,8 @@ export interface IWhitelabel {
   contact: {
     email: string
   }
-  pixKey?: {
-    phone?: string
-    cpf?: string
-    other?: string
+  paymentData?: {
+    mercadopagoId?: string
   }
   createdAt: string
   updatedAt: string

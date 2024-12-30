@@ -1,3 +1,7 @@
+const omit = (obj: any, keys: string[]) => {
+  return Object.fromEntries(Object.entries(obj).filter(([key]) => !keys.includes(key)))
+}
+
 export const useApi = () => {
   const config = useRuntimeConfig()
   const apiUrl = config.public?.apiUrl || console.error('API URL not found in runtime config.')
@@ -7,13 +11,14 @@ export const useApi = () => {
     'Access-Control-Allow-Origin': '*',
   }
 
-  const get = async (path: string, data?: Record<string, any>, options?: { cache?: 'no-cache' | 'force-cache' }) => {
+  const get = async (path: string, data?: Record<string, any>, options?: { cache?: 'no-cache' | 'force-cache' }, headers?: HeadersInit) => {
     const query = data ? new URLSearchParams(data).toString() : ''
 
     return $fetch(`${apiUrl}${path}?${query}`, {
       method: 'GET',
       headers: {
         ...commonHeaders,
+        ...headers,
       },
       ...options,
     })

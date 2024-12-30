@@ -133,6 +133,7 @@
       >
         <VeeTextField
           name="mercadopagoId"
+          type="password"
           label="Access Token do Mercado Pago"
           outlined
         />
@@ -156,9 +157,9 @@ import type { IWhitelabel } from '~/types/whitelabel'
 
 const url = useRequestURL()
 
-const { getWhitelabel } = useWhitelabel()
+const { getWhitelabelWPaymentData } = useWhitelabel()
 
-const whitelabel = await getWhitelabel()
+const whitelabel = await getWhitelabelWPaymentData()
 
 const initialValues = {
   baseUrl: url.host as unknown as string,
@@ -167,6 +168,7 @@ const initialValues = {
   wpp: whitelabel?.socialMedia?.wpp || '',
   instagram: whitelabel?.socialMedia?.instagram || '',
   twitter: whitelabel?.socialMedia?.twitter || '',
+  mercadopagoId: whitelabel?.paymentData?.mercadopagoId || '',
   ...(whitelabel as Omit<IWhitelabel, 'baseUrl'> || {}),
 }
 
