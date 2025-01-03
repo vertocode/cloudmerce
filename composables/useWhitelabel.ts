@@ -20,8 +20,8 @@ export const useWhitelabel = () => {
 
   const hasWhitelabel = computed(() => !!whitelabel.value && whitelabel.value !== 404)
 
-  const getWhitelabel = async () => {
-    if (whitelabel.value) return whitelabel.value
+  const getWhitelabel = async ({ cache = true }: { cache: boolean } = { cache: true }) => {
+    if (whitelabel.value && !cache) return whitelabel.value
 
     try {
       const response = await get(`/whitelabel/${url.host}`)

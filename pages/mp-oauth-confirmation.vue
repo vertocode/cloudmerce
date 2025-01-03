@@ -13,7 +13,7 @@
       />
     </div>
     <div
-      v-else-if="whitelabel?.hasMP"
+      v-else-if="success"
       class="content"
     >
       <h1>Conta do Mercado Pago está vinculada!</h1>
@@ -51,12 +51,17 @@ definePageMeta({
 })
 
 const isLoading = ref<boolean>(true)
+const success = ref<boolean>(false)
 
 const router = useRouter()
 const route = useRoute()
-const { whitelabel } = useWhitelabel()
+const { whitelabel, getWhitelabel } = useWhitelabel()
 const { userData } = useUser()
 const { post } = useApi()
+
+definePageMeta({
+  middleware: ['04.mp-whitelabel'],
+})
 
 const redirectToHome = () => {
   router.push('/')
@@ -74,6 +79,8 @@ onMounted(async () => {
       authorizationCode: code,
       redirectUri: window.location.origin + '/mp-oauth-confirmation',
     })
+    await getWhitelabel({ cache: false })
+    success.value = true
   }
   catch (e) {
     handleError(e)
