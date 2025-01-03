@@ -27,9 +27,15 @@
 </template>
 
 <script setup lang="ts">
-const isOpened = ref(true)
+const isOpened = ref(false)
 
 const { userData } = useUser()
+const { whitelabel, hasWhitelabel } = useWhitelabel()
+
+if (hasWhitelabel.value) {
+  console.log(whitelabel.value)
+  isOpened.value = !whitelabel.value?.hasMP
+}
 
 const redirect = () => {
   const platformId = 'mp'
@@ -37,7 +43,7 @@ const redirect = () => {
   const state = userData.value?._id || 'unlogged'
   const redirectUri = window.location.origin + '/mp-oauth-confirmation'
   const responseType = 'code'
-  window.open(`https://auth.mercadopago.com.br/authorization?client_id=${clientId}&response_type=${responseType}&state=${state}&platform_id=${platformId}&redirect_uri=${redirectUri}`, '_blank')
+  window.open(`https://auth.mercadopago.com.br/authorization?client_id=${clientId}&response_type=${responseType}&state=${state}&platform_id=${platformId}&redirect_uri=${redirectUri}`, '_self')
 }
 </script>
 

@@ -3,6 +3,7 @@ export interface IWhitelabel {
   baseUrl: string
   name: string
   description?: string
+  hasMP?: boolean
   primaryColor?: string
   secondaryColor?: string
   banner: {

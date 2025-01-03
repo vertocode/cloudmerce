@@ -162,9 +162,9 @@ import type { IWhitelabel } from '~/types/whitelabel'
 
 const url = useRequestURL()
 
-const { getWhitelabelWPaymentData } = useWhitelabel()
+const { getWhitelabel } = useWhitelabel()
 
-const whitelabel = await getWhitelabelWPaymentData()
+const whitelabel = await getWhitelabel()
 
 const initialValues = {
   baseUrl: url.host as unknown as string,
@@ -173,7 +173,6 @@ const initialValues = {
   wpp: whitelabel?.socialMedia?.wpp || '',
   instagram: whitelabel?.socialMedia?.instagram || '',
   twitter: whitelabel?.socialMedia?.twitter || '',
-  // mercadopagoId: whitelabel?.paymentData?.mercadopagoId || '',
   ...(whitelabel as Omit<IWhitelabel, 'baseUrl'> || {}),
 }
 
@@ -194,7 +193,6 @@ const validationSchema = z.object({
   wpp: z.string().optional(),
   instagram: z.string().optional(),
   twitter: z.string().optional(),
-  // mercadopagoId: z.string().optional(),
 })
 
 const handleSubmit = async (values: Record<string, any>) => {
@@ -218,9 +216,6 @@ const handleSubmit = async (values: Record<string, any>) => {
         instagram: values.instagram,
         twitter: values.twitter,
       },
-      // paymentData: {
-      //   mercadopagoId: values.mercadopagoId,
-      // },
     }
     if (id) {
       const response = await put(`/whitelabel/${id}`, whitelabelData)

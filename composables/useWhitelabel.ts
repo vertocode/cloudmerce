@@ -18,6 +18,8 @@ export const useWhitelabel = () => {
     }
   })
 
+  const hasWhitelabel = computed(() => !!whitelabel.value && whitelabel.value !== 404)
+
   const getWhitelabel = async () => {
     if (whitelabel.value) return whitelabel.value
 
@@ -41,38 +43,9 @@ export const useWhitelabel = () => {
     }
   }
 
-  const getWhitelabelWPaymentData = async () => {
-    const wData = await getWhitelabel() as IWhitelabel
-    if (wData?.paymentData) return wData
-
-    try {
-      const response = await get(`/whitelabel/payment-data/${url.host}`)
-
-      if ((response as IWhitelabelError)?.code === 404) {
-        console.warn('Not found whitelabel, redirecting to /whitelabel-configuration', response)
-        whitelabel.value = 404
-        await router.push('/whitelabel-configuration')
-        return
-      }
-
-      const newData = {
-        ...whitelabel.value as IWhitelabel,
-        paymentData: response as IWhitelabel['paymentData'],
-      }
-
-      whitelabel.value = newData
-      return newData
-    }
-    catch (error) {
-      handleError('Erro inesperado ao buscar dados da loja')
-      console.error('Error getting whitelabel:', error)
-      return 'error'
-    }
-  }
-
   return {
     whitelabel,
     getWhitelabel,
-    getWhitelabelWPaymentData,
+    hasWhitelabel,
   }
 }
