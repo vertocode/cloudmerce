@@ -1,6 +1,21 @@
 <template>
   <main class="payment-link">
-    <div class="content">
+    <div
+      v-if="isLoading"
+      class="loading"
+    >
+      <h2 class="mb-5">
+        Validando dados do mercado pago
+      </h2>
+      <VProgressCircular
+        indeterminate
+        size="100"
+      />
+    </div>
+    <div
+      v-else-if="whitelabel?.hasMP"
+      class="content"
+    >
       <h1>Conta do Mercado Pago está vinculada!</h1>
       <p class="description">
         Agora, os pagamentos realizados em seu E-Commerce serão diretamente creditados na conta do Mercado Pago que você acabou de vincular.
@@ -18,17 +33,55 @@
         Voltar para o Início
       </v-btn>
     </div>
+    <div v-else>
+      <h1>Erro ao vincular sua conta do mercado pago a aplicacao, tente novamente mais tarde!</h1>
+      <p>Se o problema persistir, entre em contato no formulario abaixo.</p>
+      <VDivider class="my-4" />
+
+      <ElContactForm />
+    </div>
   </main>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { useRouter } from 'vue-router'
 
+definePageMeta({
+  middleware: ['03-admin-auth'],
+})
+
+const isLoading = ref<boolean>(true)
+
 const router = useRouter()
+const route = useRoute()
+const { whitelabel } = useWhitelabel()
+const { userData } = useUser()
+const { post } = useApi()
 
 const redirectToHome = () => {
   router.push('/')
 }
+
+onMounted(async () => {
+  try {
+    const { code } = route.query || {}
+    if (!code) {
+      handleError('Código de autorização não encontrado')
+    }
+    await post('/mp-oauth-token', {
+      whitelabelId: whitelabel.value?._id,
+      state: userData.value?._id,
+      authorizationCode: code,
+      redirectUri: window.location.origin + '/mp-oauth-confirmation',
+    })
+  }
+  catch (e) {
+    handleError(e)
+  }
+  finally {
+    isLoading.value = false
+  }
+})
 </script>
 
 <style scoped>
@@ -37,6 +90,10 @@ const redirectToHome = () => {
   justify-content: center;
   align-items: center;
   padding: 20px;
+}
+
+.loading {
+  text-align: center;
 }
 
 .content {

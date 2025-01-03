@@ -30,10 +30,10 @@
 const isOpened = ref(false)
 
 const { userData } = useUser()
+const route = useRoute()
 const { whitelabel, hasWhitelabel } = useWhitelabel()
 
-if (hasWhitelabel.value) {
-  console.log(whitelabel.value)
+if (hasWhitelabel.value && route.path !== '/mp-oauth-confirmation') {
   isOpened.value = !whitelabel.value?.hasMP
 }
 
