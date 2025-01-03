@@ -78,6 +78,8 @@
       </template>
     </div>
   </div>
+
+  <MdMPIntegrationModal v-if="isAdmin" />
 </template>
 
 <script setup lang="ts">

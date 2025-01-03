@@ -18,6 +18,7 @@
       class="modal-card"
     >
       <VBtn
+        v-if="!hideClose"
         variant="text"
         icon
         class="close-btn"
@@ -39,6 +40,7 @@ defineProps<{
   cardProps: object
   minWidth?: string
   maxWidth?: string
+  hideClose?: boolean
   persistent?: boolean
 }>()
 </script>
