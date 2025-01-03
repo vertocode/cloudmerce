@@ -128,21 +128,21 @@
           Dados para receber pagamento
         </h3>
       </VCol>
-      <VCol cols="12">
-        <p class="mb-5">
-          Para habilitar o recebimento automático de pagamentos, insira o seu Access Token do Mercado Pago. Caso prefira, você pode deixar este campo em branco e configurá-lo posteriormente. Atenção: se o token não for informado e um pedido for pago, o valor será creditado na conta da Cloudmerce.
-        </p>
-      </VCol>
-      <VCol
-        cols="12"
-      >
-        <VeeTextField
-          name="mercadopagoId"
-          type="password"
-          label="Access Token do Mercado Pago"
-          outlined
-        />
-      </VCol>
+      <!--      <VCol cols="12"> -->
+      <!--        <p class="mb-5"> -->
+      <!--          Para habilitar o recebimento automático de pagamentos, insira o seu Access Token do Mercado Pago. Caso prefira, você pode deixar este campo em branco e configurá-lo posteriormente. Atenção: se o token não for informado e um pedido for pago, o valor será creditado na conta da Cloudmerce. -->
+      <!--        </p> -->
+      <!--      </VCol> -->
+      <!--      <VCol -->
+      <!--        cols="12" -->
+      <!--      > -->
+      <!--        <VeeTextField -->
+      <!--          name="mercadopagoId" -->
+      <!--          type="password" -->
+      <!--          label="Access Token do Mercado Pago" -->
+      <!--          outlined -->
+      <!--        /> -->
+      <!--      </VCol> -->
       <VCol cols="12">
         <VeeButton
           class="mb-5 w-100"
@@ -173,7 +173,7 @@ const initialValues = {
   wpp: whitelabel?.socialMedia?.wpp || '',
   instagram: whitelabel?.socialMedia?.instagram || '',
   twitter: whitelabel?.socialMedia?.twitter || '',
-  mercadopagoId: whitelabel?.paymentData?.mercadopagoId || '',
+  // mercadopagoId: whitelabel?.paymentData?.mercadopagoId || '',
   ...(whitelabel as Omit<IWhitelabel, 'baseUrl'> || {}),
 }
 
@@ -194,7 +194,7 @@ const validationSchema = z.object({
   wpp: z.string().optional(),
   instagram: z.string().optional(),
   twitter: z.string().optional(),
-  mercadopagoId: z.string().optional(),
+  // mercadopagoId: z.string().optional(),
 })
 
 const handleSubmit = async (values: Record<string, any>) => {
@@ -218,9 +218,9 @@ const handleSubmit = async (values: Record<string, any>) => {
         instagram: values.instagram,
         twitter: values.twitter,
       },
-      paymentData: {
-        mercadopagoId: values.mercadopagoId,
-      },
+      // paymentData: {
+      //   mercadopagoId: values.mercadopagoId,
+      // },
     }
     if (id) {
       const response = await put(`/whitelabel/${id}`, whitelabelData)

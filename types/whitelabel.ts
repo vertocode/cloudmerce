@@ -20,9 +20,6 @@ export interface IWhitelabel {
   contact: {
     email: string
   }
-  paymentData?: {
-    mercadopagoId?: string
-  }
   createdAt: string
   updatedAt: string
 }

@@ -17,6 +17,11 @@
       >
         Voltar para o Início
       </v-btn>
+      <v-btn
+        @click="test"
+      >
+        Vincular!
+      </v-btn>
     </div>
   </main>
 </template>
@@ -28,6 +33,14 @@ const router = useRouter()
 
 const redirectToHome = () => {
   router.push('/')
+}
+
+const test = () => {
+  const platformId = '5410072078369167'
+  const clientId = '213050737'
+  const redirectUri = 'https://cloudmerce.vertocode.com' + '/mp-oauth-confirmation'
+  const responseType = 'code'
+  window.open(`https://auth.mercadopago.com.br/authorization?client_id=${clientId}&response_type=${responseType}&platform_id=${platformId}&redirect_uri=${redirectUri}`, '_blank')
 }
 </script>
 
