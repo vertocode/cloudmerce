@@ -4,7 +4,7 @@
     <p>Desculpe, ocorreu um erro para se comunicar com o servidor, tente novamente mais tarde.</p>
     <VBtn
       class="refresh-btn"
-      @click="reloadPage"
+      @click="$router.push('/')"
     >
       Tentar novamente
     </VBtn>
@@ -15,10 +15,6 @@
 definePageMeta({
   layout: 'no-layout',
 })
-
-const reloadPage = () => {
-  window.location.reload()
-}
 </script>
 
 <style lang="scss">
