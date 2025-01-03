@@ -37,6 +37,7 @@ export const useWhitelabel = () => {
     catch (error) {
       handleError('Erro inesperado ao buscar dados da loja')
       console.error('Error getting whitelabel:', error)
+      return 'error'
     }
   }
 
@@ -65,6 +66,7 @@ export const useWhitelabel = () => {
     catch (error) {
       handleError('Erro inesperado ao buscar dados da loja')
       console.error('Error getting whitelabel:', error)
+      return 'error'
     }
   }
 
