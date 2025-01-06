@@ -60,7 +60,7 @@ const { userData } = useUser()
 const { post } = useApi()
 
 definePageMeta({
-  middleware: ['04.mp-whitelabel'],
+  middleware: ['04-mp-whitelabel'],
 })
 
 const redirectToHome = () => {
