@@ -1,7 +1,6 @@
 <template>
   <VeeForm
     :key="isLogged ? 'logged-form' : 'unlogged-form'"
-    v-slot="{ isSubmitting, isValidating }"
     :validation-schema="validationSchema"
     :initial-values="initialValues"
     @submit="handleSubmit"
