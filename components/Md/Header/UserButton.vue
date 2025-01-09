@@ -7,7 +7,7 @@
         v-bind="props"
       >
         <VIcon>{{ isAdmin ? 'mdi-account-check' : 'mdi-account' }}</VIcon>
-        {{ userData?.name?.split(' ')?.at(0) }}
+        <span class="text">{{ userData?.name?.split(' ')?.at(0) }}</span>
       </VBtn>
     </template>
 
@@ -122,10 +122,26 @@ onMounted(() => {
   }
 }
 
+.user-button {
+  padding: 0 12px;
+  .text {
+    max-width: 150px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
 @media screen and (max-width: $mobile-breakpoint) {
   .user-button {
-    max-width: 100px;
+    max-width: 120px;
     font-size: .8rem;
+    padding: 0 4px;
+
+    .text {
+      max-width: 90px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
   }
 }
 
