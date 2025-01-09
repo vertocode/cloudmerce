@@ -24,6 +24,7 @@
           <VListItemTitle>Carrinho de Compras</VListItemTitle>
         </VListItem>
         <VListItem
+          v-if="userData"
           class="navigation-item"
           @click="$router.push('/orders')"
         >

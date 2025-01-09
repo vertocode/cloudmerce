@@ -31,8 +31,6 @@
         </div>
       </v-toolbar>
 
-      {{ cartProducts }}
-
       <div
         v-if="loading"
         class="loading"
@@ -87,16 +85,16 @@
 </template>
 
 <script setup lang="ts">
-import { useCart } from '~/composables/useCart'
+const { cartProducts, getCart, isCartDrawerOpened, loading, total } = useCart()
 
 const isLoaded = ref(false)
 
 onMounted(() => {
+  if (!cartProducts.value.length) {
+    getCart()
+  }
   isLoaded.value = true
-  getCart()
 })
-
-const { cartProducts, getCart, isCartDrawerOpened, loading, total } = useCart()
 </script>
 
 <style lang="scss" scoped>
