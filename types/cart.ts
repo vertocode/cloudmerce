@@ -17,14 +17,6 @@ interface ICartResponse {
   ecommerceId: string
 }
 
-export interface IAddItemToCartResponse extends ICartResponse {
-  items: {
-    productId: string
-    quantity: number
-    _id: string
-  }[]
-}
-
 export interface IGetCartResponse extends ICartResponse {
   userId: string
   items: {

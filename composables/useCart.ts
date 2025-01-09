@@ -1,5 +1,5 @@
 import { computed } from 'vue'
-import type { IAddItemToCartResponse, ICartItem, IExpiredCartItem, IGetCartResponse, ISubmitFnParams } from '~/types/cart'
+import type { ICartItem, IExpiredCartItem, IGetCartResponse, ISubmitFnParams } from '~/types/cart'
 
 export const useCart = () => {
   const isCartDrawerOpened = useState('isCartDrawerOpened', () => false)
@@ -20,6 +20,39 @@ export const useCart = () => {
     }
     return null
   })
+
+  const setProductsByAPIResponse = (response: IGetCartResponse) => {
+    cartProducts.value = response.items.map((item) => {
+      const productDetails = item.productId
+
+      // If it's null, it means that this product is not available anymore
+      if (!productDetails) {
+        return {
+          id: item._id,
+          status: 'expired',
+        }
+      }
+
+      return {
+        id: productDetails._id,
+        status: 'active',
+        name: productDetails.name,
+        price: productDetails.price,
+        image: productDetails.image,
+        quantity: item.quantity,
+        description: productDetails.description,
+        productType: productDetails.productType,
+        fields: productDetails?.fields?.map((field) => {
+          const fieldValue = item.fieldValues.find(f => f.fieldLabel === field.label)
+          return {
+            label: fieldValue?.fieldLabel || '',
+            type: field.type,
+            value: fieldValue?.value || '',
+          }
+        }) || [],
+      }
+    })
+  }
 
   const removeCartId = () => {
     if (cartId) {
@@ -55,36 +88,8 @@ export const useCart = () => {
       if (response?.userId) {
         ownerId.value = response.userId
       }
-      cartProducts.value = response.items.map((item) => {
-        const productDetails = item.productId
 
-        // If it's null, it means that this product is not available anymore
-        if (!productDetails) {
-          return {
-            id: item._id,
-            status: 'expired',
-          }
-        }
-
-        return {
-          id: productDetails._id,
-          status: 'active',
-          name: productDetails.name,
-          price: productDetails.price,
-          image: productDetails.image,
-          quantity: item.quantity,
-          description: productDetails.description,
-          productType: productDetails.productType,
-          fields: productDetails?.fields?.map((field) => {
-            const fieldValue = item.fieldValues.find(f => f.fieldLabel === field.label)
-            return {
-              label: fieldValue?.fieldLabel || '',
-              type: field.type,
-              value: fieldValue?.value || '',
-            }
-          }) || [],
-        }
-      })
+      setProductsByAPIResponse(response)
     }
     catch (error) {
       console.error(error)
@@ -110,7 +115,7 @@ export const useCart = () => {
         productId: item.id,
         quantity: 1,
         fields: item.fields.map(field => ({ fieldLabel: field.label, value: field?.value })),
-      }) as IAddItemToCartResponse
+      }) as IGetCartResponse
 
       if (!response?._id) {
         throw new Error('Response without _id.')
@@ -118,7 +123,7 @@ export const useCart = () => {
 
       localStorage.setItem('cartId', response._id)
 
-      await getCart()
+      setProductsByAPIResponse(response)
 
       if (!route.path.includes('/checkout')) {
         isCartDrawerOpened.value = true

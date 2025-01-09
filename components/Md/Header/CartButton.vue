@@ -31,6 +31,8 @@
         </div>
       </v-toolbar>
 
+      {{ cartProducts }}
+
       <div
         v-if="loading"
         class="loading"
