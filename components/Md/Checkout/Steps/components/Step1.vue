@@ -1,7 +1,7 @@
 <template>
   <VeeForm
     :key="isLogged ? 'logged-form' : 'unlogged-form'"
-    v-slot="{ isSubmitting }"
+    v-slot="{ isSubmitting, isValidating }"
     :validation-schema="validationSchema"
     :initial-values="initialValues"
     @submit="handleSubmit"
@@ -196,7 +196,7 @@
     <VeeButton
       class="next-button"
       append-icon="mdi-arrow-right"
-      :loading="isSubmitting"
+      :loading="isLoading"
     >
       Próximo
     </VeeButton>
@@ -257,6 +257,8 @@ const { post } = useApi()
 const { cartId, ownerId } = useCart()
 const { userData, isLogged, setUser } = useUser()
 
+const isLoading = ref<boolean>(false)
+
 const initialValues = computed(() => {
   if (!isLogged.value) return
 
@@ -277,10 +279,12 @@ const initialValues = computed(() => {
 })
 
 const handleSubmit = async (values: Record<string, any>, { meta }: SubmitOptions) => {
+  isLoading.value = true
   const hasNotChanges = !meta.dirty
   const alreadySetUser = ownerId.value
   if (hasNotChanges && alreadySetUser) {
     props.next()
+    isLoading.value = false
     return
   }
 
@@ -327,11 +331,15 @@ const handleSubmit = async (values: Record<string, any>, { meta }: SubmitOptions
       cartId: cartId.value,
     })
     setUser(response as User)
+
     props.next()
   }
   catch (e) {
     console.error(e)
     handleError('Erro ao enviar formulário com dados de usuário')
+  }
+  finally {
+    isLoading.value = false
   }
 }
 </script>
