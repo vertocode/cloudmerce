@@ -79,7 +79,8 @@
     </div>
   </div>
 
-  <MdMPIntegrationModal v-if="isAdmin" />
+  <!--  TODO: Mercado Pago is not ready to production yet, uncomment when it be done. -->
+  <!--  <MdMPIntegrationModal v-if="isAdmin" /> -->
 </template>
 
 <script setup lang="ts">

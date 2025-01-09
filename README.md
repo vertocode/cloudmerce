@@ -2,6 +2,8 @@
 
 Welcome to our e-commerce system—a modern, secure platform for managing stores of any segment with ease. This repository contains the structure of our system, providing a high-performance shopping experience for end-users and an intuitive interface for merchants.
 
+![Demo](https://i.imgur.com/fG6sT12.png)
+
 ## 📖 About the Project
 
 Our platform is built with cutting-edge technology to ensure every step of the shopping journey is fast and user-friendly. From product management to integrated payment, we simplify and enhance your e-commerce management in a secure, accessible, and high-performance environment.
