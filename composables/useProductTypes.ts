@@ -26,15 +26,9 @@ export const useProductTypes = () => {
     try {
       if (productTypes.value.length && cache !== 'no-cache') return
 
-      const { getWhitelabel } = useWhitelabel()
+      const { whitelabel } = useWhitelabel()
 
-      const whitelabel = await getWhitelabel()
-
-      if (!whitelabel) {
-        throw new Error('Whitelabel not found')
-      }
-
-      const response = await get(`/product-types/ecommerce/${whitelabel._id}`, {}, {
+      const response = await get(`/product-types/ecommerce/${whitelabel.value._id}`, {}, {
         cache: cache || 'force-cache',
       }) as IProductTypeResponse[]
       productTypes.value = response.map((productType: IProductTypeResponse) => ({

@@ -72,15 +72,11 @@ const isLoading = ref(false)
 
 const submit = async (values: Record<string, any>) => {
   isLoading.value = true
+  const { whitelabel } = useWhitelabel()
 
-  const { getWhitelabel } = useWhitelabel()
   const router = useRouter()
 
   try {
-    const whitelabel = await getWhitelabel()
-    if (!whitelabel) {
-      throw new Error('Whitelabel not found')
-    }
     await props.action({
       ...values,
       stock: {

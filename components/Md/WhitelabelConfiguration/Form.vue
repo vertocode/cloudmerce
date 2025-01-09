@@ -142,18 +142,18 @@ import type { IWhitelabel } from '~/types/whitelabel'
 
 const url = useRequestURL()
 
-const { getWhitelabel } = useWhitelabel()
+const { whitelabel } = useWhitelabel()
 
-const whitelabel = await getWhitelabel()
+const { banner, socialMedia } = whitelabel.value
 
 const initialValues = {
   baseUrl: url.host as unknown as string,
-  bannerTitle: whitelabel?.banner?.title || '',
-  bannerDescription: whitelabel?.banner?.description || '',
-  wpp: whitelabel?.socialMedia?.wpp || '',
-  instagram: whitelabel?.socialMedia?.instagram || '',
-  twitter: whitelabel?.socialMedia?.twitter || '',
-  ...(whitelabel as Omit<IWhitelabel, 'baseUrl'> || {}),
+  bannerTitle: banner?.title || '',
+  bannerDescription: banner?.description || '',
+  wpp: socialMedia?.wpp || '',
+  instagram: socialMedia?.instagram || '',
+  twitter: socialMedia?.twitter || '',
+  ...(whitelabel.value as Omit<IWhitelabel, 'baseUrl'> || {}),
 }
 
 const validationSchema = z.object({

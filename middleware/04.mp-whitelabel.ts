@@ -1,8 +1,7 @@
 export default defineNuxtRouteMiddleware(async (to) => {
-  const { getWhitelabel } = useWhitelabel()
-  const whitelabel = await getWhitelabel({ cache: false })
+  const { whitelabel } = useWhitelabel()
 
-  if (whitelabel?.hasMP && to.path === '/mp-oauth-confirmation') {
+  if (whitelabel.value.hasMP && to.path === '/mp-oauth-confirmation') {
     return navigateTo('/')
   }
 })

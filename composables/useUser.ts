@@ -17,6 +17,7 @@ export const useUser = () => {
 
   const userData = useState<User | null>('userData', () => null)
   const { get, post } = useApi()
+  const { whitelabel } = useWhitelabel()
 
   const isAdmin = computed(() => userData.value?.role === 'admin')
   const isLogged = computed(() => !!userData.value)
@@ -33,14 +34,9 @@ export const useUser = () => {
   }
 
   const login = async (authParams: AuthParams) => {
-    const { getWhitelabel } = useWhitelabel()
     try {
-      const whitelabel = await getWhitelabel()
-      if (!whitelabel?._id) {
-        throw new Error('Whitelabel not found')
-      }
       const response = await get('/auth/login', {
-        whitelabelId: whitelabel._id,
+        whitelabelId: whitelabel.value._id,
         ...authParams,
       }) as User | { errorCode: string }
 
@@ -68,14 +64,9 @@ export const useUser = () => {
   }
 
   const register = async (registerParams: RegisterParams) => {
-    const { getWhitelabel } = useWhitelabel()
     try {
-      const whitelabel = await getWhitelabel()
-      if (!whitelabel?._id) {
-        throw new Error('Whitelabel not found')
-      }
       const response = await post('/users', {
-        whitelabelId: whitelabel._id,
+        whitelabelId: whitelabel.value._id,
         ...registerParams,
       })
       const userResponse = response as User

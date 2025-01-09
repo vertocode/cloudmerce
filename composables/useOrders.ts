@@ -9,19 +9,13 @@ export const useOrders = () => {
   const fetchOrders = async () => {
     loading.value = true
     try {
-      const { getWhitelabel } = useWhitelabel()
-
-      const whitelabel = await getWhitelabel()
-
-      if (!whitelabel) {
-        throw new Error('Whitelabel not found')
-      }
+      const { whitelabel } = useWhitelabel()
 
       const userId = useUser().userData.value?._id
       if (!userId) {
         return []
       }
-      const response = await get(`/orders/${whitelabel._id}`, { userId })
+      const response = await get(`/orders/${whitelabel.value._id}`, { userId })
       orders.value = response as Order[]
     }
     catch (err) {

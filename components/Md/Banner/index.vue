@@ -28,9 +28,7 @@
 </template>
 
 <script setup lang="ts">
-const { getWhitelabel } = useWhitelabel()
-
-const whitelabel = await getWhitelabel()
+const { whitelabel } = useWhitelabel()
 </script>
 
 <style scoped lang="scss">

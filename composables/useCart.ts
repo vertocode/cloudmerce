@@ -9,7 +9,7 @@ export const useCart = () => {
   const loadingSubmit = ref(false)
 
   const route = useRoute()
-  const { getWhitelabel } = useWhitelabel()
+  const { whitelabel } = useWhitelabel()
   const { put, get, post } = useApi()
   const router = useRouter()
   const { userData } = useUser()
@@ -68,13 +68,7 @@ export const useCart = () => {
     try {
       loading.value = true
 
-      const whitelabel = await getWhitelabel()
-
-      if (!whitelabel) {
-        throw new Error('Whitelabel not found')
-      }
-
-      const response = await get(`/get-cart/${whitelabel._id}`, { cartId: cartId.value }) as IGetCartResponse
+      const response = await get(`/get-cart/${whitelabel.value._id}`, { cartId: cartId.value }) as IGetCartResponse
 
       if (response?.code === 'cart_not_found') {
         handleWarning('Carrinho não encontrado.')
@@ -104,13 +98,7 @@ export const useCart = () => {
     try {
       loading.value = true
 
-      const whitelabel = await getWhitelabel()
-
-      if (!whitelabel) {
-        throw new Error('Whitelabel not found')
-      }
-
-      const response = await put(`/add-cart-item/${whitelabel._id}`, {
+      const response = await put(`/add-cart-item/${whitelabel.value._id}`, {
         cartId: cartId.value,
         productId: item.id,
         quantity: 1,
@@ -149,11 +137,6 @@ export const useCart = () => {
 
     try {
       loading.value = true
-      const whitelabel = await getWhitelabel()
-
-      if (!whitelabel) {
-        throw new Error('Whitelabel not found')
-      }
 
       const isAvailable = !!availableItem.name
 
@@ -165,10 +148,10 @@ export const useCart = () => {
 
       const differentParams = isAvailable ? { productId: item.id } : { cartItemId: item.id }
 
-      const response = await put(`/change-cart-item-quantity/${whitelabel._id}`, {
+      const response = await put(`/change-cart-item-quantity/${whitelabel.value._id}`, {
         ...commonParams,
         ...differentParams,
-      }) as IAddItemToCartResponse
+      }) as IGetCartResponse
 
       const hasDeletedCart = (response as unknown as { message: string })?.message?.includes('deleted')
 
@@ -224,17 +207,15 @@ export const useCart = () => {
         return
       }
 
-      const whitelabel = await getWhitelabel()
-
       loadingSubmit.value = true
 
       const { name: userName, email: userEmail } = userData.value || {}
 
-      const response = await post(`/order/${whitelabel?._id}`, {
+      const response = await post(`/order/${whitelabel.value._id}`, {
         cartId: cartId.value,
         userId: userData.value?._id,
         paymentData: {
-          description: `Compra para ${userName} na loja ${whitelabel?.name}`,
+          description: `Compra para ${userName} na loja ${whitelabel.value.name}`,
           paymentMethod: paymentMethod,
           totalAmount: total.value,
           payer: {

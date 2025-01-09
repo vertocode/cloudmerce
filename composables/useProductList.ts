@@ -30,16 +30,10 @@ export const useProductList = (filters?: IProductFilters) => {
       return
     }
 
-    const { getWhitelabel } = useWhitelabel()
-
-    const whitelabel = await getWhitelabel()
-
-    if (!whitelabel) {
-      throw new Error('Whitelabel not found')
-    }
+    const { whitelabel } = useWhitelabel()
 
     loading.value = true
-    const response = await get(`/products/ecommerce/${whitelabel._id}`, {
+    const response = await get(`/products/ecommerce/${whitelabel.value._id}`, {
       ...filters,
       search: search.value || '',
       limit: 20,
@@ -56,6 +50,7 @@ export const useProductList = (filters?: IProductFilters) => {
       price: product.price,
       productType: product.productType,
       fields: product.fields,
+      stock: product.stock,
     }))
     totalPages.value = response.totalPages
     lastFilters.value = filters || null

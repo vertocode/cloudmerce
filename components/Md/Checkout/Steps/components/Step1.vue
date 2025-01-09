@@ -302,15 +302,10 @@ const handleSubmit = async (values: Record<string, any>, { meta }: SubmitOptions
         number: defaultNumber = 0,
       } = {},
     } = userData.value || {}
-    const { getWhitelabel } = useWhitelabel()
 
-    const whitelabel = await getWhitelabel()
+    const { whitelabel } = useWhitelabel()
 
-    if (!whitelabel) {
-      throw new Error('Whitelabel not found')
-    }
-
-    const response = await post(`/checkout/user/${whitelabel._id}`, {
+    const response = await post(`/checkout/user/${whitelabel.value._id}`, {
       userData: {
         _id,
         name: values.name || defaultName,

@@ -10,16 +10,11 @@ export const useProduct = ({ updateProductList }: IUseProduct) => {
   const { remove, get } = useApi()
 
   const getProductById = async (id: string): Promise<IProduct | null> => {
-    const { getWhitelabel } = useWhitelabel()
+    const { whitelabel } = useWhitelabel()
 
-    const whitelabel = await getWhitelabel()
-
-    if (!whitelabel) {
-      throw new Error('Whitelabel not found')
-    }
     try {
       loading.value = true
-      const response = await get(`/products/${whitelabel._id}/${id}`) as IProductResponse
+      const response = await get(`/products/${whitelabel.value._id}/${id}`) as IProductResponse
 
       return {
         id: response._id,

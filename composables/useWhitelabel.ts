@@ -1,7 +1,7 @@
 import type { IWhitelabel, IWhitelabelError } from '~/types/whitelabel'
 
 export const useWhitelabel = () => {
-  const whitelabel = useState<IWhitelabel | null | 404>('whitelabel', () => null)
+  const whitelabel = useState<IWhitelabel>('whitelabel-cache')
 
   const { get } = useApi()
   const router = useRouter()
@@ -9,8 +9,6 @@ export const useWhitelabel = () => {
 
   onMounted(() => {
     if (import.meta.client) {
-      if (whitelabel.value === 404) return
-
       handleChangePalette({
         primary: whitelabel.value?.primaryColor || '',
         secondary: whitelabel.value?.secondaryColor || '',
@@ -18,16 +16,14 @@ export const useWhitelabel = () => {
     }
   })
 
-  const hasWhitelabel = computed(() => !!whitelabel.value && whitelabel.value !== 404)
+  const hasWhitelabel = computed(() => !!whitelabel.value)
 
-  const getWhitelabel = async ({ cache = true }: { cache: boolean } = { cache: true }) => {
-    if (whitelabel.value && !cache) return whitelabel.value
-
+  const getWhitelabel = async () => {
     try {
+      console.log('requisitando whitelabel')
       const response = await get(`/whitelabel/${url.host}`)
       if ((response as IWhitelabelError)?.code === 404) {
         console.warn('Not found whitelabel, redirecting to /whitelabel-configuration', response)
-        whitelabel.value = 404
         await router.push('/whitelabel-configuration')
         return
       }

@@ -125,15 +125,9 @@ const submit = async (values: { productTypes: IProductType[] }) => {
       return oldProductType && (oldProductType.name !== type.name || oldProductType.icon !== type.icon)
     })
 
-    const { getWhitelabel } = useWhitelabel()
+    const { whitelabel } = useWhitelabel()
 
-    const whitelabel = await getWhitelabel()
-
-    if (!whitelabel) {
-      throw new Error('Whitelabel not found')
-    }
-
-    const ecommerceId = whitelabel._id
+    const ecommerceId = whitelabel.value._id
 
     const productTypes = [
       ...productTypesToUpdate.map(type => ({ ecommerceId, id: type.id, name: type.name, icon: type.icon, action: 'update' })),

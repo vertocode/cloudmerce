@@ -31,8 +31,7 @@ import UserButton from '~/components/Md/Header/UserButton.vue'
 import CartButton from '~/components/Md/Header/CartButton.vue'
 import MenuButton from '~/components/Md/Header/MenuButton.vue'
 
-const { getWhitelabel } = useWhitelabel()
-const whitelabel = await getWhitelabel()
+const { whitelabel } = useWhitelabel()
 </script>
 
 <style scoped lang="scss">

@@ -17,16 +17,10 @@
 </template>
 
 <script setup lang="ts">
-const { getWhitelabel } = useWhitelabel()
-
-const whitelabel = await getWhitelabel()
-
-if (!whitelabel) {
-  throw new Error('Whitelabel not found')
-}
+const { whitelabel } = useWhitelabel()
 
 const storeSocialMedia = computed(() => {
-  const { wpp, instagram, facebook, twitter } = whitelabel.socialMedia || {}
+  const { wpp, instagram, facebook, twitter } = whitelabel.value.socialMedia || {}
   const config = []
 
   if (wpp) {
