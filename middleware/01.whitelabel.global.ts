@@ -4,7 +4,6 @@ export default defineNuxtRouteMiddleware(async (to) => {
   const whitelabelCache = useState<IWhitelabel | string | null>('whitelabel-cache', () => null)
 
   if ((!whitelabelCache.value || whitelabelCache.value === 'error') && to.path !== 'whitelabel-configuration') {
-    console.log('entrou aqui')
     const { getWhitelabel } = useWhitelabel()
     const whitelabel = await getWhitelabel()
 

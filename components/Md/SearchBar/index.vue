@@ -53,7 +53,6 @@ const productType = computed(() => {
 })
 
 const cleanFilter = ({ resetForm }: { resetForm: VoidFunction }) => {
-  console.log(resetForm, '<<< resetForm')
   filterSearchProducts.value = ''
   resetForm()
 }
