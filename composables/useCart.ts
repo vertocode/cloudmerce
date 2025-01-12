@@ -201,26 +201,26 @@ export const useCart = () => {
     }, 0).toFixed(2)
   })
 
-  const submit = async ({ paymentMethod }: ISubmitFnParams) => {
+  const submit = async ({ paymentMethod, creditCardData }: ISubmitFnParams) => {
     try {
       if (loadingSubmit.value) {
         return
       }
 
-      loadingSubmit.value = true
+      if (paymentMethod === 'credit_card' && (!creditCardData || Object.values(creditCardData).some(value => !value))) {
+        handleWarning('Preencha os dados do cartão de crédito.')
+        return
+      }
 
-      const { name: userName, email: userEmail } = userData.value || {}
+      loadingSubmit.value = true
 
       const response = await post(`/order/${whitelabel.value._id}`, {
         cartId: cartId.value,
         userId: userData.value?._id,
         paymentData: {
-          description: `Compra para ${userName} na loja ${whitelabel.value.name}`,
           paymentMethod: paymentMethod,
-          totalAmount: total.value,
-          payer: {
-            email: userEmail,
-          },
+          totalAmount: Number(total.value),
+          creditCardData,
         },
       }) as { code: 'success' | 'error', order: { _id: string } }
 

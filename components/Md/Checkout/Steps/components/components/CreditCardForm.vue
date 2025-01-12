@@ -1,16 +1,40 @@
 <template>
-  <VeeForm @submit="handleSubmit">
-    <h1>Em desenvolvimento...</h1>
+  <VeeForm
+    @submit="handleSubmit"
+  >
+    <section class="rows">
+      <h3>Dados do Cartão</h3>
+      <div class="row-1">
+        <VeeTextField
+          name="cardHolderName"
+          label="Títular do Cartão"
+        />
 
-    <div
-      v-if="!isFormLoaded"
-      class="spinner"
-    >
-      <VProgressCircular
-        indeterminate
-        size="100"
-      />
-    </div>
+        <VeeTextField
+          name="cardCpf"
+          label="CPF do Títular do Cartão"
+        />
+      </div>
+
+      <div class="row-2">
+        <VeeTextField
+          name="cardNumber"
+          label="Número do Cartão"
+        />
+
+        <VeeMaskedField
+          name="cardExpiryDate"
+          mask="##/####"
+          placeholder="MM/AAAA"
+          label="Data de Expiração"
+        />
+
+        <VeeTextField
+          name="cardCvv"
+          label="CCV"
+        />
+      </div>
+    </section>
 
     <div class="action-buttons">
       <VBtn
@@ -23,7 +47,6 @@
       <VeeButton
         class="next-button"
         color="primary"
-        disabled
         :loading="loadingSubmit"
       >
         <span class="mr-2">
@@ -38,24 +61,37 @@
 </template>
 
 <script setup lang="ts">
-import { PaymentMethods } from '~/types/cart'
+import { type CreditCardData, PaymentMethods } from '~/types/cart'
 
 defineProps<{ prev: () => void }>()
 
 const { submit, loadingSubmit } = useCart()
 
-const handleSubmit = async (values: Record<string, string>) => {
+const handleSubmit = async (values: CreditCardData) => {
   await submit({
     paymentMethod: PaymentMethods.CreditCard,
-    ...values,
+    creditCardData: values,
   })
 }
-
-const isFormLoaded = ref(false)
 </script>
 
 <style lang="scss">
-.action-buttons {
+.rows {
   margin-top: 16px;
+
+  .row-1, .row-2 {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .row-1 {
+    margin-top: 12px;
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .row-2 {
+    grid-template-columns: 1fr .5fr .48fr;
+  }
 }
 </style>

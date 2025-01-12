@@ -34,6 +34,15 @@ export interface IGetCartResponse extends ICartResponse {
 
 export interface ISubmitFnParams {
   paymentMethod: PaymentMethods
+  creditCardData?: CreditCardData
+}
+
+export interface CreditCardData {
+  cardHolderName: string
+  cardCpf: string
+  cardNumber: string
+  cardExpiryDate: string
+  cardCvv: string
 }
 
 export enum PaymentMethods {

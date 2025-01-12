@@ -1,5 +1,4 @@
 export default function (date: string): string {
-  console.log('date received: ', date)
   /**
      * Receives a date string in this format: 2024-12-27T23:41:30.447Z
      * Returns a formatted date string in this format: 27/12/2024
