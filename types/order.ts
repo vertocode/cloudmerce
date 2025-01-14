@@ -1,4 +1,5 @@
 export type OrderStatus = 'pending' | 'paid' | 'product_sent' | 'finished'
+export type PaymentMethod = 'pix' | 'credit_card'
 
 export interface OrderItem {
   productId: {
@@ -15,7 +16,7 @@ export interface OrderItem {
 }
 
 interface PaymentData {
-  type: 'pix' | 'card'
+  type: PaymentMethod
   qrCode?: string
   pixCode?: string
   totalAmount: number
@@ -26,8 +27,6 @@ export interface Order {
   ecommerceId: string
   status: OrderStatus
   userId: string
-  paymentIntentId: string
-  paymentMethod: 'pix' | 'card'
   items: OrderItem[]
   paymentData: PaymentData
   createdAt: string

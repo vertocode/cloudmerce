@@ -78,13 +78,19 @@
           @on-change-status="changeStatus"
         />
 
-        <p class="blockquote bg-primary rounded">
+        <p class="status-message">
           {{ statusMessage }}
         </p>
 
-        <p class="mt-3 font-weight-bold">
-          Data do pedido: {{ formatDate(order.createdAt) }}
-        </p>
+        <div class="order-info">
+          <p>
+            Data do pedido: {{ formatDate(order.createdAt) }}
+          </p>
+
+          <p>
+            Tipo de pagamento: {{ order.paymentData.type === 'pix' ? 'Pix' : 'Cartão de Crédito' }}
+          </p>
+        </div>
 
         <VCardText class="content">
           <div class="products">
@@ -234,9 +240,50 @@ watch(userData, () => {
     justify-content: space-between;
   }
 
-  .content {
+  .status-message {
+    font-weight: 700;
+    font-size: 1.5rem;
+    text-align: center;
+    padding: 16px;
+    border-radius: 4px;
+    background-color: var(--primary-color-100);
+    color: var(--primary-color-700);
+
+    @media screen and (max-width: $mobile-breakpoint) {
+      font-size: 1.2rem;
+    }
+  }
+
+  .order-info {
+    margin-top: 12px;
     display: flex;
     justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+    font-size: 1.2rem;
+
+    p {
+      font-weight: bold;
+      background-color: var(--primary-color-700);
+      color: white;
+      padding: 12px;
+      border-radius: 4px;
+    }
+
+    @media screen and (max-width: $mobile-breakpoint) {
+      font-size: 1rem;
+      p {
+        width: 100%;
+        text-align: center;
+      }
+    }
+  }
+
+  .content {
+    margin-top: 24px;
+    display: flex;
+    justify-content: space-between;
+    font-size: 1.2rem;
     gap: 24px;
 
     :deep(.calc) {
@@ -300,14 +347,14 @@ watch(userData, () => {
   }
 
   .products {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 12px;
+    min-width: 220px;
   }
 
   .product-item {
-    width: max-content;
+    padding: 12px;
+    height: max-content;
     border: 1px solid rgba(128, 128, 128, 0.31);
+    border-radius: 4px;
     display: flex;
     align-items: center;
     gap: 16px;
