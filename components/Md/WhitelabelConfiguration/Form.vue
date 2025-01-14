@@ -178,7 +178,7 @@ const validationSchema = z.object({
 const handleSubmit = async (values: Record<string, any>) => {
   const { post, put } = useApi()
   const router = useRouter()
-  const id = whitelabel?._id
+  const id = whitelabel?.value?._id
   try {
     const whitelabelData = {
       baseUrl: values.baseUrl,
