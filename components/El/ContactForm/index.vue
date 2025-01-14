@@ -1,6 +1,7 @@
 <template>
   <VeeForm
     v-slot="{ isSubmitting }"
+    :initial-values="initialData"
     :validation-schema="validationSchema"
     @submit="submitContact"
   >
@@ -12,6 +13,7 @@
       >
         <VeeTextField
           name="name"
+          :disabled="userData?.name"
           label="Seu Nome"
           outlined
         />
@@ -23,6 +25,7 @@
       >
         <VeeTextField
           name="email"
+          :disabled="userData?.email"
           label="Seu E-mail"
           outlined
         />
@@ -58,6 +61,12 @@ interface Props {
 const props = defineProps<Props>()
 
 const config = useRuntimeConfig()
+const { userData } = useUser()
+
+const initialData = computed(() => ({
+  name: userData.value?.name || '',
+  email: userData.value?.email || '',
+}))
 
 const validationSchema = z.object({
   name: z.string().min(3, 'O nome deve ter pelo menos 3 caracteres'),
