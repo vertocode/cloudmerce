@@ -123,7 +123,7 @@ onMounted(() => {
       font-size: 1rem;
       font-family: "Nunito", serif;
       font-weight: 300;
-      border-radius: 25px;
+      border-radius: 12px;
       cursor: pointer;
       white-space: nowrap;
       transition: background-color 0.3s, color 0.3s;
@@ -139,11 +139,11 @@ onMounted(() => {
       }
 
       &.active {
-        background-color: var(--secondary-color-500);
-        color: var(--primary-color-700);
+        background-color: var(--secondary-color-700);
+        color: var(--secondary-color-100);
 
         .v-icon {
-          color: var(--primary-color-700);
+          color: var(--secondary-color-100);
         }
       }
 
