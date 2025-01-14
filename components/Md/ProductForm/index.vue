@@ -25,7 +25,7 @@
           size="large"
           variant="text"
           width="100%"
-          @click="onClose"
+          @click="goBackOrHome"
         >
           Cancelar
         </VBtn>
@@ -58,7 +58,6 @@ import { validationSchema } from '~/components/Md/ProductForm/zod/schema'
 
 const props = defineProps<{
   action: (values: Record<string, any>) => Promise<void>
-  onClose: () => void
   onRegisterNewProductType?: () => void
   updateProductList?: (params: { cache: 'no-cache' | 'force-cache' }) => Promise<void>
   initialValues?: Record<string, any>
@@ -74,8 +73,6 @@ const submit = async (values: Record<string, any>) => {
   isLoading.value = true
   const { whitelabel } = useWhitelabel()
 
-  const router = useRouter()
-
   try {
     await props.action({
       ...values,
@@ -83,7 +80,7 @@ const submit = async (values: Record<string, any>) => {
         type: values.stockOption,
         quantity: values?.stockQuantity || null,
       },
-      ecommerceId: whitelabel._id,
+      ecommerceId: whitelabel.value._id,
       productType: productTypes.value.find((type: IProductType) => type.name === values.productType)?.id || '',
       userFields: values.userFields.map((field) => {
         const type = (() => {
@@ -103,7 +100,7 @@ const submit = async (values: Record<string, any>) => {
     })
     handleSuccess(`Produto ${isEdition ? 'editado' : 'adicionado'} com sucesso!`)
 
-    await router.push('/')
+    goBackOrHome()
   }
   catch (error) {
     if (error instanceof Error && error.message.includes('PRODUCT_EXISTS')) {

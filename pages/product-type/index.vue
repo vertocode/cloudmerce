@@ -1,7 +1,7 @@
 <template>
   <div class="product-type">
     <header>
-      <VIcon @click="$router.back()">
+      <VIcon @click="goBackOrHome">
         mdi-arrow-left
       </VIcon>
       <h1>Tipos de Produto</h1>
@@ -71,7 +71,7 @@
           <VBtn
             width="100%"
             variant="outlined"
-            @click="$router.back()"
+            @click="goBackOrHome"
           >
             Cancelar
           </VBtn>
@@ -101,7 +101,6 @@ import type { IProductType } from '~/composables/useProductTypes'
 
 const isLoading = ref(false)
 const { productTypes, updateProductTypes } = useProductTypes()
-const router = useRouter()
 const { put } = useApi()
 
 const oldProductTypes = ref<IProductType[]>(cloneArray(productTypes.value))
@@ -138,7 +137,7 @@ const submit = async (values: { productTypes: IProductType[] }) => {
     await put('/product-types/multiple-update', { productTypes })
     await updateProductTypes({ cache: 'no-cache' })
     handleSuccess('Tipos de produto salvos com sucesso')
-    router.push('/')
+    goBackOrHome()
   }
   catch (error) {
     console.error(error)

@@ -1,14 +1,13 @@
 <template>
   <div class="register-product">
     <header>
-      <VIcon @click="$router.back()">
+      <VIcon @click="goBackOrHome">
         mdi-arrow-left
       </VIcon>
       <h1>Cadastrar Novo Produto</h1>
     </header>
     <MdProductForm
       :on-register-new-product-type="onRegisterNewProductType"
-      :on-close="onClose"
       :action="register"
     />
   </div>
@@ -22,11 +21,6 @@ definePageMeta({
 const onRegisterNewProductType = () => {
   const router = useRouter()
   router.push('/product-type')
-}
-
-const onClose = () => {
-  const router = useRouter()
-  router.push('/')
 }
 
 const register = async (values: any) => {

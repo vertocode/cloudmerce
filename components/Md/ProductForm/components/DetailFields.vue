@@ -44,7 +44,7 @@
           class="product-type-message"
           @click="onRegisterNewProductType"
         >
-          Cadastrar novo tipo de produto <VIcon color="var(--secondary-700)">mdi-link</VIcon>
+          Cadastrar/Editar tipo de produto <VIcon color="var(--secondary-700)">mdi-link</VIcon>
         </span>
       </VCol>
 
