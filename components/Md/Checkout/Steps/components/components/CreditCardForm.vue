@@ -21,10 +21,12 @@
       </div>
 
       <div class="row-2">
-        <VeeTextField
+        <VeeMaskedField
           name="cardNumber"
           label="Número do Cartão"
           placeholder="Digite o número do cartão"
+          :mask="cardMask"
+          @input="onCardNumberInput"
         />
 
         <VeeMaskedField
@@ -68,11 +70,53 @@
 
 <script setup lang="ts">
 import { z } from 'zod'
+import cardValidator from 'card-validator'
 import { type CreditCardData, PaymentMethods } from '~/types/cart'
 
 defineProps<{ prev: () => void }>()
 
 const { submit, loadingSubmit } = useCart()
+
+const defaultMask = '#### #### #### ####'
+const cardMask = ref(defaultMask)
+
+const onCardNumberInput = (event: InputEvent) => {
+  const input = (event.target as HTMLInputElement).value.replace(/\s/g, '')
+
+  const validation = cardValidator.number(input)
+  if (validation.card) {
+    switch (validation.card.type) {
+      case 'american-express':
+        cardMask.value = '#### ###### #####' // American Express
+        break
+      case 'diners-club':
+        cardMask.value = '#### ###### ####' // Diners Club
+        break
+      default:
+        cardMask.value = defaultMask
+        break
+    }
+  }
+  else {
+    cardMask.value = defaultMask
+  }
+}
+
+const validateCardNumber = (number: string) => {
+  const validation = cardValidator.number(number)
+  return validation.isValid
+}
+
+const validateExpiryDate = (expiry: string) => {
+  const validation = cardValidator.expirationDate(expiry)
+  return validation.isValid
+}
+
+const validateCvv = (cvv: string, cardNumber: string) => {
+  const cardType = cardValidator.number(cardNumber)?.card?.code?.size || 3
+  const validation = cardValidator.cvv(cvv, cardType)
+  return validation.isValid
+}
 
 const validationSchema = z.object({
   cardHolderName: z.string()
@@ -81,12 +125,17 @@ const validationSchema = z.object({
     .min(1, 'O CPF do títular do cartão é obrigatório')
     .refine(validateCPF, { message: 'CPF do títular inválido' }),
   cardNumber: z.string()
-    .min(1, 'O número do cartão é obrigatório'),
+    .min(1, 'O número do cartão é obrigatório')
+    .refine(validateCardNumber, { message: 'Número do cartão inválido' }),
   cardExpiryDate: z.string()
-    .min(1, 'A data de expiração do cartão é obrigatória'),
+    .min(1, 'A data de expiração do cartão é obrigatória')
+    .refine(validateExpiryDate, { message: 'Data de expiração inválida' }),
   cardCvv: z.string()
     .min(1, 'O CCV do cartão é obrigatório'),
-})
+}).refine((data) => {
+  const { cardNumber, cardCvv } = data
+  return validateCvv(cardCvv, cardNumber)
+}, { message: 'CVV inválido', path: ['cardCvv'] })
 
 const handleSubmit = async (values: CreditCardData) => {
   await submit({
