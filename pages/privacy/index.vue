@@ -40,15 +40,11 @@
       </p>
     </section>
 
-    <p class="privacy-contact">
-      Caso tenha dúvidas ou preocupações sobre nossa política de privacidade, entre em contato conosco pelo e-mail <a :href="`mailto:${techEmail}`">{{ techEmail }}</a>.
-    </p>
+    <ElAccordion title="Caso tenha dúvidas ou preocupações sobre nossa política de privacidade, entre em contato conosco por este formulario.">
+      <ElContactForm additional-info="Coming from /privacy route." />
+    </ElAccordion>
   </div>
 </template>
-
-<script setup lang="ts">
-const { techEmail } = useContact()
-</script>
 
 <style scoped lang="scss">
 .privacy-page {
