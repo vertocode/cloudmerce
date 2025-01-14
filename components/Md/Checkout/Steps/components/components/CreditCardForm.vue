@@ -1,5 +1,6 @@
 <template>
   <VeeForm
+    :validation-schema="validationSchema"
     @submit="handleSubmit"
   >
     <section class="rows">
@@ -8,11 +9,14 @@
         <VeeTextField
           name="cardHolderName"
           label="Títular do Cartão"
+          placeholder="Digite o nome do títular do cartão"
         />
 
-        <VeeTextField
+        <VeeMaskedField
           name="cardCpf"
           label="CPF do Títular do Cartão"
+          placeholder="Digite o CPF do títular do cartão"
+          mask="###.###.###-##"
         />
       </div>
 
@@ -20,6 +24,7 @@
         <VeeTextField
           name="cardNumber"
           label="Número do Cartão"
+          placeholder="Digite o número do cartão"
         />
 
         <VeeMaskedField
@@ -31,7 +36,8 @@
 
         <VeeTextField
           name="cardCvv"
-          label="CCV"
+          label="CVV / CVC"
+          placeholder="Digite o código de segurança"
         />
       </div>
     </section>
@@ -61,11 +67,26 @@
 </template>
 
 <script setup lang="ts">
+import { z } from 'zod'
 import { type CreditCardData, PaymentMethods } from '~/types/cart'
 
 defineProps<{ prev: () => void }>()
 
 const { submit, loadingSubmit } = useCart()
+
+const validationSchema = z.object({
+  cardHolderName: z.string()
+    .min(1, 'O nome do títular do cartão é obrigatório'),
+  cardCpf: z.string()
+    .min(1, 'O CPF do títular do cartão é obrigatório')
+    .refine(validateCPF, { message: 'CPF do títular inválido' }),
+  cardNumber: z.string()
+    .min(1, 'O número do cartão é obrigatório'),
+  cardExpiryDate: z.string()
+    .min(1, 'A data de expiração do cartão é obrigatória'),
+  cardCvv: z.string()
+    .min(1, 'O CCV do cartão é obrigatório'),
+})
 
 const handleSubmit = async (values: CreditCardData) => {
   await submit({
@@ -80,18 +101,30 @@ const handleSubmit = async (values: CreditCardData) => {
   margin-top: 16px;
 
   .row-1, .row-2 {
+    margin-top: 12px;
     display: grid;
     grid-template-columns: 1fr;
     gap: 12px;
   }
 
   .row-1 {
-    margin-top: 12px;
     grid-template-columns: repeat(2, 1fr);
   }
 
   .row-2 {
     grid-template-columns: 1fr .5fr .48fr;
+  }
+
+  @media screen and (max-width: 1150px) {
+    .row-2 {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  @media screen and (max-width: 768px) {
+    .row-1, .row-2 {
+      grid-template-columns: 1fr;
+    }
   }
 }
 </style>
