@@ -127,6 +127,7 @@
           required
           name="cep"
           label="Cep"
+          prepend-inner-icon="mdi-map-marker-outline"
           placeholder="Digite o CEP para envio"
         />
       </VCol>

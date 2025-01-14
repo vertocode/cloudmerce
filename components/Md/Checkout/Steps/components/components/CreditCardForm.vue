@@ -24,6 +24,7 @@
         <VeeMaskedField
           name="cardNumber"
           label="Número do Cartão"
+          append-inner-icon="mdi-credit-card-outline"
           placeholder="Digite o número do cartão"
           :mask="cardMask"
           @input="onCardNumberInput"
@@ -39,6 +40,7 @@
         <VeeTextField
           name="cardCvv"
           label="CVV / CVC"
+          append-inner-icon="mdi-lock-outline"
           placeholder="Digite o código de segurança"
         />
       </div>
@@ -131,11 +133,11 @@ const validationSchema = z.object({
     .min(1, 'A data de expiração do cartão é obrigatória')
     .refine(validateExpiryDate, { message: 'Data de expiração inválida' }),
   cardCvv: z.string()
-    .min(1, 'O CCV do cartão é obrigatório'),
+    .min(1, 'O Código de Segurança do cartão é obrigatório'),
 }).refine((data) => {
   const { cardNumber, cardCvv } = data
   return validateCvv(cardCvv, cardNumber)
-}, { message: 'CVV inválido', path: ['cardCvv'] })
+}, { message: 'Código de Segurança inválido', path: ['cardCvv'] })
 
 const handleSubmit = async (values: CreditCardData) => {
   await submit({
