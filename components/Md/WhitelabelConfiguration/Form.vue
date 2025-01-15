@@ -31,7 +31,8 @@
         md="4"
         class="pr-0 pb-0"
       >
-        <VeeTextField
+        <VeeFile
+          :key="renderVersion"
           name="logoUrl"
           label="URL da sua logo"
         />
@@ -143,8 +144,12 @@ import type { IWhitelabel } from '~/types/whitelabel'
 const url = useRequestURL()
 
 const { whitelabel } = useWhitelabel()
+const { post, put } = useApi()
+
+const renderVersion = ref(0)
 
 const { banner, socialMedia } = whitelabel.value
+const logoUrl = whitelabel.value?.logoUrl ? await convertUrlToFile(whitelabel.value?.logoUrl, 'logo') : null
 
 const initialValues = {
   baseUrl: url.host as unknown as string,
@@ -154,13 +159,14 @@ const initialValues = {
   instagram: socialMedia?.instagram || '',
   twitter: socialMedia?.twitter || '',
   ...(whitelabel.value as Omit<IWhitelabel, 'baseUrl'> || {}),
+  logoUrl,
 }
 
 const validationSchema = z.object({
   name: z.string().min(3, { message: 'O nome da loja deve ter pelo menos 3 caracteres' }),
   baseUrl: z
     .string(),
-  logoUrl: z.string().url({ message: 'URL da logo inválida' }),
+  logoUrl: z.any(),
   description: z.string().optional(),
   bannerTitle: z.string().min(5, { message: 'O título do banner deve ter pelo menos 5 caracteres' }).max(40, 'Título do banner deve ter no máximo 50 caracteres'),
   bannerDescription: z.string().min(5, { message: 'A descrição do banner deve ter pelo menos 5 caracteres' }).max(150, 'Descrição do banner deve ter no máximo 150 caracteres'),
@@ -175,11 +181,43 @@ const validationSchema = z.object({
   twitter: z.string().optional(),
 })
 
+onMounted(() => {
+  renderVersion.value = 1
+})
+
+const getUpdatedLogo = async (file: File) => {
+  if (!file) {
+    return whitelabel.value?.logoUrl || ''
+  }
+
+  const dontHaveInitialLogo = !whitelabel.value?.logoUrl
+  const hasDifferentData = file.name !== initialValues.logoUrl?.name && file.size !== initialValues.logoUrl?.size
+  if (dontHaveInitialLogo || hasDifferentData) {
+    const formData = new FormData()
+    formData.append('image', file)
+
+    const response = await post('/upload-image', formData, { useFormData: true }) as {
+      data: {
+        link: string
+      }
+    }
+
+    if (!response?.data?.link) {
+      throw new Error(`Error to upload the logo with name: ${file?.name || 'unknown'}`)
+    }
+
+    return response.data.link
+  }
+
+  return whitelabel.value?.logoUrl || ''
+}
+
 const handleSubmit = async (values: Record<string, any>) => {
-  const { post, put } = useApi()
   const router = useRouter()
   const id = whitelabel?.value?._id
   try {
+    const newLogoUrl = await getUpdatedLogo(values.logoUrl)
+
     const whitelabelData = {
       baseUrl: values.baseUrl,
       name: values.name,
@@ -190,7 +228,7 @@ const handleSubmit = async (values: Record<string, any>) => {
         title: values.bannerTitle,
         description: values.bannerDescription,
       },
-      logoUrl: values.logoUrl,
+      logoUrl: newLogoUrl,
       socialMedia: {
         wpp: values.wpp,
         instagram: values.instagram,

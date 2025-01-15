@@ -15,16 +15,14 @@
 </template>
 
 <script setup lang="ts">
-const { post } = useApi()
-
-const submit = async (values) => {
+const submit = async (values: { profile_picture: File }) => {
   const file = values.profile_picture
-  console.log(file, 'file')
   if (!file) return
 
   const formData = new FormData()
-  formData.append('message', 'This is a test')
   formData.append('image', file)
+
+  const { post } = useApi()
 
   await post('/upload-image', formData, { useFormData: true })
 }

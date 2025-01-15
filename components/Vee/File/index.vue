@@ -11,7 +11,7 @@
       class="vee-file-input"
       :error-messages="errorMessage === 'Required' ? 'Campo obrigatório' : errorMessage"
       :accept="accept"
-      :show-size="showSize"
+      show-size
       :label="label || 'Selecione um arquivo'"
       :multiple="multiple"
       :name="field.name"
@@ -21,7 +21,7 @@
       <template #append-inner>
         <img
           v-if="field.value"
-          :src="getLocalFileUrl(field.value)"
+          :src="getImageSource(field.value)"
           alt="Pré-visualização do upload"
           class="uploaded-image"
         >
@@ -39,11 +39,32 @@ defineProps<{
   variant?: 'outlined' | 'plain' | 'filled' | 'underlined' | 'solo' | 'solo-inverted' | 'solo-filled'
   label?: string
   accept?: string
-  showSize?: boolean
   multiple?: boolean
 }>()
 
-const getLocalFileUrl = (file: File) => file ? URL.createObjectURL(file) : ''
+const getModelValue = (file: File | string) => {
+  if (typeof file === 'string') {
+    return convertUrlToFile(file)
+  }
+
+  return file
+}
+
+const getImageSource = (file: File | string) => {
+  if (!file) return ''
+
+  if (typeof file === 'string') {
+    return file
+  }
+
+  return URL.createObjectURL(file)
+}
+
+const convertUrlToFile = async (url: string, fileName = 'file'): Promise<File> => {
+  const response = await fetch(url)
+  const blob = await response.blob()
+  return new File([blob], fileName, { type: blob.type })
+}
 </script>
 
 <style lang="scss" scoped>
