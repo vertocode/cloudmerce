@@ -15,7 +15,7 @@
         >
           <VeeFile
             :name="`imageFiles[${index}]`"
-            :label="`URL da imagem ${index + 1}`"
+            :label="`Imagem ${index + 1}`"
           />
           <VBtn
             v-if="fields.length > 1"

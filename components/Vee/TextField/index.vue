@@ -15,7 +15,7 @@
         ...$attrs,
         ...field,
       }"
-      :type="$attrs.type === 'password' ? isPasswordVisible ? 'text' : 'password' : $attrs.type as string"
+      :type="$attrs.type === 'password' ? isPasswordVisible ? 'text' : 'password' : type as string"
       :append-inner-icon="aInnerIcon"
       @click:append-inner="togglePasswordVisibility"
     />
