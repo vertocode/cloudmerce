@@ -24,12 +24,12 @@ export const useApi = () => {
     })
   }
 
-  const post = async (path: string, data: unknown) => {
+  const post = async (path: string, data: unknown, { useFormData }: { useFormData: boolean } = { useFormData: false }) => {
     return $fetch(`${apiUrl}${path}`, {
       method: 'POST',
-      body: JSON.stringify(data),
+      body: useFormData ? data || '' : JSON.stringify(data),
       headers: {
-        ...commonHeaders,
+        ...(useFormData ? {} : commonHeaders),
       },
     })
   }
