@@ -11,9 +11,10 @@
       chips
       class="vee-file-input"
       :error-messages="errorMessage === 'Required' ? 'Campo obrigatório' : errorMessage"
-      :accept="accept"
+      :accept="accept || 'image/*'"
       show-size
-      :label="label || 'Selecione um arquivo'"
+      :label="label"
+      placeholder="Selecione um arquivo"
       :multiple="multiple"
       :name="field.name"
       v-bind="{ ...$attrs }"

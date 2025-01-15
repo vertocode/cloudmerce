@@ -144,6 +144,7 @@ const url = useRequestURL()
 
 const { whitelabel } = useWhitelabel()
 const { post, put } = useApi()
+const { upload } = useUpload()
 
 const { banner, socialMedia } = whitelabel.value
 const logoUrl = whitelabel.value?.logoUrl ? await convertUrlToFile(whitelabel.value?.logoUrl, 'logo') : null
@@ -186,20 +187,7 @@ const getUpdatedLogo = async (file: File) => {
   const dontHaveInitialLogo = !whitelabel.value?.logoUrl
   const hasDifferentData = file.name !== initialValues.logoUrl?.name && file.size !== initialValues.logoUrl?.size
   if (dontHaveInitialLogo || hasDifferentData) {
-    const formData = new FormData()
-    formData.append('image', file)
-
-    const response = await post('/upload-image', formData, { useFormData: true }) as {
-      data: {
-        link: string
-      }
-    }
-
-    if (!response?.data?.link) {
-      throw new Error(`Error to upload the logo with name: ${file?.name || 'unknown'}`)
-    }
-
-    return response.data.link
+    return upload(file)
   }
 
   return whitelabel.value?.logoUrl || ''

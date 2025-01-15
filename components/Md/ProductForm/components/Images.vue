@@ -4,7 +4,7 @@
     <VRow>
       <FieldArray
         v-slot="{ fields, push, remove }"
-        name="imageUrls"
+        name="imageFiles"
       >
         <VCol
           v-for="(_, index) in fields"
@@ -14,7 +14,7 @@
           class="image-field mt-0"
         >
           <VeeFile
-            :name="`imageUrls[${index}]`"
+            :name="`imageFiles[${index}]`"
             :label="`URL da imagem ${index + 1}`"
           />
           <VBtn
@@ -40,11 +40,11 @@
       </FieldArray>
     </VRow>
     <VAlert
-      v-if="errors?.imageUrls"
+      v-if="errors?.imageFiles"
       class="mb-5"
       color="warning"
     >
-      <p v-if="errors?.imageUrls">
+      <p v-if="errors?.imageFiles">
         Adicione pelo menos uma imagem para o produto.
       </p>
     </VAlert>

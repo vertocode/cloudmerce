@@ -11,6 +11,7 @@
       :on-close="onClose"
       :action="updateProduct"
       :initial-values="initialValues"
+      :old-image-urls="Array.isArray(product.image) ? product.image : [product.image]"
     />
   </div>
 </template>
@@ -39,7 +40,7 @@ if (!product) {
   throw new Error('Product not found')
 }
 
-const imageUrls = Array.isArray(product.image)
+const imageFiles = Array.isArray(product.image)
   ? await Promise.all(product.image.map(async (image, imgIdx) => {
     return convertUrlToFile(image as string, `product-image-${imgIdx}`)
   }))
@@ -52,7 +53,7 @@ const initialValues = computed(() => {
   return {
     productName: product.name || '',
     productType: getProductTypeById(product.productType)?.name || '',
-    imageUrls,
+    imageFiles,
     productDescription: product.description || '',
     productPrice: product.price || 0,
     stockOption: product.stock?.type || StockOptions.UNLIMITED,

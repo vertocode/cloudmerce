@@ -8,7 +8,9 @@ export const validationSchema = z.object({
   productType: z.string().nonempty({ message: 'O tipo de produto é obrigatório' }),
   stockOption: z.enum(Object.values(StockOptions)),
   stockQuantity: z.number().int().min(1, { message: 'Quantidade de estoque deve ser maior que 0' }).nullable().optional(),
-  imageUrls: z.array(z.string().url({ message: 'Deve ser uma URL válida' })).min(1, { message: 'Adicione pelo menos 1 imagem' }),
+  imageFiles: z.array(
+    z.any(),
+  ).min(1, { message: 'Adicione pelo menos 1 imagem' }),
   userFields: z.array(z.object({
     label: z.string().min(1, { message: 'Nome do campo não pode ser vazio' }),
     type: z.enum(['Texto', 'Número', 'Opções']),

@@ -36,7 +36,7 @@
           variant="tonal"
           color="primary"
           width="100%"
-          :loading="isSubmitting"
+          :loading="isSubmitting || isLoading"
           :disabled="!dirty"
         >
           {{ isEdition ? 'Editar' : 'Adicionar' }}
@@ -48,30 +48,53 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import { UserFieldTypeLabel } from '~/types/product'
 import UserQuestions from '~/components/Md/ProductForm/components/UserQuestions.vue'
 import Images from '~/components/Md/ProductForm/components/Images.vue'
 import StockFields from '~/components/Md/ProductForm/components/StockFields.vue'
 import { StockOptions } from '~/components/Md/ProductForm/types/stock'
 import DetailFields from '~/components/Md/ProductForm/components/DetailFields.vue'
 import { validationSchema } from '~/components/Md/ProductForm/zod/schema'
+import { UserFieldTypeLabel } from '~/types/product'
 
 const props = defineProps<{
   action: (values: Record<string, any>) => Promise<void>
   onRegisterNewProductType?: () => void
   updateProductList?: (params: { cache: 'no-cache' | 'force-cache' }) => Promise<void>
   initialValues?: Record<string, any>
+  oldImageUrls?: string[]
 }>()
 
 const { productTypes } = useProductTypes()
+const { upload } = useUpload()
 
 const isEdition = !!props.initialValues
 
 const isLoading = ref(false)
 
+const getUpdatedImageUrls = async (images: File[]): Promise<string[]> => {
+  const initialFiles = props.initialValues?.imageFiles || []
+  return await Promise.all(images.map(async (file, fileIdx) => {
+    const oldImage = props.oldImageUrls?.[fileIdx]
+    if (!oldImage) {
+      return upload(file)
+    }
+
+    const hasChanges = initialFiles.every((initialFile: File) => {
+      return initialFile.name !== file.name && initialFile.size !== file.size
+    })
+    if (hasChanges) {
+      return upload(file)
+    }
+
+    return oldImage
+  }))
+}
+
 const submit = async (values: Record<string, any>) => {
   isLoading.value = true
   const { whitelabel } = useWhitelabel()
+
+  const newImageUrls = await getUpdatedImageUrls(values.imageFiles)
 
   try {
     await props.action({
@@ -81,6 +104,7 @@ const submit = async (values: Record<string, any>) => {
         quantity: values?.stockQuantity || null,
       },
       ecommerceId: whitelabel.value._id,
+      imageUrls: newImageUrls,
       productType: productTypes.value.find((type: IProductType) => type.name === values.productType)?.id || '',
       userFields: values.userFields.map((field) => {
         const type = (() => {
