@@ -1,10 +1,6 @@
 <template>
   <Card class="images">
     <h3>Adicionar imagens para o produto</h3>
-    <h5 class="mt-5">
-      Você deve colocar o link da imagem aqui. É possível usar qualquer serviço de armazenamento em nuvem, como
-      <a href="https://imgur.com/">Imgur</a> ou outro de sua preferência. (1 imagem é obrigatória)
-    </h5>
     <VRow>
       <FieldArray
         v-slot="{ fields, push, remove }"
@@ -17,10 +13,9 @@
           :md="fields.length === 1 ? 12 : 6"
           class="image-field mt-0"
         >
-          <VeeTextField
+          <VeeFile
             :name="`imageUrls[${index}]`"
             :label="`URL da imagem ${index + 1}`"
-            variant="outlined"
           />
           <VBtn
             v-if="fields.length > 1"

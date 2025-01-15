@@ -34,6 +34,17 @@ const onClose = () => {
   router.push('/')
 }
 
+if (!product) {
+  handleError('Produto não encontrado')
+  throw new Error('Product not found')
+}
+
+const imageUrls = Array.isArray(product.image)
+  ? await Promise.all(product.image.map(async (image, imgIdx) => {
+    return convertUrlToFile(image as string, `product-image-${imgIdx}`)
+  }))
+  : [product.image]
+
 const initialValues = computed(() => {
   const { getProductTypeById } = useProductTypes()
   if (!product) return {}
@@ -41,7 +52,7 @@ const initialValues = computed(() => {
   return {
     productName: product.name || '',
     productType: getProductTypeById(product.productType)?.name || '',
-    imageUrls: Array.isArray(product.image) ? (product.image || '') : [product.image || ''],
+    imageUrls,
     productDescription: product.description || '',
     productPrice: product.price || 0,
     stockOption: product.stock?.type || StockOptions.UNLIMITED,

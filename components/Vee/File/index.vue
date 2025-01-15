@@ -5,6 +5,7 @@
     :name="name"
   >
     <VFileInput
+      :key="`file-input-${isMountedV}`"
       v-model="field.value"
       :variant="variant || 'outlined'"
       chips
@@ -32,7 +33,12 @@
 
 <script setup lang="ts">
 import { Field } from 'vee-validate'
-import { defineProps } from 'vue'
+
+const isMountedV = ref(0)
+
+onMounted(() => {
+  isMountedV.value = 1
+})
 
 defineProps<{
   name: string
@@ -41,14 +47,6 @@ defineProps<{
   accept?: string
   multiple?: boolean
 }>()
-
-const getModelValue = (file: File | string) => {
-  if (typeof file === 'string') {
-    return convertUrlToFile(file)
-  }
-
-  return file
-}
 
 const getImageSource = (file: File | string) => {
   if (!file) return ''

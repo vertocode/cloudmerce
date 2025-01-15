@@ -32,7 +32,6 @@
         class="pr-0 pb-0"
       >
         <VeeFile
-          :key="renderVersion"
           name="logoUrl"
           label="URL da sua logo"
         />
@@ -146,8 +145,6 @@ const url = useRequestURL()
 const { whitelabel } = useWhitelabel()
 const { post, put } = useApi()
 
-const renderVersion = ref(0)
-
 const { banner, socialMedia } = whitelabel.value
 const logoUrl = whitelabel.value?.logoUrl ? await convertUrlToFile(whitelabel.value?.logoUrl, 'logo') : null
 
@@ -179,10 +176,6 @@ const validationSchema = z.object({
   wpp: z.string().optional(),
   instagram: z.string().optional(),
   twitter: z.string().optional(),
-})
-
-onMounted(() => {
-  renderVersion.value = 1
 })
 
 const getUpdatedLogo = async (file: File) => {
