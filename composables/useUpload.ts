@@ -6,15 +6,24 @@ export const useUpload = () => {
 
     const response = await post('/upload-image', formData, { useFormData: true }) as {
       data: {
-        link: string
+        link: string // imgur
+        url: string // imgBB
       }
     }
 
-    if (!response?.data?.link) {
+    const { url } = response?.data || {}
+
+    // Imgur's validation
+    // if (!link) {
+    //   throw new Error(`Error to upload the image with name: ${file?.name || 'unknown'}`)
+    // }
+
+    // ImgBB validation
+    if (!url) {
       throw new Error(`Error to upload the image with name: ${file?.name || 'unknown'}`)
     }
 
-    return response.data.link
+    return url
   }
 
   return { upload }
