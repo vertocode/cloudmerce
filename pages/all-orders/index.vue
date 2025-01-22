@@ -1,77 +1,75 @@
 <template>
   <div class="orders-list">
-    <VContainer>
-      <VRow justify="center">
-        <VCol
-          cols="12"
-          md="8"
-        >
-          <h1>Todos os pedidos</h1>
-        </VCol>
-      </VRow>
-      <VRow
-        justify="center"
-        align="center"
+    <VRow justify="center">
+      <VCol
+        cols="12"
+        md="8"
       >
-        <div v-if="loading">
-          <VProgressCircular
-            indeterminate
-            color="primary"
-          />
-          <span>Carregando pedidos...</span>
-        </div>
-        <VCol
-          v-else
-          cols="12"
-          md="8"
+        <h1>Todos os pedidos</h1>
+      </VCol>
+    </VRow>
+    <VRow
+      justify="center"
+      align="center"
+    >
+      <div v-if="loading">
+        <VProgressCircular
+          indeterminate
+          color="primary"
+        />
+        <span>Carregando pedidos...</span>
+      </div>
+      <VCol
+        v-else
+        cols="12"
+        md="12"
+      >
+        <VTable
+          v-if="orders.length && userData"
+          dense
         >
-          <VTable
-            v-if="orders.length && userData"
-            dense
-          >
-            <thead>
-              <tr>
-                <th>Pedido nº</th>
-                <th>Status</th>
-                <th>Total</th>
-                <th>Data</th>
-                <th>Ações</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr
-                v-for="order in orders"
-                :key="order._id"
-              >
-                <td>{{ order._id }}</td>
-                <td><MdOrdersStatusChip :status="order.status" /></td>
-                <td><strong>R$ {{ calculateTotal(order.items) }}</strong></td>
-                <td>{{ formatDate(order.createdAt) }}</td>
-                <td>
-                  <VBtn
-                    color="primary"
-                    variant="elevated"
-                    @click="goToOrderDetails(order._id)"
-                  >
-                    Ver Detalhes
-                  </VBtn>
-                </td>
-              </tr>
-            </tbody>
-          </VTable>
-          <p
-            v-else
-            class="no-orders"
-          >
-            Você ainda não possui pedidos.
-          </p>
-        </VCol>
-      </VRow>
-      <VPagination
-        v-model="page"
-        :length="10"
-      />
-    </VContainer>
+          <thead>
+            <tr>
+              <th>Pedido nº</th>
+              <th>Status</th>
+              <th>Total</th>
+              <th>Data</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              v-for="order in orders"
+              :key="order._id"
+            >
+              <td>{{ order._id }}</td>
+              <td><MdOrdersStatusChip :status="order.status" /></td>
+              <td><strong>R$ {{ calculateTotal(order.items) }}</strong></td>
+              <td>{{ formatDate(order.createdAt) }}</td>
+              <td>
+                <VBtn
+                  color="primary"
+                  variant="elevated"
+                  @click="goToOrderDetails(order._id)"
+                >
+                  Ver Detalhes
+                </VBtn>
+              </td>
+            </tr>
+          </tbody>
+        </VTable>
+        <p
+          v-else
+          class="no-orders"
+        >
+          Você ainda não possui pedidos.
+        </p>
+      </VCol>
+    </VRow>
+    <VPagination
+      v-model="page"
+      :length="totalPages"
+    />
   </div>
 </template>
 
@@ -80,13 +78,10 @@ definePageMeta({
   middleware: ['03-admin-auth'],
 })
 
-const page = ref<number>(0)
+const page = ref<number>(1)
 const pageSize = ref<number>(10)
 
-const { orders, loading, fetchOrders } = useAllOrders({
-  page,
-  pageSize,
-})
+const { orders, loading, totalPages, fetchOrders } = useAllOrders()
 const router = useRouter()
 
 const calculateTotal = (items: any[]) =>
@@ -100,6 +95,15 @@ const { userData } = useUser()
 
 watch(userData, () => {
   fetchOrders()
+})
+
+watch([page, pageSize], () => {
+  console.log(page.value, 'page')
+  console.log(pageSize.value, 'pageSize')
+  fetchOrders({
+    page: page.value,
+    pageSize: pageSize.value,
+  })
 })
 
 callOnce(() => {
@@ -116,8 +120,6 @@ callOnce(() => {
   }
 
   table {
-    width: 100%;
-    border-collapse: collapse;
     margin-bottom: 16px;
 
     th {

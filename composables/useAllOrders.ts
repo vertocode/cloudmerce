@@ -1,17 +1,18 @@
 import type { Order } from '~/types/order'
 
-interface IUseAllOrders {
-  page: number
-  pageSize: number
+interface IFetchOrders {
+  page?: number
+  pageSize?: number
 }
 
-export const useAllOrders = ({ page, pageSize }: IUseAllOrders) => {
+export const useAllOrders = () => {
   const orders = useState<Order[]>('allOrders', () => [])
+  const totalPages = useState<number>('totalPages', () => 0)
   const loading = useState<boolean>('loadingAllOrders', () => false)
 
   const { get } = useApi()
 
-  const fetchOrders = async () => {
+  const fetchOrders = async ({ page, pageSize }: IFetchOrders = { page: 1, pageSize: 10 }) => {
     loading.value = true
     try {
       const { whitelabel } = useWhitelabel()
@@ -19,8 +20,10 @@ export const useAllOrders = ({ page, pageSize }: IUseAllOrders) => {
       const response = await get(`/orders-admin/${whitelabel.value._id}`, {
         page,
         pageSize,
-      })
-      orders.value = response as Order[]
+      }) as { orders: Order[], totalPages: number }
+
+      orders.value = response.orders
+      totalPages.value = response.totalPages
     }
     catch (err) {
       console.error(err)
@@ -31,5 +34,5 @@ export const useAllOrders = ({ page, pageSize }: IUseAllOrders) => {
     }
   }
 
-  return { orders, loading, fetchOrders }
+  return { orders, loading, totalPages, fetchOrders }
 }
