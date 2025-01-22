@@ -8,7 +8,7 @@
         <VBtn
           color="primary"
           variant="outlined"
-          @click="goToOrders"
+          @click="goBackOrHome"
         >
           <VIcon
             class="mr-1"
@@ -216,10 +216,6 @@ const totalAmount = computed(() =>
     0,
   ).toFixed(2) || '0.00',
 )
-
-const goToOrders = () => {
-  router.push('/orders')
-}
 
 watch(userData, () => {
   if (!userData.value) {

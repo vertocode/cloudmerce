@@ -62,6 +62,12 @@
           </h3>
           <VListItem
             class="navigation-item admin-item"
+            @click="$router.push('/all-orders')"
+          >
+            <VListItemTitle>Todos os Pedidos</VListItemTitle>
+          </VListItem>
+          <VListItem
+            class="navigation-item admin-item"
             @click="$router.push('/product-type')"
           >
             <VListItemTitle>Tipos de Produto</VListItemTitle>
