@@ -10,13 +10,38 @@
       <template #activator="{ props }">
         <VBtn
           icon
+          class="header-icon-btn"
           v-bind="props"
         >
-          <VIcon>mdi-menu</VIcon>
+          <VIcon size="20">mdi-menu</VIcon>
         </VBtn>
       </template>
 
       <VList class="navigation-list">
+        <template v-if="productTypes.length">
+          <h3 class="section-subtitle">
+            Categorias
+          </h3>
+          <VListItem
+            v-for="type in productTypes"
+            :key="type.id"
+            class="navigation-item"
+            :class="{ active: isActiveType(type.id) }"
+            @click="redirectTo(type.id)"
+          >
+            <VListItemTitle>
+              <VIcon
+                v-if="type.icon"
+                size="18"
+              >
+                {{ type.icon.includes('mdi') ? type.icon : `mdi-${type.icon}` }}
+              </VIcon>
+              {{ type.name }}
+            </VListItemTitle>
+          </VListItem>
+          <VDivider class="my-2" />
+        </template>
+
         <VListItem
           class="navigation-item"
           @click="$router.push('/checkout')"
@@ -96,9 +121,27 @@ import { ref } from 'vue'
 const isDrawerOpen = ref(false)
 
 const { userData, isAdmin, logout } = useUser()
+const { productTypes } = useProductTypes()
+const router = useRouter()
+const route = useRoute()
+
+const redirectTo = (type: string) => {
+  router.push(`/product/type/${type}`)
+  isDrawerOpen.value = false
+}
+
+const isActiveType = (type: string) => route.params.type === type
 </script>
 
 <style scoped>
+.header-icon-btn {
+  color: #1d1d1f !important;
+}
+
+.header-icon-btn:hover {
+  background-color: rgba(0, 0, 0, 0.04) !important;
+}
+
 .menu-button {
   position: relative;
 }
@@ -114,6 +157,17 @@ const { userData, isAdmin, logout } = useUser()
   padding: 8px 0;
 }
 
+.section-subtitle {
+  padding: 8px 16px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #86868b;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  pointer-events: none;
+  margin-top: 8px;
+}
+
 .admin-subtitle {
   padding: 8px 16px;
   font-size: 1rem;
@@ -124,6 +178,15 @@ const { userData, isAdmin, logout } = useUser()
 
 .admin-item {
   color: var(--secondary-color-700);
+}
+
+.navigation-item.active {
+  background-color: rgba(0, 0, 0, 0.08);
+  font-weight: 500;
+
+  :deep(.v-icon) {
+    color: var(--primary-color);
+  }
 }
 
 .navigation-item {

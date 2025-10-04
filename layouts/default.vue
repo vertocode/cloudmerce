@@ -2,7 +2,6 @@
   <VApp>
     <ElSnackbar />
     <MdHeader />
-    <MdSubHeader />
     <MdScrollToTop />
     <MdContainer class="main_container">
       <slot />

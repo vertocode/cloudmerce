@@ -2,18 +2,17 @@
   <div>
     <VBtn
       icon
+      class="header-icon-btn"
       @click="isCartDrawerOpened = !isCartDrawerOpened"
     >
-      <VIcon>mdi-cart</VIcon>
+      <VIcon size="20">mdi-shopping-outline</VIcon>
     </VBtn>
 
     <VNavigationDrawer
       v-if="isLoaded"
       v-model="isCartDrawerOpened"
-      app
       temporary
       width="320"
-      height="100%"
       location="right"
       class="cart-drawer"
     >
@@ -98,6 +97,18 @@ onMounted(() => {
 </script>
 
 <style lang="scss" scoped>
+.header-icon-btn {
+  color: #1d1d1f !important;
+
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.04) !important;
+  }
+}
+
+:deep(.cart-drawer) {
+  z-index: 2000 !important;
+}
+
 .empty-cart {
   display: flex;
   flex-direction: column;

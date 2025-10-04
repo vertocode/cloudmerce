@@ -85,30 +85,31 @@ onMounted(() => {
 </script>
 
 <style scoped lang="scss">
-@import url('https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap');
-
 .subheader {
   display: flex;
-  background-color: var(--primary-color-700);
+  background-color: #f5f5f7;
   align-items: center;
-  padding: 4px 24px;
+  padding: 8px 24px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
 
   @media screen and (max-width: $mobile-breakpoint) {
-    padding: 4px 16px;
+    padding: 8px 16px;
   }
 
   .scroll-btn {
-    color: #3498db;
+    color: var(--primary-color);
+    flex-shrink: 0;
   }
 
   .scroll-container {
-    margin: auto;
+    margin: 0 auto;
     display: flex;
     gap: 8px;
     overflow-x: auto;
     scroll-behavior: smooth;
     white-space: nowrap;
-    padding: 4px;
+    padding: 4px 0;
+    max-width: 1440px;
 
     &::-webkit-scrollbar {
       display: none;
@@ -117,46 +118,39 @@ onMounted(() => {
     .product-type {
       display: flex;
       align-items: center;
-      gap: 4px;
-      padding: 0.5rem 1rem;
-      color: #fff;
-      font-size: 1rem;
-      font-family: "Nunito", serif;
-      font-weight: 300;
-      border-radius: 12px;
+      gap: 6px;
+      padding: 8px 16px;
+      color: #1d1d1f;
+      font-size: 14px;
+      font-weight: 400;
+      border-radius: 20px;
       cursor: pointer;
       white-space: nowrap;
-      transition: background-color 0.3s, color 0.3s;
-      position: relative;
+      transition: all 0.2s ease;
+      background-color: transparent;
 
       .v-icon {
-        color: var(--primary-color-100);
+        font-size: 18px;
+        color: var(--primary-color);
       }
 
       @media screen and (max-width: $mobile-breakpoint) {
-        padding: 0.5rem 0.75rem;
-        font-size: .9rem;
+        padding: 6px 14px;
+        font-size: 13px;
+      }
+
+      &:hover {
+        background-color: rgba(0, 0, 0, 0.04);
       }
 
       &.active {
-        background-color: var(--secondary-color-700);
-        color: var(--secondary-color-100);
+        background-color: var(--primary-color);
+        color: #fff;
+        font-weight: 500;
 
         .v-icon {
-          color: var(--secondary-color-100);
+          color: #fff;
         }
-      }
-
-      &:not(.active):hover::after {
-        content: '';
-        position: absolute;
-        left: 0;
-        right: 0;
-        bottom: -2px;
-        height: 2px;
-        background-color: var(--primary-color-200);
-        transition: width 0.3s ease, background-color 0.3s ease;
-        width: 100%;
       }
     }
   }

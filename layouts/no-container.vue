@@ -2,7 +2,6 @@
   <VApp>
     <ElSnackbar />
     <MdHeader />
-    <MdSubHeader />
     <MdScrollToTop />
     <slot />
     <MdFooter />
