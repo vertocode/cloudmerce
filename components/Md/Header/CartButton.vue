@@ -8,14 +8,15 @@
       <VIcon size="20">mdi-shopping-outline</VIcon>
     </VBtn>
 
-    <VNavigationDrawer
-      v-if="isLoaded"
-      v-model="isCartDrawerOpened"
-      temporary
-      width="320"
-      location="right"
-      class="cart-drawer"
-    >
+    <Teleport to="body">
+      <VNavigationDrawer
+        v-if="isLoaded"
+        v-model="isCartDrawerOpened"
+        temporary
+        width="320"
+        location="right"
+        class="cart-drawer"
+      >
       <v-toolbar
         flat
         dense
@@ -79,7 +80,8 @@
         </VIcon>
         <p>Seu carrinho está vazio!</p>
       </div>
-    </VNavigationDrawer>
+      </VNavigationDrawer>
+    </Teleport>
   </div>
 </template>
 
@@ -105,8 +107,16 @@ onMounted(() => {
   }
 }
 
-:deep(.cart-drawer) {
+:deep(.v-navigation-drawer) {
+  position: fixed !important;
+  top: 0 !important;
+  bottom: 0 !important;
+  height: 100vh !important;
   z-index: 2000 !important;
+}
+
+:deep(.v-overlay) {
+  z-index: 1999 !important;
 }
 
 .empty-cart {
