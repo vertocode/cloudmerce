@@ -28,9 +28,7 @@ export const useProductTypes = () => {
 
       const { whitelabel } = useWhitelabel()
 
-      const response = await get(`/product-types/ecommerce/${whitelabel.value._id}`, {}, {
-        cache: cache || 'force-cache',
-      }) as IProductTypeResponse[]
+      const response = await $fetch(`/api/product-types/${whitelabel.value._id}`) as IProductTypeResponse[]
       productTypes.value = response.map((productType: IProductTypeResponse) => ({
         id: productType?._id,
         name: productType.name,

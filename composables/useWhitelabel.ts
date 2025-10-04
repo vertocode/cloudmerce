@@ -21,7 +21,7 @@ export const useWhitelabel = () => {
   const getWhitelabel = async () => {
     try {
       console.log('requisitando whitelabel')
-      const response = await get(`/whitelabel/${url.host}`)
+      const response = await $fetch(`/api/whitelabel/${url.host}`)
       if ((response as IWhitelabelError)?.code === 404) {
         console.warn('Not found whitelabel, redirecting to /whitelabel-configuration', response)
         await router.push('/whitelabel-configuration')

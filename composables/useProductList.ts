@@ -33,13 +33,13 @@ export const useProductList = (filters?: IProductFilters) => {
     const { whitelabel } = useWhitelabel()
 
     loading.value = true
-    const response = await get(`/products/ecommerce/${whitelabel.value._id}`, {
-      ...filters,
-      search: search.value || '',
-      limit: 20,
-      page: currentPage.value,
-    }, {
-      cache: cache || 'force-cache',
+    const response = await $fetch(`/api/products/${whitelabel.value._id}`, {
+      query: {
+        ...filters,
+        search: search.value || '',
+        limit: 20,
+        page: currentPage.value,
+      },
     }) as IGetProductsResponse
 
     products.value = response.products.map((product: IProductResponse): IProduct => ({

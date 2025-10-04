@@ -14,7 +14,7 @@ export const useProduct = ({ updateProductList }: IUseProduct) => {
 
     try {
       loading.value = true
-      const response = await get(`/products/${whitelabel.value._id}/${id}`) as IProductResponse
+      const response = await $fetch(`/api/products/${whitelabel.value._id}/${id}`) as IProductResponse
 
       return {
         id: response._id,
