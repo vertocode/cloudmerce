@@ -234,10 +234,9 @@ const handleSubmit = async (values: Record<string, any>) => {
       const response = await post('/whitelabel', whitelabelData)
 
       if ((response as IWhitelabel)?._id) {
-        // Clear whitelabel cache
-        await clearCacheKey(`whitelabel-${url.host}`)
         handleSuccess('Configuração salva com sucesso')
-        window.open('/', '_self')
+        // Redirect with resetCache parameter to clear all caches
+        window.open('/?resetCache=true', '_self')
       }
       else {
         throw new Error(`Response without _id: ${response}`)
