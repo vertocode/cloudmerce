@@ -24,9 +24,9 @@ const onRegisterNewProductType = () => {
 }
 
 const register = async (values: any) => {
-  const { post } = useApi()
+  const { post, clearCacheKey } = useApi()
 
-  await post('/products', {
+  const response = await post('/products', {
     ecommerceId: values.ecommerceId,
     name: values.productName,
     price: values.productPrice,
@@ -39,6 +39,14 @@ const register = async (values: any) => {
       quantity: values.stockQuantity,
     },
   })
+
+  // Clear products list cache for this ecommerce
+  await clearCacheKey(`products-${values.ecommerceId}-{}`)
+
+  // Clear individual product cache if product has an ID
+  if ((response as any)?._id) {
+    await clearCacheKey(`product-${values.ecommerceId}-${(response as any)._id}`)
+  }
 }
 </script>
 

@@ -11,6 +11,16 @@ export const useApi = () => {
     'Access-Control-Allow-Origin': '*',
   }
 
+  const clearCacheKey = async (key: string) => {
+    if (import.meta.client) {
+      try {
+        await $fetch(`/api/__cache__/${key}`, { method: 'DELETE' })
+      } catch (error) {
+        console.warn(`Failed to clear cache for key: ${key}`, error)
+      }
+    }
+  }
+
   const get = async (path: string, data?: Record<string, any>, options?: { cache?: 'no-cache' | 'force-cache' }, headers?: HeadersInit) => {
     const query = data ? new URLSearchParams(data).toString() : ''
 
@@ -69,5 +79,6 @@ export const useApi = () => {
     patch,
     remove,
     put,
+    clearCacheKey,
   }
 }

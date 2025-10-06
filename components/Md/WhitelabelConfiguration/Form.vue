@@ -143,10 +143,10 @@ import type { IWhitelabel } from '~/types/whitelabel'
 const url = useRequestURL()
 
 const { whitelabel } = useWhitelabel()
-const { post, put } = useApi()
+const { post, put, clearCacheKey } = useApi()
 const { upload } = useUpload()
 
-const { banner, socialMedia } = whitelabel.value
+const { banner, socialMedia } = whitelabel.value || {}
 const logoUrl = whitelabel.value?.logoUrl ? await convertUrlToFile(whitelabel.value?.logoUrl, 'logo') : null
 
 const initialValues = {
@@ -220,6 +220,8 @@ const handleSubmit = async (values: Record<string, any>) => {
       const response = await put(`/whitelabel/${id}`, whitelabelData)
 
       if ((response as { code: number })?.code === 200) {
+        // Clear whitelabel cache
+        await clearCacheKey(`whitelabel-${url.host}`)
         handleSuccess('Configuração salva com sucesso')
         await router.push('/')
         window.location.reload()
@@ -232,6 +234,8 @@ const handleSubmit = async (values: Record<string, any>) => {
       const response = await post('/whitelabel', whitelabelData)
 
       if ((response as IWhitelabel)?._id) {
+        // Clear whitelabel cache
+        await clearCacheKey(`whitelabel-${url.host}`)
         handleSuccess('Configuração salva com sucesso')
         window.open('/', '_self')
       }

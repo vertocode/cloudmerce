@@ -3,7 +3,7 @@ import type { IWhitelabel, IWhitelabelError } from '~/types/whitelabel'
 export default defineNuxtRouteMiddleware(async (to) => {
   const whitelabelCache = useState<IWhitelabel | string | null>('whitelabel-cache', () => null)
 
-  if ((!whitelabelCache.value || whitelabelCache.value === 'error') && to.path !== 'whitelabel-configuration') {
+  if ((!whitelabelCache.value || whitelabelCache.value === 'error') && !to.path.includes('/whitelabel-configuration')) {
     const url = useRequestURL()
 
     const { data: whitelabel } = await useAsyncData(
@@ -19,7 +19,7 @@ export default defineNuxtRouteMiddleware(async (to) => {
             return data
           }
         },
-      }
+      },
     )
 
     if ((whitelabel.value as IWhitelabelError)?.code === 404) {
@@ -30,7 +30,7 @@ export default defineNuxtRouteMiddleware(async (to) => {
     whitelabelCache.value = whitelabel.value as IWhitelabel | string
   }
 
-  if (whitelabelCache.value && whitelabelCache.value === 'error' && to.path !== '/error') {
+  if (whitelabelCache.value && whitelabelCache.value === 'error' && to.path !== '/error' && to.path !== '/whitelabel-configuration') {
     return navigateTo('/error')
   }
 

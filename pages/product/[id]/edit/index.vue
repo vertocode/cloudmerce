@@ -70,7 +70,7 @@ const updateProduct = async (values: Record<string, any>) => {
     throw new Error('Produto não encontrado')
   }
 
-  const { put } = useApi()
+  const { put, clearCacheKey } = useApi()
   await put(`/products/${product.id}`, {
     ecommerceId: values.ecommerceId,
     name: values.productName,
@@ -84,6 +84,12 @@ const updateProduct = async (values: Record<string, any>) => {
       quantity: values.stockQuantity,
     },
   })
+
+  // Clear products list cache for this ecommerce
+  await clearCacheKey(`products-${values.ecommerceId}-{}`)
+
+  // Clear individual product cache
+  await clearCacheKey(`product-${values.ecommerceId}-${product.id}`)
 }
 </script>
 
