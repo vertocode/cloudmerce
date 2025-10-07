@@ -101,7 +101,7 @@ import type { IProductType } from '~/composables/useProductTypes'
 
 const isLoading = ref(false)
 const { productTypes, updateProductTypes } = useProductTypes()
-const { put } = useApi()
+const { put, clearCacheKey } = useApi()
 
 const oldProductTypes = ref<IProductType[]>(cloneArray(productTypes.value))
 
@@ -135,6 +135,10 @@ const submit = async (values: { productTypes: IProductType[] }) => {
     ]
 
     await put('/product-types/multiple-update', { productTypes })
+
+    // Clear server-side cache for product types
+    await clearCacheKey(`product-types-${ecommerceId}`)
+
     await updateProductTypes({ cache: 'no-cache' })
     handleSuccess('Tipos de produto salvos com sucesso')
     goBackOrHome()
