@@ -15,10 +15,13 @@ export default cachedEventHandler(async (event) => {
 
   return response
 }, {
-  maxAge: 60 * 60 * 24, // 24 hours
+  maxAge: 60 * 60 * 24 * 365, // 1 year (effectively forever)
   getKey: (event) => {
     const ecommerceId = getRouterParam(event, 'ecommerceId')
     const productId = getRouterParam(event, 'productId')
-    return `product-${ecommerceId}-${productId}`
+    const query = getQuery(event)
+    // If timestamp query param exists, include it in the key to bypass cache
+    const cacheKey = query.t ? `product-${ecommerceId}-${productId}-${query.t}` : `product-${ecommerceId}-${productId}`
+    return cacheKey
   },
 })

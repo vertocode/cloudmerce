@@ -14,6 +14,6 @@ export default cachedEventHandler(async (event) => {
 
   return response
 }, {
-  maxAge: 60 * 60 * 24, // 24 hours
+  maxAge: 60 * 60 * 24 * 365, // 1 year (effectively forever)
   getKey: (event) => `whitelabel-${getRouterParam(event, 'host')}`,
 })

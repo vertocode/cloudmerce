@@ -9,12 +9,16 @@ export const useProduct = ({ updateProductList }: IUseProduct) => {
 
   const { remove, get, clearCacheKey } = useApi()
 
-  const getProductById = async (id: string): Promise<IProduct | null> => {
+  const getProductById = async (id: string, options?: { cache?: 'no-cache' | 'force-cache' }): Promise<IProduct | null> => {
     const { whitelabel } = useWhitelabel()
 
     try {
       loading.value = true
-      const response = await $fetch(`/api/products/${whitelabel.value._id}/${id}`) as IProductResponse
+      const url = options?.cache === 'no-cache'
+        ? `/api/products/${whitelabel.value._id}/${id}?t=${Date.now()}`
+        : `/api/products/${whitelabel.value._id}/${id}`
+
+      const response = await $fetch(url) as IProductResponse
 
       return {
         id: response._id,
