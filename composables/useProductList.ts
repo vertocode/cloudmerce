@@ -39,6 +39,7 @@ export const useProductList = (filters?: IProductFilters) => {
         search: search.value || '',
         limit: 20,
         page: currentPage.value,
+        ...(cache === 'no-cache' ? { t: Date.now() } : {}),
       },
     }) as IGetProductsResponse
 

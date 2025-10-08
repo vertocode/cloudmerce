@@ -14,7 +14,7 @@ export default cachedEventHandler(async (event) => {
 
   return response
 }, {
-  maxAge: 60 * 60 * 24, // 24 hours
+  maxAge: 60 * 60 * 24 * 365, // 1 year (effectively forever)
   getKey: (event) => {
     const ecommerceId = getRouterParam(event, 'ecommerceId')
     const query = getQuery(event)

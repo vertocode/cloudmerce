@@ -47,6 +47,10 @@ const register = async (values: any) => {
   if ((response as any)?._id) {
     await clearCacheKey(`product-${values.ecommerceId}-${(response as any)._id}`)
   }
+
+  // Force refresh products list in the state
+  const products = useState<any[]>('products', () => [])
+  products.value = []
 }
 </script>
 
