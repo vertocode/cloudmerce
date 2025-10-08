@@ -63,6 +63,16 @@
 
       <VSpacer />
 
+      <VAlert
+        v-if="errorMessage"
+        type="error"
+        class="mb-4"
+        closable
+        @click:close="errorMessage = ''"
+      >
+        {{ errorMessage }}
+      </VAlert>
+
       <VRow>
         <VCol
           cols="6"
@@ -100,6 +110,7 @@ import DeleteProductType from '~/components/Md/DeleteProductType/index.vue'
 import type { IProductType } from '~/composables/useProductTypes'
 
 const isLoading = ref(false)
+const errorMessage = ref('')
 const { productTypes, updateProductTypes } = useProductTypes()
 const { put, clearCacheKey } = useApi()
 
@@ -115,6 +126,7 @@ watch(productTypes, () => {
 
 const submit = async (values: { productTypes: IProductType[] }) => {
   isLoading.value = true
+  errorMessage.value = ''
   try {
     const { productTypes: newProductTypes = [] } = values
     const productTypesToDelete = oldProductTypes.value.filter(type => !newProductTypes.some(newType => newType.id === type.id))
@@ -136,16 +148,38 @@ const submit = async (values: { productTypes: IProductType[] }) => {
 
     await put('/product-types/multiple-update', { productTypes })
 
+    console.log('Clearing cache for key:', `product-types-${ecommerceId}`)
     // Clear server-side cache for product types
     await clearCacheKey(`product-types-${ecommerceId}`)
 
+    console.log('Forcing refresh of product types')
+    // Force refresh the product types from the server
+    productTypes.value = []
     await updateProductTypes({ cache: 'no-cache' })
+
+    console.log('Updated product types:', productTypes.value)
+
     handleSuccess('Tipos de produto salvos com sucesso')
     goBackOrHome()
   }
-  catch (error) {
-    console.error(error)
-    handleError('Erro ao salvar tipo de produto')
+  catch (error: any) {
+    console.error('Full error object:', error)
+
+    // Extract the error message from various possible structures
+    let apiErrorMessage = error?.data?.error || error?.data?.message || error?.message
+
+    // If the error message contains the CustomError prefix, extract just the Portuguese message
+    if (apiErrorMessage && typeof apiErrorMessage === 'string') {
+      const customErrorMatch = apiErrorMessage.match(/CustomError:\s*(.+)/)
+      if (customErrorMatch) {
+        apiErrorMessage = customErrorMatch[1]
+      }
+      // Remove the "Error updating the product types: " prefix if present
+      apiErrorMessage = apiErrorMessage.replace(/^Error updating the product types:\s*/i, '')
+    }
+
+    errorMessage.value = apiErrorMessage || 'Erro ao salvar tipo de produto'
+    handleError(errorMessage.value)
   }
   finally {
     isLoading.value = false

@@ -22,13 +22,18 @@ export const useProductTypes = () => {
 
   const productTypes = useState<IProductType[]>(() => [])
 
-  const updateProductTypes = async ({ cache }: IUpdateProductTypes) => {
+  const updateProductTypes = async ({ cache }: IUpdateProductTypes = {}) => {
     try {
       if (productTypes.value.length && cache !== 'no-cache') return
 
       const { whitelabel } = useWhitelabel()
 
-      const response = await $fetch(`/api/product-types/${whitelabel.value._id}`) as IProductTypeResponse[]
+      // Add timestamp to bypass cache when needed
+      const url = cache === 'no-cache'
+        ? `/api/product-types/${whitelabel.value._id}?t=${Date.now()}`
+        : `/api/product-types/${whitelabel.value._id}`
+
+      const response = await $fetch(url) as IProductTypeResponse[]
       productTypes.value = response.map((productType: IProductTypeResponse) => ({
         id: productType?._id,
         name: productType.name,

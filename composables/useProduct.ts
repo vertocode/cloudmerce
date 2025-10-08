@@ -7,7 +7,7 @@ interface IUseProduct {
 export const useProduct = ({ updateProductList }: IUseProduct) => {
   const loading = ref(false)
 
-  const { remove, get } = useApi()
+  const { remove, get, clearCacheKey } = useApi()
 
   const getProductById = async (id: string): Promise<IProduct | null> => {
     const { whitelabel } = useWhitelabel()
@@ -36,7 +36,13 @@ export const useProduct = ({ updateProductList }: IUseProduct) => {
   const handleDelete = async (product: IProduct) => {
     try {
       loading.value = true
+      const { whitelabel } = useWhitelabel()
       await remove(`/products/${product.id}`)
+
+      // Clear server-side cache for products
+      await clearCacheKey(`products-${whitelabel.value._id}-{}`)
+      await clearCacheKey(`product-${whitelabel.value._id}-${product.id}`)
+
       handleSuccess(`Produto "${product.name}" deletado com sucesso!`)
       if (updateProductList) updateProductList({ cache: 'no-cache' })
     }
