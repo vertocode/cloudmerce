@@ -1,91 +1,81 @@
-# 🛍️ Nuxt e-Commerce White-Label Platform
+<div align="center">
+  <img src="assets/logo.png" alt="Cloudmerce Logo" width="200"/>
+</div>
 
-Welcome to our e-commerce system—a modern, secure platform for managing stores of any segment with ease. This repository contains the structure of our system, providing a high-performance shopping experience for end-users and an intuitive interface for merchants.
+# Cloudmerce
+
+A white-label e-commerce platform built for creating and managing online stores. This is the frontend application that handles the customer-facing storefront and admin dashboard.
 
 ![Demo](https://i.imgur.com/fG6sT12.png)
 
-## 📖 About the Project
+## What is this?
 
-Our platform is built with cutting-edge technology to ensure every step of the shopping journey is fast and user-friendly. From product management to integrated payment, we simplify and enhance your e-commerce management in a secure, accessible, and high-performance environment.
+Cloudmerce is a full-featured e-commerce system that lets you run multiple online stores from a single codebase. Think of it as your own customizable shopping platform where each store can have its own branding, products, and settings.
 
-The platform offers:
+The platform handles everything you'd expect from a modern e-commerce site - product catalogs, shopping carts, order management, and payment processing. It's built to be fast, scalable, and easy to customize.
 
-•	Product management and catalog
+## Tech Stack
 
-•	Order administration
+Built with modern web technologies:
 
-•	Integrated payments for a seamless experience
+- **Nuxt 3** - The Vue.js framework that powers the whole thing
+- **Vuetify 3** - Material Design components for a clean UI
+- **VeeValidate** - Handles all the form validation
+- **TypeScript** - For type safety and better developer experience
+- **SCSS** - CSS with superpowers for styling
+- **Stripe** - Payment processing integration
+- **EmailJS** - Contact form handling
 
-•	User-friendly navigation and a modern shopping experience
+## Getting Started
 
-## 🚀 Technologies Used
-
-This project is designed with scalability, security, and ease of use in mind. Key technologies and tools include:
-
-•	Nuxt 3: Vue.js framework for high-performance, SEO-friendly interfaces.
-
-•	Vuetify 3: UI component library for a professional, responsive design and consistent aesthetics.
-
-•	Vue Router: Route management for smooth navigation.
-
-•	VeeValidate: Form validation library for a reliable data-entry experience.
-
-•	TinyColor: Used for color manipulation, essential for theming and customization.
-
-•	SCSS (Sass Embedded): CSS preprocessor for organized, dynamic styling.
-
-## 📦 Installation
-
-1. Clone the repository
+Clone the repo and install dependencies:
 
 ```shell
 git clone git@github.com:vertocode/cloudmerce.git
 cd cloudmerce
-```
-
-2. Install dependencies
-
-```shell
 bun install
 ```
 
-3. Run the development server
+Fire up the dev server:
 
 ```shell
 bun dev
 ```
 
-## Folder Structure
+That's it. Your local server should be running at `http://localhost:3000`
 
-Here’s an overview of the main project folders and files:
+## Project Structure
 
 ```
-📦 cloudmerce/
-├── 📂 components/          # Vue components for UI
-├── 📂 composables/         # Reusable functions and state logic
-├── 📂 layouts/             # Global layouts for the application
-├── 📂 pages/               # Route views
-├── 📂 plugins/             # Third-party plugins
-├── 📂 public/              # Static assets like images and icons
-├── 📂 styles/              # Global and custom SCSS styles
-├── 📂 utils/               # Utility functions and helpers
-├── 📂 types/               # TypeScript types
-├── 📂 assets/              # Static assets like images and icons
-└── nuxt.config.ts          # Nuxt configuration file
+cloudmerce/
+├── components/          # Vue components
+├── composables/         # Reusable composition functions
+├── layouts/             # App layouts
+├── pages/               # File-based routing pages
+├── plugins/             # Nuxt plugins
+├── public/              # Static files
+├── styles/              # Global styles
+├── types/               # TypeScript type definitions
+├── assets/              # Images, fonts, etc
+└── nuxt.config.ts       # Nuxt configuration
 ```
 
-## 🌟 Features
+## Main Features
 
-•	Product Catalog: Product display and filtering.
+**For Customers:**
+- Browse products with filters and search
+- Add items to cart and manage quantities
+- Secure checkout with Stripe
+- Order tracking and history
+- User authentication
 
-•	Shopping Cart: Add, remove, and adjust item quantities.
+**For Admins:**
+- Full product management (CRUD operations)
+- Product variants with colors, sizes, and custom options
+- Order management and status updates
+- Store customization (colors, logo, etc)
+- Admin dashboard with analytics
 
-•	Checkout: Integrated payments for a complete shopping experience.
+## License
 
-•	Order Management: Admin area for merchants with complete order control.
-
-•	Authentication: Secure access for customers and admins.
-
-## 📜 License
-
-This project is licensed under a custom license restricting commercial use to the author, Everton Vanoni Fernandes. See the LICENSE file for details.
+Custom license - commercial use restricted to the author, Everton Vanoni Fernandes. Check the LICENSE file for full details.
