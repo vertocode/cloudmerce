@@ -1,12 +1,12 @@
 <div align="center">
-  <img src="assets/logo.png" alt="Cloudmerce Logo" width="200"/>
+  <img src="assets/logo.png" alt="Cloudmerce Logo" width="150"/>
 </div>
-
-# Cloudmerce
 
 A white-label e-commerce platform built for creating and managing online stores. This is the frontend application that handles the customer-facing storefront and admin dashboard.
 
-![Demo](https://i.imgur.com/fG6sT12.png)
+Product Listing | Admin Dashboard 
+-- | --
+![Demo](https://i.imgur.com/bdhLUN6.png) |![Demo](https://i.imgur.com/kT7jixn.png)
 
 ## What is this?
 
