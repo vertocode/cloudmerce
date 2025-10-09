@@ -34,7 +34,7 @@ onMounted(async () => {
   if (!id) {
     throw new Error('Product ID is required')
   }
-  product.value = await getProductById(id as string)
+  product.value = await getProductById(id as string, { cache: 'no-cache' })
   isLoading.value = false
 })
 </script>

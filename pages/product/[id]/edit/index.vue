@@ -23,7 +23,7 @@ const { getProductById } = useProduct({})
 
 const route = useRoute()
 
-const product = await getProductById(route.params.id as string)
+const product = await getProductById(route.params.id as string, { cache: 'no-cache' })
 
 const onRegisterNewProductType = () => {
   const router = useRouter()
@@ -58,10 +58,24 @@ const initialValues = computed(() => {
     productPrice: product.price || 0,
     stockOption: product.stock?.type || StockOptions.UNLIMITED,
     stockQuantity: product.stock?.quantity || null,
-    userFields: product.fields.map(field => ({
-      ...field,
-      type: getFieldLabel(field.type),
-    })) || [],
+    userFields: product.fields.map(field => {
+      // Convert old string format to new object format
+      let options = field.options || []
+      if (options.length > 0 && typeof options[0] === 'string') {
+        // Old format: array of strings
+        options = options.map((opt: string) => ({
+          name: opt,
+          hex: '',
+          image: null,
+        }))
+      }
+
+      return {
+        ...field,
+        type: getFieldLabel(field.type),
+        options,
+      }
+    }) || [],
   }
 })
 
@@ -90,6 +104,12 @@ const updateProduct = async (values: Record<string, any>) => {
 
   // Clear individual product cache
   await clearCacheKey(`product-${values.ecommerceId}-${product.id}`)
+
+  // Force refresh products list in the state
+  const products = useState<any[]>('products', () => [])
+  products.value = []
+
+  handleSuccess('Produto atualizado com sucesso!')
 }
 </script>
 

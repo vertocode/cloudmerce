@@ -8,11 +8,24 @@ export enum UserFieldTypeLabel {
 
 export type UserFieldType = keyof typeof UserFieldTypeLabel
 
+export interface VariantOption {
+  name: string
+  hex?: string
+  image?: string
+}
+
 export interface UserField {
   label: string
   type: UserFieldType
-  options?: string[]
-  value?: string
+  options?: VariantOption[]
+  value?: string | VariantOption
+}
+
+export interface Variant {
+  label: string
+  type: UserFieldType
+  options?: VariantOption[]
+  value?: string | VariantOption
 }
 
 export interface Stock {

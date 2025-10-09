@@ -61,11 +61,6 @@
       </VCardActions>
     </div>
   </VCard>
-  <MdAddItemQuestionModal
-    :is-opened="showQuestionAddModal"
-    :product
-    @close="showQuestionAddModal = false"
-  />
 </template>
 
 <script setup lang="ts">
@@ -85,8 +80,6 @@ const { addToCart: handleAddToCart, loading: addingToCart } = useCart()
 const router = useRouter()
 const route = useRoute()
 
-const showQuestionAddModal = ref<boolean>(false)
-
 const formattedPrice = computed(() => {
   return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(props.product.price)
 })
@@ -103,8 +96,9 @@ const navigateToEdit = () => {
 }
 
 const addToCart = async () => {
+  // If product has variants, navigate to PDP to select them
   if (props.product.fields.length > 0) {
-    showQuestionAddModal.value = true
+    router.push(`/product/${props.product.id}`)
     return
   }
 

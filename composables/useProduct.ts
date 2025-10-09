@@ -47,6 +47,10 @@ export const useProduct = ({ updateProductList }: IUseProduct) => {
       await clearCacheKey(`products-${whitelabel.value._id}-{}`)
       await clearCacheKey(`product-${whitelabel.value._id}-${product.id}`)
 
+      // Force refresh products list in the state
+      const products = useState<any[]>('products', () => [])
+      products.value = []
+
       handleSuccess(`Produto "${product.name}" deletado com sucesso!`)
       if (updateProductList) updateProductList({ cache: 'no-cache' })
     }

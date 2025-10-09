@@ -12,10 +12,32 @@ export const validationSchema = z.object({
     z.any(),
   ).min(1, { message: 'Adicione pelo menos 1 imagem' }),
   userFields: z.array(z.object({
-    label: z.string().min(1, { message: 'Nome do campo não pode ser vazio' }),
+    label: z.string().min(1, { message: 'Nome da variante não pode ser vazio' }),
     type: z.enum(['Texto', 'Número', 'Opções']),
-    options: z.array(z.string().min(1, 'Campo obrigatório')).min(1, 'Adicione pelo menos 1 opção').optional(),
-  })),
+    options: z.array(z.object({
+      name: z.string().min(1, { message: 'Nome da opção é obrigatório' }),
+      hex: z.string().optional(),
+      image: z.any().optional().nullable(),
+    })).min(1, { message: 'Adicione pelo menos 1 opção' }).optional(),
+  })).superRefine((fields, ctx) => {
+    // Validate that color variants have hex values
+    fields.forEach((field, fieldIndex) => {
+      const isColorVariant = field.label &&
+        ['cor', 'color', 'cores', 'colors'].includes(field.label.toLowerCase())
+
+      if (isColorVariant && field.options) {
+        field.options.forEach((option, optionIndex) => {
+          if (!option.hex || option.hex.trim() === '') {
+            ctx.addIssue({
+              code: z.ZodIssueCode.custom,
+              message: 'Código hex é obrigatório para variantes de cor',
+              path: [fieldIndex, 'options', optionIndex, 'hex'],
+            })
+          }
+        })
+      }
+    })
+  }),
 }).refine((data) => {
   return !(data.stockOption === StockOptions.LIMITED && !data.stockQuantity)
 }, {

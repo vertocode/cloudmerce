@@ -1,8 +1,8 @@
 <template>
   <Card class="user-questions">
-    <h3>Perguntas para o usuário (Opcional)</h3>
+    <h3>Variantes do Produto (Opcional)</h3>
     <h5 class="mt-3">
-      Adicione perguntas para o usuário responder, como tamanho de uma roupa, cor ou qualquer outra pergunta necessária para este produto. As perguntas adicionada aqui serão requisitas ao usuário no momento de adicionar este produto ao carrinho.
+      Adicione variantes como tamanho, cor ou qualquer outra opção necessária para este produto. Exemplo: Tamanho (P, M, G), Cor (Azul, Vermelho, Preto). Você pode adicionar imagens específicas para cada variante.
     </h5>
 
     <VExpansionPanels
@@ -12,13 +12,13 @@
       <VExpansionPanel>
         <VExpansionPanelTitle>Exemplo</VExpansionPanelTitle>
         <VExpansionPanelText>
-          <p>Nome do campo: Tamanho</p>
-          <p>Tipo do campo: Opções</p>
-          <p>Opções para o campo:</p>
+          <p>Nome da variante: Tamanho</p>
+          <p>Tipo da variante: Opções</p>
+          <p>Opções da variante:</p>
           <ul>
-            <li>Opção 1: P</li>
-            <li>Opção 2: M</li>
-            <li>Opção 3: G</li>
+            <li>Opção 1: P (com imagem opcional)</li>
+            <li>Opção 2: M (com imagem opcional)</li>
+            <li>Opção 3: G (com imagem opcional)</li>
           </ul>
         </VExpansionPanelText>
       </VExpansionPanel>
@@ -31,13 +31,12 @@
       <div class="user-fields">
         <VRow
           v-for="(userQuestion, userIndex) in fields"
-          v-if="fields.length > 0"
           :key="`user-field-${userIndex}`"
           class="user-question-card"
         >
           <VCol cols="12">
             <div class="user-question-title">
-              <h4>Campo {{ userIndex + 1 }}:</h4>
+              <h4>Variante {{ userIndex + 1 }}:</h4>
               <VBtn
                 icon
                 class="remove-btn"
@@ -54,7 +53,8 @@
           >
             <VeeTextField
               :name="`userFields[${userIndex}].label`"
-              :label="`Nome do campo ${userIndex + 1}`"
+              :label="`Nome da variante ${userIndex + 1}`"
+              placeholder="Ex: Tamanho, Cor, Material"
               variant="outlined"
             />
           </VCol>
@@ -66,7 +66,7 @@
           >
             <VeeSelect
               :name="`userFields[${userIndex}].type`"
-              :label="`Tipo do campo ${userIndex + 1}`"
+              :label="`Tipo da variante ${userIndex + 1}`"
               :items="['Texto', 'Número', 'Opções']"
               variant="outlined"
             />
@@ -75,7 +75,7 @@
             v-if="userQuestion.type === UserFieldTypeLabel.options"
             class="w-100 mb-3"
           >
-            Opções para o campo {{ userIndex + 1 }}:
+            Opções para a variante {{ userIndex + 1 }}:
           </h5>
           <FieldArray
             v-slot="{ fields: userOptions, push: addUserOption, remove: removeUserOption }"
@@ -85,31 +85,64 @@
               v-for="(_, optionIndex) in userOptions"
               :key="optionIndex"
               cols="12"
-              md="6"
-              class="image-field mt-0"
+              class="option-container"
             >
-              <VeeTextField
-                :name="`userFields[${userIndex}].options[${optionIndex}]`"
-                :label="`Opção ${optionIndex + 1}`"
-                variant="outlined"
-              />
-              <VBtn
-                v-if="userOptions.length > 1"
-                icon
-                class="remove-btn mb-6"
-                :class="optionIndex % 2 === 0 ? 'mr-4' : ''"
-                @click="removeUserOption(optionIndex)"
-              >
-                <VIcon>mdi-delete</VIcon>
-              </VBtn>
+              <div class="option-header">
+                <h5>Opção {{ optionIndex + 1 }}</h5>
+                <VBtn
+                  v-if="userOptions.length > 1"
+                  icon
+                  size="small"
+                  class="remove-btn"
+                  @click="removeUserOption(optionIndex)"
+                >
+                  <VIcon>mdi-delete</VIcon>
+                </VBtn>
+              </div>
+
+              <VRow>
+                <!-- Name field (always required) -->
+                <VCol cols="12" md="6">
+                  <VeeTextField
+                    :name="`userFields[${userIndex}].options[${optionIndex}].name`"
+                    :label="isColorVariant(userQuestion.value?.label) ? `Nome da Cor ${optionIndex + 1}` : `Nome da Opção ${optionIndex + 1}`"
+                    placeholder="Ex: Azul, Vermelho, Preto"
+                    variant="outlined"
+                    required
+                  />
+                </VCol>
+
+                <!-- Hex field (required if color variant) -->
+                <VCol
+                  v-if="isColorVariant(userQuestion.value?.label)"
+                  cols="12"
+                  md="6"
+                >
+                  <VeeColorField
+                    :name="`userFields[${userIndex}].options[${optionIndex}].hex`"
+                    :label="`Código Hex ${optionIndex + 1}`"
+                    variant="outlined"
+                  />
+                </VCol>
+
+                <!-- Image field (optional) -->
+                <VCol cols="12" :md="isColorVariant(userQuestion.value?.label) ? 12 : 6">
+                  <VeeFile
+                    :name="`userFields[${userIndex}].options[${optionIndex}].image`"
+                    :label="`Imagem ${optionIndex + 1} (Opcional)`"
+                    variant="outlined"
+                    accept="image/*"
+                  />
+                </VCol>
+              </VRow>
             </VCol>
             <VCol cols="12">
               <VBtn
                 variant="outlined"
                 class="mb-8 float-end"
-                @click="addUserOption('')"
+                @click="addUserOption({ name: '', hex: '', image: null })"
               >
-                Adicionar opção para o campo {{ userIndex + 1 }}
+                Adicionar opção para a variante {{ userIndex + 1 }}
               </VBtn>
             </VCol>
           </FieldArray>
@@ -124,7 +157,7 @@
           >
             <VIcon color="white">
               mdi-plus
-            </VIcon> Adicionar pergunta de usuário
+            </VIcon> Adicionar variante
           </VBtn>
         </VCol>
       </VRow>
@@ -133,14 +166,21 @@
 </template>
 
 <script setup lang="ts">
-import { FieldArray } from 'vee-validate'
+import { FieldArray, useFieldValue } from 'vee-validate'
 import { UserFieldTypeLabel } from '~/types/product'
 import Card from '~/components/Md/ProductForm/components/Card.vue'
 
 const initialUserField = {
   label: '',
   type: UserFieldTypeLabel.options,
-  options: [''],
+  options: [{ name: '', hex: '', image: null }],
+}
+
+// Check if variant is a color variant
+const isColorVariant = (label: string | undefined) => {
+  if (!label) return false
+  const lowerLabel = label.toLowerCase()
+  return lowerLabel === 'cor' || lowerLabel === 'color' || lowerLabel === 'cores' || lowerLabel === 'colors'
 }
 </script>
 
@@ -186,6 +226,27 @@ const initialUserField = {
 
         h4 {
           margin-bottom: 12px;
+        }
+      }
+
+      .option-container {
+        padding: 16px;
+        margin-bottom: 16px;
+        background-color: #f9f9f9;
+        border: 1px solid #e0e0e0;
+        border-radius: 8px;
+
+        .option-header {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-bottom: 12px;
+
+          h5 {
+            margin: 0;
+            font-weight: 600;
+            color: #424242;
+          }
         }
       }
     }
