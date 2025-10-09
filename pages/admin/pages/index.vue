@@ -77,6 +77,15 @@
                     icon
                     size="small"
                     variant="text"
+                    color="primary"
+                    @click.stop="previewPage(page)"
+                  >
+                    <VIcon>mdi-eye</VIcon>
+                  </VBtn>
+                  <VBtn
+                    icon
+                    size="small"
+                    variant="text"
                     @click.stop="$router.push(`/admin/pages/${page._id}/edit`)"
                   >
                     <VIcon>mdi-pencil</VIcon>
@@ -140,6 +149,7 @@ definePageMeta({
 
 const { pages, loading, fetchPages, deletePage } = usePages()
 const { openSnackbar } = useSnackbar()
+const router = useRouter()
 const deleteDialog = ref(false)
 const pageToDelete = ref<IPage | null>(null)
 
@@ -149,6 +159,11 @@ const formatDate = (date: string) => {
     month: '2-digit',
     year: 'numeric',
   })
+}
+
+const previewPage = (page: IPage) => {
+  const previewUrl = `/pages/${page.handle}`
+  window.open(previewUrl, '_blank')
 }
 
 const confirmDelete = (page: IPage) => {

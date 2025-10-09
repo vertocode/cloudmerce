@@ -2,6 +2,15 @@
   <div class="admin-page-edit">
     <div class="page-header">
       <h1>{{ isNew ? 'Criar Página' : 'Editar Página' }}</h1>
+      <VBtn
+        v-if="!isNew && page"
+        color="primary"
+        variant="outlined"
+        prepend-icon="mdi-eye"
+        @click="previewPage"
+      >
+        Visualizar
+      </VBtn>
     </div>
 
     <div
@@ -41,6 +50,13 @@ const isNew = computed(() => pageId.value === 'new')
 const page = ref(null)
 const loading = ref(false)
 
+const previewPage = () => {
+  if (page.value?.handle) {
+    const previewUrl = `/pages/${page.value.handle}`
+    window.open(previewUrl, '_blank')
+  }
+}
+
 const handleSave = async (data: IPageFormData) => {
   try {
     loading.value = true
@@ -68,6 +84,9 @@ onMounted(async () => {
 <style scoped lang="scss">
 .admin-page-edit {
   .page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     margin-bottom: 24px;
 
     h1 {
@@ -75,6 +94,12 @@ onMounted(async () => {
       font-weight: 600;
       color: #1d1d1f;
       margin: 0;
+    }
+
+    @media (max-width: 600px) {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 16px;
     }
   }
 
