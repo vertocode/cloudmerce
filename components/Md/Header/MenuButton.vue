@@ -81,35 +81,22 @@
           <VListItemTitle>Sair da Conta</VListItemTitle>
         </VListItem>
 
-        <template v-if="isAdmin">
-          <h3 class="admin-subtitle">
-            Ações de Administrador
-          </h3>
-          <VListItem
-            class="navigation-item admin-item"
-            @click="$router.push('/all-orders')"
-          >
-            <VListItemTitle>Todos os Pedidos</VListItemTitle>
-          </VListItem>
-          <VListItem
-            class="navigation-item admin-item"
-            @click="$router.push('/product-type')"
-          >
-            <VListItemTitle>Tipos de Produto</VListItemTitle>
-          </VListItem>
-          <VListItem
-            class="navigation-item admin-item"
-            @click="$router.push('/register-new-product')"
-          >
-            <VListItemTitle>Cadastrar Novo Produto</VListItemTitle>
-          </VListItem>
-          <VListItem
-            class="navigation-item admin-item"
-            @click="$router.push('/edit-whitelabel')"
-          >
-            <VListItemTitle>Configurações do E-Commerce</VListItemTitle>
-          </VListItem>
-        </template>
+        <VDivider
+          v-if="isAdmin"
+          class="my-2"
+        />
+        <VListItem
+          v-if="isAdmin"
+          class="navigation-item admin-item"
+          @click="$router.push('/admin')"
+        >
+          <VListItemTitle>
+            <VIcon size="18">
+              mdi-shield-crown
+            </VIcon>
+            Painel Admin
+          </VListItemTitle>
+        </VListItem>
       </VList>
     </VMenu>
   </div>
@@ -168,16 +155,14 @@ const isActiveType = (type: string) => route.params.type === type
   margin-top: 8px;
 }
 
-.admin-subtitle {
-  padding: 8px 16px;
-  font-size: 1rem;
-  background-color: var(--secondary-color-700);
-  color: #fff;
-  pointer-events: none;
-}
-
 .admin-item {
-  color: var(--secondary-color-700);
+  :deep(.v-list-item-title) {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--primary-color);
+    font-weight: 500;
+  }
 }
 
 .navigation-item.active {

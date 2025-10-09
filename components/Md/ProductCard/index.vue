@@ -43,7 +43,7 @@
         <VBtn
           v-if="isAdmin"
           class="edit-btn"
-          @click.stop="$router.push(`/product/${product.id}/edit`)"
+          @click.stop="navigateToEdit"
         >
           Editar (ADM)
         </VBtn>
@@ -82,6 +82,8 @@ const { handleDelete } = useProduct({ updateProductList: props.updateProductList
 
 const { isAdmin } = useUser()
 const { addToCart: handleAddToCart, loading: addingToCart } = useCart()
+const router = useRouter()
+const route = useRoute()
 
 const showQuestionAddModal = ref<boolean>(false)
 
@@ -90,6 +92,15 @@ const formattedPrice = computed(() => {
 })
 
 const isMobileScreen = window.innerWidth < 768
+
+const navigateToEdit = () => {
+  // If we're in admin context, go to admin edit page
+  if (route.path.startsWith('/admin')) {
+    router.push(`/admin/products/${props.product.id}/edit`)
+  } else {
+    router.push(`/product/${props.product.id}/edit`)
+  }
+}
 
 const addToCart = async () => {
   if (props.product.fields.length > 0) {
