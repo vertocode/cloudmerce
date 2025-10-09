@@ -19,13 +19,13 @@
 
       <VList class="navigation-list">
         <template v-if="productTypes.length">
-          <h3 class="section-subtitle">
+          <h3 class="section-subtitle mobile-only">
             Categorias
           </h3>
           <VListItem
             v-for="type in productTypes"
             :key="type.id"
-            class="navigation-item"
+            class="navigation-item mobile-only"
             :class="{ active: isActiveType(type.id) }"
             @click="redirectTo(type.id)"
           >
@@ -37,6 +37,27 @@
                 {{ type.icon.includes('mdi') ? type.icon : `mdi-${type.icon}` }}
               </VIcon>
               {{ type.name }}
+            </VListItemTitle>
+          </VListItem>
+          <VDivider class="my-2 mobile-only" />
+        </template>
+
+        <template v-if="activePages.length">
+          <h3 class="section-subtitle">
+            Páginas
+          </h3>
+          <VListItem
+            v-for="page in activePages"
+            :key="page._id"
+            class="navigation-item"
+            :class="{ active: isActivePage(page.handle) }"
+            @click="redirectToPage(page.handle)"
+          >
+            <VListItemTitle>
+              <VIcon size="18">
+                mdi-file-document-outline
+              </VIcon>
+              {{ page.title }}
             </VListItemTitle>
           </VListItem>
           <VDivider class="my-2" />
@@ -103,21 +124,34 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 
 const isDrawerOpen = ref(false)
 
 const { userData, isAdmin, logout } = useUser()
 const { productTypes } = useProductTypes()
+const { pages, fetchPages } = usePages()
 const router = useRouter()
 const route = useRoute()
+
+const activePages = computed(() => pages.value.filter(page => page.isActive))
 
 const redirectTo = (type: string) => {
   router.push(`/product/type/${type}`)
   isDrawerOpen.value = false
 }
 
+const redirectToPage = (handle: string) => {
+  router.push(`/pages/${handle}`)
+  isDrawerOpen.value = false
+}
+
 const isActiveType = (type: string) => route.params.type === type
+const isActivePage = (handle: string) => route.params.handle === handle
+
+onMounted(() => {
+  fetchPages()
+})
 </script>
 
 <style scoped>
@@ -182,5 +216,11 @@ const isActiveType = (type: string) => route.params.type === type
 
 .navigation-item:hover {
   background-color: rgba(0, 0, 0, 0.05);
+}
+
+@media (min-width: 769px) {
+  .mobile-only {
+    display: none !important;
+  }
 }
 </style>
