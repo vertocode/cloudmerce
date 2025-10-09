@@ -114,7 +114,7 @@ definePageMeta({
 const isLoading = ref(false)
 const errorMessage = ref('')
 const { productTypes, updateProductTypes } = useProductTypes()
-const { put, clearCacheKey } = useApi()
+const { put, clearProductTypesCache } = useApi()
 
 const oldProductTypes = ref<IProductType[]>(cloneArray(productTypes.value))
 
@@ -150,16 +150,17 @@ const submit = async (values: { productTypes: IProductType[] }) => {
 
     await put('/product-types/multiple-update', { productTypes })
 
-    console.log('Clearing cache for key:', `product-types-${ecommerceId}`)
-    // Clear server-side cache for product types
-    await clearCacheKey(`product-types-${ecommerceId}`)
+    // Clear all product-types cache for this ecommerce
+    await clearProductTypesCache(ecommerceId)
 
-    console.log('Forcing refresh of product types')
+    // Mark product types for revalidation using localStorage
+    const { markProductTypesForRevalidation, markProductsForRevalidation } = await import('~/utils/revalidation')
+    markProductTypesForRevalidation()
+    // Also mark products for revalidation since they depend on product types
+    markProductsForRevalidation()
+
     // Force refresh the product types from the server
-    productTypes.value = []
     await updateProductTypes({ cache: 'no-cache' })
-
-    console.log('Updated product types:', productTypes.value)
 
     handleSuccess('Tipos de produto salvos com sucesso')
     navigateTo('/admin')

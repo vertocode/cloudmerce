@@ -1,4 +1,5 @@
 import type { IGetProductsResponse, IProduct, IProductFilters, IProductResponse } from '~/types/product'
+import { shouldRevalidateProducts, clearProductsRevalidation } from '~/utils/revalidation'
 
 export const useProductList = (filters?: IProductFilters) => {
   const products = useState<IProduct[]>('products', () => [])
@@ -20,13 +21,17 @@ export const useProductList = (filters?: IProductFilters) => {
   const fetchProducts = async ({ cache }: IFetchProducts = {}) => {
     const prevFilters = lastFilters.value
 
+    // Check if products need revalidation from localStorage
+    const needsRevalidation = shouldRevalidateProducts()
+    const forceNoCache = cache === 'no-cache' || needsRevalidation
+
     // If we already have the products, and don't have the filters or the filters are the same as the previous ones, we don't need to fetch the products again
-    if (products.value.length && !filters && !prevFilters && cache !== 'no-cache') {
+    if (products.value.length && !filters && !prevFilters && !forceNoCache) {
       return
     }
 
     // If the filters are the same as the previous ones, we don't need to fetch the products again
-    if (filters && prevFilters?.productType === filters.productType && prevFilters?.search === filters.search && cache !== 'no-cache') {
+    if (filters && prevFilters?.productType === filters.productType && prevFilters?.search === filters.search && !forceNoCache) {
       return
     }
 
@@ -39,9 +44,43 @@ export const useProductList = (filters?: IProductFilters) => {
         search: search.value || '',
         limit: 20,
         page: currentPage.value,
-        ...(cache === 'no-cache' ? { t: Date.now() } : {}),
+        ...(forceNoCache ? { t: Date.now() } : {}),
       },
     }) as IGetProductsResponse
+
+    // If response is empty and we're using cache, try revalidating once
+    if (response.products.length === 0 && !forceNoCache && !filters && !search.value) {
+      console.log('[useProductList] Empty response from cache, revalidating...')
+      const revalidatedResponse = await $fetch(`/api/products/${whitelabel.value._id}`, {
+        query: {
+          ...filters,
+          search: search.value || '',
+          limit: 20,
+          page: currentPage.value,
+          t: Date.now(),
+        },
+      }) as IGetProductsResponse
+
+      products.value = revalidatedResponse.products.map((product: IProductResponse): IProduct => ({
+        id: product._id,
+        name: product.name,
+        image: product.image,
+        description: product.description,
+        price: product.price,
+        productType: product.productType,
+        fields: product.fields,
+        stock: product.stock,
+      }))
+      totalPages.value = revalidatedResponse.totalPages
+      lastFilters.value = filters || null
+      loading.value = false
+
+      // Clear revalidation flag after successful fetch
+      if (needsRevalidation) {
+        clearProductsRevalidation()
+      }
+      return
+    }
 
     products.value = response.products.map((product: IProductResponse): IProduct => ({
       id: product._id,
@@ -56,6 +95,11 @@ export const useProductList = (filters?: IProductFilters) => {
     totalPages.value = response.totalPages
     lastFilters.value = filters || null
 
+    // Clear revalidation flag after successful fetch
+    if (needsRevalidation) {
+      clearProductsRevalidation()
+    }
+
     loading.value = false
   }
 
@@ -65,7 +109,8 @@ export const useProductList = (filters?: IProductFilters) => {
   })
   watch(currentPage, () => fetchProducts({ cache: 'no-cache' }))
 
-  onMounted(() => fetchProducts({ cache: 'no-cache' }))
+  // Use cache on initial mount to prevent duplicate requests
+  onMounted(() => fetchProducts())
 
   return {
     products,

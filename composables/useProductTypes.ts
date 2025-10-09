@@ -1,3 +1,5 @@
+import { shouldRevalidateProductTypes, clearProductTypesRevalidation } from '~/utils/revalidation'
+
 export interface IProductType {
   icon?: string
   id: string
@@ -24,28 +26,58 @@ export const useProductTypes = () => {
 
   const updateProductTypes = async ({ cache }: IUpdateProductTypes = {}) => {
     try {
-      if (productTypes.value.length && cache !== 'no-cache') return
+      // Check if product types need revalidation from localStorage
+      const needsRevalidation = shouldRevalidateProductTypes()
+      const forceNoCache = cache === 'no-cache' || needsRevalidation
+
+      if (productTypes.value.length && !forceNoCache) return
 
       const { whitelabel } = useWhitelabel()
 
       // Add timestamp to bypass cache when needed
-      const url = cache === 'no-cache'
+      const url = forceNoCache
         ? `/api/product-types/${whitelabel.value._id}?t=${Date.now()}`
         : `/api/product-types/${whitelabel.value._id}`
 
       const response = await $fetch(url) as IProductTypeResponse[]
+
+      // If response is empty and we're using cache, try revalidating once
+      if (response.length === 0 && !forceNoCache) {
+        console.log('[useProductTypes] Empty response from cache, revalidating...')
+        const revalidateUrl = `/api/product-types/${whitelabel.value._id}?t=${Date.now()}`
+        const revalidatedResponse = await $fetch(revalidateUrl) as IProductTypeResponse[]
+
+        productTypes.value = revalidatedResponse.map((productType: IProductTypeResponse) => ({
+          id: productType?._id,
+          name: productType.name,
+          icon: productType.icon,
+        }))
+
+        // Clear revalidation flag after successful fetch
+        if (needsRevalidation) {
+          clearProductTypesRevalidation()
+        }
+        return
+      }
+
       productTypes.value = response.map((productType: IProductTypeResponse) => ({
         id: productType?._id,
         name: productType.name,
         icon: productType.icon,
       }))
+
+      // Clear revalidation flag after successful fetch
+      if (needsRevalidation) {
+        clearProductTypesRevalidation()
+      }
     }
     catch (e) {
       console.error(e)
     }
   }
 
-  callOnce('updateProductTypes', () => updateProductTypes({ cache: 'no-cache' }))
+  // Use cache on initial load instead of no-cache
+  callOnce('updateProductTypes', () => updateProductTypes())
 
   const getProductTypeById = (id: string) => {
     return productTypes.value.find(productType => productType.id === id)

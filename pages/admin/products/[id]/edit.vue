@@ -33,7 +33,7 @@ const onRegisterNewProductType = () => {
 }
 
 const updateProduct = async (values: any) => {
-  const { put, clearCacheKey } = useApi()
+  const { put, clearProductsCache } = useApi()
 
   await put(`/products/${productId}`, {
     ecommerceId: values.ecommerceId,
@@ -49,13 +49,13 @@ const updateProduct = async (values: any) => {
     },
   })
 
-  // Clear products list cache
-  await clearCacheKey(`products-${values.ecommerceId}-{}`)
-  await clearCacheKey(`product-${values.ecommerceId}-${productId}`)
+  // Clear all products cache for this ecommerce
+  await clearProductsCache(values.ecommerceId)
 
-  // Force refresh products list
-  const products = useState<any[]>('products', () => [])
-  products.value = []
+  // Mark products for revalidation using localStorage
+  const { markProductsForRevalidation, markProductIdsForRevalidation } = await import('~/utils/revalidation')
+  markProductsForRevalidation()
+  markProductIdsForRevalidation([productId])
 
   handleSuccess('Produto atualizado com sucesso!')
   router.push('/admin/products')

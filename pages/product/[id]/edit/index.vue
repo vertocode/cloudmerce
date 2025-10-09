@@ -109,6 +109,11 @@ const updateProduct = async (values: Record<string, any>) => {
   const products = useState<any[]>('products', () => [])
   products.value = []
 
+  // Mark products for revalidation using localStorage
+  const { markProductsForRevalidation, markProductIdsForRevalidation } = await import('~/utils/revalidation')
+  markProductsForRevalidation()
+  markProductIdsForRevalidation([product.id])
+
   handleSuccess('Produto atualizado com sucesso!')
 }
 </script>

@@ -1,4 +1,5 @@
 import type { IProduct, IProductResponse } from '~/types/product'
+import { shouldRevalidateProduct } from '~/utils/revalidation'
 
 interface IUseProduct {
   updateProductList?: (param: { cache: 'no-cache' | 'force-cache' }) => Promise<void>
@@ -7,14 +8,19 @@ interface IUseProduct {
 export const useProduct = ({ updateProductList }: IUseProduct) => {
   const loading = ref(false)
 
-  const { remove, get, clearCacheKey } = useApi()
+  const { remove, get, clearProductsCache } = useApi()
 
   const getProductById = async (id: string, options?: { cache?: 'no-cache' | 'force-cache' }): Promise<IProduct | null> => {
     const { whitelabel } = useWhitelabel()
 
     try {
       loading.value = true
-      const url = options?.cache === 'no-cache'
+
+      // Check if this product needs revalidation from localStorage
+      const needsRevalidation = shouldRevalidateProduct(id)
+      const forceNoCache = options?.cache === 'no-cache' || needsRevalidation
+
+      const url = forceNoCache
         ? `/api/products/${whitelabel.value._id}/${id}?t=${Date.now()}`
         : `/api/products/${whitelabel.value._id}/${id}`
 
@@ -43,9 +49,8 @@ export const useProduct = ({ updateProductList }: IUseProduct) => {
       const { whitelabel } = useWhitelabel()
       await remove(`/products/${product.id}`)
 
-      // Clear server-side cache for products
-      await clearCacheKey(`products-${whitelabel.value._id}-{}`)
-      await clearCacheKey(`product-${whitelabel.value._id}-${product.id}`)
+      // Clear all products cache for this ecommerce
+      await clearProductsCache(whitelabel.value._id)
 
       // Force refresh products list in the state
       const products = useState<any[]>('products', () => [])

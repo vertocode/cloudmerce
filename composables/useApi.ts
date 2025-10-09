@@ -21,6 +21,36 @@ export const useApi = () => {
     }
   }
 
+  const clearProductsCache = async (ecommerceId: string) => {
+    if (import.meta.client) {
+      try {
+        await $fetch(`/api/__cache__/products/${ecommerceId}`, { method: 'DELETE' })
+      } catch (error) {
+        console.warn(`Failed to clear products cache for ecommerce: ${ecommerceId}`, error)
+      }
+    }
+  }
+
+  const clearProductTypesCache = async (ecommerceId: string) => {
+    if (import.meta.client) {
+      try {
+        await $fetch(`/api/__cache__/product-types/${ecommerceId}`, { method: 'DELETE' })
+      } catch (error) {
+        console.warn(`Failed to clear product-types cache for ecommerce: ${ecommerceId}`, error)
+      }
+    }
+  }
+
+  const clearAllCache = async () => {
+    if (import.meta.client) {
+      try {
+        await $fetch('/api/__cache__/clear-all', { method: 'POST' })
+      } catch (error) {
+        console.warn('Failed to clear all cache', error)
+      }
+    }
+  }
+
   const get = async (path: string, data?: Record<string, any>, options?: { cache?: 'no-cache' | 'force-cache' }, headers?: HeadersInit) => {
     const query = data ? new URLSearchParams(data).toString() : ''
 
@@ -80,5 +110,8 @@ export const useApi = () => {
     remove,
     put,
     clearCacheKey,
+    clearProductsCache,
+    clearProductTypesCache,
+    clearAllCache,
   }
 }
