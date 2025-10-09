@@ -19,7 +19,8 @@
     "tinycolor2": "^1.6.0",
     "vee-validate": "^4.14.4",
     "vue": "latest",
-    "vue-router": "latest"
+    "vue-router": "latest",
+    "vuedraggable": "^2.24.3"
   },
   "devDependencies": {
     "@nuxt/eslint": "^0.7.2",

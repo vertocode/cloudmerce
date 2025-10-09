@@ -1,13 +1,73 @@
 <template>
   <div class="admin-settings">
     <div class="page-header">
-      <h1>Configurações do E-Commerce</h1>
+      <h1>Configurações</h1>
       <p class="subtitle">
         Configure as informações e aparência da sua loja
       </p>
     </div>
 
-    <MdWhitelabelConfigurationForm />
+    <div class="settings-sections">
+      <VCard
+        class="settings-card"
+        @click="$router.push('/admin/pages')"
+      >
+        <VCardText>
+          <div class="settings-icon">
+            <VIcon
+              size="48"
+              color="primary"
+            >
+              mdi-file-document-multiple
+            </VIcon>
+          </div>
+          <h2>Páginas</h2>
+          <p>Gerencie páginas customizadas do seu e-commerce</p>
+        </VCardText>
+      </VCard>
+
+      <VCard
+        class="settings-card"
+        @click="showWhitelabelForm = true"
+      >
+        <VCardText>
+          <div class="settings-icon">
+            <VIcon
+              size="48"
+              color="primary"
+            >
+              mdi-store-cog
+            </VIcon>
+          </div>
+          <h2>Configurações da Loja</h2>
+          <p>Configure informações básicas e aparência</p>
+        </VCardText>
+      </VCard>
+    </div>
+
+    <VDialog
+      v-model="showWhitelabelForm"
+      max-width="900"
+      scrollable
+    >
+      <VCard>
+        <VCardTitle>
+          <div class="dialog-header">
+            <span>Configurações da Loja</span>
+            <VBtn
+              icon
+              variant="text"
+              @click="showWhitelabelForm = false"
+            >
+              <VIcon>mdi-close</VIcon>
+            </VBtn>
+          </div>
+        </VCardTitle>
+        <VCardText>
+          <MdWhitelabelConfigurationForm @saved="showWhitelabelForm = false" />
+        </VCardText>
+      </VCard>
+    </VDialog>
   </div>
 </template>
 
@@ -16,12 +76,14 @@ definePageMeta({
   layout: 'admin',
   middleware: ['03-admin-auth'],
 })
+
+const showWhitelabelForm = ref(false)
 </script>
 
 <style scoped lang="scss">
 .admin-settings {
   .page-header {
-    margin-bottom: 24px;
+    margin-bottom: 32px;
 
     h1 {
       font-size: 1.5rem;
@@ -35,6 +97,51 @@ definePageMeta({
       color: #86868b;
       margin: 0;
     }
+  }
+
+  .settings-sections {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 24px;
+  }
+
+  .settings-card {
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+
+    &:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+      border-color: var(--primary-color);
+    }
+
+    .settings-icon {
+      text-align: center;
+      margin-bottom: 16px;
+    }
+
+    h2 {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: #1d1d1f;
+      margin: 0 0 8px 0;
+      text-align: center;
+    }
+
+    p {
+      font-size: 0.875rem;
+      color: #86868b;
+      margin: 0;
+      text-align: center;
+    }
+  }
+
+  .dialog-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
   }
 }
 </style>
