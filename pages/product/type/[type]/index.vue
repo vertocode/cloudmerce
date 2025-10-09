@@ -8,7 +8,11 @@
     <MdProductList
       :products
       :loading
+      :current-page="currentPage"
+      :total-pages="totalPages"
+      :total-items="totalItems"
       :update-product-list
+      @page-change="onChangePage"
     />
   </div>
 </template>
@@ -22,7 +26,7 @@ import { useStoreData } from '~/composables/useStoreData'
 const route = useRoute()
 const productType = computed(() => route.params.type as string)
 const { getProductTypeById } = useProductTypes()
-const { products, loading, update: updateProductList } = useProductList({
+const { products, loading, update: updateProductList, currentPage, totalPages, totalItems, onChangePage } = useProductList({
   productType: productType.value,
 })
 

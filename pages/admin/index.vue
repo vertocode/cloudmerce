@@ -17,7 +17,7 @@
           </div>
           <div class="stat-content">
             <h3 class="stat-value">
-              {{ products.length }}
+              {{ statsLoading ? '-' : stats?.productCount || 0 }}
             </h3>
             <p class="stat-label">
               Produtos Cadastrados
@@ -44,7 +44,7 @@
           </div>
           <div class="stat-content">
             <h3 class="stat-value">
-              {{ orders.length }}
+              {{ statsLoading ? '-' : stats?.orderCount || 0 }}
             </h3>
             <p class="stat-label">
               Pedidos Totais
@@ -71,7 +71,7 @@
           </div>
           <div class="stat-content">
             <h3 class="stat-value">
-              {{ productTypes.length }}
+              {{ statsLoading ? '-' : stats?.productTypeCount || 0 }}
             </h3>
             <p class="stat-label">
               Tipos de Produto
@@ -167,13 +167,10 @@ definePageMeta({
   middleware: ['03-admin-auth'],
 })
 
-const { products, update } = useProductList()
-const { productTypes } = useProductTypes()
-const { orders, loading, fetchOrders } = useAllOrders()
+const { stats, loading: statsLoading, fetchStats } = useAdminStats()
 
 onMounted(async () => {
-  await update({ cache: 'no-cache' })
-  await fetchOrders()
+  await fetchStats()
 })
 </script>
 

@@ -47,6 +47,7 @@ export interface IProduct {
 export interface IGetProductsResponse {
   products: IProductResponse[]
   totalPages: number
+  totalItems: number
   limit: number
   page: number
 }

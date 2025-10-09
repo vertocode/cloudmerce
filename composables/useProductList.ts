@@ -8,6 +8,7 @@ export const useProductList = (filters?: IProductFilters) => {
   const search = useState<string>('filterSearchProducts', () => '')
   const currentPage = ref(1)
   const totalPages = ref(1)
+  const totalItems = ref(0)
 
   const onChangePage = (page: number) => {
     currentPage.value = page
@@ -42,7 +43,7 @@ export const useProductList = (filters?: IProductFilters) => {
       query: {
         ...filters,
         search: search.value || '',
-        limit: 20,
+        limit: 12,
         page: currentPage.value,
         ...(forceNoCache ? { t: Date.now() } : {}),
       },
@@ -55,7 +56,7 @@ export const useProductList = (filters?: IProductFilters) => {
         query: {
           ...filters,
           search: search.value || '',
-          limit: 20,
+          limit: 12,
           page: currentPage.value,
           t: Date.now(),
         },
@@ -72,6 +73,7 @@ export const useProductList = (filters?: IProductFilters) => {
         stock: product.stock,
       }))
       totalPages.value = revalidatedResponse.totalPages
+      totalItems.value = revalidatedResponse.totalItems
       lastFilters.value = filters || null
       loading.value = false
 
@@ -93,6 +95,7 @@ export const useProductList = (filters?: IProductFilters) => {
       stock: product.stock,
     }))
     totalPages.value = response.totalPages
+    totalItems.value = response.totalItems
     lastFilters.value = filters || null
 
     // Clear revalidation flag after successful fetch
@@ -118,6 +121,7 @@ export const useProductList = (filters?: IProductFilters) => {
     update: fetchProducts,
     currentPage,
     totalPages,
+    totalItems,
     onChangePage,
   }
 }

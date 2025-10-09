@@ -21,6 +21,7 @@
           :loading="loading"
           :current-page="currentPage"
           :total-pages="totalPages"
+          :total-items="totalItems"
           @page-change="onChangePage"
         />
       </VCardText>
@@ -34,7 +35,7 @@ definePageMeta({
   middleware: ['03-admin-auth'],
 })
 
-const { products, loading, update, currentPage, totalPages, onChangePage } = useProductList()
+const { products, loading, update, currentPage, totalPages, totalItems, onChangePage } = useProductList()
 
 onMounted(() => {
   update({ cache: 'no-cache' })

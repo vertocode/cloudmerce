@@ -13,6 +13,15 @@
   </div>
 
   <div
+    v-if="!loading && totalItems > 0"
+    class="total-items-container"
+  >
+    <p class="total-items-text">
+      {{ totalItems }} {{ totalItems === 1 ? 'produto encontrado' : 'produtos encontrados' }}
+    </p>
+  </div>
+
+  <div
     v-if="loading"
     class="spinner"
   >
@@ -39,7 +48,7 @@
     @go-home="goToHomePage"
   />
   <PaginationComponent
-    v-if="!loading && products.length"
+    v-if="!loading && products.length && totalItems > 12"
     :current-page="currentPage"
     :total-pages="totalPages"
     @page-change="handlePageChange"
@@ -59,6 +68,7 @@ const props = defineProps<{
   loading?: boolean
   currentPage: number
   totalPages: number
+  totalItems: number
 }>()
 
 const emit = defineEmits<{
@@ -84,6 +94,23 @@ const handlePageChange = (page: number) => {
   width: 100%;
   justify-content: center;
   margin-top: 24px;
+}
+
+.total-items-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 16px 0;
+  padding: 12px;
+  background-color: #f5f5f7;
+  border-radius: 8px;
+
+  .total-items-text {
+    margin: 0;
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: #1d1d1f;
+  }
 }
 
 .spinner {

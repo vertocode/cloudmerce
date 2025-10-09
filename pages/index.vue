@@ -7,6 +7,7 @@
       :loading
       :current-page="currentPage"
       :total-pages="totalPages"
+      :total-items="totalItems"
       :update-product-list="updateProductList"
       @page-change="onChangePage"
     />
@@ -17,5 +18,5 @@
 definePageMeta({
   layout: 'no-container',
 })
-const { products, loading, update: updateProductList, totalPages, onChangePage, currentPage } = useProductList()
+const { products, loading, update: updateProductList, totalPages, totalItems, onChangePage, currentPage } = useProductList()
 </script>
