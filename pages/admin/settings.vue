@@ -95,7 +95,18 @@ definePageMeta({
   middleware: ['03-admin-auth'],
 })
 
+const route = useRoute()
+const router = useRouter()
 const showWhitelabelForm = ref(false)
+
+// Check if we should open the whitelabel modal from query parameter
+onMounted(() => {
+  if (route.query.openWhitelabelModal === 'true') {
+    showWhitelabelForm.value = true
+    // Remove the query parameter from the URL
+    router.replace({ query: {} })
+  }
+})
 </script>
 
 <style scoped lang="scss">

@@ -173,6 +173,10 @@ const handleSubmit = async (values: Record<string, any>) => {
   try {
     const newLogoUrl = await getUpdatedLogo(values.logoUrl)
 
+    // Check if all required fields are filled to activate the whitelabel
+    const hasRequiredFields = values.name && values.primaryColor && values.secondaryColor
+    const shouldActivate = hasRequiredFields && whitelabel.value?.isActive === false
+
     const whitelabelData = {
       baseUrl: values.baseUrl,
       name: values.name,
@@ -185,6 +189,7 @@ const handleSubmit = async (values: Record<string, any>) => {
         instagram: values.instagram,
         twitter: values.twitter,
       },
+      ...(shouldActivate && { isActive: true }), // Activate if all required fields are filled
     }
     if (id) {
       const response = await put(`/whitelabel/${id}`, whitelabelData)

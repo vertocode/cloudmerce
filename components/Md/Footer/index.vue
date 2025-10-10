@@ -3,7 +3,7 @@
     <div class="footer-container">
       <div class="footer-logo">
         <img
-          :src="whitelabel?.logoUrl"
+          :src="whitelabel?.logoUrl || '/logo.png'"
           alt="Logo"
           @click="$router.push('/')"
         >

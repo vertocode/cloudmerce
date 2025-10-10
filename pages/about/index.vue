@@ -10,7 +10,7 @@
           mdi-store
         </VIcon>
         <VImg
-          :src="whitelabel.logoUrl"
+          :src="whitelabel.logoUrl || '/logo.png'"
           alt="Logo da Loja"
           class="store-logo"
         />

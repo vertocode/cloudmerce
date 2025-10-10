@@ -27,6 +27,7 @@ export interface IWhitelabel {
     useCustomLayout: boolean
     sections: IPageSection[]
   }
+  isActive?: boolean
   createdAt: string
   updatedAt: string
 }

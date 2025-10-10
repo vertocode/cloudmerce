@@ -23,8 +23,8 @@ export const useWhitelabel = () => {
       console.log('requisitando whitelabel')
       const response = await $fetch(`/api/whitelabel/${url.host}`)
       if ((response as IWhitelabelError)?.code === 404) {
-        console.warn('Not found whitelabel, redirecting to /whitelabel-configuration', response)
-        await router.push('/whitelabel-configuration')
+        console.warn('Not found whitelabel, redirecting to /admin-setup', response)
+        await router.push('/admin-setup')
         return
       }
       if (!(response as IWhitelabel).name) throw new Error('Something wrong in the response data')

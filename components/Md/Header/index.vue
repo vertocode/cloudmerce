@@ -3,7 +3,7 @@
     <div class="header_container">
       <div class="logo_container">
         <img
-          :src="whitelabel.logoUrl"
+          :src="whitelabel.logoUrl || '/logo.png'"
           alt="Logo"
           @click="$router.push('/')"
         >

@@ -6,9 +6,25 @@ export const useApi = () => {
   const config = useRuntimeConfig()
   const apiUrl = config.public?.apiUrl || console.error('API URL not found in runtime config.')
 
+  // Get token from storage
+  const getAuthToken = () => {
+    const storage = makeStorage()
+    const userData = storage.getItem<{ token?: string }>('userData')
+    return userData?.token || null
+  }
+
   const commonHeaders = {
     'Content-Type': 'application/json',
     'Access-Control-Allow-Origin': '*',
+  }
+
+  const getHeadersWithAuth = (additionalHeaders?: HeadersInit) => {
+    const token = getAuthToken()
+    return {
+      ...commonHeaders,
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
+      ...additionalHeaders,
+    }
   }
 
   const clearCacheKey = async (key: string) => {
@@ -56,20 +72,19 @@ export const useApi = () => {
 
     return $fetch(`${apiUrl}${path}?${query}`, {
       method: 'GET',
-      headers: {
-        ...commonHeaders,
-        ...headers,
-      },
+      headers: getHeadersWithAuth(headers),
       ...options,
     })
   }
 
   const post = async (path: string, data: unknown, { useFormData }: { useFormData: boolean } = { useFormData: false }) => {
+    const token = getAuthToken()
     return $fetch(`${apiUrl}${path}`, {
       method: 'POST',
       body: useFormData ? data || '' : JSON.stringify(data),
       headers: {
         ...(useFormData ? {} : commonHeaders),
+        ...(token ? { Authorization: `Bearer ${token}` } : {}),
       },
     })
   }
@@ -78,9 +93,7 @@ export const useApi = () => {
     return $fetch(`${apiUrl}${path}`, {
       method: 'PATCH',
       body: JSON.stringify(data),
-      headers: {
-        ...commonHeaders,
-      },
+      headers: getHeadersWithAuth(),
     })
   }
 
@@ -88,18 +101,14 @@ export const useApi = () => {
     return $fetch(`${apiUrl}${path}`, {
       method: 'PUT',
       body: JSON.stringify(data),
-      headers: {
-        ...commonHeaders,
-      },
+      headers: getHeadersWithAuth(),
     })
   }
 
   const remove = async (path: string) => {
     return $fetch(`${apiUrl}${path}`, {
       method: 'DELETE',
-      headers: {
-        ...commonHeaders,
-      },
+      headers: getHeadersWithAuth(),
     })
   }
 
