@@ -52,11 +52,10 @@
         cols="12"
         md="12"
       >
-        <VeeTextarea
+        <VeeRichTextEditor
           name="productDescription"
           label="Descrição do Produto"
-          variant="outlined"
-          rows="4"
+          placeholder="Digite a descrição do produto com formatação..."
         />
       </VCol>
     </VRow>

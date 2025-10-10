@@ -25,9 +25,9 @@
         <p class="product-price">
           {{ formatCurrency(product.price) }}
         </p>
-        <p class="product-description">
-          {{ product.description }}
-        </p>
+        <div class="product-description">
+          <RichTextDisplay :content="product.description || ''" />
+        </div>
 
         <div
           v-if="product.fields.length"
@@ -361,9 +361,12 @@ const addToCart = async () => {
 
       .product-description {
         font-size: 1rem;
-        color: #616161;
-        line-height: 1.5;
         margin-bottom: 16px;
+
+        :deep(.rich-text-display) {
+          color: #616161;
+          line-height: 1.5;
+        }
       }
 
       .product-variants {

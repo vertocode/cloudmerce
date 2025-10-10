@@ -1,8 +1,8 @@
 <template>
   <div class="page-rich-text">
-    <div
+    <RichTextDisplay
+      :content="section.content"
       class="rich-text-content"
-      v-html="formattedContent"
     />
   </div>
 </template>
@@ -13,11 +13,6 @@ import type { IRichTextSection } from '~/types/page'
 const props = defineProps<{
   section: IRichTextSection
 }>()
-
-const formattedContent = computed(() => {
-  // Basic formatting - you can enhance this with a rich text editor
-  return props.section.content.replace(/\n/g, '<br>')
-})
 </script>
 
 <style scoped lang="scss">

@@ -57,6 +57,7 @@ import type { IPage } from '~/types/page'
 import PageBanner from '~/components/Page/PageBanner.vue'
 import PageProductCarousel from '~/components/Page/PageProductCarousel.vue'
 import PageRichText from '~/components/Page/PageRichText.vue'
+import PageProductListing from '~/components/Page/PageProductListing.vue'
 
 const route = useRoute()
 const handle = route.params.handle as string
@@ -70,6 +71,7 @@ const getSectionComponent = (type: string) => {
     'banner': PageBanner,
     'product-carousel': PageProductCarousel,
     'rich-text': PageRichText,
+    'product-listing': PageProductListing,
   }
   return components[type as keyof typeof components] || null
 }

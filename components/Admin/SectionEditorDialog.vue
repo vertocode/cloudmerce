@@ -54,12 +54,40 @@
 
         <!-- Rich Text Section -->
         <div v-if="sectionType === 'rich-text'">
-          <VTextarea
-            v-model="formData.content"
-            label="Conteúdo *"
+          <label class="rich-text-label">Conteúdo *</label>
+          <ClientOnly>
+            <RichTextEditor
+              v-model="formData.content"
+              placeholder="Digite o conteúdo aqui..."
+            />
+            <template #fallback>
+              <div class="editor-loading">Carregando editor...</div>
+            </template>
+          </ClientOnly>
+        </div>
+
+        <!-- Product Listing Section -->
+        <div v-if="sectionType === 'product-listing'">
+          <VTextField
+            v-model="formData.title"
+            label="Título (Opcional)"
             variant="outlined"
-            rows="10"
-            required
+            class="mb-4"
+          />
+          <VTextField
+            v-model="formData.productTypeFilter"
+            label="Filtro por Tipo de Produto (Opcional)"
+            variant="outlined"
+            class="mb-4"
+            hint="Nome do tipo de produto para filtrar"
+            persistent-hint
+          />
+          <VTextField
+            v-model="formData.searchFilter"
+            label="Filtro de Busca (Opcional)"
+            variant="outlined"
+            hint="Termo de busca para filtrar produtos"
+            persistent-hint
           />
         </div>
       </VCardText>
@@ -93,7 +121,7 @@ import AdminProductSelectorModal from './ProductSelectorModal.vue'
 
 const props = defineProps<{
   modelValue: boolean
-  sectionType: 'banner' | 'product-carousel' | 'rich-text' | null
+  sectionType: 'banner' | 'product-carousel' | 'rich-text' | 'product-listing' | null
   sectionData: IPageSection | null
 }>()
 
@@ -109,6 +137,8 @@ const formData = reactive<any>({
   description: '',
   productIds: [],
   content: '',
+  productTypeFilter: '',
+  searchFilter: '',
 })
 
 const title = computed(() => {
@@ -116,6 +146,7 @@ const title = computed(() => {
     'banner': 'Configurar Banner',
     'product-carousel': 'Configurar Carrossel de Produtos',
     'rich-text': 'Configurar Texto Rico',
+    'product-listing': 'Configurar Lista de Produtos',
   }
   return props.sectionType ? titles[props.sectionType] : ''
 })
@@ -141,6 +172,10 @@ const save = () => {
     sectionData.productIds = formData.productIds || []
   } else if (props.sectionType === 'rich-text') {
     sectionData.content = formData.content || ''
+  } else if (props.sectionType === 'product-listing') {
+    if (formData.title) sectionData.title = formData.title
+    if (formData.productTypeFilter) sectionData.productTypeFilter = formData.productTypeFilter
+    if (formData.searchFilter) sectionData.searchFilter = formData.searchFilter
   }
 
   emit('save', sectionData)
@@ -156,6 +191,8 @@ watch([() => props.modelValue, () => props.sectionType], ([isOpen, type]) => {
     formData.description = ''
     formData.productIds = []
     formData.content = ''
+    formData.productTypeFilter = ''
+    formData.searchFilter = ''
 
     // Load existing data if editing
     if (props.sectionData) {
@@ -180,5 +217,22 @@ watch([() => props.modelValue, () => props.sectionType], ([isOpen, type]) => {
       color: #86868b;
     }
   }
+}
+
+.rich-text-label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 500;
+  margin-bottom: 8px;
+  color: rgba(0, 0, 0, 0.87);
+}
+
+.editor-loading {
+  padding: 40px;
+  text-align: center;
+  color: #86868b;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  border-radius: 4px;
+  background-color: #f5f5f7;
 }
 </style>

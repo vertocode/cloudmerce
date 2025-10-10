@@ -205,6 +205,22 @@
                 <p>Conteúdo de texto formatado</p>
               </VCardText>
             </VCard>
+
+            <VCard
+              class="section-type-card"
+              @click="selectSectionType('product-listing')"
+            >
+              <VCardText class="text-center">
+                <VIcon
+                  size="48"
+                  color="primary"
+                >
+                  mdi-view-grid
+                </VIcon>
+                <h3>Lista de Produtos</h3>
+                <p>Lista completa com filtros</p>
+              </VCardText>
+            </VCard>
           </div>
         </VCardText>
       </VCard>
@@ -226,9 +242,10 @@ import SectionEditorDialog from '~/components/Admin/SectionEditorDialog.vue'
 import BannerPreview from '~/components/Admin/SectionPreviews/BannerPreview.vue'
 import ProductCarouselPreview from '~/components/Admin/SectionPreviews/ProductCarouselPreview.vue'
 import RichTextPreview from '~/components/Admin/SectionPreviews/RichTextPreview.vue'
+import ProductListingPreview from '~/components/Admin/SectionPreviews/ProductListingPreview.vue'
 
 const { whitelabel } = useWhitelabel()
-const { put, clearCacheKey } = useApi()
+const { put } = useApi()
 const { openSnackbar } = useSnackbar()
 const router = useRouter()
 const url = useRequestURL()
@@ -255,7 +272,7 @@ const sections = ref<IPageSection[]>(
 // Section editor state
 const showAddSectionDialog = ref(false)
 const showSectionEditor = ref(false)
-const currentSectionType = ref<'banner' | 'product-carousel' | 'rich-text' | null>(null)
+const currentSectionType = ref<'banner' | 'product-carousel' | 'rich-text' | 'product-listing' | null>(null)
 const currentSectionData = ref<IPageSection | null>(null)
 const editingIndex = ref<number | null>(null)
 
@@ -264,6 +281,7 @@ const getSectionTypeName = (type: string) => {
     'banner': 'Banner',
     'product-carousel': 'Carrossel de Produtos',
     'rich-text': 'Texto Rico',
+    'product-listing': 'Lista de Produtos',
   }
   return names[type as keyof typeof names] || type
 }
@@ -273,11 +291,12 @@ const getSectionPreviewComponent = (type: string) => {
     'banner': BannerPreview,
     'product-carousel': ProductCarouselPreview,
     'rich-text': RichTextPreview,
+    'product-listing': ProductListingPreview,
   }
   return components[type as keyof typeof components] || null
 }
 
-const selectSectionType = (type: 'banner' | 'product-carousel' | 'rich-text') => {
+const selectSectionType = (type: 'banner' | 'product-carousel' | 'rich-text' | 'product-listing') => {
   currentSectionType.value = type
   currentSectionData.value = null
   editingIndex.value = null

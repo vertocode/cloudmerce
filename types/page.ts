@@ -19,7 +19,15 @@ export interface IRichTextSection {
   content: string
 }
 
-export type IPageSection = IBannerSection | IProductCarouselSection | IRichTextSection
+export interface IProductListingSection {
+  id?: string
+  type: 'product-listing'
+  title?: string
+  productTypeFilter?: string
+  searchFilter?: string
+}
+
+export type IPageSection = IBannerSection | IProductCarouselSection | IRichTextSection | IProductListingSection
 
 export interface IPage {
   _id: string
