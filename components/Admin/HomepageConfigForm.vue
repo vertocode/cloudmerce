@@ -350,6 +350,23 @@ const handleSubmit = async () => {
     return
   }
 
+  // Check if user token exists
+  const storage = makeStorage()
+  const userData = storage.getItem<any>('userData')
+
+  if (!userData?.token) {
+    console.error('[Homepage Config] No token found in userData:', userData)
+    openSnackbar('Sessão expirada. Por favor, faça login novamente.', 'error')
+    loading.value = false
+    // Redirect to login after 2 seconds
+    setTimeout(() => {
+      window.location.href = '/admin-setup'
+    }, 2000)
+    return
+  }
+
+  console.log('[Homepage Config] Token found, proceeding with update')
+
   try {
     const updateData = {
       banner: {
@@ -371,9 +388,18 @@ const handleSubmit = async () => {
     } else {
       throw new Error(`Response without code 200: ${response}`)
     }
-  } catch (e) {
-    console.error(e)
-    openSnackbar('Erro ao salvar configurações', 'error')
+  } catch (e: any) {
+    console.error('[Homepage Config] Error saving:', e)
+
+    // Check if it's an authentication error
+    if (e?.status === 401 || e?.statusCode === 401) {
+      openSnackbar('Sessão expirada. Por favor, faça login novamente.', 'error')
+      setTimeout(() => {
+        window.location.href = '/admin-setup'
+      }, 2000)
+    } else {
+      openSnackbar('Erro ao salvar configurações', 'error')
+    }
   } finally {
     loading.value = false
   }
