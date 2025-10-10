@@ -28,6 +28,24 @@
 
       <VCard
         class="settings-card"
+        @click="$router.push('/admin/homepage')"
+      >
+        <VCardText>
+          <div class="settings-icon">
+            <VIcon
+              size="48"
+              color="primary"
+            >
+              mdi-home-variant
+            </VIcon>
+          </div>
+          <h2>Página Inicial</h2>
+          <p>Configure o layout e conteúdo da homepage</p>
+        </VCardText>
+      </VCard>
+
+      <VCard
+        class="settings-card"
         @click="showWhitelabelForm = true"
       >
         <VCardText>

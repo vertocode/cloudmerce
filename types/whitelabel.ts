@@ -1,3 +1,5 @@
+import type { IPageSection } from './page'
+
 export interface IWhitelabel {
   _id: string
   baseUrl: string
@@ -20,6 +22,10 @@ export interface IWhitelabel {
   }
   contact: {
     email: string
+  }
+  homepage?: {
+    useCustomLayout: boolean
+    sections: IPageSection[]
   }
   createdAt: string
   updatedAt: string
