@@ -1,7 +1,9 @@
 <template>
   <div
     class="page-banner"
+    :class="{ 'is-clickable': section.pathname }"
     :style="{ backgroundImage: `url(${section.backgroundImage})` }"
+    @click="handleBannerClick"
   >
     <div class="banner-overlay">
       <div class="banner-content">
@@ -25,9 +27,17 @@
 <script setup lang="ts">
 import type { IBannerSection } from '~/types/page'
 
-defineProps<{
+const props = defineProps<{
   section: IBannerSection
 }>()
+
+const router = useRouter()
+
+const handleBannerClick = () => {
+  if (props.section.pathname) {
+    router.push(props.section.pathname)
+  }
+}
 </script>
 
 <style scoped lang="scss">
@@ -40,6 +50,19 @@ defineProps<{
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: transform 0.3s ease;
+
+  &.is-clickable {
+    cursor: pointer;
+
+    &:hover {
+      transform: scale(1.01);
+    }
+
+    &:active {
+      transform: scale(0.99);
+    }
+  }
 
   @media (max-width: 768px) {
     min-height: 300px;

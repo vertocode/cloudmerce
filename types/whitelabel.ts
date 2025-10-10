@@ -11,6 +11,7 @@ export interface IWhitelabel {
   banner: {
     title: string
     description?: string
+    pathname?: string
   }
   logoUrl?: string
   productTypes: string[]

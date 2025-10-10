@@ -28,6 +28,15 @@
             label="Descrição (Opcional)"
             variant="outlined"
             rows="3"
+            class="mb-4"
+          />
+          <VTextField
+            v-model="formData.pathname"
+            label="Link de Redirecionamento (Opcional)"
+            variant="outlined"
+            placeholder="/about, /products, etc."
+            hint="Caminho para onde o banner deve redirecionar ao ser clicado"
+            persistent-hint
           />
         </div>
 
@@ -135,6 +144,7 @@ const formData = reactive<any>({
   backgroundImage: '',
   title: '',
   description: '',
+  pathname: '',
   productIds: [],
   content: '',
   productTypeFilter: '',
@@ -167,6 +177,7 @@ const save = () => {
     sectionData.backgroundImage = formData.backgroundImage
     if (formData.title) sectionData.title = formData.title
     if (formData.description) sectionData.description = formData.description
+    if (formData.pathname) sectionData.pathname = formData.pathname
   } else if (props.sectionType === 'product-carousel') {
     if (formData.title) sectionData.title = formData.title
     sectionData.productIds = formData.productIds || []
@@ -189,6 +200,7 @@ watch([() => props.modelValue, () => props.sectionType], ([isOpen, type]) => {
     formData.backgroundImage = ''
     formData.title = ''
     formData.description = ''
+    formData.pathname = ''
     formData.productIds = []
     formData.content = ''
     formData.productTypeFilter = ''

@@ -4,6 +4,7 @@ export interface IBannerSection {
   backgroundImage: string
   title?: string
   description?: string
+  pathname?: string
 }
 
 export interface IProductCarouselSection {

@@ -22,6 +22,13 @@
           {{ section.description }}
         </p>
         <p
+          v-if="section.pathname"
+          class="pathname-text"
+        >
+          <VIcon size="x-small">mdi-link</VIcon>
+          Link: {{ section.pathname }}
+        </p>
+        <p
           v-if="!section.title && !section.description"
           class="empty-text"
         >
@@ -94,6 +101,15 @@ defineProps<{
 
       .empty-text {
         font-style: italic;
+      }
+
+      .pathname-text {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        color: #667eea;
+        font-weight: 500;
+        margin-top: 4px;
       }
     }
   }

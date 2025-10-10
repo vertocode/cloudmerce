@@ -1,5 +1,9 @@
 <template>
-  <div class="banner">
+  <div
+    class="banner"
+    :class="{ 'is-clickable': whitelabel?.banner?.pathname }"
+    @click="handleBannerClick"
+  >
     <div class="banner-image">
       <img
         src="~/assets/banner-image.png"
@@ -29,6 +33,13 @@
 
 <script setup lang="ts">
 const { whitelabel } = useWhitelabel()
+const router = useRouter()
+
+const handleBannerClick = () => {
+  if (whitelabel.value?.banner?.pathname) {
+    router.push(whitelabel.value.banner.pathname)
+  }
+}
 </script>
 
 <style scoped lang="scss">
@@ -44,6 +55,19 @@ const { whitelabel } = useWhitelabel()
   display: block;
   width: 100%;
   border-radius: 0;
+  transition: transform 0.3s ease;
+
+  &.is-clickable {
+    cursor: pointer;
+
+    &:hover {
+      transform: scale(1.005);
+    }
+
+    &:active {
+      transform: scale(0.995);
+    }
+  }
 
   .gradient {
     display: flex;

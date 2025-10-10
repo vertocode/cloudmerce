@@ -34,6 +34,15 @@
             class="mb-4"
             :rules="[v => !!v || 'Descrição é obrigatória', v => (v && v.length >= 5) || 'Mínimo 5 caracteres']"
           />
+
+          <VTextField
+            v-model="bannerPathname"
+            label="Link de Redirecionamento (Opcional)"
+            variant="outlined"
+            placeholder="/about, /products, etc."
+            hint="Caminho para onde o banner deve redirecionar ao ser clicado"
+            persistent-hint
+          />
         </div>
 
         <!-- Custom Layout Section Editor -->
@@ -254,6 +263,7 @@ const loading = ref(false)
 // Banner fields
 const bannerTitle = ref(whitelabel.value?.banner?.title || '')
 const bannerDescription = ref(whitelabel.value?.banner?.description || '')
+const bannerPathname = ref(whitelabel.value?.banner?.pathname || '')
 
 // Layout type
 const layoutType = ref<'default' | 'custom'>(
@@ -372,6 +382,7 @@ const handleSubmit = async () => {
       banner: {
         title: bannerTitle.value,
         description: bannerDescription.value,
+        pathname: bannerPathname.value || undefined,
       },
       homepage: {
         useCustomLayout: layoutType.value === 'custom',
