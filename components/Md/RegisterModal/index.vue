@@ -114,6 +114,7 @@ const submit = async (values: Record<string, any>) => {
     name: values.name,
     email: values.email,
     password: values.password,
+    acceptedTerms: values.terms,
   })
   if (code === 'success') {
     showRegisterModal.value = false

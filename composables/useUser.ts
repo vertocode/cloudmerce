@@ -38,17 +38,25 @@ export const useUser = () => {
       const response = await get('/auth/login', {
         whitelabelId: whitelabel.value._id,
         ...authParams,
-      }) as User | { errorCode: string }
+      }) as any
 
-      if ((response as { errorCode: string })?.errorCode === 'user_not_found') {
+      if (response?.errorCode === 'user_not_found') {
         handleWarning('Usuário não encontrado')
         return { code: 'user_not_found' }
       }
 
-      if (!(response as User)?._id) {
+      if (response?.errorCode === 'account_not_verified') {
+        handleWarning('Por favor, verifique sua conta com o código enviado por email')
+        return {
+          code: 'account_not_verified',
+          email: response.email,
+        }
+      }
+
+      if (!response?._id) {
         throw new Error('Response without user id')
       }
-      setUser(response as User)
+      setUser(response)
       return { code: 'success' }
     }
     catch (error) {
@@ -68,18 +76,33 @@ export const useUser = () => {
       const response = await post('/users', {
         whitelabelId: whitelabel.value._id,
         ...registerParams,
-      })
-      const userResponse = response as User
-      if (!userResponse?._id) {
+      }) as any
+
+      // Check for user already exists error
+      if (response?.errorCode === 'user_already_exists') {
+        handleWarning('Um usuário com este email já está cadastrado')
+        return { code: 'user_already_exists' }
+      }
+
+      if (!response?._id) {
         throw new Error('Response without user id')
       }
-      userData.value = userResponse
-      storage.setItem('userData', userResponse)
-      handleSuccess('Usuário cadastrado com sucesso!')
-      return { code: 'success' }
+
+      // Don't set user data yet - they need to verify email first
+      handleSuccess('Conta criada! Verifique seu email para o código de verificação.')
+      return {
+        code: 'success',
+        email: response.email,
+        userId: response._id,
+      }
     }
-    catch (e) {
+    catch (e: any) {
       console.error(e)
+      // Check if error has errorCode in the response
+      if (e?.data?.errorCode === 'user_already_exists') {
+        handleWarning('Um usuário com este email já está cadastrado')
+        return { code: 'user_already_exists' }
+      }
       handleError('Erro ao cadastrar usuário')
       return { code: 'error' }
     }
