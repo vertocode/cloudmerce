@@ -50,28 +50,6 @@
         md="6"
         class="pl-0 pb-0"
       >
-        <VeeTextField
-          name="bannerTitle"
-          label="Título do Banner"
-          outlined
-        />
-      </VCol>
-      <VCol
-        cols="12"
-        md="6"
-        class="pr-0 pb-0"
-      >
-        <VeeTextField
-          name="bannerDescription"
-          label="Mensagem do Banner"
-          outlined
-        />
-      </VCol>
-      <VCol
-        cols="12"
-        md="6"
-        class="pl-0 pb-0"
-      >
         <VeeColorField
           name="primaryColor"
           label="Cor Primária"
@@ -146,13 +124,11 @@ const { whitelabel } = useWhitelabel()
 const { post, put, clearCacheKey } = useApi()
 const { upload } = useUpload()
 
-const { banner, socialMedia } = whitelabel.value || {}
+const { socialMedia } = whitelabel.value || {}
 const logoUrl = whitelabel.value?.logoUrl ? await convertUrlToFile(whitelabel.value?.logoUrl, 'logo') : null
 
 const initialValues = {
   baseUrl: url.host as unknown as string,
-  bannerTitle: banner?.title || '',
-  bannerDescription: banner?.description || '',
   wpp: socialMedia?.wpp || '',
   instagram: socialMedia?.instagram || '',
   twitter: socialMedia?.twitter || '',
@@ -166,8 +142,6 @@ const validationSchema = z.object({
     .string(),
   logoUrl: z.any(),
   description: z.string().optional(),
-  bannerTitle: z.string().min(5, { message: 'O título do banner deve ter pelo menos 5 caracteres' }).max(40, 'Título do banner deve ter no máximo 50 caracteres'),
-  bannerDescription: z.string().min(5, { message: 'A descrição do banner deve ter pelo menos 5 caracteres' }).max(150, 'Descrição do banner deve ter no máximo 150 caracteres'),
   primaryColor: z
     .string()
     .refine(validateColor, { message: 'Insira uma cor hexadecimal válida' }),
@@ -205,10 +179,6 @@ const handleSubmit = async (values: Record<string, any>) => {
       description: values.description,
       primaryColor: values.primaryColor,
       secondaryColor: values.secondaryColor,
-      banner: {
-        title: values.bannerTitle,
-        description: values.bannerDescription,
-      },
       logoUrl: newLogoUrl,
       socialMedia: {
         wpp: values.wpp,

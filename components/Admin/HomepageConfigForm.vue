@@ -1,27 +1,5 @@
 <template>
   <VForm @submit.prevent="handleSubmit">
-    <!-- Banner Configuration Card -->
-    <VCard class="mb-4">
-      <VCardTitle>Configuração do Banner</VCardTitle>
-      <VCardText>
-        <VTextField
-          v-model="bannerTitle"
-          label="Título do Banner"
-          variant="outlined"
-          class="mb-4"
-          :rules="[v => !!v || 'Título é obrigatório', v => (v && v.length >= 5) || 'Mínimo 5 caracteres']"
-        />
-
-        <VTextField
-          v-model="bannerDescription"
-          label="Descrição do Banner"
-          variant="outlined"
-          class="mb-4"
-          :rules="[v => !!v || 'Descrição é obrigatória', v => (v && v.length >= 5) || 'Mínimo 5 caracteres']"
-        />
-      </VCardText>
-    </VCard>
-
     <!-- Layout Selection Card -->
     <VCard class="mb-4">
       <VCardTitle>Layout da Página Inicial</VCardTitle>
@@ -36,6 +14,27 @@
             value="custom"
           />
         </VRadioGroup>
+
+        <!-- Banner Configuration (only for default layout) -->
+        <div v-if="layoutType === 'default'" class="mt-6">
+          <VDivider class="mb-4" />
+          <h3 class="section-title mb-4">Configuração do Banner</h3>
+          <VTextField
+            v-model="bannerTitle"
+            label="Título do Banner"
+            variant="outlined"
+            class="mb-4"
+            :rules="[v => !!v || 'Título é obrigatório', v => (v && v.length >= 5) || 'Mínimo 5 caracteres']"
+          />
+
+          <VTextField
+            v-model="bannerDescription"
+            label="Descrição do Banner"
+            variant="outlined"
+            class="mb-4"
+            :rules="[v => !!v || 'Descrição é obrigatória', v => (v && v.length >= 5) || 'Mínimo 5 caracteres']"
+          />
+        </div>
 
         <!-- Custom Layout Section Editor -->
         <div v-if="layoutType === 'custom'" class="mt-6">
@@ -382,6 +381,13 @@ const handleSubmit = async () => {
 </script>
 
 <style scoped lang="scss">
+.section-title {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #1d1d1f;
+  margin: 0;
+}
+
 .sections-header {
   display: flex;
   justify-content: space-between;

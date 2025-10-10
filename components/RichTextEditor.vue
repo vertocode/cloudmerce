@@ -73,6 +73,23 @@
       <VBtn
         size="small"
         variant="text"
+        :class="{ 'is-active': editor.isActive('link') }"
+        @click="setLink"
+      >
+        <VIcon>mdi-link</VIcon>
+      </VBtn>
+      <VBtn
+        size="small"
+        variant="text"
+        :disabled="!editor.isActive('link')"
+        @click="editor.chain().focus().unsetLink().run()"
+      >
+        <VIcon>mdi-link-off</VIcon>
+      </VBtn>
+      <VDivider vertical class="mx-2" />
+      <VBtn
+        size="small"
+        variant="text"
         @click="editor.chain().focus().undo().run()"
         :disabled="!editor.can().chain().focus().undo().run()"
       >
@@ -88,6 +105,41 @@
       </VBtn>
     </div>
     <EditorContent :editor="editor" class="editor-content" />
+
+    <!-- Link Dialog -->
+    <VDialog
+      v-model="showLinkDialog"
+      max-width="500"
+    >
+      <VCard>
+        <VCardTitle>Adicionar Link</VCardTitle>
+        <VCardText>
+          <VTextField
+            v-model="linkUrl"
+            label="URL"
+            placeholder="https://exemplo.com"
+            variant="outlined"
+            autofocus
+            @keyup.enter="confirmLink"
+          />
+        </VCardText>
+        <VCardActions>
+          <VSpacer />
+          <VBtn
+            variant="text"
+            @click="showLinkDialog = false"
+          >
+            Cancelar
+          </VBtn>
+          <VBtn
+            color="primary"
+            @click="confirmLink"
+          >
+            Adicionar
+          </VBtn>
+        </VCardActions>
+      </VCard>
+    </VDialog>
   </div>
 </template>
 
@@ -95,6 +147,7 @@
 import { useEditor, EditorContent } from '@tiptap/vue-3'
 import StarterKit from '@tiptap/starter-kit'
 import Underline from '@tiptap/extension-underline'
+import Link from '@tiptap/extension-link'
 
 const props = defineProps<{
   modelValue: string
@@ -105,12 +158,23 @@ const emit = defineEmits<{
   (event: 'update:modelValue', value: string): void
 }>()
 
+// Link dialog state
+const showLinkDialog = ref(false)
+const linkUrl = ref('')
+
 // Only initialize editor on client-side
 const editor = process.client ? useEditor({
   content: props.modelValue,
   extensions: [
     StarterKit,
     Underline,
+    Link.configure({
+      openOnClick: false,
+      HTMLAttributes: {
+        target: '_blank',
+        rel: 'noopener noreferrer',
+      },
+    }),
   ],
   editorProps: {
     attributes: {
@@ -121,6 +185,37 @@ const editor = process.client ? useEditor({
     emit('update:modelValue', editor.getHTML())
   },
 }) : ref(null)
+
+const setLink = () => {
+  if (!editor.value) return
+
+  // Get existing link URL if editing
+  const previousUrl = editor.value.getAttributes('link').href
+  linkUrl.value = previousUrl || ''
+  showLinkDialog.value = true
+}
+
+const confirmLink = () => {
+  if (!editor.value) return
+
+  // Empty link
+  if (!linkUrl.value) {
+    editor.value.chain().focus().extendMarkRange('link').unsetLink().run()
+    showLinkDialog.value = false
+    return
+  }
+
+  // Add or update link
+  editor.value
+    .chain()
+    .focus()
+    .extendMarkRange('link')
+    .setLink({ href: linkUrl.value })
+    .run()
+
+  showLinkDialog.value = false
+  linkUrl.value = ''
+}
 
 watch(() => props.modelValue, (value) => {
   if (editor.value && value !== editor.value.getHTML()) {
@@ -203,6 +298,16 @@ onBeforeUnmount(() => {
 
       u {
         text-decoration: underline;
+      }
+
+      a {
+        color: #0066cc;
+        text-decoration: underline;
+        cursor: pointer;
+
+        &:hover {
+          color: #0052a3;
+        }
       }
 
       &.ProseMirror-focused {
