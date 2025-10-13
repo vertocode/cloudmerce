@@ -8,22 +8,7 @@ export default defineNuxtRouteMiddleware(async (to) => {
     return
   }
 
-  // Skip middleware for admin routes if user is admin
-  if (to.path.startsWith('/admin')) {
-    const storage = makeStorage()
-    const userData = storage.getItem<{ role: string }>('userData')
-    console.log('[Whitelabel Middleware] Admin route check:', {
-      path: to.path,
-      hasUserData: !!userData,
-      role: userData?.role,
-      isAdmin: userData?.role === 'admin',
-    })
-    if (userData?.role === 'admin') {
-      console.log('[Whitelabel Middleware] Admin accessing admin route, allowing access')
-      return
-    }
-  }
-
+  // Load whitelabel data if not already loaded
   if ((!whitelabelCache.value || whitelabelCache.value === 'error') && !to.path.includes('/admin-setup')) {
     const url = useRequestURL()
 
@@ -49,38 +34,53 @@ export default defineNuxtRouteMiddleware(async (to) => {
 
     if ((whitelabel.value as IWhitelabelError)?.code === 404) {
       whitelabelCache.value = 'error'
-      // Only redirect non-admins to setup
       const storage = makeStorage()
       const userData = storage.getItem<{ role: string }>('userData')
-      if (userData?.role !== 'admin') {
-        console.log('No whitelabel found, redirecting to admin-setup')
-        return navigateTo('/admin-setup')
+
+      // If admin is accessing admin routes, allow despite missing whitelabel
+      if (userData?.role === 'admin' && to.path.startsWith('/admin')) {
+        console.log('[Whitelabel Middleware] Admin accessing admin route, allowing despite missing whitelabel')
+        return
       }
-      console.log('Admin user, allowing access despite missing whitelabel')
-      return
+
+      // Non-admin or non-admin route: redirect to setup
+      console.log('No whitelabel found, redirecting to admin-setup')
+      return navigateTo('/admin-setup')
     }
 
     whitelabelCache.value = whitelabel.value as IWhitelabel | string
   }
 
   if (whitelabelCache.value && whitelabelCache.value === 'error' && to.path !== '/error' && to.path !== '/admin-setup') {
-    // Check if user is admin before redirecting to error
+    // Check if user is admin accessing admin routes
     const storage = makeStorage()
     const userData = storage.getItem<{ role: string }>('userData')
     console.log('[Whitelabel Middleware] Error state check:', {
       hasUserData: !!userData,
       role: userData?.role,
       isAdmin: userData?.role === 'admin',
+      path: to.path,
     })
-    if (userData?.role === 'admin') {
-      console.log('[Whitelabel Middleware] Admin user, allowing access despite error state')
+
+    if (userData?.role === 'admin' && to.path.startsWith('/admin')) {
+      console.log('[Whitelabel Middleware] Admin accessing admin route, allowing despite error state')
       return
     }
-    console.log('[Whitelabel Middleware] Non-admin user, redirecting to /error')
+
+    console.log('[Whitelabel Middleware] Non-admin or non-admin route, redirecting to /error')
     return navigateTo('/error')
   }
 
-  if (!whitelabelCache && to.path !== '/admin-setup') {
+  if (!whitelabelCache.value && to.path !== '/admin-setup') {
+    // Check if admin accessing admin routes
+    const storage = makeStorage()
+    const userData = storage.getItem<{ role: string }>('userData')
+
+    if (userData?.role === 'admin' && to.path.startsWith('/admin')) {
+      console.log('[Whitelabel Middleware] Admin accessing admin route, allowing despite no cache')
+      return
+    }
+
     return navigateTo('/admin-setup')
   }
 })

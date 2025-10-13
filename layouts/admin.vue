@@ -132,6 +132,7 @@
         <VContainer class="admin-container-inner">
           <slot />
         </VContainer>
+        <MdFooter />
       </main>
     </div>
   </div>
