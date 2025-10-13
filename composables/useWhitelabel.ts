@@ -39,9 +39,36 @@ export const useWhitelabel = () => {
     }
   }
 
+  const refreshWhitelabel = async () => {
+    try {
+      console.log('[useWhitelabel] Force refreshing whitelabel data')
+      // Force fresh fetch by adding cache-busting timestamp
+      const response = await $fetch(`/api/whitelabel/${url.host}?t=${Date.now()}`, {
+        headers: {
+          'Cache-Control': 'no-cache',
+        },
+      })
+
+      if ((response as IWhitelabelError)?.code === 404) {
+        console.warn('Not found whitelabel', response)
+        return 'error'
+      }
+      if (!(response as IWhitelabel).name) throw new Error('Something wrong in the response data')
+
+      whitelabel.value = response as IWhitelabel
+      console.log('[useWhitelabel] Whitelabel refreshed successfully:', response)
+      return response as IWhitelabel
+    }
+    catch (error) {
+      console.error('[useWhitelabel] Error refreshing whitelabel:', error)
+      return 'error'
+    }
+  }
+
   return {
     whitelabel,
     getWhitelabel,
+    refreshWhitelabel,
     hasWhitelabel,
   }
 }

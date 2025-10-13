@@ -255,8 +255,6 @@ import ProductListingPreview from '~/components/Admin/SectionPreviews/ProductLis
 const { whitelabel } = useWhitelabel()
 const { put } = useApi()
 const { openSnackbar } = useSnackbar()
-const router = useRouter()
-const url = useRequestURL()
 
 const loading = ref(false)
 
@@ -394,8 +392,8 @@ const handleSubmit = async () => {
 
     if ((response as { code: number })?.code === 200) {
       openSnackbar('Configurações da homepage salvas com sucesso!', 'success')
-      // Redirect to homepage with specific cache reset parameter
-      window.location.href = '/?resetHomepageCache=true'
+      // Redirect to homepage with resetCache parameter to force cache revalidation
+      window.location.href = '/?resetCache=true'
     } else {
       throw new Error(`Response without code 200: ${response}`)
     }

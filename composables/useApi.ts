@@ -30,9 +30,12 @@ export const useApi = () => {
   const clearCacheKey = async (key: string) => {
     if (import.meta.client) {
       try {
-        await $fetch(`/api/__cache__/${key}`, { method: 'DELETE' })
+        const result = await $fetch(`/api/__cache__/${key}`, { method: 'DELETE' })
+        console.log(`[useApi] Cache cleared for key: ${key}`, result)
+        return result
       } catch (error) {
-        console.warn(`Failed to clear cache for key: ${key}`, error)
+        console.warn(`[useApi] Failed to clear cache for key: ${key}`, error)
+        throw error
       }
     }
   }
