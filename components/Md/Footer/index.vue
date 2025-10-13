@@ -35,7 +35,7 @@
               v-for="type in productTypes.slice(0, 12)"
               :key="type.id"
             >
-              <NuxtLink :to="`/?productType=${type.id}`">
+              <NuxtLink :to="`/product/type/${type.id}`">
                 {{ type.name }}
               </NuxtLink>
             </li>
