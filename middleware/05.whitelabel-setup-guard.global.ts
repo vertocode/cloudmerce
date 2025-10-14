@@ -19,16 +19,18 @@ export default defineNuxtRouteMiddleware((to) => {
   const storage = makeStorage()
   const userData = storage.getItem<{ role: string }>('userData')
 
+  const isAdminOrSuperAdmin = userData?.role === 'admin' || userData?.role === 'superadmin'
+
   console.log('[Setup Guard Middleware] User data check:', {
     hasUserData: !!userData,
     role: userData?.role,
-    isAdmin: userData?.role === 'admin',
+    isAdmin: isAdminOrSuperAdmin,
   })
 
   // If whitelabel is not configured (error state)
   if (whitelabelCache.value === 'error') {
-    // Only allow admin users to proceed
-    if (userData?.role !== 'admin') {
+    // Only allow admin/superadmin users to proceed
+    if (!isAdminOrSuperAdmin) {
       // Non-admin users should see the admin-setup page
       return navigateTo('/admin-setup')
     }
@@ -38,16 +40,16 @@ export default defineNuxtRouteMiddleware((to) => {
   if (whitelabelCache.value && typeof whitelabelCache.value === 'object') {
     const whitelabel = whitelabelCache.value as IWhitelabel
 
-    // If whitelabel is inactive, only admin can access
-    if (whitelabel.isActive === false && userData?.role !== 'admin') {
+    // If whitelabel is inactive, only admin/superadmin can access
+    if (whitelabel.isActive === false && !isAdminOrSuperAdmin) {
       return navigateTo('/admin-setup')
     }
 
     // Check if whitelabel has required fields configured
     const hasRequiredFields = whitelabel.name && whitelabel.primaryColor && whitelabel.secondaryColor
 
-    // If required fields are not filled, only admin can access
-    if (!hasRequiredFields && userData?.role !== 'admin') {
+    // If required fields are not filled, only admin/superadmin can access
+    if (!hasRequiredFields && !isAdminOrSuperAdmin) {
       return navigateTo('/admin-setup')
     }
   }

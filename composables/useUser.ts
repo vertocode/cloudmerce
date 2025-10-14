@@ -19,7 +19,9 @@ export const useUser = () => {
   const { get, post } = useApi()
   const { whitelabel } = useWhitelabel()
 
-  const isAdmin = computed(() => userData.value?.role === 'admin')
+  const isAdmin = computed(() => userData.value?.role === 'admin' || userData.value?.role === 'superadmin')
+  const isSuperAdmin = computed(() => userData.value?.role === 'superadmin')
+  const isLoggedIn = computed(() => !!userData.value)
   const isLogged = computed(() => !!userData.value)
 
   onMounted(() => {
@@ -111,6 +113,8 @@ export const useUser = () => {
   return {
     userData,
     isAdmin,
+    isSuperAdmin,
+    isLoggedIn,
     isLogged,
     setUser,
     login,

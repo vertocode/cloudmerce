@@ -113,6 +113,31 @@
               <span>Configurar E-Commerce</span>
             </NuxtLink>
           </div>
+
+          <div
+            v-if="isSuperAdmin"
+            class="nav-section superadmin-section"
+          >
+            <h3 class="nav-section-title superadmin-title">
+              <VIcon
+                size="16"
+                class="mr-1"
+              >
+                mdi-shield-star
+              </VIcon>
+              Superadmin
+            </h3>
+            <NuxtLink
+              to="/superadmin/whitelabels"
+              class="nav-item superadmin-item"
+              active-class="active-route"
+            >
+              <VIcon size="20">
+                mdi-domain
+              </VIcon>
+              <span>Gerenciar Whitelabels</span>
+            </NuxtLink>
+          </div>
         </nav>
 
         <div class="sidebar-footer">
@@ -143,6 +168,7 @@ definePageMeta({
   middleware: ['03-admin-auth'],
 })
 
+const { isSuperAdmin } = useUser()
 const sidebarOpen = ref(false)
 const route = useRoute()
 
@@ -368,6 +394,38 @@ watch(() => route.path, () => {
 
   @media (max-width: 960px) {
     padding: 16px !important;
+  }
+}
+
+.superadmin-section {
+  border-top: 2px solid #ff9500;
+  padding-top: 16px;
+  margin-top: 24px;
+}
+
+.superadmin-title {
+  color: #ff9500 !important;
+  display: flex;
+  align-items: center;
+
+  :deep(.v-icon) {
+    color: #ff9500;
+  }
+}
+
+.superadmin-item {
+  &.active-route {
+    background-color: rgba(255, 149, 0, 0.1) !important;
+    color: #ff9500 !important;
+    border-left-color: #ff9500;
+
+    :deep(.v-icon) {
+      color: #ff9500 !important;
+    }
+
+    span {
+      color: #ff9500 !important;
+    }
   }
 }
 </style>
