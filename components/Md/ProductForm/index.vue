@@ -11,7 +11,7 @@
       :on-register-new-product-type="onRegisterNewProductType"
     />
     <StockFields :show-stock-quantity="stockOption === StockOptions.LIMITED" />
-    <Images :errors />
+    <Images :errors :old-image-urls="oldImageUrls" />
     <UserQuestions />
 
     <VSpacer class="my-6" />
@@ -72,8 +72,7 @@ const isEdition = !!props.initialValues
 
 const isLoading = ref(false)
 
-const getUpdatedImageUrls = async (images: File[]): Promise<string[]> => {
-  const initialFiles = props.initialValues?.imageFiles || []
+const getUpdatedImageUrls = async (images: (File | string)[]): Promise<string[]> => {
   const uploadedUrls: string[] = []
 
   // Upload images sequentially to avoid overwhelming the server
@@ -81,17 +80,20 @@ const getUpdatedImageUrls = async (images: File[]): Promise<string[]> => {
     const file = images[fileIdx]
     const oldImage = props.oldImageUrls?.[fileIdx]
 
-    if (!oldImage) {
-      uploadedUrls.push(await upload(file))
-    } else {
-      const hasChanges = initialFiles.every((initialFile: File) => {
-        return initialFile.name !== file.name && initialFile.size !== file.size
-      })
-      if (hasChanges) {
-        uploadedUrls.push(await upload(file))
-      } else {
+    // If no file was selected (empty string or null), keep the old image
+    if (!file || file === '' || (typeof file === 'string' && !file.startsWith('http'))) {
+      if (oldImage) {
         uploadedUrls.push(oldImage)
       }
+      continue
+    }
+
+    // If it's a File object, upload it
+    if (file instanceof File) {
+      uploadedUrls.push(await upload(file))
+    } else if (typeof file === 'string' && file.startsWith('http')) {
+      // If it's already a URL, keep it
+      uploadedUrls.push(file)
     }
 
     // Small delay between uploads to prevent rate limiting (except for last image)

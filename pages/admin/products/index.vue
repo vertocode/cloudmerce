@@ -288,7 +288,6 @@ const importResult = ref<{ created: number; skipped: number; errors?: string[] }
 const headers = [
   { title: 'Imagem', key: 'image', sortable: false },
   { title: 'Nome', key: 'name', sortable: true },
-  { title: 'Descrição', key: 'description', sortable: false },
   { title: 'Preço', key: 'price', sortable: true },
   { title: 'Estoque', key: 'stock', sortable: true },
   { title: 'Tipo', key: 'productType', sortable: false },

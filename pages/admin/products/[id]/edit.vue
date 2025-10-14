@@ -5,8 +5,9 @@
     </div>
 
     <MdProductForm
-      v-if="product"
-      :product="product"
+      v-if="product && initialValues"
+      :initial-values="initialValues"
+      :old-image-urls="product.image"
       :action="updateProduct"
       :on-register-new-product-type="onRegisterNewProductType"
     />
@@ -26,10 +27,34 @@ const router = useRouter()
 const productId = route.params.id as string
 
 const product = ref<IProduct | null>(null)
+const initialValues = ref<Record<string, any> | null>(null)
 const { getProductById } = useProduct({})
 
 const onRegisterNewProductType = () => {
   router.push('/admin/product-types')
+}
+
+const transformProductToFormValues = (product: IProduct) => {
+  const { whitelabel } = useWhitelabel()
+
+  // Initialize imageFiles array with empty strings to match existing images count
+  const imageFiles = Array.isArray(product.image) && product.image.length > 0
+    ? product.image.map(() => '')
+    : ['']
+
+  return {
+    ecommerceId: whitelabel.value._id,
+    productName: product.name,
+    productPrice: product.price,
+    productDescription: product.description,
+    productType: typeof product.productType === 'object' && product.productType?.name
+      ? product.productType.name
+      : '',
+    stockOption: product.stock?.type || 'UNLIMITED',
+    stockQuantity: product.stock?.quantity || null,
+    imageFiles, // Initialize with empty strings for each existing image
+    userFields: product.fields || [],
+  }
 }
 
 const updateProduct = async (values: any) => {
@@ -62,7 +87,11 @@ const updateProduct = async (values: any) => {
 }
 
 onMounted(async () => {
-  product.value = await getProductById(productId, { cache: 'no-cache' })
+  const fetchedProduct = await getProductById(productId, { cache: 'no-cache' })
+  if (fetchedProduct) {
+    product.value = fetchedProduct
+    initialValues.value = transformProductToFormValues(fetchedProduct)
+  }
 })
 </script>
 

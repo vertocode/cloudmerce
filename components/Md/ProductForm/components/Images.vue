@@ -13,10 +13,18 @@
           :md="fields.length === 1 ? 12 : 6"
           class="image-field mt-0"
         >
-          <VeeFile
-            :name="`imageFiles[${index}]`"
-            :label="`Imagem ${index + 1}`"
-          />
+          <div class="image-input-wrapper">
+            <!-- Show existing image preview if available -->
+            <div v-if="oldImageUrls && oldImageUrls[index]" class="existing-image-preview">
+              <img :src="oldImageUrls[index]" :alt="`Imagem ${index + 1}`" class="preview-img" />
+              <VChip size="small" color="success" class="mt-2">Imagem atual</VChip>
+            </div>
+
+            <VeeFile
+              :name="`imageFiles[${index}]`"
+              :label="oldImageUrls && oldImageUrls[index] ? `Substituir Imagem ${index + 1}` : `Imagem ${index + 1}`"
+            />
+          </div>
           <VBtn
             v-if="fields.length > 1"
             icon
@@ -57,6 +65,7 @@ import Card from '~/components/Md/ProductForm/components/Card.vue'
 
 defineProps<{
   errors: Record<string, string>
+  oldImageUrls?: string[]
 }>()
 </script>
 
@@ -68,6 +77,26 @@ defineProps<{
     align-items: center;
     gap: 8px;
     margin-top: 8px;
+  }
+
+  .image-input-wrapper {
+    flex: 1;
+  }
+
+  .existing-image-preview {
+    margin-bottom: 12px;
+    padding: 12px;
+    background-color: #f5f5f5;
+    border-radius: 8px;
+    text-align: center;
+
+    .preview-img {
+      max-width: 100%;
+      max-height: 200px;
+      object-fit: contain;
+      border-radius: 4px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
   }
 }
 </style>
