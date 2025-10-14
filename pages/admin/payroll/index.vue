@@ -187,7 +187,7 @@ import type { Order } from '~/types/order'
 
 definePageMeta({
   layout: 'admin',
-  middleware: ['04-superadmin-auth'],
+  middleware: ['superadmin'],
 })
 
 const { get, post } = useApi()
