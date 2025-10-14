@@ -100,6 +100,22 @@
 
           <div class="nav-section">
             <h3 class="nav-section-title">
+              Financeiro
+            </h3>
+            <NuxtLink
+              to="/admin/payments"
+              class="nav-item"
+              active-class="active-route"
+            >
+              <VIcon size="20">
+                mdi-cash-multiple
+              </VIcon>
+              <span>Pagamentos</span>
+            </NuxtLink>
+          </div>
+
+          <div class="nav-section">
+            <h3 class="nav-section-title">
               Configurações
             </h3>
             <NuxtLink
@@ -136,6 +152,16 @@
                 mdi-domain
               </VIcon>
               <span>Gerenciar Whitelabels</span>
+            </NuxtLink>
+            <NuxtLink
+              to="/admin/payroll"
+              class="nav-item superadmin-item"
+              active-class="active-route"
+            >
+              <VIcon size="20">
+                mdi-cash-check
+              </VIcon>
+              <span>Pagar</span>
             </NuxtLink>
           </div>
         </nav>
