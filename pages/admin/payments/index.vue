@@ -5,7 +5,7 @@
         Pagamentos
       </h1>
       <p class="page-subtitle">
-        Gerencie e visualize informações de pagamentos
+        Acompanhe os valores que você receberá das suas vendas
       </p>
     </div>
 
@@ -68,6 +68,28 @@
         color="primary"
       />
     </div>
+
+    <VCard
+      v-else-if="analytics && analytics.nextPayrollAmount === 0"
+      class="no-payment-card"
+    >
+      <VCardText>
+        <div class="no-payment-content">
+          <VIcon
+            size="64"
+            color="grey-lighten-1"
+          >
+            mdi-cash-clock
+          </VIcon>
+          <h3 class="no-payment-title">
+            Nenhum pagamento a receber no momento
+          </h3>
+          <p class="no-payment-text">
+            Assim que você tiver pedidos pagos, eles aparecerão aqui e você poderá acompanhar o valor a receber.
+          </p>
+        </div>
+      </VCardText>
+    </VCard>
 
     <div
       v-else-if="analytics"
@@ -511,6 +533,37 @@ onMounted(() => {
   justify-content: center;
   align-items: center;
   padding: 80px 0;
+}
+
+.no-payment-card {
+  margin-bottom: 32px;
+
+  .no-payment-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 60px 40px;
+
+    @media (max-width: 960px) {
+      padding: 40px 20px;
+    }
+  }
+
+  .no-payment-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #1d1d1f;
+    margin: 24px 0 12px 0;
+  }
+
+  .no-payment-text {
+    font-size: 1rem;
+    color: #86868b;
+    max-width: 500px;
+    margin: 0;
+    line-height: 1.6;
+  }
 }
 
 .stats-grid {
