@@ -1,7 +1,7 @@
 <template>
   <Field
     v-if="name"
-    v-slot="{ field, errorMessage }"
+    v-slot="{ field, errorMessage, handleChange }"
     :name
   >
     <div class="vee-rich-text-editor">
@@ -12,7 +12,7 @@
       <ClientOnly>
         <RichTextEditor
           :model-value="field.value"
-          @update:model-value="handleUpdate(field, $event)"
+          @update:model-value="handleChange"
           :placeholder
         />
         <template #fallback>
@@ -35,10 +35,6 @@ const props = defineProps<{
   placeholder?: string
   required?: boolean
 }>()
-
-const handleUpdate = (field: any, value: string) => {
-  field.value = value
-}
 </script>
 
 <style scoped lang="scss">

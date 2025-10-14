@@ -80,16 +80,22 @@ export const useApi = () => {
     })
   }
 
-  const post = async (path: string, data: unknown, { useFormData }: { useFormData: boolean } = { useFormData: false }) => {
+  const post = async (path: string, data: unknown, options?: { useFormData?: boolean; headers?: HeadersInit; responseType?: string }) => {
     const token = getAuthToken()
+    const useFormData = options?.useFormData || false
+    const additionalHeaders = options?.headers || {}
+    const responseType = options?.responseType
+
     return $fetch(`${apiUrl}${path}`, {
       method: 'POST',
       body: useFormData ? data || '' : JSON.stringify(data),
       headers: {
         ...(useFormData ? {} : commonHeaders),
         ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        ...additionalHeaders,
       },
-    })
+      ...(responseType ? { responseType } : {}),
+    } as any)
   }
 
   const patch = async (path: string, data: unknown) => {

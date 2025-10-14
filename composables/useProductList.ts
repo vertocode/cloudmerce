@@ -1,7 +1,7 @@
 import type { IGetProductsResponse, IProduct, IProductFilters, IProductResponse } from '~/types/product'
 import { shouldRevalidateProducts, clearProductsRevalidation } from '~/utils/revalidation'
 
-export const useProductList = (filters?: IProductFilters) => {
+export const useProductList = (filters?: IProductFilters, options?: { disableWatchers?: boolean }) => {
   const products = useState<IProduct[]>('products', () => [])
   const lastFilters = useState<IProductFilters | null>(() => null)
   const loading = useState<boolean>(() => false)
@@ -18,21 +18,28 @@ export const useProductList = (filters?: IProductFilters) => {
 
   interface IFetchProducts {
     cache?: 'force-cache' | 'no-cache'
+    limit?: number
+    search?: string
   }
-  const fetchProducts = async ({ cache }: IFetchProducts = {}) => {
+  const fetchProducts = async ({ cache, limit, search: searchParam }: IFetchProducts = {}) => {
     const prevFilters = lastFilters.value
 
     // Check if products need revalidation from localStorage
     const needsRevalidation = shouldRevalidateProducts()
     const forceNoCache = cache === 'no-cache' || needsRevalidation
 
+    // Update internal search if provided
+    if (searchParam !== undefined) {
+      search.value = searchParam
+    }
+
     // If we already have the products, and don't have the filters or the filters are the same as the previous ones, we don't need to fetch the products again
-    if (products.value.length && !filters && !prevFilters && !forceNoCache) {
+    if (products.value.length && !filters && !prevFilters && !forceNoCache && limit === undefined && searchParam === undefined) {
       return
     }
 
     // If the filters are the same as the previous ones, we don't need to fetch the products again
-    if (filters && prevFilters?.productType === filters.productType && prevFilters?.search === filters.search && !forceNoCache) {
+    if (filters && prevFilters?.productType === filters.productType && prevFilters?.search === filters.search && !forceNoCache && limit === undefined && searchParam === undefined) {
       return
     }
 
@@ -43,7 +50,7 @@ export const useProductList = (filters?: IProductFilters) => {
       query: {
         ...filters,
         search: search.value || '',
-        limit: 12,
+        limit: limit || 12,
         page: currentPage.value,
         ...(forceNoCache ? { t: Date.now() } : {}),
       },
@@ -56,7 +63,7 @@ export const useProductList = (filters?: IProductFilters) => {
         query: {
           ...filters,
           search: search.value || '',
-          limit: 12,
+          limit: limit || 12,
           page: currentPage.value,
           t: Date.now(),
         },
@@ -106,14 +113,17 @@ export const useProductList = (filters?: IProductFilters) => {
     loading.value = false
   }
 
-  watch(search, () => {
-    fetchProducts({ cache: 'no-cache' })
-    currentPage.value = 1
-  })
-  watch(currentPage, () => fetchProducts({ cache: 'no-cache' }))
+  // Only enable watchers if not disabled (for admin pages with custom controls)
+  if (!options?.disableWatchers) {
+    watch(search, () => {
+      fetchProducts({ cache: 'no-cache' })
+      currentPage.value = 1
+    })
+    watch(currentPage, () => fetchProducts({ cache: 'no-cache' }))
 
-  // Use cache on initial mount to prevent duplicate requests
-  onMounted(() => fetchProducts())
+    // Use cache on initial mount to prevent duplicate requests
+    onMounted(() => fetchProducts())
+  }
 
   return {
     products,
