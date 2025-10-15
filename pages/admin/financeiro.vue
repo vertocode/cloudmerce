@@ -247,7 +247,7 @@ const maskKey = (key: string | undefined) => {
 const startMPAuthorization = () => {
   loading.value = true
 
-  const clientId = config.public.mpClientId
+  const clientId = config.public.mpClientId || '5581626523211176'
   const redirectUri = `${window.location.origin}/mp-oauth-confirmation`
   const state = whitelabel.value?._id || ''
 
