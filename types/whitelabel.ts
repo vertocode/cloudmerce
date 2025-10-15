@@ -24,6 +24,12 @@ export interface IWhitelabel {
   contact: {
     email: string
   }
+  mp?: {
+    accessToken?: string
+    refreshToken?: string
+    userId?: string
+    publicKey?: string
+  }
   homepage?: {
     useCustomLayout: boolean
     sections: IPageSection[]

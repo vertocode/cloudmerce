@@ -235,7 +235,8 @@ const disconnecting = ref(false)
 const showDisconnectDialog = ref(false)
 
 const hasConfiguredMP = computed(() => {
-  return !!(whitelabel.value?.mp?.accessToken && whitelabel.value?.mp?.userId)
+  // Check only for userId since accessToken is never sent to frontend for security
+  return !!(whitelabel.value?.mp?.userId)
 })
 
 const maskKey = (key: string | undefined) => {
@@ -259,9 +260,9 @@ const startMPAuthorization = () => {
 const refreshToken = async () => {
   refreshing.value = true
   try {
+    // Backend will fetch refreshToken from database (never sent to frontend for security)
     await put('/mp-refresh-token', {
       whitelabelId: whitelabel.value?._id,
-      refreshToken: whitelabel.value?.mp?.refreshToken,
     })
 
     await getWhitelabel({ cache: false })

@@ -1,4 +1,4 @@
-<div align="center">
+<div align="center" style="background-color: #fff;">
   <img src="assets/logo.png" alt="Cloudmerce Logo" width="150"/>
 </div>
 
