@@ -61,6 +61,24 @@
           <p>Configure informações básicas e aparência</p>
         </VCardText>
       </VCard>
+
+      <VCard
+        class="settings-card"
+        @click="$router.push('/admin/financeiro')"
+      >
+        <VCardText>
+          <div class="settings-icon">
+            <VIcon
+              size="48"
+              color="success"
+            >
+              mdi-cash-multiple
+            </VIcon>
+          </div>
+          <h2>Financeiro</h2>
+          <p>Configure sua conta do Mercado Pago para receber pagamentos</p>
+        </VCardText>
+      </VCard>
     </div>
 
     <VDialog

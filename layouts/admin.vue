@@ -98,21 +98,22 @@
             </NuxtLink>
           </div>
 
-          <div class="nav-section">
-            <h3 class="nav-section-title">
-              Financeiro
-            </h3>
-            <NuxtLink
-              to="/admin/payments"
-              class="nav-item"
-              active-class="active-route"
-            >
-              <VIcon size="20">
-                mdi-cash-multiple
-              </VIcon>
-              <span>Pagamentos</span>
-            </NuxtLink>
-          </div>
+          <!--      It's commented since we're using split of payments automatically instead of manual payment    -->
+          <!--          <div class="nav-section"> -->
+          <!--            <h3 class="nav-section-title"> -->
+          <!--              Financeiro -->
+          <!--            </h3> -->
+          <!--            <NuxtLink -->
+          <!--              to="/admin/payments" -->
+          <!--              class="nav-item" -->
+          <!--              active-class="active-route" -->
+          <!--            > -->
+          <!--              <VIcon size="20"> -->
+          <!--                mdi-cash-multiple -->
+          <!--              </VIcon> -->
+          <!--              <span>Pagamentos</span> -->
+          <!--            </NuxtLink> -->
+          <!--          </div> -->
 
           <div class="nav-section">
             <h3 class="nav-section-title">

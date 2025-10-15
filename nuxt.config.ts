@@ -25,6 +25,7 @@ export default defineNuxtConfig({
       emailjsServiceId: process.env.EMAILJS_SERVICE_ID,
       emailjstemplateId: process.env.EMAILJS_TEMPLATE_ID,
       emailjsuserId: process.env.EMAILJS_USER_ID,
+      mpClientId: process.env.MERCADO_PAGO_CLIENT_ID,
       stripe: {
         key: process.env.STRIPE_PUBLISHABLE_KEY,
       },
