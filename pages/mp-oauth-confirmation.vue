@@ -28,9 +28,9 @@
       <v-btn
         class="redirect-btn"
         color="primary"
-        @click="redirectToHome"
+        @click="redirectToFinanceiro"
       >
-        Voltar para o Início
+        Ir para Financeiro
       </v-btn>
     </div>
     <div v-else>
@@ -59,12 +59,8 @@ const { whitelabel, getWhitelabel } = useWhitelabel()
 const { userData } = useUser()
 const { post } = useApi()
 
-definePageMeta({
-  middleware: ['04-mp-whitelabel'],
-})
-
-const redirectToHome = () => {
-  router.push('/')
+const redirectToFinanceiro = () => {
+  router.push('/admin/financeiro')
 }
 
 onMounted(async () => {
