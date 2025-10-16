@@ -5,6 +5,8 @@ export interface IBannerSection {
   title?: string
   description?: string
   pathname?: string
+  marginTop?: number
+  marginBottom?: number
 }
 
 export interface IProductCarouselSection {
@@ -12,12 +14,16 @@ export interface IProductCarouselSection {
   type: 'product-carousel'
   title?: string
   productIds: string[]
+  marginTop?: number
+  marginBottom?: number
 }
 
 export interface IRichTextSection {
   id?: string
   type: 'rich-text'
   content: string
+  marginTop?: number
+  marginBottom?: number
 }
 
 export interface IProductListingSection {
@@ -26,6 +32,8 @@ export interface IProductListingSection {
   title?: string
   productTypeFilter?: string
   searchFilter?: string
+  marginTop?: number
+  marginBottom?: number
 }
 
 export type IPageSection = IBannerSection | IProductCarouselSection | IRichTextSection | IProductListingSection

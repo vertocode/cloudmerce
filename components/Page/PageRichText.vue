@@ -1,5 +1,11 @@
 <template>
-  <div class="page-rich-text">
+  <div
+    class="page-rich-text"
+    :style="{
+      marginTop: `${section.marginTop || 0}px`,
+      marginBottom: `${section.marginBottom || 0}px`
+    }"
+  >
     <RichTextDisplay
       :content="section.content"
       class="rich-text-content"

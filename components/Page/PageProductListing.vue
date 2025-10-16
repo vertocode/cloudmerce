@@ -1,5 +1,11 @@
 <template>
-  <div class="product-listing-section">
+  <div
+    class="product-listing-section"
+    :style="{
+      marginTop: `${section.marginTop || 0}px`,
+      marginBottom: `${section.marginBottom || 0}px`
+    }"
+  >
     <MdContainer v-if="section.title" class="section-header">
       <h2>{{ section.title }}</h2>
     </MdContainer>

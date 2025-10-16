@@ -37,7 +37,32 @@
             placeholder="/about, /products, etc."
             hint="Caminho para onde o banner deve redirecionar ao ser clicado"
             persistent-hint
+            class="mb-4"
           />
+          <VDivider class="my-4" />
+          <h4 class="mb-3">Espaçamento</h4>
+          <VRow>
+            <VCol cols="6">
+              <VTextField
+                v-model.number="formData.marginTop"
+                label="Margem Superior (px)"
+                variant="outlined"
+                type="number"
+                min="0"
+                placeholder="0"
+              />
+            </VCol>
+            <VCol cols="6">
+              <VTextField
+                v-model.number="formData.marginBottom"
+                label="Margem Inferior (px)"
+                variant="outlined"
+                type="number"
+                min="0"
+                placeholder="0"
+              />
+            </VCol>
+          </VRow>
         </div>
 
         <!-- Product Carousel Section -->
@@ -48,7 +73,7 @@
             variant="outlined"
             class="mb-4"
           />
-          <div class="products-selector">
+          <div class="products-selector mb-4">
             <div class="selected-products">
               <h4>Produtos Selecionados: {{ formData.productIds?.length || 0 }}</h4>
             </div>
@@ -59,6 +84,30 @@
               Selecionar Produtos
             </VBtn>
           </div>
+          <VDivider class="my-4" />
+          <h4 class="mb-3">Espaçamento</h4>
+          <VRow>
+            <VCol cols="6">
+              <VTextField
+                v-model.number="formData.marginTop"
+                label="Margem Superior (px)"
+                variant="outlined"
+                type="number"
+                min="0"
+                placeholder="0"
+              />
+            </VCol>
+            <VCol cols="6">
+              <VTextField
+                v-model.number="formData.marginBottom"
+                label="Margem Inferior (px)"
+                variant="outlined"
+                type="number"
+                min="0"
+                placeholder="0"
+              />
+            </VCol>
+          </VRow>
         </div>
 
         <!-- Rich Text Section -->
@@ -73,6 +122,30 @@
               <div class="editor-loading">Carregando editor...</div>
             </template>
           </ClientOnly>
+          <VDivider class="my-4" />
+          <h4 class="mb-3">Espaçamento</h4>
+          <VRow>
+            <VCol cols="6">
+              <VTextField
+                v-model.number="formData.marginTop"
+                label="Margem Superior (px)"
+                variant="outlined"
+                type="number"
+                min="0"
+                placeholder="0"
+              />
+            </VCol>
+            <VCol cols="6">
+              <VTextField
+                v-model.number="formData.marginBottom"
+                label="Margem Inferior (px)"
+                variant="outlined"
+                type="number"
+                min="0"
+                placeholder="0"
+              />
+            </VCol>
+          </VRow>
         </div>
 
         <!-- Product Listing Section -->
@@ -95,9 +168,34 @@
             v-model="formData.searchFilter"
             label="Filtro de Busca (Opcional)"
             variant="outlined"
+            class="mb-4"
             hint="Termo de busca para filtrar produtos"
             persistent-hint
           />
+          <VDivider class="my-4" />
+          <h4 class="mb-3">Espaçamento</h4>
+          <VRow>
+            <VCol cols="6">
+              <VTextField
+                v-model.number="formData.marginTop"
+                label="Margem Superior (px)"
+                variant="outlined"
+                type="number"
+                min="0"
+                placeholder="0"
+              />
+            </VCol>
+            <VCol cols="6">
+              <VTextField
+                v-model.number="formData.marginBottom"
+                label="Margem Inferior (px)"
+                variant="outlined"
+                type="number"
+                min="0"
+                placeholder="0"
+              />
+            </VCol>
+          </VRow>
         </div>
       </VCardText>
       <VCardActions class="actions">
@@ -149,6 +247,8 @@ const formData = reactive<any>({
   content: '',
   productTypeFilter: '',
   searchFilter: '',
+  marginTop: 0,
+  marginBottom: 0,
 })
 
 const title = computed(() => {
@@ -170,6 +270,8 @@ const save = () => {
 
   const sectionData: any = {
     type: props.sectionType,
+    marginTop: formData.marginTop || 0,
+    marginBottom: formData.marginBottom || 0,
   }
 
   // Add only relevant fields for each section type
@@ -205,6 +307,8 @@ watch([() => props.modelValue, () => props.sectionType], ([isOpen, type]) => {
     formData.content = ''
     formData.productTypeFilter = ''
     formData.searchFilter = ''
+    formData.marginTop = 0
+    formData.marginBottom = 0
 
     // Load existing data if editing
     if (props.sectionData) {

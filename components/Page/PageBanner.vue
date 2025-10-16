@@ -2,7 +2,11 @@
   <div
     class="page-banner"
     :class="{ 'is-clickable': section.pathname }"
-    :style="{ backgroundImage: `url(${section.backgroundImage})` }"
+    :style="{
+      backgroundImage: `url(${section.backgroundImage})`,
+      marginTop: `${section.marginTop || 0}px`,
+      marginBottom: `${section.marginBottom || 0}px`
+    }"
     @click="handleBannerClick"
   >
     <div class="banner-overlay">

@@ -18,89 +18,106 @@
       </template>
 
       <VList class="navigation-list">
-        <template v-if="productTypes.length">
-          <h3 class="section-subtitle mobile-only">
-            Categorias
-          </h3>
-          <VListItem
-            v-for="type in productTypes"
-            :key="type.id"
-            class="navigation-item mobile-only"
-            :class="{ active: isActiveType(type.id) }"
-            @click="redirectTo(type.id)"
-          >
-            <VListItemTitle>
-              <VIcon
-                v-if="type.icon"
-                size="18"
-              >
-                {{ type.icon.includes('mdi') ? type.icon : `mdi-${type.icon}` }}
-              </VIcon>
-              {{ type.name }}
-            </VListItemTitle>
-          </VListItem>
-          <VDivider class="my-2 mobile-only" />
+        <!-- Custom Menu Dropdown Items -->
+        <template v-if="useCustomMenu && dropdownItems.length > 0">
+          <template v-for="(item, index) in dropdownItems" :key="index">
+            <VListItem
+              v-if="shouldShowItem(item.visibleOn)"
+              class="navigation-item"
+              :class="{ active: isActiveCustomPath(item.link), 'mobile-only': item.visibleOn === 'mobile' }"
+              @click="navigateToCustom(item.link)"
+            >
+              <VListItemTitle>{{ item.label }}</VListItemTitle>
+            </VListItem>
+          </template>
         </template>
 
-        <template v-if="activePages.length">
-          <h3 class="section-subtitle">
-            Páginas
-          </h3>
+        <!-- Default Menu Items -->
+        <template v-else>
+          <template v-if="productTypes.length">
+            <h3 class="section-subtitle mobile-only">
+              Categorias
+            </h3>
+            <VListItem
+              v-for="type in productTypes"
+              :key="type.id"
+              class="navigation-item mobile-only"
+              :class="{ active: isActiveType(type.id) }"
+              @click="redirectTo(type.id)"
+            >
+              <VListItemTitle>
+                <VIcon
+                  v-if="type.icon"
+                  size="18"
+                >
+                  {{ type.icon.includes('mdi') ? type.icon : `mdi-${type.icon}` }}
+                </VIcon>
+                {{ type.name }}
+              </VListItemTitle>
+            </VListItem>
+            <VDivider class="my-2 mobile-only" />
+          </template>
+
+          <template v-if="activePages.length">
+            <h3 class="section-subtitle">
+              Páginas
+            </h3>
+            <VListItem
+              v-for="page in activePages"
+              :key="page._id"
+              class="navigation-item"
+              :class="{ active: isActivePage(page.handle) }"
+              @click="redirectToPage(page.handle)"
+            >
+              <VListItemTitle>
+                <VIcon size="18">
+                  mdi-file-document-outline
+                </VIcon>
+                {{ page.title }}
+              </VListItemTitle>
+            </VListItem>
+            <VDivider class="my-2" />
+          </template>
+
           <VListItem
-            v-for="page in activePages"
-            :key="page._id"
             class="navigation-item"
-            :class="{ active: isActivePage(page.handle) }"
-            @click="redirectToPage(page.handle)"
+            @click="$router.push('/checkout')"
           >
-            <VListItemTitle>
-              <VIcon size="18">
-                mdi-file-document-outline
-              </VIcon>
-              {{ page.title }}
-            </VListItemTitle>
+            <VListItemTitle>Carrinho de Compras</VListItemTitle>
           </VListItem>
-          <VDivider class="my-2" />
+          <VListItem
+            v-if="userData"
+            class="navigation-item"
+            @click="$router.push('/orders')"
+          >
+            <VListItemTitle>Meus Pedidos</VListItemTitle>
+          </VListItem>
+          <VListItem
+            class="navigation-item"
+            @click="$router.push('/about')"
+          >
+            <VListItemTitle>Sobre Nós</VListItemTitle>
+          </VListItem>
+          <VListItem
+            class="navigation-item"
+            @click="$router.push('/privacy')"
+          >
+            <VListItemTitle>Política de Privacidade</VListItemTitle>
+          </VListItem>
+          <VListItem
+            class="navigation-item"
+            @click="$router.push('/contact')"
+          >
+            <VListItemTitle>Contato</VListItemTitle>
+          </VListItem>
+          <VListItem
+            v-if="userData"
+            class="navigation-item"
+            @click="logout"
+          >
+            <VListItemTitle>Sair da Conta</VListItemTitle>
+          </VListItem>
         </template>
-
-        <VListItem
-          class="navigation-item"
-          @click="$router.push('/checkout')"
-        >
-          <VListItemTitle>Carrinho de Compras</VListItemTitle>
-        </VListItem>
-        <VListItem
-          v-if="userData"
-          class="navigation-item"
-          @click="$router.push('/orders')"
-        >
-          <VListItemTitle>Meus Pedidos</VListItemTitle>
-        </VListItem>
-        <VListItem
-          class="navigation-item"
-          @click="$router.push('/about')"
-        >
-          <VListItemTitle>Sobre Nós</VListItemTitle>
-        </VListItem>
-        <VListItem
-          class="navigation-item"
-          @click="$router.push('/privacy')"
-        >
-          <VListItemTitle>Política de Privacidade</VListItemTitle>
-        </VListItem>
-        <VListItem
-          class="navigation-item"
-          @click="$router.push('/contact')"
-        >
-          <VListItemTitle>Contato</VListItemTitle>
-        </VListItem>
-        <VListItem
-          v-if="userData"
-          class="navigation-item"
-          @click="logout"
-        >
-          <VListItemTitle>Sair da Conta</VListItemTitle>
-        </VListItem>
 
         <VDivider
           v-if="isAdmin"
@@ -131,10 +148,40 @@ const isDrawerOpen = ref(false)
 const { userData, isAdmin, logout } = useUser()
 const { productTypes } = useProductTypes()
 const { pages, fetchPages } = usePages()
+const { whitelabel } = useWhitelabel()
 const router = useRouter()
 const route = useRoute()
 
+// Custom menu configuration
+const useCustomMenu = computed(() => whitelabel.value?.menu?.useCustomMenu || false)
+const dropdownItems = computed(() => whitelabel.value?.menu?.dropdownItems || [])
+
 const activePages = computed(() => pages.value.filter(page => page.isActive))
+
+// Check device type
+const isMobile = ref(false)
+
+onMounted(() => {
+  fetchPages()
+  checkDevice()
+  window.addEventListener('resize', checkDevice)
+})
+
+const checkDevice = () => {
+  isMobile.value = window.innerWidth <= 768
+}
+
+const shouldShowItem = (visibleOn: 'desktop' | 'mobile' | 'both') => {
+  if (visibleOn === 'both') return true
+  if (visibleOn === 'mobile') return isMobile.value
+  if (visibleOn === 'desktop') return !isMobile.value
+  return true
+}
+
+const navigateToCustom = (link: string) => {
+  router.push(link)
+  isDrawerOpen.value = false
+}
 
 const redirectTo = (type: string) => {
   router.push(`/product/type/${type}`)
@@ -148,9 +195,10 @@ const redirectToPage = (handle: string) => {
 
 const isActiveType = (type: string) => route.params.type === type
 const isActivePage = (handle: string) => route.params.handle === handle
+const isActiveCustomPath = (link: string) => route.path === link
 
-onMounted(() => {
-  fetchPages()
+onUnmounted(() => {
+  window.removeEventListener('resize', checkDevice)
 })
 </script>
 

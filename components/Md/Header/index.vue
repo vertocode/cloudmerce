@@ -10,21 +10,70 @@
       </div>
 
       <nav class="nav_links">
-        <a
-          v-for="type in productTypes"
-          :key="type.id"
-          class="nav_link"
-          :class="{ active: isActiveType(type.id) }"
-          @click="redirectTo(type.id)"
-        >
-          <VIcon
-            v-if="type.icon"
-            size="16"
+        <!-- Custom Menu Navigation Items -->
+        <template v-if="useCustomMenu && navigationItems.length > 0">
+          <div
+            v-for="(item, index) in navigationItems"
+            :key="index"
+            class="nav_item_wrapper"
           >
-            {{ type.icon.includes('mdi') ? type.icon : `mdi-${type.icon}` }}
-          </VIcon>
-          {{ type.name }}
-        </a>
+            <a
+              v-if="!item.children || item.children.length === 0"
+              class="nav_link"
+              :class="{ active: isActivePath(item.link) }"
+              @click="navigateTo(item.link)"
+            >
+              {{ item.label }}
+            </a>
+            <div
+              v-else
+              class="nav_dropdown"
+              @mouseenter="showDropdown(index)"
+              @mouseleave="hideDropdown(index)"
+            >
+              <a
+                class="nav_link"
+                :class="{ active: isActivePath(item.link) }"
+                @click="item.link && navigateTo(item.link)"
+              >
+                {{ item.label }}
+                <VIcon size="16">mdi-chevron-down</VIcon>
+              </a>
+              <div
+                v-show="activeDropdown === index"
+                class="dropdown_menu"
+              >
+                <a
+                  v-for="(child, childIndex) in item.children"
+                  :key="childIndex"
+                  class="dropdown_item"
+                  @click="navigateTo(child.link)"
+                >
+                  {{ child.label }}
+                </a>
+              </div>
+            </div>
+          </div>
+        </template>
+
+        <!-- Default Menu (Product Types) -->
+        <template v-else>
+          <a
+            v-for="type in productTypes"
+            :key="type.id"
+            class="nav_link"
+            :class="{ active: isActiveType(type.id) }"
+            @click="redirectTo(type.id)"
+          >
+            <VIcon
+              v-if="type.icon"
+              size="16"
+            >
+              {{ type.icon.includes('mdi') ? type.icon : `mdi-${type.icon}` }}
+            </VIcon>
+            {{ type.name }}
+          </a>
+        </template>
       </nav>
 
       <div class="action_container">
@@ -47,11 +96,38 @@ const { productTypes } = useProductTypes()
 const router = useRouter()
 const route = useRoute()
 
+// Custom menu configuration
+const useCustomMenu = computed(() => whitelabel.value?.menu?.useCustomMenu || false)
+const navigationItems = computed(() => whitelabel.value?.menu?.navigationItems || [])
+
+// Dropdown state
+const activeDropdown = ref<number | null>(null)
+
+const showDropdown = (index: number) => {
+  activeDropdown.value = index
+}
+
+const hideDropdown = (index: number) => {
+  activeDropdown.value = null
+}
+
+// Navigation methods
+const navigateTo = (link?: string) => {
+  if (link) {
+    router.push(link)
+  }
+}
+
 const redirectTo = (type: string) => {
   router.push(`/product/type/${type}`)
 }
 
 const isActiveType = (type: string) => route.params.type === type
+
+const isActivePath = (link?: string) => {
+  if (!link) return false
+  return route.path === link
+}
 </script>
 
 <style scoped lang="scss">
@@ -102,6 +178,47 @@ header {
 
       @media screen and (max-width: 768px) {
         display: none;
+      }
+
+      .nav_item_wrapper {
+        position: relative;
+      }
+
+      .nav_dropdown {
+        position: relative;
+
+        .dropdown_menu {
+          position: absolute;
+          top: 100%;
+          left: 50%;
+          transform: translateX(-50%);
+          margin-top: 8px;
+          background-color: rgba(255, 255, 255, 0.95);
+          backdrop-filter: saturate(180%) blur(20px);
+          -webkit-backdrop-filter: saturate(180%) blur(20px);
+          border-radius: 12px;
+          box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+          min-width: 200px;
+          padding: 8px;
+          z-index: 1001;
+
+          .dropdown_item {
+            display: block;
+            padding: 10px 16px;
+            color: #1d1d1f;
+            font-size: 12px;
+            font-weight: 400;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+            text-decoration: none;
+            border-radius: 8px;
+            white-space: nowrap;
+
+            &:hover {
+              background-color: rgba(0, 0, 0, 0.05);
+            }
+          }
+        }
       }
 
       .nav_link {
