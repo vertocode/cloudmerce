@@ -46,6 +46,24 @@
 
       <VCard
         class="settings-card"
+        @click="$router.push('/admin/menu')"
+      >
+        <VCardText>
+          <div class="settings-icon">
+            <VIcon
+              size="48"
+              color="primary"
+            >
+              mdi-menu
+            </VIcon>
+          </div>
+          <h2>Menu de Navegação</h2>
+          <p>Customize os itens do menu e navegação</p>
+        </VCardText>
+      </VCard>
+
+      <VCard
+        class="settings-card"
         @click="showWhitelabelForm = true"
       >
         <VCardText>

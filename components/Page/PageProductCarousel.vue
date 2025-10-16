@@ -75,6 +75,17 @@ const stopAutoScroll = () => {
   }
 }
 
+// Pause auto-scroll when user hovers over carousel
+const handleMouseEnter = () => {
+  stopAutoScroll()
+}
+
+const handleMouseLeave = () => {
+  if (hasOverflow.value) {
+    startAutoScroll()
+  }
+}
+
 // Fetch products based on productIds
 onMounted(async () => {
   const { getProductById } = useProduct({})
@@ -90,6 +101,12 @@ onMounted(async () => {
     startAutoScroll()
   }
 
+  // Add mouse event listeners
+  if (carouselContainer.value) {
+    carouselContainer.value.addEventListener('mouseenter', handleMouseEnter)
+    carouselContainer.value.addEventListener('mouseleave', handleMouseLeave)
+  }
+
   // Re-check on window resize
   window.addEventListener('resize', () => {
     stopAutoScroll()
@@ -98,24 +115,6 @@ onMounted(async () => {
       startAutoScroll()
     }
   })
-})
-
-// Pause auto-scroll when user hovers over carousel
-const handleMouseEnter = () => {
-  stopAutoScroll()
-}
-
-const handleMouseLeave = () => {
-  if (hasOverflow.value) {
-    startAutoScroll()
-  }
-}
-
-onMounted(() => {
-  if (carouselContainer.value) {
-    carouselContainer.value.addEventListener('mouseenter', handleMouseEnter)
-    carouselContainer.value.addEventListener('mouseleave', handleMouseLeave)
-  }
 })
 
 onUnmounted(() => {
